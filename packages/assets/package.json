@@ -1,0 +1,12 @@
+{
+    "name": "@finance/assets",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Arquivos de marca compartilhados pelos apps: o ícone do Finanças em todos os formatos.",
+    "files": [
+        "icons"
+    ],
+    "exports": {
+        "./icons/*": "./icons/*"
+    }
+}

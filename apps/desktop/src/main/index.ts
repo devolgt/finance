@@ -3,6 +3,7 @@ import { appendFileSync, mkdirSync } from 'node:fs';
 import { homedir, release } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import windowIcon from '@finance/assets/icons/sizes/256x256.png?asset';
 import { colorTokens } from '@finance/tokens';
 import { IPC_CHANNELS, type AppInfo, type DatabaseExportResult, type DatabaseImportResult, type FatalFailure, type ImportFileResult, type ReportResult, type RestoreResult } from '../shared/bridge.ts';
 import { databaseFiles, type DatabaseFiles } from '../utility/databaseFiles.ts';
@@ -84,7 +85,9 @@ function fileInstant(date: Date): string {
 /**
  * Cria a janela com a configuração de segurança obrigatória (desktop-shell-design §3.6). O
  * fundo inicial vem do token `bg` no tema que o aparelho vai mostrar, para que a janela não
- * pisque em branco antes do primeiro quadro no tema escuro.
+ * pisque em branco antes do primeiro quadro no tema escuro. O ícone da janela vem do pacote
+ * compartilhado `@finance/assets`: no `.deb` o sistema já o acha pelo `.desktop`, mas no
+ * desenvolvimento e no X11 sem o lançador a janela apareceria no dock com o ícone genérico.
  *
  * @param core Processo do núcleo, ligado à janela a cada carregamento.
  * @return A janela.
@@ -97,6 +100,7 @@ function createWindow(core: CoreProcess): BrowserWindow {
         minHeight: 640,
         show: false,
         title: 'Finanças',
+        icon: windowIcon,
         backgroundColor: nativeTheme.shouldUseDarkColors ? colorTokens.bg.dark : colorTokens.bg.light,
         webPreferences: {
             preload: join(import.meta.dirname, '../preload/index.cjs'),

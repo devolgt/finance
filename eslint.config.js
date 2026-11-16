@@ -6,6 +6,9 @@ import tseslint from 'typescript-eslint';
  * Electron, no Hermes do React Native e num servidor, então não pode importar nada do
  * Node nem de uma plataforma, nem ler relógio ou aleatoriedade fora das portas. A regra
  * é verificada por lint, e não por disciplina, porque a quebra só apareceria no celular.
+ * `localeCompare`, `Intl` e `toLocale*` ficam de fora pelo mesmo motivo: dependem do ICU
+ * de cada runtime, e o Chromium e o Hermes ordenam e formatam diferente
+ * (mobile-shell-design §8).
  */
 const coreBoundaryRules = {
     'no-restricted-imports': ['error', {
@@ -19,6 +22,11 @@ const coreBoundaryRules = {
         { selector: "MemberExpression[object.name='Date'][property.name='now']", message: 'Use a porta Clock (backend-design §3.4).' },
         { selector: "MemberExpression[object.name='Math'][property.name='random']", message: 'Use a porta IdGenerator (backend-design §3.4).' },
         { selector: "MemberExpression[object.name='crypto']", message: 'Use a porta IdGenerator: o React Native não tem crypto (backend-design §3.4).' },
+        { selector: "MemberExpression[property.name='localeCompare']", message: 'Use compareNames ou compareCodeUnits de domain/shared/textOrder.ts: localeCompare muda com o ICU do runtime (mobile-shell-design §8).' },
+        { selector: 'MemberExpression[property.name=/^toLocale/]', message: 'toLocale* formata pelo ICU do runtime e diverge entre Chromium e Hermes (mobile-shell-design §8).' },
+    ],
+    'no-restricted-globals': ['error',
+        { name: 'Intl', message: 'Intl difere entre Chromium e Hermes (mobile-shell-design §8); formate no client e ordene com domain/shared/textOrder.ts.' },
     ],
 };
 
@@ -41,6 +49,54 @@ const clientBoundaryRules = {
 };
 
 /**
+ * Fronteira do adaptador do mobile (mobile-mvp-plan, Fase 2): fino e sem regra, como o do
+ * desktop, ele só conhece as portas do núcleo e a suíte de contrato que as verifica. Importar
+ * Service, Repository ou o `client` levaria regra para dentro do driver; e o Node não existe
+ * no Hermes, onde o pacote roda.
+ */
+const sqliteExpoBoundaryRules = {
+    'no-restricted-imports': ['error', {
+        patterns: [
+            { group: ['node:*', 'fs', 'path', 'crypto', 'os', 'better-sqlite3'], message: 'O sqlite-expo roda no Hermes, sem Node.' },
+            { group: ['@finance/*', '@finance/core/*', '!@finance/core', '!@finance/core/contract'], message: 'O adaptador só conhece as portas do núcleo (@finance/core) e a suíte de contrato.' },
+            { group: ['react-native', 'react-native/*', 'react'], message: 'O adaptador não tem tela: só expo-sqlite e expo-file-system.' },
+        ],
+    }],
+};
+
+/**
+ * Fronteira do app do celular (mobile-mvp-plan, Fase 4), a mesma do desktop: as telas só
+ * falam com o `client`; o núcleo, o adaptador do banco e o driver entram só pela raiz de
+ * composição — do núcleo, as telas leem só os tipos das respostas. Uma tela que chamasse o
+ * núcleo direto pularia o agendamento pós-frame e o cache de consultas. `Intl` fica de fora
+ * pelo motivo do `client`: formata diferente no Hermes.
+ */
+const mobileBoundaryRules = {
+    'no-restricted-imports': ['error', {
+        patterns: [
+            // Os tipos do núcleo (DTOs de resposta) passam: são o contrato que os hooks do client
+            // devolvem, sem código em tempo de execução que pulasse o client.
+            { group: ['@finance/core', '@finance/core/*'], allowTypeImports: true, message: 'Telas falam só com o client; o núcleo entra pela raiz de composição (src/startup/openMobileCore.ts). Só tipos podem vir do núcleo.' },
+            { group: ['@finance/sqlite-expo', '@finance/sqlite-expo/*', 'expo-sqlite'], message: 'Telas falam só com o client; o banco entra pela raiz de composição (src/startup/openMobileCore.ts).' },
+            { group: ['node:*', 'fs', 'path', 'crypto', 'os', 'better-sqlite3', '@finance/sqlite-better'], message: 'O app roda no Hermes, sem Node.' },
+        ],
+    }],
+    'no-restricted-globals': ['error',
+        { name: 'Intl', message: 'Formate com os formatadores do client: Intl difere entre Chromium e Hermes (mobile-shell-design §8).' },
+    ],
+};
+
+/**
+ * A raiz de composição e os adaptadores das portas do núcleo: os únicos arquivos do app que
+ * conhecem o núcleo e o banco. Continuam sem Node.
+ */
+const mobileCompositionRules = {
+    'no-restricted-imports': ['error', {
+        patterns: [{ group: ['node:*', 'fs', 'path', 'crypto', 'os', 'better-sqlite3', '@finance/sqlite-better'], message: 'O app roda no Hermes, sem Node.' }],
+    }],
+};
+
+/**
  * Os tokens são dados sem dependências, lidos pelo desktop, pelo mobile e pelo gerador
  * (desktop-shell-design §4.5); só o script de geração toca o disco.
  */
@@ -51,7 +107,7 @@ const tokensBoundaryRules = {
 };
 
 export default tseslint.config(
-    { ignores: ['**/node_modules/**', '**/dist/**', '**/out/**', '**/test-results/**', '**/playwright-report/**', '**/release/**', '**/*.generated.ts'] },
+    { ignores: ['**/node_modules/**', '**/dist/**', '**/out/**', '**/test-results/**', '**/playwright-report/**', '**/release/**', '**/*.generated.ts', '**/*.generated.cjs'] },
     js.configs.recommended,
     ...tseslint.configs.strictTypeChecked,
     {
@@ -82,6 +138,24 @@ export default tseslint.config(
         rules: tokensBoundaryRules,
     },
     {
+        files: ['packages/sqlite-expo/src/**/*.ts'],
+        rules: sqliteExpoBoundaryRules,
+    },
+    {
+        files: ['apps/mobile/app/**/*.{ts,tsx}', 'apps/mobile/src/**/*.{ts,tsx}'],
+        rules: mobileBoundaryRules,
+    },
+    {
+        files: ['apps/mobile/src/startup/openMobileCore.ts', 'apps/mobile/src/startup/benchmark.ts', 'apps/mobile/src/platform/systemAdapters.ts'],
+        rules: mobileCompositionRules,
+    },
+    {
+        // O app de contrato (mobile-mvp-plan, Fase 3) é todo raiz de composição: existe para
+        // ligar o núcleo ao `expo-sqlite` e conferir o resultado no Hermes, também sem Node.
+        files: ['apps/mobile-contract/index.ts', 'apps/mobile-contract/src/**/*.{ts,tsx}'],
+        rules: mobileCompositionRules,
+    },
+    {
         // Scripts de build em JavaScript puro: sem anotação de tipo possível, o tipo de
         // retorno fica no JSDoc.
         files: ['**/*.js', '**/*.mjs'],
@@ -89,6 +163,19 @@ export default tseslint.config(
         rules: {
             ...tseslint.configs.disableTypeChecked.rules,
             '@typescript-eslint/explicit-function-return-type': 'off',
+        },
+    },
+    {
+        // Configurações do app do celular que o Metro, o Babel, o Jest e o Tailwind carregam
+        // em CommonJS, sem opção de ESM no pacote do app (que não é `type: module`, porque o
+        // Expo Router resolve a entrada pelo `main`).
+        files: ['apps/mobile/*.js', 'apps/mobile-contract/*.js'],
+        languageOptions: {
+            sourceType: 'commonjs',
+            globals: { require: 'readonly', module: 'writable', __dirname: 'readonly' },
+        },
+        rules: {
+            '@typescript-eslint/no-require-imports': 'off',
         },
     },
 );

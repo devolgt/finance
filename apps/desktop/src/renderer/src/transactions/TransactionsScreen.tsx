@@ -3,22 +3,23 @@ import {
     formatMonthAbbreviation,
     formatMonthShort,
     formatTransactionSituation,
+    type MovementColumn,
     movementsFromTransactions,
+    sourceKey,
     TRANSACTION_SITUATIONS,
+    type TransactionFilters,
+    type TransactionTable,
     useAccounts,
     useCategoryTree,
     useCreditCards,
-    useInvoicesByCards,
+    useMonthInvoices,
     useProfileInvoices,
     useRecurrences,
     useTags,
     useTransactions,
     useTransferTargets,
-    type MovementColumn,
-    type TransactionFilters,
-    type TransactionTable,
 } from '@finance/client';
-import type { AccountInPeriodResponse, CategoryBranchResponse, CoreInput, CreditCardInPeriodResponse, InvoiceResponse, TagResponse, TransactionResponse } from '@finance/core';
+import type { AccountInPeriodResponse, CategoryBranchResponse, CreditCardInPeriodResponse, TagResponse, TransactionResponse } from '@finance/core';
 import { Link, useNavigate, useSearch } from '@tanstack/react-router';
 import { useCallback, useId, useMemo, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
@@ -31,7 +32,6 @@ import { useActiveProfile } from '@/shell/activeProfile';
 import { useTransactionPanel, useTransactionPanelHost } from '@/shell/TransactionPanel';
 import { useReferenceMonth } from '@/shell/useReferenceMonth';
 import { MovementGrid } from './MovementGrid.tsx';
-import { sourceKey } from './transactionForm.ts';
 import { useTransactionActions } from './useTransactionActions.tsx';
 import {
     categoryFilterValue,
@@ -201,32 +201,6 @@ export function TransactionsScreen(): ReactNode {
             {actions.dialogs}
         </div>
     );
-}
-
-/**
- * Faturas em que caíram as compras no cartão do mês, para a situação "Na fatura"/"Fat. paga". Uma
- * consulta por cartão, a partir da fatura mais antiga que o mês usa — `invoices.listByCard` traz
- * dali em diante as que existem.
- * Exportado porque o Calendário monta a mesma tabela agrupada e precisa da mesma situação das compras.
- *
- * @param transactions Lançamentos do mês; `undefined` enquanto carregam.
- * @return As faturas conhecidas, com identidade estável entre renders; enquanto carregam, a
- * tabela mostra as compras como "Na fatura", o caso conservador (`buildTransactionTable`).
- */
-export function useMonthInvoices(transactions: readonly TransactionResponse[] | undefined): readonly InvoiceResponse[] {
-    const inputs = useMemo(() => {
-        const earliest = new Map<string, string>();
-        for (const { container } of transactions ?? []) {
-            if (container.kind === 'invoice') {
-                const known = earliest.get(container.creditCardId);
-                if (known === undefined || container.period < known) {
-                    earliest.set(container.creditCardId, container.period);
-                }
-            }
-        }
-        return [...earliest].map(([creditCardId, from]): CoreInput<'invoices.listByCard'> => ({ creditCardId, from }));
-    }, [transactions]);
-    return useInvoicesByCards(inputs).invoices;
 }
 
 /**

@@ -1010,7 +1010,7 @@ categorias com busca → tabela de subcategorias da categoria aberta).
   - `dependencies` do desktop ficou só com o `better-sqlite3`, o único módulo que o app carrega do disco; o resto entra no bundle do electron-vite, e o `asar` leva ~4 MB em vez da árvore inteira do renderer
   - A pasta de dados continua `userData` com o `name` do `package.json` (`~/.config/@finance/desktop`, `%APPDATA%\@finance\desktop`), a mesma do desenvolvimento: o app instalado abre o banco já usado
   - Achado: o executável fica em `/opt/Finanças`, e o Electron sai sem aviso quando o caminho do próprio executável tem acento e o locale é `C` (só em container; a sessão desktop é UTF-8). O teste do pacote roda com `LANG=C.UTF-8`
-- [ ] Ícone do app (adiado, a pedido)
+- [x] Ícone do app: vem do pacote compartilhado `@finance/assets`, o mesmo do celular — tamanhos prontos de 16 a 512 px no `.deb` (o tema `hicolor` do Ubuntu não tem pasta de 1024 px), `.ico` pronto no instalador do Windows e PNG de 256 px na janela (`?asset` do electron-vite), para o dock mostrar o ícone também no desenvolvimento
 - [x] Build empacotado abre um banco existente, migra com backup e funciona sem a árvore do repositório: `pnpm test:packaged` gera o `.deb`, extrai numa pasta temporária fora do repositório e abre um banco parado na penúltima migration, com perfil; confere o backup `pre-v{N-1}`, o `user_version` final, a versão em Ajustes e a reabertura (`e2e/packaged.spec.ts`). O `.exe` não tem teste automatizado: conferir à mão num Windows
 - [X] Rodada de uso real: lançar um mês verdadeiro e conferir os dois relatórios contra o extrato do banco e a fatura do cartão
 

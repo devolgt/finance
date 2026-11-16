@@ -1,0 +1,8 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "types": ["jest", "node"]
+    },
+    "include": ["app", "src", "test", "config", "app.config.ts", "env.d.ts", "nativewind-env.d.ts", "tailwind.config.d.ts"]
+}

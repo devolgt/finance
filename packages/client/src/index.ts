@@ -1,7 +1,7 @@
 // API pública do `client`: a camada headless compartilhada entre desktop e mobile
 // (desktop-shell-design §4.2) — contrato do núcleo, hooks de dados, formatadores e
 // view-models. Nada aqui importa React DOM, React Native, Electron ou Node.
-export { DirectCoreClient, type CoreClient } from './core/CoreClient.ts';
+export { DirectCoreClient, type CoreCallScheduler, type CoreClient } from './core/CoreClient.ts';
 export { CoreCallError } from './errors/CoreCallError.ts';
 export { describeError, type ErrorDescription } from './errors/describeError.ts';
 export { allRoutes, coreQueryKey, coreRouteKey, CORE_QUERY_ROOT, isReadRoute, type ReadRoute, type WriteRoute } from './queries/routes.ts';
@@ -9,6 +9,7 @@ export { invalidatedBy, isRehearsalRoute, REHEARSAL_ROUTES, type RehearsalRoute 
 export { CoreClientProvider, useCoreClient } from './hooks/CoreClientContext.tsx';
 export { callOrThrow, createQueryClient, invalidateAfter, invalidateAllCoreQueries, useCoreMutation, useCoreQueries, useCoreQuery } from './hooks/coreHooks.ts';
 export * from './hooks/routeHooks.ts';
+export * from './hooks/transactionForm.ts';
 export { formatMoney, formatMoneyCompact, formatMoneyDigits, formatMoneyForInput, MINUS, type MoneySign } from './format/money.ts';
 export { formatDate, formatDayMonth, formatMonthAbbreviation, formatMonthLong, formatMonthShort } from './format/dates.ts';
 export { formatPercent } from './format/percent.ts';
@@ -17,13 +18,38 @@ export { formatAccountHeading, formatAccountType } from './format/account.ts';
 export { summarizeNote, type NoteSummary } from './format/note.ts';
 export { matchesAllTerms, normalizeForSearch } from './format/searchText.ts';
 export { parseMoneyInput, type MoneyInputRejection, type MoneyInputResult } from './format/parseMoneyInput.ts';
+// Leitura dos formulários com os schemas do núcleo, comum ao desktop e ao celular
+// (desktop-shell-design §5.4): as mensagens de erro de um campo são as mesmas nos dois apps.
+export * from './forms/formIssues.ts';
+export * from './forms/currencies.ts';
+export * from './forms/onboardingForm.ts';
+export * from './forms/transactionForm.ts';
+export * from './forms/invoiceForms.ts';
+export * from './forms/coreErrorField.ts';
+export * from './forms/accountForm.ts';
+export * from './forms/creditCardForm.ts';
+export * from './forms/goalForm.ts';
+export * from './forms/nameForm.ts';
+export * from './forms/noteForm.ts';
+export * from './forms/profileForm.ts';
+// Regras do lançamento que decidem quais campos o formulário mostra, as mesmas do núcleo.
+export { feedsGoal, movesToDestination, withdrawsFromGoal } from '@finance/core';
+// Limite do nome do sócio, o mesmo que o núcleo valida, para o campo cortar onde a rota recusaria.
+export { PARTNER_NAME_MAX_LENGTH } from '@finance/core';
+// Regras do shell comuns ao desktop e ao celular: mês corrente, mês vizinho e perfil reaberto.
+export { currentDate, currentPeriod, isValidPeriod, pickActiveProfile, shiftPeriod } from './shell/referenceMonth.ts';
 export * from './viewModels/otherProfileAccounts.ts';
 export * from './viewModels/transactionTable.ts';
+// Lista de Transações do celular (mockup `MobileTransacoes`): dias e totais da mesma tabela.
+export * from './viewModels/transactionDays.ts';
+export * from './viewModels/datePicker.ts';
 export * from './viewModels/transactionEditor.ts';
 export * from './viewModels/recurrenceView.ts';
 export * from './viewModels/partnerRoster.ts';
 export * from './viewModels/deletionImpact.ts';
 export * from './viewModels/statementTable.ts';
+export * from './viewModels/categoryView.ts';
+export * from './viewModels/settingsView.ts';
 export * from './viewModels/invoiceView.ts';
 export * from './viewModels/movementList.ts';
 export * from './viewModels/goalView.ts';
@@ -47,3 +73,5 @@ export * from './import/importTable.ts';
 export * from './import/interpretRows.ts';
 export * from './import/importReview.ts';
 export * from './import/mappingTemplates.ts';
+export { blockingCopy, canTryRestore, restoreMessage, type BlockedStatus, type BlockingCopy, type RestoreState } from './startup/blockingCopy.ts';
+export type { RestoreResult, StartupStatus } from './startup/openCoreSequence.ts';
