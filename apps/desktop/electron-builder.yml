@@ -26,7 +26,12 @@ asarUnpack:
 # Electron sem recompilar (Fase 3.3); recompilar exigiria compilador e, no `.exe` gerado no
 # Linux, produziria o binário do Linux.
 npmRebuild: false
+# Ícone do pacote compartilhado `@finance/assets`, o mesmo do celular, em vez de uma cópia aqui que
+# poderia divergir. O Linux recebe a pasta de tamanhos prontos (`NxN.png`, de 16 a 512 px), que vira o
+# tema de ícones do `.deb`: um PNG único de 1024 px cairia em `hicolor/1024x1024`, pasta que o tema do
+# Ubuntu não consulta, e o dock mostraria o ícone genérico. O Windows recebe o `.ico` pronto.
 linux:
+  icon: node_modules/@finance/assets/icons/sizes
   target:
     - target: deb
       arch: x64
@@ -41,6 +46,7 @@ deb:
   # O dpkg não aceita maiúscula nem acento no nome do pacote.
   packageName: financas
 win:
+  icon: node_modules/@finance/assets/icons/finance-icon.ico
   target:
     - target: nsis
       arch: x64

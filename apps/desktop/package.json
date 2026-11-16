@@ -1,6 +1,6 @@
 {
     "name": "@finance/desktop",
-    "version": "1.38.0",
+    "version": "1.39.0",
     "description": "Finanças pessoais: contas, cartões, transações e relatórios.",
     "author": {
         "name": "Gustavo",
@@ -27,6 +27,7 @@
         "better-sqlite3": "13.0.3"
     },
     "devDependencies": {
+        "@finance/assets": "workspace:*",
         "@finance/client": "workspace:*",
         "@finance/core": "workspace:*",
         "@finance/sqlite-better": "workspace:*",

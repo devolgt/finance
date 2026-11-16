@@ -59,6 +59,11 @@ services:
       - corepack:/home/node/.cache/node/corepack
       - gradle:/home/node/.gradle
       - android:/home/node/.android
+      # Chave de assinatura do APK de release (pnpm dist:mobile): fica no host, fora do
+      # repositório e do container, para entrar no backup da máquina e sobreviver ao rebuild.
+      # Somente leitura, porque o build só lê a chave e perdê-la impede atualizar o app no
+      # celular sem desinstalar. Crie a pasta no host antes do rebuild, pelo mesmo motivo acima.
+      - ${HOME}/chaves:/home/node/chaves:ro
       - ${XDG_RUNTIME_DIR:-/run/user/1000}/${WAYLAND_DISPLAY:-wayland-0}:/tmp/runtime-node/${WAYLAND_DISPLAY:-wayland-0}
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
       # Cookie do XWayland do host, para o emulador Android abrir janela: o Qt dele só fala

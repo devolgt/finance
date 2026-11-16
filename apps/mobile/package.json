@@ -1,6 +1,6 @@
 {
     "name": "@finance/mobile",
-    "version": "1.15.0",
+    "version": "1.16.0",
     "private": true,
     "main": "expo-router/entry",
     "scripts": {
@@ -49,6 +49,7 @@
     },
     "devDependencies": {
         "@babel/plugin-transform-react-jsx": "7.29.7",
+        "@finance/assets": "workspace:*",
         "@finance/sqlite-better": "workspace:*",
         "@react-native/jest-preset": "0.88.1",
         "@testing-library/react-native": "14.1.0",

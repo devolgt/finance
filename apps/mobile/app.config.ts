@@ -9,6 +9,15 @@ import packageJson from './package.json';
 /** Pacote Android escolhido pelo usuário (mobile-mvp-plan, Fase 4). Nunca mudar: é a identidade do app instalado. */
 const ANDROID_PACKAGE = 'br.com.finance.app';
 
+/** Pasta dos ícones do pacote compartilhado `@finance/assets`, o mesmo de onde o desktop tira o dele. */
+const ICONS = './node_modules/@finance/assets/icons';
+
+/**
+ * Cor de fundo do ícone adaptativo: a do próprio desenho, e não um token de tema, porque precisa
+ * emendar sem costura com o fundo do primeiro plano, que a máscara do launcher recorta.
+ */
+const ICON_BACKGROUND = '#111919';
+
 /** Pasta das fontes do IBM Plex Sans no pacote do Google Fonts para o Expo. */
 const PLEX = './node_modules/@expo-google-fonts/ibm-plex-sans';
 
@@ -88,8 +97,16 @@ const config: ExpoConfig = {
     extra: { coreVersion: corePackageJson.version },
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
+    icon: `${ICONS}/finance-icon-1024.png`,
     android: {
         package: ANDROID_PACKAGE,
+        // Android 8+ recorta o ícone com a máscara do launcher (círculo, gota, quadrado): o
+        // primeiro plano traz o desenho reduzido à zona segura, e o fundo liso cobre o que a
+        // máscara revelar; com o ícone quadrado direto, o launcher o encolheria numa moldura branca.
+        adaptiveIcon: {
+            foregroundImage: `${ICONS}/finance-icon-adaptive-foreground.png`,
+            backgroundColor: ICON_BACKGROUND,
+        },
         // Sobe com a versão do app, para o Android recusar instalar um APK antigo por cima (Fase 19).
         versionCode: versionCodeOf(packageJson.version),
         allowBackup: false,

@@ -68,11 +68,14 @@ recusa rodar com o app instalado. A linha de base do Node, com o mesmo roteiro, 
 O APK que vai para o celular por instalação direta, assinado com a sua chave:
 
 ```sh
-# Uma vez: a chave, FORA do repositório (o script recusa um keystore dentro dele)
+# Uma vez, NO HOST: a chave, FORA do repositório (o script recusa um keystore dentro dele).
+# O devcontainer monta o ~/chaves do host em /home/node/chaves, somente leitura.
+mkdir -p ~/chaves && chmod 700 ~/chaves
 keytool -genkeypair -v -keystore ~/chaves/finance-release.jks -alias finance \
     -keyalg RSA -keysize 4096 -validity 10000
 
-export FINANCE_ANDROID_KEYSTORE=~/chaves/finance-release.jks
+# No devcontainer, depois do rebuild:
+export FINANCE_ANDROID_KEYSTORE=/home/node/chaves/finance-release.jks
 export FINANCE_ANDROID_KEYSTORE_PASSWORD='…'
 export FINANCE_ANDROID_KEY_ALIAS=finance
 export FINANCE_ANDROID_KEY_PASSWORD='…'

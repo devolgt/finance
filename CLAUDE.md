@@ -6,6 +6,7 @@ Monorepo pnpm em TypeScript estrito (Node 24) de finanças pessoais: núcleo com
 
 - `packages/core` — núcleo em camadas Request → Controller → Service → Repository → Model, com domínio puro (`Money`, `LocalDate`, `Invoice`...) e portas (`Database`, `Clock`, `IdGenerator`) implementadas em `infrastructure/`. As fronteiras entre camadas são verificadas pelo `eslint.config.js`.
 - `packages/sqlite-better` — adaptador `better-sqlite3` da porta `Database`.
+- `packages/assets` — arquivos de marca compartilhados pelos apps (o ícone do Finanças em todos os formatos).
 - `docs/plans/` — designs e planos aprovados (banco, backend, sync, shells, MVP desktop). Consulte o documento do módulo antes de alterá-lo; as regras de negócio estão lá.
 
 Comandos (na raiz):
@@ -93,6 +94,7 @@ Cada pacote tem a própria versão SemVer no `package.json`. **Toda alteração 
 | `packages/sqlite-better/**` ou `db/migrations/**` (banco) | `packages/sqlite-better/package.json` |
 | `packages/sqlite-expo/**` | `packages/sqlite-expo/package.json` |
 | `packages/tokens/**` | `packages/tokens/package.json` |
+| `packages/assets/**` | `packages/assets/package.json` |
 | qualquer um dos acima | `package.json` da raiz (versão do produto) |
 
 O incremento segue o tipo do commit (Conventional Commits):
