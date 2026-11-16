@@ -455,7 +455,46 @@ function LoadedForm(props: { readonly transaction: TransactionResponse | null; r
                 {creating && values.type === 'expense' && <Segmented label="Forma de pagamento" options={METHODS} value={shownMethod} onChange={changeMethod} />}
 
                 <FormGroup>
-                    <FormRow first label={values.type === 'expense' || values.type === 'income' ? 'Onde' : 'Origem'} error={errors.source?.message}>
+                    <FormRow first label="Nome" error={errors.name?.message}>
+                        <Controller
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <RowInput
+                                    label="Nome"
+                                    error={errors.name?.message}
+                                    placeholder="Ex.: Supermercado"
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onFocus={() => {
+                                        setNameFocused(true);
+                                    }}
+                                    onBlur={() => {
+                                        field.onBlur();
+                                        setNameFocused(false);
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormRow>
+                    {creating && nameFocused && nameMatches.length > 0 && (
+                        <View accessibilityLabel="Nomes já lançados" className="border-t border-line2 bg-surface2">
+                            {nameMatches.map((suggestion) => (
+                                <Pressable
+                                    key={suggestion.name}
+                                    accessibilityRole="button"
+                                    accessibilityLabel={`Usar ${suggestion.name}`}
+                                    onPress={() => {
+                                        pickName(suggestion);
+                                    }}
+                                    className="min-h-11 justify-center px-3.5 active:bg-line2"
+                                >
+                                    <AppText numberOfLines={1}>{suggestion.name}</AppText>
+                                </Pressable>
+                            ))}
+                        </View>
+                    )}
+                    <FormRow label={values.type === 'expense' || values.type === 'income' ? 'Onde' : 'Origem'} error={errors.source?.message}>
                         <Controller
                             control={form.control}
                             name="source"
@@ -515,45 +554,6 @@ function LoadedForm(props: { readonly transaction: TransactionResponse | null; r
                     <FormRow label={card === null ? 'Data' : 'Data da compra'} error={errors.dueDate?.message}>
                         <Controller control={form.control} name="dueDate" render={({ field }) => <RowDate label={card === null ? 'Data' : 'Data da compra'} value={field.value} onChange={field.onChange} />} />
                     </FormRow>
-                    <FormRow label="Nome" error={errors.name?.message}>
-                        <Controller
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <RowInput
-                                    label="Nome"
-                                    error={errors.name?.message}
-                                    placeholder="Ex.: Supermercado"
-                                    value={field.value}
-                                    onChangeText={field.onChange}
-                                    onFocus={() => {
-                                        setNameFocused(true);
-                                    }}
-                                    onBlur={() => {
-                                        field.onBlur();
-                                        setNameFocused(false);
-                                    }}
-                                />
-                            )}
-                        />
-                    </FormRow>
-                    {creating && nameFocused && nameMatches.length > 0 && (
-                        <View accessibilityLabel="Nomes já lançados" className="border-t border-line2 bg-surface2">
-                            {nameMatches.map((suggestion) => (
-                                <Pressable
-                                    key={suggestion.name}
-                                    accessibilityRole="button"
-                                    accessibilityLabel={`Usar ${suggestion.name}`}
-                                    onPress={() => {
-                                        pickName(suggestion);
-                                    }}
-                                    className="min-h-11 justify-center px-3.5 active:bg-line2"
-                                >
-                                    <AppText numberOfLines={1}>{suggestion.name}</AppText>
-                                </Pressable>
-                            ))}
-                        </View>
-                    )}
                     {card === null && (
                         <FormRow label={values.type === 'income' ? 'Recebido' : 'Pago'}>
                             <Controller
