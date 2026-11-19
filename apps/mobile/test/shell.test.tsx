@@ -6,7 +6,7 @@ import { appTextClassName } from '../src/ui/AppText.tsx';
 jest.mock('@finance/sqlite-expo/open', () => ({}));
 jest.mock('expo-file-system', () => ({ Paths: {} }));
 
-describe('AppLifecycle (mobile-shell-design §5.3)', () => {
+describe('AppLifecycle (mobile §10)', () => {
     it('avisa uma vez a cada troca real de primeiro plano, e não a cada evento do sistema', () => {
         const lifecycle = new AppLifecycle();
         const events: string[] = [];
@@ -32,7 +32,7 @@ describe('AppLifecycle (mobile-shell-design §5.3)', () => {
     });
 });
 
-describe('agendamento pós-frame (mobile-shell-design §4.3)', () => {
+describe('agendamento pós-frame (mobile §3.2)', () => {
     it('roda a chamada depois do frame, e não na hora, mantendo a ordem', () => {
         jest.useFakeTimers();
         const order: string[] = [];

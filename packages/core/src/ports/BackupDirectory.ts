@@ -1,6 +1,6 @@
 /**
- * Porta da pasta de backups ao lado do banco (backend-design §4.6). É porta porque o núcleo
- * não lê disco (backend-design §3.1): o desktop usa `node:fs` e o mobile o sistema de
+ * Porta da pasta de backups ao lado do banco (banco-de-dados §5.6). É porta porque o núcleo
+ * não lê disco (core §1.1): o desktop usa `node:fs` e o mobile o sistema de
  * arquivos do Expo, mas a regra — quando copiar, como nomear, quantas cópias guardar — é
  * uma só e mora no núcleo. Síncrona como a porta `Database`, porque a cópia acontece no
  * meio da sequência de abertura, que é síncrona por inteiro.

@@ -81,7 +81,7 @@ function shown(cell: DailyStatementCell): { readonly text: string; readonly tone
     return { text: cell.text, tone: cell.tone, state: cell.state };
 }
 
-describe('extrato dia × mês (mockup DesktopExtrato)', () => {
+describe('extrato dia × mês', () => {
     it('tem uma coluna por mês e 31 linhas, hachurando os dias que o mês não tem', async () => {
         const world = new ClientWorld();
         const view = await statementOf(world, await world.seed(), ['2026-08', '2026-09', '2026-10', '2026-11']);

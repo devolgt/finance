@@ -17,10 +17,10 @@ import { FIXED_REPORT_NAMES, fixedReportsFor, openReport, parseReportsSearch } f
 import { useReportLookups } from './useReportLookups.ts';
 
 /**
- * Página de Relatórios (reports-design, Fase 15): à esquerda, os relatórios fixos no topo — a
- * projeção de saldo em todo perfil e a distribuição por sócio no empresarial (§8 e §9), que não se
- * montam no editor — e os salvos do perfil, por nome; à direita, o relatório aberto. Sem mockup
- * próprio; segue a lista e o detalhe de Contas e Cartões (decisão de interface 5 dos mockups). O
+ * Página de Relatórios (relatorios §3): à esquerda, os relatórios fixos no topo — a
+ * projeção de saldo em todo perfil e a distribuição por sócio no empresarial (relatorios §7 e §8), que não
+ * se montam no editor — e os salvos do perfil, por nome; à direita, o relatório aberto. Segue a
+ * lista e o detalhe de Contas e Cartões (desktop §7.6). O
  * relatório aberto fica na URL (`report`); sem ele, abre o primeiro fixo.
  *
  * @return A página.

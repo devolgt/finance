@@ -31,7 +31,7 @@ async function scenario(): Promise<Scenario> {
     return { world, accountId, creditCardId, base };
 }
 
-describe('verificação de integridade na abertura (database-design §3.7)', () => {
+describe('verificação de integridade na abertura (banco-de-dados §3.7)', () => {
     it('banco gravado pelos Services não tem desvio', async () => {
         const { world } = await scenario();
 

@@ -5,7 +5,7 @@ allowed-tools: Bash(graphify update:*), Bash(graphify affected:*), Bash(graphify
 disable-model-invocation: true
 ---
 
-Levante o impacto de uma refatoração usando o graphify, instalado no devcontainer. O grafo é só um ponto de partida para a análise: o código e os documentos em `docs/plans/` continuam sendo a fonte da verdade.
+Levante o impacto de uma refatoração usando o graphify, instalado no devcontainer. O grafo é só um ponto de partida para a análise: o código e a wiki em `docs/wiki/` continuam sendo a fonte da verdade.
 
 Alvo informado pelo usuário: $ARGUMENTS
 

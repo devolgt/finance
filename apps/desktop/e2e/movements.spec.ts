@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Melhorias antes do empacotamento (desktop-mvp-plan Fase 13.2) no app empacotado: a listagem
+ * Melhorias antes do empacotamento (transacoes §8.3) no app empacotado: a listagem
  * única de lançamentos com a situação clicável e a edição no extrato de Contas, o "somente esta"
  * que grava sem a revisão, mover um lançamento para outro perfil pelo campo "Perfil" e os blocos
  * de metas e anotações da Visão geral. Os cliques usam `dispatchEvent`, pelo motivo explicado em
@@ -101,7 +101,7 @@ test('no lançamento novo, trocar o perfil escolhe a conta padrão do perfil esc
     try {
         await completeFirstUse(page, { profileName: 'Pessoal', accountName: 'Nubank' });
         const businessId = await seedMovements(page, period);
-        // Com duas contas, só o padrão decide qual vem escolhida (database-design §4.1).
+        // Com duas contas, só o padrão decide qual vem escolhida (banco-de-dados §4.1).
         await page.evaluate(async ({ profileId, period }) => {
             const { core } = window.finance;
             await core.call('accounts.create', { profileId, name: 'Conta Reserva', type: 'checking' });

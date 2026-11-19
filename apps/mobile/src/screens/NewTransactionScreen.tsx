@@ -7,7 +7,7 @@ import { TransactionFormScreen } from '../transactions/TransactionFormScreen.tsx
 import { ErrorState, LoadingState } from '../ui/states.tsx';
 
 /**
- * Rota do lançamento (mobile-mvp-plan, Fase 10): sem `id`, um lançamento novo; com `id`, a edição
+ * Rota do lançamento (transacoes §5): sem `id`, um lançamento novo; com `id`, a edição
  * dele, aberta pelo detalhe. Uma rota só para os dois, por cima das abas, como o diálogo único do
  * desktop.
  *

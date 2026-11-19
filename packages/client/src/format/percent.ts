@@ -3,7 +3,8 @@ import { MINUS } from './money.ts';
 
 /**
  * Percentual pt-BR a partir de uma proporção do núcleo (`0,166` → `+16,6%`). O zero
- * arredondado aparece como `0%`, sem sinal nem casa decimal, como no mockup do relatório.
+ * arredondado aparece como `0%`, sem sinal nem casa decimal: `+0,0%` sugeriria uma variação
+ * que o arredondamento escondeu.
  *
  * @param ratio Proporção, como o núcleo entrega (variação, peso nas entradas).
  * @param options.sign `always` para variação (`+16,6%`), `negative` para participação (`32,2%`).

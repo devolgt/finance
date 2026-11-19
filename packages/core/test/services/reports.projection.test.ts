@@ -70,7 +70,7 @@ function pointAt(projection: Projection, period: string): Projection['points'][n
     return point;
 }
 
-describe('projeção de saldo (reports-design §9)', () => {
+describe('projeção de saldo (relatorios §8)', () => {
     it('Regra de negócio (Relatórios, B1): a estimativa usa só os meses fechados desde o primeiro extrato', () => {
         const october = YearMonth.of(2026, 10);
         /**

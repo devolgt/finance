@@ -5,7 +5,7 @@ import type { YearMonth } from '../shared/YearMonth.ts';
 import type { TransactionType } from '../transaction/TransactionType.ts';
 
 /**
- * Data da transação que decide em que mês ela cai no relatório (reports-design F3):
+ * Data da transação que decide em que mês ela cai no relatório (relatorios §4.1, F3):
  * - `payment`: `payment_date`; a transação em aberto não tem mês de pagamento e fica fora;
  * - `due`: `due_date` — o vencimento na conta, a data da compra no cartão;
  * - `created`: o dia, em UTC, do `created_at` — quando o registro entrou no app.
@@ -14,12 +14,12 @@ export type ReportDateBasis = 'payment' | 'due' | 'created';
 
 export const REPORT_DATE_BASES: readonly ReportDateBasis[] = ['payment', 'due', 'created'];
 
-/** Situação de pagamento aceita pelo filtro (reports-design A7). */
+/** Situação de pagamento aceita pelo filtro (relatorios §4.2, A7). */
 export type ReportStatusFilter = 'all' | 'paid' | 'open';
 
 export const REPORT_STATUS_FILTERS: readonly ReportStatusFilter[] = ['all', 'paid', 'open'];
 
-/** Como as tags escolhidas se combinam (reports-design A4). */
+/** Como as tags escolhidas se combinam (relatorios §4.2, A4). */
 export type ReportTagMatch = 'any' | 'all';
 
 export const REPORT_TAG_MATCHES: readonly ReportTagMatch[] = ['any', 'all'];
@@ -32,7 +32,7 @@ export const REPORT_TAG_MATCHES: readonly ReportTagMatch[] = ['any', 'all'];
 export const REPORT_MAX_PREVIOUS_MONTHS = 35;
 
 /**
- * Mês final da janela (reports-design F1): o mês de referência da tela, que acompanha a
+ * Mês final da janela (relatorios §4.1, F1): o mês de referência da tela, que acompanha a
  * navegação, ou um mês fixo gravado na definição, que não acompanha.
  */
 export type ReportPeriodAnchor =
@@ -53,7 +53,7 @@ export interface ReportWindow {
     readonly to: YearMonth;
 }
 
-/** Dados do filtro, ainda sem validar. Lista vazia não restringe (reports-design §2.2). */
+/** Dados do filtro, ainda sem validar. Lista vazia não restringe (relatorios §4.2). */
 export interface ReportFilterProps {
     readonly period: ReportPeriod;
     readonly types: readonly TransactionType[];
@@ -73,11 +73,11 @@ export interface ReportFilterProps {
 }
 
 /**
- * Quais transações entram num relatório (reports-design §2). É um Value Object, e não um objeto
+ * Quais transações entram num relatório (relatorios §4). É um Value Object, e não um objeto
  * solto, porque os invariantes — janela de até 36 meses, mínimo ≤ máximo, listas sem repetição —
  * precisam valer tanto na entrada da rota quanto no JSON lido do banco, e o lugar de garanti-los
  * uma vez só é aqui. Os valores-limite são números, e não `Money`: o filtro não conhece a moeda
- * do perfil, e o `value` gravado já está nela (database-design §4.13).
+ * do perfil, e o `value` gravado já está nela (banco-de-dados §4.13).
  */
 export class ReportFilter implements ReportFilterProps {
     public readonly period: ReportPeriod;

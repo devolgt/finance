@@ -30,10 +30,10 @@ import { useActiveProfile } from '@/shell/activeProfile';
 import { useReferenceMonth } from '@/shell/useReferenceMonth';
 
 /**
- * Criar ou editar meta: nome, tipo, valor-alvo e data-alvo opcional (brief §3, Meta). Segue o
+ * Criar ou editar meta: nome, tipo, valor-alvo e data-alvo opcional (metas §7.3). Segue o
  * diálogo dos cadastros (`FormDialog`), para que salvar, cancelar e a recusa do núcleo se
  * comportem como nas outras telas.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): a meta é por lançamentos ou vinculada a
+ * Regra de negócio (Metas, metas §2): a meta é por lançamentos ou vinculada a
  * uma conta de investimento, e o tipo se troca na edição; trocar para a vinculada a conta desfaz
  * os vínculos, e o diálogo avisa quantos antes de salvar.
  *
@@ -181,7 +181,7 @@ export function GoalDialog({ goal, onClose, onCreated }: { readonly goal: GoalPr
 
 /**
  * Confirmação de excluir a meta. Diz quantos lançamentos perdem o vínculo e que eles continuam
- * existindo (`describeGoalDeletion`), em vez de um aviso genérico (brief §4, regra 9).
+ * existindo (`describeGoalDeletion`), em vez de um aviso genérico (perfis §5.3).
  *
  * @param props.goal Meta a excluir.
  * @param props.onClose Fecha o alerta, depois de excluir ou ao desistir.
@@ -237,7 +237,7 @@ export function DeleteGoalDialog({ goal, onClose }: { readonly goal: GoalProgres
 }
 
 /**
- * Arquiva ou reativa uma meta, conforme a situação atual (desktop-mvp-plan Fase 13.4). Sem
+ * Arquiva ou reativa uma meta, conforme a situação atual (metas §5.1). Sem
  * confirmação, como desativar uma conta: as duas ações se desfazem uma com a outra e não mexem nos
  * vínculos nem no progresso. O aviso diz isso, para que ninguém arquive achando que perdeu o que
  * guardou.

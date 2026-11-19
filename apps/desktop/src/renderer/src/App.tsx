@@ -21,7 +21,7 @@ export interface Boot {
 /**
  * Raiz do app: entrega as preferências do aparelho à árvore e decide entre a tela de bloqueio
  * e o app. A decisão vem antes de montar roteador e cache, porque com o banco bloqueado
- * nenhuma rota do núcleo pode ser chamada (backend-design §4.5).
+ * nenhuma rota do núcleo pode ser chamada (banco-de-dados §5.5).
  *
  * @param props.boot Promessa do estado da abertura e das preferências; resolvida pelo
  * `Suspense` acima, para que nada pisque entre "carregando" e o bloqueio.
@@ -51,7 +51,7 @@ function ThemedRoot({ children }: { readonly children: ReactNode }): ReactNode {
 /**
  * O app com o banco aberto. O `CoreClient` injetado é o do preload, decorado para que um erro
  * `INTERNAL` do núcleo leve à tela de erro: daqui para baixo nenhum componente sabe que existe
- * IPC (desktop-shell-design §5.1). O roteador só monta com um perfil ativo, porque toda tela
+ * IPC (desktop §3.1). O roteador só monta com um perfil ativo, porque toda tela
  * do shell lê dados de um perfil; sem perfil, o primeiro uso ocupa a janela.
  *
  * @return Os provedores de dados, o perfil ativo e o roteador.

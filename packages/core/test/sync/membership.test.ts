@@ -31,7 +31,7 @@ afterEach(() => {
     }
 });
 
-describe('Membros, entrada e remoção (sync-plan Fase 6)', () => {
+describe('Membros, entrada e remoção (sincronizacao §4)', () => {
     it('recusa entrar num grupo com dados locais, e criar um segundo grupo', () => {
         const host = device(1);
         host.profile();
@@ -43,7 +43,7 @@ describe('Membros, entrada e remoção (sync-plan Fase 6)', () => {
         expect(ruleOf(() => syncOf(host).createGroup({ name: 'De novo', platform: 'desktop', publicKey: testPublicKey(1) }))).toBe('sync-already-in-group');
     });
 
-    it('entra por snapshot: a cópia do anfitrião vira o banco do aparelho novo, com identidade própria (sync-design §6.4)', async () => {
+    it('entra por snapshot: a cópia do anfitrião vira o banco do aparelho novo, com identidade própria (sincronizacao §4.4)', async () => {
         const host = device(1);
         const profileId = host.profile();
         const accountId = host.account(profileId, { openingBalance: 500 });

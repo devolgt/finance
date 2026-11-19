@@ -26,10 +26,10 @@ import { AppText } from '../ui/AppText.tsx';
 import { Button } from '../ui/Button.tsx';
 import { FormGroup, FormRow, FormSection, RowInput, RowSelect, Segmented, toFieldErrors } from '../ui/form.tsx';
 
-/** Tipos de perfil, na ordem do mockup. */
+/** Tipos de perfil, com os rótulos do `client`, os mesmos do desktop. */
 const PROFILE_TYPES = (['personal', 'business'] as const).map((type) => ({ value: type, label: formatProfileType(type) }));
 
-/** Moedas oferecidas, as mesmas do desktop; a linha mostra só o código, como o mockup. */
+/** Moedas oferecidas, as mesmas do desktop; a linha mostra só o código, que cabe nela. */
 const CURRENCIES = CURRENCY_OPTIONS.map((option) => ({ value: option.code, label: option.label }));
 
 /**
@@ -67,12 +67,11 @@ function useStartOnboarding(): UseMutationResult<OnboardingResponse, CoreCallErr
 }
 
 /**
- * Primeiro uso (mockup `MobilePrimeiroUso`; mobile-mvp-plan, Fase 7): o banco sem perfil abre
- * aqui, fora do shell, porque toda tela do shell lê dados de um perfil. Cria o perfil e a
+ * Primeiro uso (perfis §4.2): o banco sem perfil abre aqui, fora do shell, porque toda tela do shell lê dados de um perfil. Cria o perfil e a
  * primeira conta juntos pelo `onboarding.start` — o primeiro uso não pode deixar perfil sem
- * conta. A conta nasce corrente e na moeda do perfil, como o mockup propõe (ele não pergunta o
- * tipo): investimento se escolhe depois, em Contas. "Entrar num grupo existente" abre a leitura
- * do QR do convite no lugar do formulário (sync-plan Fase 8): o primeiro uso fica fora da
+ * conta. A conta nasce corrente e na moeda do perfil, sem perguntar o tipo, para o primeiro
+ * uso pedir o mínimo: investimento se escolhe depois, em Contas. "Entrar num grupo existente" abre a leitura
+ * do QR do convite no lugar do formulário (sincronizacao §6.4): o primeiro uso fica fora da
  * navegação, então a troca é por estado, e "voltar" devolve ao formulário. É também onde o app
  * cai depois de descartar o banco em Dispositivos para entrar num grupo.
  *

@@ -25,7 +25,7 @@ const replicaArb = fc.integer({ min: 0, max: REPLICAS - 1 });
 const dateArb = fc.record({ month: fc.integer({ min: 2, max: 5 }), day: fc.integer({ min: 1, max: 28 }) })
     .map(({ month, day }) => `2026-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`);
 const centsArb = fc.integer({ min: 100, max: 200_000 });
-// Poucos nomes para que dois aparelhos criem o mesmo vocabulário offline e colidam (sync-design §5.7).
+// Poucos nomes para que dois aparelhos criem o mesmo vocabulário offline e colidam (sincronizacao §3.8).
 const nameArb = fc.constantFrom('Mercado', 'mercado', 'Casa', 'Viagem');
 
 const stepArb: fc.Arbitrary<Step> = fc.oneof(
@@ -219,7 +219,7 @@ function settle(m: Mesh): void {
     }
 }
 
-describe('Convergência (sync-plan Fase 4)', () => {
+describe('Convergência (sincronizacao §9)', () => {
     it('réplicas com operações e trocas aleatórias terminam idênticas nas tabelas de domínio', async () => {
         await fc.assert(fc.asyncProperty(fc.array(stepArb, { minLength: 5, maxLength: 80 }), async (steps) => {
             const m = mesh();

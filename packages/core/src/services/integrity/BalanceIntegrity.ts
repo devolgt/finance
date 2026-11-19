@@ -4,7 +4,7 @@ import type { YearMonth } from '../../domain/shared/YearMonth.ts';
 
 /**
  * Qual saldo em cache divergiu. Os campos espelham as colunas derivadas do schema — o par
- * da conta, os quatro saldos do extrato e o total da fatura (database-design §3.7) —, para
+ * da conta, os quatro saldos do extrato e o total da fatura (banco-de-dados §3.7) —, para
  * que o log aponte exatamente a coluna a investigar.
  */
 export type BalanceField =

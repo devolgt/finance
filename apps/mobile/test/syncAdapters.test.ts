@@ -13,7 +13,7 @@ function bytes(text: string): Uint8Array {
     return new TextEncoder().encode(text);
 }
 
-describe('fila de leitura da Connection (sync-plan Fase 8)', () => {
+describe('fila de leitura da Connection (sincronizacao §6.4)', () => {
     it('entrega os pedaços na ordem, tanto os que chegaram antes quanto os que chegam depois do read', async () => {
         const queue = new ChunkQueue();
         queue.push(bytes('a'));
@@ -42,7 +42,7 @@ describe('fila de leitura da Connection (sync-plan Fase 8)', () => {
     });
 });
 
-describe('pares descobertos pelo mDNS (sync-design §7.2)', () => {
+describe('pares descobertos pelo mDNS (sincronizacao §5.2)', () => {
     it('vira um par por endereço local, com o id e o hash do grupo do TXT', () => {
         const peers = peersOf({ txt: { device: 'aparelho-1', group: 'hash' }, addresses: ['192.168.0.10', 'fe80::1', '100.64.0.2', '8.8.8.8'], port: 45123 }, isLocalAddress);
 

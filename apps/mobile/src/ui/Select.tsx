@@ -50,7 +50,7 @@ export function OptionList<T extends string>({ options, value, onSelect }: { rea
 }
 
 /**
- * Campo de escolha (decisão de interface 12 dos mockups: "escolhas em folhas inferiores"): mostra
+ * Campo de escolha (desktop §7.7: "escolhas em folhas inferiores"): mostra
  * a escolha atual e, ao toque, abre uma folha com as opções, que fecha ao escolher.
  *
  * @param props.label Rótulo do campo e título da folha.

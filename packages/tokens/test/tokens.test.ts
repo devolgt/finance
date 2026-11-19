@@ -16,7 +16,7 @@ function blockOf(css: string, selector: string): string {
     return start === -1 ? '' : css.slice(start, css.indexOf('\n}', start));
 }
 
-describe('tokens de cor (desktop-mvp-plan Fase 3.1)', () => {
+describe('tokens de cor (desktop §6.1)', () => {
     it('todo token tem valor hexadecimal nos dois temas', () => {
         for (const name of colorTokenNames()) {
             expect(colorTokens[name].light, `${name} claro`).toMatch(HEX);
@@ -24,7 +24,7 @@ describe('tokens de cor (desktop-mvp-plan Fase 3.1)', () => {
         }
     });
 
-    it('cobre a paleta do README dos mockups, mais o indicador de sincronização, o véu dos diálogos e o QR do convite', () => {
+    it('cobre a paleta das telas, mais o indicador de sincronização, o véu dos diálogos e o QR do convite', () => {
         expect(colorTokenNames()).toEqual([
             'bg', 'surface', 'surface2', 'line', 'line2', 'ink', 'ink2', 'muted', 'accent', 'on-accent', 'soft', 'soft-ink',
             'in', 'out', 'warn-bg', 'warn-ink', 'ok-bg', 'ok-ink', 'track', 'danger', 'dot', 'scrim', 'qr-ink', 'qr-bg',
@@ -59,7 +59,7 @@ describe('CSS de tema', () => {
         expect(css).toContain("--font-sans: 'IBM Plex Sans', system-ui, sans-serif;");
     });
 
-    it('mantém as escalas em ordem crescente e sem repetição, para que a escolha do mockup seja inequívoca', () => {
+    it('mantém as escalas em ordem crescente e sem repetição, para que a escolha de um tamanho seja inequívoca', () => {
         for (const scale of [fontSizesPx, radiiPx]) {
             expect([...scale].sort((a, b) => a - b)).toEqual([...new Set(scale)]);
         }

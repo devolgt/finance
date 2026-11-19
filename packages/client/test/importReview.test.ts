@@ -52,7 +52,7 @@ const EXISTING: ExistingRegistries = {
     creditCards: [card('c1', 'p2', 'Inter')],
 };
 
-describe('revisão da importação (import-design §5)', () => {
+describe('revisão da importação (importacao §5)', () => {
     it('começa no perfil padrão, ligando a conta de mesmo nome e pedindo o fechamento do cartão novo', () => {
         const state = initialReview(ANALYSIS, 'p1', EXISTING);
         expect(state.accounts.map((item) => [item.name, item.profileId, item.linkTo])).toEqual([

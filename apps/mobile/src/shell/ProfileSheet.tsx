@@ -10,7 +10,7 @@ import { useActiveProfile } from './ActiveProfile.tsx';
 import { ROUTES } from './routes.ts';
 
 /**
- * Folha de troca de perfil (mobile-mvp-plan, Fase 6): os perfis com tipo e moeda — o que muda o
+ * Folha de troca de perfil (mobile §5.2): os perfis com tipo e moeda — o que muda o
  * que a tela mostra — e "Gerenciar perfis", que leva a Cadastros, onde perfis são criados e
  * renomeados, como o menu do seletor do desktop.
  *
@@ -46,7 +46,7 @@ export function ProfileSheet({ open, onClose }: { readonly open: boolean; readon
 }
 
 /**
- * Seletor de perfil do cabeçalho do Início (mockup `MobileInicio`): o nome e o tipo do perfil
+ * Seletor de perfil do cabeçalho do Início (mobile §5.2): o nome e o tipo do perfil
  * aberto, numa pílula que abre a folha de perfis.
  *
  * @return O botão e a folha.

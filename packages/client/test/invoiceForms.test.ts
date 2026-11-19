@@ -56,7 +56,7 @@ describe('pagar a fatura', () => {
 });
 
 describe('pagamento parcial', () => {
-    it('vira uma transferência negativa, já paga, na fatura, com a conta que pagou como destino (database-design §4.7)', () => {
+    it('vira uma transferência negativa, já paga, na fatura, com a conta que pagou como destino (banco-de-dados §4.7)', () => {
         expect(readPartialPaymentForm(partial(), TARGET)).toEqual({
             ok: true,
             input: {

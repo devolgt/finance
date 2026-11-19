@@ -5,7 +5,7 @@ import type { OccurrencePreview } from '../../services/recurrence/RecurrenceServ
 import { toMoneyResponse, type MoneyResponse } from '../shared/MoneyResponse.ts';
 
 /**
- * Uma série (database-design §4.12). A tela usa para a coluna "Rec." ("3/12", "Fixa"), o
+ * Uma série (banco-de-dados §4.12). A tela usa para a coluna "Rec." ("3/12", "Fixa"), o
  * subtítulo do painel ("parcela 3 de 12 (valor total …)") e para preencher "Repetir" na edição.
  */
 export interface RecurrenceResponse {
@@ -23,7 +23,7 @@ export interface RecurrenceResponse {
     readonly name: string;
     /** Valor do modelo: o total no "valor total", senão o de cada ocorrência. */
     readonly value: MoneyResponse;
-    /** Soma das parcelas de uma parcelada (o "valor total" do mockup); `null` na fixa, que não tem fim certo. */
+    /** Soma das parcelas de uma parcelada (o "valor total" que a tela mostra); `null` na fixa, que não tem fim certo. */
     readonly total: MoneyResponse | null;
 }
 

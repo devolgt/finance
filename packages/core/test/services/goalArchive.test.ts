@@ -39,7 +39,7 @@ async function firstGoal(world: TestWorld, profileId: string): Promise<CoreOutpu
     return goal;
 }
 
-describe('Regra de negócio (Metas, desktop-mvp-plan Fase 13.4): arquivar uma meta', () => {
+describe('Regra de negócio (Metas, metas §5): arquivar uma meta', () => {
     it('arquiva e reativa sem mexer nos vínculos nem no progresso; editar não desarquiva', async () => {
         const { world, profileId, checking, savingsId, base, goalId } = await setup();
         await world.create(base, { source: checking, type: 'transference', destinationAccountId: savingsId, value: 400, dueDate: '2026-10-02', paymentDate: '2026-10-02', goalId });

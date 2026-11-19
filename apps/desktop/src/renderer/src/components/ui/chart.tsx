@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 /**
  * Séries de um gráfico, pela chave do dado: rótulo e cor. A cor é um **token**, e não um
  * valor livre, porque o gráfico precisa trocar de tema junto com o resto da tela e nenhuma
- * cor literal entra fora de `packages/tokens` (desktop-mvp-plan §7).
+ * cor literal entra fora de `packages/tokens` (desktop §6.4).
  */
 export type ChartConfig = Readonly<Record<string, { readonly label: string; readonly color: ColorTokenName }>>;
 
@@ -26,7 +26,7 @@ function useChartConfig(): ChartConfig {
 }
 
 /**
- * Contêiner dos gráficos dos relatórios (Recharts, desktop-mvp-plan §2). Cada série vira a
+ * Contêiner dos gráficos dos relatórios (Recharts, desktop §5). Cada série vira a
  * variável `--color-<chave>` apontando para o token, e os elementos do Recharts usam
  * `fill="var(--color-<chave>)"`: como o token é uma variável de tema, o gráfico troca de
  * tema sem re-renderizar. A versão do shadcn/ui gerava um `<style>` por tema; com tokens
@@ -71,7 +71,7 @@ const ChartTooltip = Tooltip;
  * Conteúdo da dica do gráfico: o rótulo do ponto e o valor de cada série. A formatação é
  * obrigatória e vem de fora (os formatadores do `client`), porque o valor é dinheiro ou
  * percentual e precisa sair igual à tabela equivalente — o `toLocaleString` do modelo do
- * shadcn/ui usaria `Intl`, que o projeto evita (desktop-shell-design §4.2).
+ * shadcn/ui usaria `Intl`, que o projeto evita (decisoes §16).
  *
  * @param props.active Se a dica está visível; o Recharts controla.
  * @param props.payload Valores das séries no ponto sob o cursor.

@@ -4,7 +4,7 @@ import { testCore } from './support/renderWithCore.tsx';
 
 jest.mock('expo-file-system', () => ({ Paths: {} }));
 
-describe('primeiro uso (mobile-mvp-plan, Fase 7)', () => {
+describe('primeiro uso (perfis §4.2)', () => {
     it('cria o perfil e a primeira conta e entra no Início, no perfil criado', async () => {
         const { core } = testCore();
         const app = await renderApp(core, { preferences: { lastPeriod: '2020-01' } });

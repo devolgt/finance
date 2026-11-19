@@ -38,7 +38,7 @@ export interface SyncLedgerRepository {
     saveVector(vector: VersionVector): void;
 
     /**
-     * Adia as chaves estrangeiras até o commit da transação corrente (sync-design §5.9), para
+     * Adia as chaves estrangeiras até o commit da transação corrente (sincronizacao §3.11), para
      * que a ordem das linhas dentro de um lote não importe; uma chave que continue quebrada no
      * fim ainda derruba o commit.
      */
@@ -56,7 +56,7 @@ export interface SyncLedgerRepository {
 
     /**
      * Dá a toda linha existente das tabelas sincronizadas uma entrada em `sync_rows` com a
-     * procedência informada (sync-design §10): é a ativação num aparelho que já tem dados.
+     * procedência informada (sincronizacao §4.6): é a ativação num aparelho que já tem dados.
      *
      * @param provenance Relógio, origem e sequência da ativação.
      * @return Quantas linhas receberam entrada.

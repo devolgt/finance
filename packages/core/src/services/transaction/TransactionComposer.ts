@@ -30,9 +30,9 @@ export interface ResolvedContainer {
 /**
  * Como a escrita trata conta e cartão desativados.
  * - `newChoice`: lançamento escolhido pelo usuário — desativado é recusado, menos o que o
- *   lançamento editado já usava (desktop-mvp-plan §5.1);
+ *   lançamento editado já usava (contas §5);
  * - `generated`: ocorrência emitida por uma recorrência — aceito, porque a série continua
- *   emitindo com a conta ou o cartão desativado (database-design §4.12).
+ *   emitindo com a conta ou o cartão desativado (banco-de-dados §4.12).
  */
 export type SelectionPolicy = 'newChoice' | 'generated';
 
@@ -40,7 +40,7 @@ export type SelectionPolicy = 'newChoice' | 'generated';
  * Monta e confere o conteúdo de um lançamento antes de gravá-lo. É o **ponto único de
  * controle** das regras que relacionam colunas e linhas e que o banco deliberadamente não
  * garante — posse das referências pelo mesmo perfil, sócio só em perfil empresarial, fatura do
- * mesmo cartão (database-design §3.10). Fica fora do `TransactionService` porque o
+ * mesmo cartão (banco-de-dados §3.10). Fica fora do `TransactionService` porque o
  * `RecurrenceService` grava lançamentos pelas mesmas regras: duas cópias divergiriam.
  */
 export class TransactionComposer {
@@ -72,7 +72,7 @@ export class TransactionComposer {
     /**
      * Verifica que toda referência existe e pertence ao perfil. A chave estrangeira só
      * garante a existência; perfis pessoal e empresarial precisam ficar estritamente
-     * separados (database-design §3.8) — a única exceção é a conta de destino de uma
+     * separados (banco-de-dados §3.8) — a única exceção é a conta de destino de uma
      * transferência (`requireDestination`).
      *
      * @param profile Perfil dono da transação.
@@ -87,7 +87,7 @@ export class TransactionComposer {
     public assertReferences(profile: Profile, input: TransactionInput, current: Transaction | null): void {
         this.assertOwnedBy(profile, 'subCategoryId', input.subCategoryId, this.categories.findSubCategory(input.subCategoryId)?.profileId ?? null);
         // O sócio já gravado continua na edição mesmo onde não caberia mais — a despesa com sócio
-        // de antes de os aportes existirem (desktop-mvp-plan Fase 13.8) —, desde que o lançamento
+        // de antes de os aportes existirem (socios §2) —, desde que o lançamento
         // fique no mesmo perfil e com o mesmo destino: editar o valor não pode exigir apagar o
         // histórico, mas levar a transferência para outro perfil de destino muda de quem é o sócio.
         const kept = current !== null
@@ -100,13 +100,13 @@ export class TransactionComposer {
         if (input.goalId !== null) {
             const goal = this.goals.findById(input.goalId);
             this.assertOwnedBy(profile, 'goalId', input.goalId, goal?.profileId ?? null);
-            // Regra de negócio (Metas, database-design §4.11): a meta vinculada a uma conta mede o
+            // Regra de negócio (Metas, banco-de-dados §4.11): a meta vinculada a uma conta mede o
             // saldo dela, e um lançamento vinculado não mudaria nada — o depósito já é qualquer
             // movimento da conta.
             if (goal !== null && !goal.acceptsTransactions()) {
                 throw new BusinessRuleViolation('goal-funded-by-account', 'a meta vinculada a uma conta não recebe lançamentos', { field: 'goalId' });
             }
-            // Regra de negócio (Metas, desktop-mvp-plan Fase 13.4): a meta arquivada some das
+            // Regra de negócio (Metas, metas §5): a meta arquivada some das
             // escolhas de lançamentos novos, como a conta desativada; o lançamento que já estava
             // vinculado a ela continua editável sem perder o vínculo.
             if (goal !== null && goal.archived && current?.goalId !== goal.id) {
@@ -126,10 +126,10 @@ export class TransactionComposer {
      * Confere o sócio que aportou. Fica exposto, e não só dentro de `assertReferences`, porque
      * atribuir só o sócio (`TransactionService.setPartner`) troca só esse vínculo e
      * não deve reconferir o resto do lançamento.
-     * Regra de negócio (Sócios — aportes, database-design §4.13, `partner_id`): toda despesa de um perfil empresarial
+     * Regra de negócio (Sócios — aportes, banco-de-dados §4.13, `partner_id`): toda despesa de um perfil empresarial
      * é paga com o dinheiro da empresa, e o sócio aparece no dinheiro que **entra** nela: a receita
      * do perfil empresarial e a transferência que chega a ele vinda de outro perfil. Na
-     * transferência, a linha é do perfil de origem (database-design §4.13), mas o sócio é do perfil
+     * transferência, a linha é do perfil de origem (banco-de-dados §4.13), mas o sócio é do perfil
      * de destino — é lá que o aporte conta.
      *
      * @param profile Perfil dono da transação.
@@ -177,13 +177,13 @@ export class TransactionComposer {
     /**
      * Carrega a conta de destino e confere se ela pode receber o dinheiro deste lançamento.
      * Regra de negócio (Transferência entre perfis): a transferência é a única referência que
-     * atravessa a separação entre perfis (database-design §3.8), porque mover dinheiro da
+     * atravessa a separação entre perfis (banco-de-dados §3.8), porque mover dinheiro da
      * conta pessoal para a da empresa é um fato real que os dois lados precisam registrar.
      * O resto continua preso ao perfil: um investimento só leva dinheiro a outra conta do
      * mesmo perfil. A origem precisa ser uma conta, porque o pagamento parcial de fatura
      * (a transferência que sai de um cartão) não tem mês de caixa próprio no perfil de
      * destino. Os dois perfis precisam ter a mesma moeda, porque a transação grava um único
-     * `value` e o extrato do destino o soma como está (database-design §4.13) — com moedas
+     * `value` e o extrato do destino o soma como está (banco-de-dados §4.13) — com moedas
      * diferentes o saldo de lá mudaria de unidade sem conversão.
      *
      * @param profile Perfil dono da transação, o da origem.
@@ -222,10 +222,10 @@ export class TransactionComposer {
      * Regra de negócio (Cartão de crédito): transação de cartão cai na fatura escolhida; sem
      * escolha, a sugestão pela data da compra — mas numa edição no mesmo cartão a fatura
      * atual é mantida, porque a sugestão nunca é recalculada depois, nem quando a data da
-     * compra muda (database-design §4.7). Escolher uma fatura já paga a **reabre**.
+     * compra muda (banco-de-dados §4.7). Escolher uma fatura já paga a **reabre**.
      * Regra de negócio (Contas e Cartões): conta ou cartão desativado não é escolha para um
      * lançamento novo, mas o lançamento antigo que já está nele continua editável
-     * (desktop-mvp-plan §5.1), e a recorrência continua emitindo nele (database-design §4.12).
+     * (contas §5), e a recorrência continua emitindo nele (banco-de-dados §4.12).
      *
      * @param profile Perfil dono; a conta ou o cartão precisa ser dele.
      * @param input Origem e data da transação.
@@ -266,7 +266,7 @@ export class TransactionComposer {
     /**
      * @param creditCardId Cartão da compra.
      * @param purchaseDate Data da compra.
-     * @return A fatura que o ciclo do cartão sugere para a data (database-design §4.5).
+     * @return A fatura que o ciclo do cartão sugere para a data (banco-de-dados §4.5).
      * @throws {NotFoundError} Quando o cartão não existe.
      */
     public suggestedInvoicePeriod(creditCardId: CreditCardId, purchaseDate: LocalDate): YearMonth {
@@ -308,7 +308,7 @@ export class TransactionComposer {
 
     /**
      * Perfil dono da transação depois de uma edição.
-     * Regra de negócio (Mover para outro perfil, database-design §4.13): a edição pode levar a
+     * Regra de negócio (Mover para outro perfil, banco-de-dados §4.13): a edição pode levar a
      * transação para outro perfil, e as referências do conteúdo passam a ser conferidas contra
      * ele. Os dois perfis precisam ter a mesma moeda, porque o valor gravado não é convertido —
      * a mesma razão da transferência entre perfis.
@@ -397,7 +397,7 @@ export class TransactionComposer {
 
     /**
      * Regra de negócio (Contas e Cartões): desativado some das escolhas de lançamentos novos
-     * (desktop-mvp-plan §5.1). "Novo" é a escolha, não a transação: editar um lançamento que
+     * (contas §5). "Novo" é a escolha, não a transação: editar um lançamento que
      * já está na conta desativada continua permitido, para que corrigir o histórico não
      * exija reativar a conta.
      *

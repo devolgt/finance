@@ -6,9 +6,9 @@ import { goalContentShape, goalFundingField } from '@finance/core/requests';
 import { z } from 'zod';
 
 /*
- * Formulário de meta (mockup `DesktopMetas`; desktop-mvp-plan Fase 9.3). Valida com o schema do
+ * Formulário de meta (metas §7.3). Valida com o schema do
  * conteúdo de `goals.create` e `goals.update`, para que a mensagem da tela e a recusa do núcleo
- * nunca discordem (desktop-shell-design §5.4). Fica fora do componente para ter teste sem DOM.
+ * nunca discordem (desktop §3.5). Fica fora do componente para ter teste sem DOM.
  */
 
 /** Conteúdo da meta, comum à criação e à edição: falta o perfil para criar e o id para editar. */
@@ -18,7 +18,7 @@ export type GoalContent = Omit<CoreInput<'goals.update'>, 'id'>;
 export interface GoalFormValues {
     readonly name: string;
     /**
-     * De onde vem o progresso (desktop-mvp-plan Fase 13.3): os lançamentos vinculados pelo campo
+     * De onde vem o progresso (metas §2): os lançamentos vinculados pelo campo
      * "Meta", ou o saldo de uma conta de investimento.
      */
     readonly fundingKind: 'transactions' | 'account';
@@ -57,7 +57,7 @@ const FIELD_BY_PATH: Readonly<Record<string, FieldTarget<GoalField>>> = {
  * Valores iniciais de "Nova meta". Função, e não constante, para que cada abertura do diálogo
  * receba um objeto próprio, sem estado compartilhado entre formulários. O valor começa vazio, e não em `0,00`,
  * porque o alvo precisa ser maior que zero e um zero pré-preenchido seria um valor inválido
- * pronto para salvar; a data vazia é a meta sem prazo, que é válida (database-design §4.11).
+ * pronto para salvar; a data vazia é a meta sem prazo, que é válida (banco-de-dados §4.11).
  *
  * @return Os campos em branco de uma meta nova.
  */
@@ -81,7 +81,7 @@ export function goalFormFrom(goal: GoalResponse): GoalFormValues {
 
 /**
  * Lê o formulário de meta.
- * Regra de negócio (Metas, database-design §4.11): o valor-alvo é maior que zero e a data-alvo é
+ * Regra de negócio (Metas, banco-de-dados §4.11): o valor-alvo é maior que zero e a data-alvo é
  * opcional — em branco, a meta não tem prazo (reserva de emergência). A meta vinculada a conta
  * precisa da conta; a por lançamentos não leva conta nenhuma, mesmo que uma tenha sido escolhida
  * antes de trocar o tipo.
@@ -140,7 +140,7 @@ export interface GoalFundingKindOption {
 
 /**
  * Os dois tipos de meta, com o rótulo e a explicação que o formulário mostra.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): a meta por lançamentos soma as receitas
+ * Regra de negócio (Metas, metas §2): a meta por lançamentos soma as receitas
  * e transferências vinculadas e já pagas, e a transferência de retirada desconta; a vinculada a
  * conta acompanha o saldo consolidado de hoje de uma conta de investimento.
  */

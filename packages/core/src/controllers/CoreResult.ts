@@ -11,7 +11,7 @@ export interface CoreError {
 /**
  * Resultado de toda rota. Uma união discriminada, e não exceção, porque o IPC do Electron
  * serializa por structured clone e uma exceção chegaria ao renderer sem classe nem campos
- * próprios (desktop-shell-design §5.3).
+ * próprios (desktop §3.3).
  */
 export type CoreResult<T> =
     | { readonly ok: true; readonly data: T }
@@ -33,7 +33,7 @@ export type UnexpectedErrorListener = (error: unknown) => void;
  * @param action Caso de uso a executar com a entrada validada; devolve o DTO de saída.
  * @param onUnexpected Destino do log de falhas inesperadas.
  * @return A promessa do resultado; a assincronia existe só na fronteira de transporte
- * (backend-design §3.5).
+ * (core §4.2).
  */
 export function handle<S extends z.ZodType, T>(
     schema: S,

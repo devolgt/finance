@@ -40,7 +40,7 @@ import { EmptyState, ErrorState, LoadingState } from '../ui/states.tsx';
 const HERO_TONE: Readonly<Record<TransactionRow['direction'], string>> = { in: 'text-in', out: 'text-out', transfer: 'text-ink', none: 'text-ink' };
 
 /**
- * Linha de leitura do detalhe (`.it` do mockup): rótulo à esquerda, valor à direita.
+ * Linha de leitura do detalhe: rótulo à esquerda, valor à direita.
  *
  * @param props.label Rótulo.
  * @param props.value Valor; `null` mostra "—".
@@ -97,12 +97,12 @@ function useTransactionRow(transaction: TransactionResponse | undefined, profile
 }
 
 /**
- * Detalhe do lançamento (mockup `MobileTransacaoDetalhe`; mobile-mvp-plan, Fase 9): o valor em
+ * Detalhe do lançamento (transacoes §2.3 e §7): o valor em
  * destaque, os dados do lançamento e as ações. "Marcar como pago" só aparece onde o desktop
  * deixa: a compra no cartão segue a fatura e a transferência que chega de outro perfil é só
  * leitura (`movementPermissions`). Excluir pede confirmação com o texto do desktop
- * (`describeTransactionDeletion`); numa ocorrência de série, o escopo e a revisão (mockup
- * `MobileEscopo`; Fase 11).
+ * (`describeTransactionDeletion`); numa ocorrência de série, o escopo e a revisão
+ * (recorrencias §7).
  *
  * @return A tela.
  */

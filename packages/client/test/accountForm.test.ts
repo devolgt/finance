@@ -31,13 +31,13 @@ function account(changes: Partial<AccountResponse> = {}): AccountResponse {
     };
 }
 
-describe('formulário de conta (desktop-mvp-plan Fase 6)', () => {
+describe('formulário de conta (contas §1.1)', () => {
     it('monta o conteúdo de accounts.create/update, com a moeda como rótulo e o nome aparado', () => {
         const result = readAccountForm({ ...emptyAccountForm('BRL'), name: '  Tesouro ', type: 'investment', currency: 'USD', considerBalance: false, openingBalance: '1.234,56' }, 'BRL');
         expect(result).toEqual({ ok: true, content: { name: 'Tesouro', type: 'investment', currencyLabel: 'USD', considerBalance: false, openingBalance: 1234.56 } });
     });
 
-    it('saldo inicial em branco é zero, o padrão do cadastro (database-design §4.4)', () => {
+    it('saldo inicial em branco é zero, o padrão do cadastro (banco-de-dados §4.4)', () => {
         const result = readAccountForm({ ...emptyAccountForm('BRL'), name: 'Nubank' }, 'BRL');
         expect(result.ok && result.content.openingBalance).toBe(0);
     });

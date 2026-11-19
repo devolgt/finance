@@ -77,7 +77,7 @@ function ports(overrides: Partial<StartupPorts<BetterSqliteDatabase>> = {}): Sta
     };
 }
 
-describe('openCoreSequence (backend-design §4.5, compartilhada pelos dois shells)', () => {
+describe('openCoreSequence (banco-de-dados §5.5, compartilhada pelos dois shells)', () => {
     it('banco novo: abre, migra, verifica a integridade e completa as recorrências', async () => {
         const startup = ports();
 

@@ -17,7 +17,7 @@ export interface Log {
 /**
  * Log em JSON Lines em `userData/logs/core.log`. Arquivo, e não só o console, porque o app
  * empacotado não tem terminal: os desvios da verificação de integridade e as falhas
- * inesperadas do núcleo (desktop-mvp-plan Fase 3.3) só são úteis se ficarem gravados.
+ * inesperadas do núcleo (desktop §1) só são úteis se ficarem gravados.
  * Síncrono como o resto do processo do núcleo: o volume é de poucas linhas por sessão.
  */
 export class FileLog implements Log {

@@ -11,7 +11,7 @@ export type DatabaseExportOutcome = { readonly ok: true; readonly uri: string; r
 
 /**
  * O que as telas de Ajustes e de Dispositivos fazem com o arquivo do banco do aparelho
- * (mobile-mvp-plan, Fase 18; sync-plan Fase 8). Vem da raiz de composição, a única que conhece o
+ * (mobile §7.2; sincronizacao §6.4). Vem da raiz de composição, a única que conhece o
  * banco aberto; nos testes, um dublê.
  */
 export interface DatabaseCopies {
@@ -42,7 +42,7 @@ export interface DatabaseCopies {
     readonly logUri: () => string | null;
     /**
      * Fecha o banco e o tira do lugar, guardado em `backups/`, para o aparelho entrar num grupo
-     * com o banco vazio (sync-design §6.4; `setAsideDatabase`). O app precisa reabrir o núcleo
+     * com o banco vazio (sincronizacao §4.4; `setAsideDatabase`). O app precisa reabrir o núcleo
      * depois, qualquer que seja o resultado: a conexão já foi fechada.
      *
      * @return Onde o banco ficou, ou a falha.
@@ -51,8 +51,8 @@ export interface DatabaseCopies {
 }
 
 /**
- * Põe a cópia conferida no lugar do banco. Regra de negócio (Cópia do banco, desktop-mvp-plan
- * Fase 13.9): a cópia **substitui** os dados do aparelho, não se soma a eles — juntar dois bancos
+ * Põe a cópia conferida no lugar do banco. Regra de negócio (Cópia do banco, mobile §7.2;
+ * desktop §11.2): a cópia **substitui** os dados do aparelho, não se soma a eles — juntar dois bancos
  * duplicaria tudo o que têm em comum —, e o banco que sai vai para
  * `backups/antes-da-importacao-{instante}.sqlite`, fora da rotação automática, para o usuário
  * voltar a ele se escolheu a cópia errada.

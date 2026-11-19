@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { BottomBar, TABS } from '../../src/shell/BottomBar.tsx';
 
 /**
- * Abas da barra inferior (decisão de interface 12 dos mockups), cada uma com a própria pilha.
+ * Abas da barra inferior (desktop §7.7; mobile §5.1), cada uma com a própria pilha.
  * O "voltar" do Android na raiz de uma aba leva ao Início (`firstRoute`), e no Início sai do
  * app, como nos apps do sistema.
  *

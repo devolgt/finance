@@ -4,8 +4,7 @@ import { formatDate, formatMonthAbbreviation, formatMonthShort } from '../format
 import { formatMoney } from '../format/money.ts';
 
 /*
- * Apresentação das recorrências (database-design §4.12; desktop-mvp-plan Fase 9.1; mockups
- * `DesktopTransacoes`, `MobileParcelar` e `MobileEscopo`). No
+ * Apresentação das recorrências (banco-de-dados §4.12; recorrencias §1, §3.3 e §7). No
  * `client` porque o celular mostra as mesmas séries, os mesmos escopos, a mesma prévia e o mesmo
  * diálogo de revisão.
  */
@@ -30,7 +29,7 @@ export function formatFrequency(frequency: RecurrenceFrequency, capitalized = fa
 }
 
 /**
- * Coluna "Rec." da tabela (mockup `DesktopTransacoes`): "3/12" numa parcela, "Fixa" numa série
+ * Coluna "Rec." da tabela (recorrencias §3.3): "3/12" numa parcela, "Fixa" numa série
  * fixa, nada num lançamento avulso.
  *
  * @param transaction Lançamento.
@@ -48,8 +47,8 @@ export function formatRecurrenceTag(transaction: Pick<TransactionResponse, 'recu
 }
 
 /**
- * Subtítulo do painel de edição (mockup `DesktopTransacoes`: "Despesa · parcela 3 de 12 (valor
- * total R$ 4.800,00)"; `MobileEscopo`: "fixa mensal").
+ * Subtítulo do painel de edição e do diálogo de escopo (recorrencias §3.3): "Despesa · parcela 3
+ * de 12 (valor total R$ 4.800,00)" ou "fixa mensal".
  *
  * @param transaction Ocorrência editada.
  * @param recurrence Série dela.
@@ -79,15 +78,15 @@ export interface ScopeChoice {
 }
 
 /**
- * Opções do diálogo de escopo (mockup `MobileEscopo`). Só a escolha: o que cada escopo exclui,
+ * Opções do diálogo de escopo (recorrencias §7). Só a escolha: o que cada escopo exclui,
  * cria e altera — com as pagas e os saldos que mudam — vem depois, no diálogo de revisão
  * (`describeSeriesPlan`).
- * Regra de negócio (Recorrências, database-design §4.12): "futuras" é a editada e as de número
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): "futuras" é a editada e as de número
  * maior, nunca pela data — uma ocorrência movida para depois da editada continua anterior a ela.
  *
  * @param params.edited Ocorrência editada ou excluída.
  * @param params.occurrences Ocorrências vivas da série (`recurrences.occurrences`).
- * @return As três opções, na ordem do mockup.
+ * @return As três opções, da que mexe em menos ocorrências para a que mexe em mais.
  */
 export function scopeChoices(params: { readonly edited: TransactionResponse; readonly occurrences: readonly TransactionResponse[] }): readonly ScopeChoice[] {
     const { edited } = params;
@@ -157,7 +156,7 @@ function joinWords(words: readonly string[]): string {
 /** O que o diálogo de revisão confirma. */
 export type ReviewAction = 'create' | 'edit' | 'delete';
 
-/** Uma ocorrência na lista do diálogo de revisão: só a data e a situação (desktop-mvp-plan Fase 9.2). */
+/** Uma ocorrência na lista do diálogo de revisão: só a data e a situação (recorrencias §7). */
 export interface ReviewRow {
     readonly key: string;
     /** "05/12/2026". */
@@ -187,7 +186,7 @@ export interface SeriesReview {
     readonly groups: readonly ReviewGroup[];
 }
 
-/** Linhas de cada grupo antes do "e mais n transações" (desktop-mvp-plan Fase 9.2). */
+/** Linhas de cada grupo antes do "e mais n transações" (recorrencias §7). */
 export const REVIEW_VISIBLE_ROWS = 5;
 
 /** Verbos de cada grupo, no singular e no plural. */
@@ -198,11 +197,11 @@ const GROUP_VERBS: Readonly<Record<ReviewGroup['kind'], readonly [string, string
 };
 
 /**
- * Diálogo de revisão (database-design §4.12): antes de gravar a criação, a edição ou a
+ * Diálogo de revisão (banco-de-dados §4.12): antes de gravar a criação, a edição ou a
  * exclusão de uma transação recorrente, o usuário vê o que será feito com as séries e quais
  * ocorrências serão excluídas, criadas e alteradas, para confirmar sabendo exatamente o que
  * muda.
- * Regra de negócio (Recorrências, database-design §4.12): mudar a periodicidade ou o tipo
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): mudar a periodicidade ou o tipo
  * encerra a série e cria outra sem vínculo com as anteriores, e as futuras saem mesmo pagas —
  * o diálogo diz as duas coisas, e quantas das excluídas tinham sido editadas à mão.
  *
@@ -339,7 +338,7 @@ export interface RepeatPreviewRow {
     readonly amount: string;
 }
 
-/** A prévia da repetição como o mockup `MobileParcelar` a mostra. */
+/** A prévia da repetição como o "Repetir" do formulário a mostra (recorrencias §3.3). */
 export interface RepeatPreview {
     /** "R$ 1.200,00 em 12x de R$ 100,00", "R$ 2.300,00 todo mês, sem fim". */
     readonly headline: string;
@@ -351,16 +350,16 @@ export interface RepeatPreview {
     readonly note: string | null;
 }
 
-/** Linhas mostradas antes do "Ver as N restantes", como no mockup. */
+/** Linhas mostradas antes do "Ver as N restantes": o bastante para ver o padrão sem empurrar o formulário. */
 const PREVIEW_ROWS = 4;
 
 /** Advérbio de cada frequência no resumo da série fixa. */
 const EVERY: Readonly<Record<RecurrenceFrequency, string>> = { daily: 'todo dia', weekly: 'toda semana', monthly: 'todo mês', yearly: 'todo ano' };
 
 /**
- * Prévia da repetição (mockup `MobileParcelar`), a partir de `recurrences.preview` — a mesma
+ * Prévia da repetição (recorrencias §3.3), a partir de `recurrences.preview` — a mesma
  * conta que a criação faz, para que a prévia nunca discorde do que é gravado.
- * Regra de negócio (Parcelamento, database-design §4.12): no "valor total", a diferença do
+ * Regra de negócio (Parcelamento, banco-de-dados §4.12): no "valor total", a diferença do
  * arredondamento vai para a 1ª parcela, e a prévia diz isso quando acontece.
  *
  * @param params.occurrences Ocorrências previstas.
@@ -388,7 +387,7 @@ export function describeRepeatPreview(params: {
     const lastPeriod = last.invoicePeriod ?? LocalDate.parse(last.dueDate).period.toString();
     const more = rest > 0 ? `Ver ${rest === 1 ? 'a restante' : `as ${String(rest)} restantes`}, até ${formatMonthShort(lastPeriod)}` : null;
     if (installments) {
-        // Soma com `Money` e arredonda uma vez, como as outras somas do app (database-design §3.7).
+        // Soma com `Money` e arredonda uma vez, como as outras somas do app (banco-de-dados §3.7).
         const currency = Currency.of(first.value.currency);
         const sum = occurrences.reduce((acc, occurrence) => acc.add(Money.of(occurrence.value.amount, currency)), Money.zero(currency)).rounded();
         const total: MoneyResponse = { amount: sum.amount, currency: currency.code };

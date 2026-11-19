@@ -10,7 +10,7 @@ import { ACCOUNT_TYPE_CODE, decodeEnum } from './enumCodes.ts';
 import { RowReader } from './RowReader.ts';
 
 // A moeda dos saldos é a do perfil, não `accounts.currency`, que é só rótulo
-// (database-design §3.7) — por isso o join com `profiles` em toda leitura.
+// (banco-de-dados §3.7) — por isso o join com `profiles` em toda leitura.
 const SELECT_ACCOUNT = `
     SELECT a.id, a.profile_id, a.name, a.type, a.currency, a.consider_balance,
         a.opening_balance, a.balance, a.projected_balance, a.disabled_at, p.currency AS profile_currency
@@ -23,7 +23,7 @@ export class SqliteAccountRepository implements AccountRepository {
     /**
      * @param database Conexão compartilhada da unidade de trabalho.
      * @param clock Relógio que carimba `updated_at`; a aplicação carimba, não um trigger
-     * (database-design §3.6).
+     * (banco-de-dados §3.6).
      */
     public constructor(private readonly database: Database, private readonly clock: Clock) {}
 
@@ -95,7 +95,7 @@ export class SqliteAccountRepository implements AccountRepository {
      * Grava só os saldos, sem carimbar `updated_at`: recalcular um cache não é uma revisão do
      * usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o receptor —
      * que recalcula com a captura desligada — ficaria com outro `updated_at`, quebrando a
-     * convergência (sync-design §5.4).
+     * convergência (sincronizacao §3.4).
      *
      * @param account Conta com o cache recalculado.
      * @return void

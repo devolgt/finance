@@ -13,7 +13,7 @@ const INVITE: InvitePayload = {
     expiresAt: 1_763_480_000_123,
 };
 
-describe('Texto do QR do convite (sync-design §6.3)', () => {
+describe('Texto do QR do convite (sincronizacao §4.3)', () => {
     it('é curto e só usa o alfabeto do modo alfanumérico do QR', () => {
         const text = encodeInvite({ ...INVITE, addresses: ['192.168.0.12'] });
 

@@ -33,7 +33,7 @@ function report(id: string, name: string): ReportDefinitionResponse {
     };
 }
 
-describe('relatório aberto na URL (reports-design, Fase 15, §8 e §9)', () => {
+describe('relatório aberto na URL (relatorios §3, §7 e §8)', () => {
     it('aceita um UUID ou a chave de um fixo na página, e só o UUID no editor', () => {
         expect(parseReportsSearch({ report: ID, other: 'x' })).toEqual({ report: ID });
         expect(parseReportsSearch({ report: 'partners' })).toEqual({ report: 'partners' });

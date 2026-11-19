@@ -77,7 +77,7 @@ async function payerChangedScenario(): Promise<{ world: TestWorld; a: string; b:
     return { world, a, b, creditCardId };
 }
 
-describe('excluir conta em cadeia (desktop-mvp-plan §5.1)', () => {
+describe('excluir conta em cadeia (contas §5)', () => {
     it('o alerta conta cada item e nomeia só as outras contas cujo saldo muda', async () => {
         const { world, a, b } = await accountScenario();
 
@@ -160,7 +160,7 @@ describe('excluir conta em cadeia (desktop-mvp-plan §5.1)', () => {
     });
 });
 
-describe('excluir cartão em cadeia (desktop-mvp-plan §5.1)', () => {
+describe('excluir cartão em cadeia (contas §5)', () => {
     it('apaga faturas e lançamentos, pagamentos parciais incluídos, e devolve o saldo das contas', async () => {
         const world = new TestWorld('2026-03-15');
         const profileId = world.profile();

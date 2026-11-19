@@ -8,7 +8,7 @@ import { ROUTES } from './routes.ts';
 import { ThemeButton } from './ThemeButton.tsx';
 
 /**
- * Botão "+" de lançamento (mockups `MobileInicio` e `MobileTransacoes`): flutua no canto de
+ * Botão "+" de lançamento (no Início e em Transações): flutua no canto de
  * baixo, acima da barra inferior, e abre o lançamento por cima da aba.
  *
  * @return O botão.
@@ -32,8 +32,8 @@ export function NewTransactionButton(): ReactNode {
 
 /**
  * Esqueleto de uma tela do shell: cabeçalho, a faixa do mês quando a tela depende de período
- * (decisão de interface 2 dos mockups), o corpo com a rolagem e o espaçamento dos mockups
- * (`.bd`: 16 px nas laterais, 14 px entre blocos) e o "+" de lançamento nas telas que o têm.
+ * (desktop §7.2), o corpo com a rolagem e o espaçamento comum a todas as telas (16 px nas
+ * laterais, 14 px entre blocos) e o "+" de lançamento nas telas que o têm.
  *
  * @param props.header O cabeçalho da tela.
  * @param props.withMonth Mostra a faixa do mês de referência.
@@ -82,8 +82,8 @@ export function useCloseModal(): () => void {
 }
 
 /**
- * Cabeçalho de uma tela que abre por cima das abas (o lançamento, mockup `MobileLancamento`):
- * "Cancelar", o título e o tema, sem a faixa do mês (decisão de interface 2 dos mockups).
+ * Cabeçalho de uma tela que abre por cima das abas (o lançamento): "Cancelar", o título e o
+ * tema, sem a faixa do mês (desktop §7.2).
  *
  * @param props.title Título.
  * @return O cabeçalho.

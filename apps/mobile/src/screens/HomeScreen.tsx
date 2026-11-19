@@ -26,11 +26,11 @@ import { useReferenceMonth } from '../shell/useReferenceMonth.ts';
 import { AppText } from '../ui/AppText.tsx';
 import { EmptyState, QueryView } from '../ui/states.tsx';
 
-/** Cor do valor pelo sentido do dinheiro; o sinal e o ⇄ já vêm no texto (decisão de interface 7). */
+/** Cor do valor pelo sentido do dinheiro; o sinal e o ⇄ já vêm no texto (desktop §7.3). */
 const VALUE_TONE: Readonly<Record<PendingRow['tone'], string>> = { in: 'text-in', out: 'text-out', transfer: 'text-ink' };
 
 /**
- * Título de bloco do Início, com o link "Ver todas" do mockup.
+ * Título de bloco do Início, com o link "Ver todas" que leva à lista completa.
  *
  * @param props.title Título do bloco.
  * @param props.link Rótulo do link à direita.
@@ -98,7 +98,7 @@ function PendingItem(props: { readonly row: PendingRow; readonly first: boolean;
 }
 
 /**
- * Atrasados no topo do Início (mobile-mvp-plan §5.1): o que o selo da Visão geral do desktop
+ * Atrasados no topo do Início (visao-do-mes §4): o que o selo da Visão geral do desktop
  * mostra, numa seção — o celular não tem espaço ao lado do título nem *hover* para um popover.
  * O conteúdo e os textos vêm do `client` (`pendingBadge`, `pendingPanel`), os mesmos do desktop.
  * Regra de negócio (Visão geral): marcar daqui grava o pagamento com a data de hoje
@@ -194,8 +194,8 @@ function PendingSection({ profileId }: { readonly profileId: string }): ReactNod
 }
 
 /**
- * Uma conta no Início: nome, consolidado e, embaixo, o previsto com peso menor (decisão de
- * interface 6). A conta zerada aparece esmaecida.
+ * Uma conta no Início: nome, consolidado e, embaixo, o previsto com peso menor
+ * (desktop §7.5). A conta zerada aparece esmaecida.
  *
  * @param props.row Conta já formatada pelo `overviewAccounts`.
  * @param props.first Se é a primeira do grupo.
@@ -248,7 +248,7 @@ function CardItem({ row, first, onPress }: { readonly row: OverviewCardRow; read
 }
 
 /**
- * Início (mockup `MobileInicio`; mobile-mvp-plan, Fase 8): os atrasados no topo, o saldo
+ * Início (visao-do-mes §6): os atrasados no topo, o saldo
  * consolidado com o previsto do fim do mês, as contas — as de fora do total à parte — e a fatura
  * do mês de cada cartão. Todos os números vêm dos view-models do desktop (`overviewAccounts`,
  * `overviewCardRows`) e do mesmo total da tela Contas, para os apps nunca discordarem.

@@ -10,7 +10,7 @@ import { useTransactionPanel } from './TransactionPanel.tsx';
 import { useReferenceMonth } from './useReferenceMonth.ts';
 
 /**
- * Barra superior fixa do shell (mockups, decisão de interface 2): mês de referência à
+ * Barra superior fixa do shell (desktop §7.2): mês de referência à
  * esquerda, tema e "+ Lançamento" à direita.
  *
  * @param props.showMonth Se a tela depende de período; nas telas de configuração o mês some e
@@ -34,7 +34,7 @@ export function TopBar({ showMonth, showRange }: { readonly showMonth: boolean; 
 }
 
 /**
- * Caminho até a tela ("Ajustes › Importar dados", mockup `DesktopImportArquivo`).
+ * Caminho até a tela ("Ajustes › Importar dados", importacao §8).
  *
  * @return O caminho com link nos passos anteriores; vazio nas telas de primeiro nível.
  */
@@ -66,7 +66,7 @@ function Trail(): ReactNode {
 }
 
 /**
- * Período do Extrato (mockup `DesktopExtrato`): só o rótulo, porque o período se escolhe nos
+ * Período do Extrato (desktop §7.2): só o rótulo, porque o período se escolhe nos
  * filtros da tela; a frase ao lado explica por que o ‹ mês › sumiu.
  *
  * @return O período aberto, lido da mesma URL que a tela lê.
@@ -87,7 +87,7 @@ function PeriodRange(): ReactNode {
 
 /**
  * Seletor do mês de referência (‹ mês ›) com "Voltar ao mês atual", que só aparece fora do
- * mês corrente, como no mockup.
+ * mês corrente, onde teria efeito.
  *
  * @return O seletor ligado ao *search param* `period`.
  */

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { filterNotes, noteTitle, readNoteForm } from '../src/forms/noteForm.ts';
 
-describe('formulário e lista de anotações (mockups DesktopAnotacoes e MobileAnotacoes)', () => {
+describe('formulário e lista de anotações (anotacoes §2 e §3)', () => {
     /**
      * @param id Id da anotação.
      * @param text Texto.

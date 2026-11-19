@@ -5,7 +5,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Relatórios personalizados (reports-design, Fase 15) no app empacotado: o editor com o resultado
+ * Relatórios personalizados (relatorios §3) no app empacotado: o editor com o resultado
  * ao vivo, salvar, abrir na lista, editar para um gráfico por mês e excluir. Os cliques usam
  * `dispatchEvent`, pelo motivo explicado em `firstUse.ts`.
  */

@@ -11,7 +11,7 @@ import type { SyncLedgerRepository } from '../../repositories/SyncLedgerReposito
 export type ExtractionScope = 'all' | 'members';
 
 /**
- * Monta o lote do que falta a um par (sync-design §5.3 e §7.4, passo 5): as entradas de
+ * Monta o lote do que falta a um par (sincronizacao §3.3 e §5.6, passo 5): as entradas de
  * relógio com sequência maior que a do vetor dele, em ordem de relógio, agrupadas por
  * transação de origem, com os valores **atuais** das células. Não existe log de valores: o
  * vencedor atual de cada célula é o único que importa e já está na tabela de domínio.
@@ -25,7 +25,7 @@ export class ChangeExtractor {
 
     /**
      * @param peer Vetor do par.
-     * @param scope `members` para o passo "membros primeiro" da sessão (sync-design §7.4, passo
+     * @param scope `members` para o passo "membros primeiro" da sessão (sincronizacao §5.6, passo
      * 3): uma remoção aprendida tem efeito antes de qualquer dado. Esse lote não carrega vetor,
      * porque não é completo, e o receptor não pode avançar o dele com ele.
      * @return O lote.
@@ -67,7 +67,7 @@ export class ChangeExtractor {
 
     /**
      * Lê, por tabela e em blocos, as linhas citadas nas entradas, já reduzidas às colunas que
-     * trafegam — os caches ficam de fora (sync-design §5.5).
+     * trafegam — os caches ficam de fora (sincronizacao §3.6).
      *
      * @param entries Entradas do lote.
      * @return Valores por `tabela/id`.

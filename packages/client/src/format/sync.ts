@@ -15,7 +15,7 @@ export interface SyncMemberView {
 /**
  * Monta a lista da tela de Dispositivos a partir do estado. Fica no `client` para que desktop
  * e celular digam o mesmo para cada situação.
- * Decisão de interface (sync-plan §7, divergência aprovada dos mockups): sem histórico de
+ * Decisão de interface (sincronizacao §7.1): sem histórico de
  * sessões, cada aparelho mostra o estado agora — conectando, sincronizando, ao vivo —, e o
  * aviso de relógio ou de versão vem da última recusa.
  *
@@ -62,8 +62,8 @@ function memberStatus(member: SyncMemberResponse, refusal: SyncRefusalResponse |
 }
 
 /**
- * Explica uma recusa dizendo o que corrigir e em qual aparelho (sync-design §5.2 e
- * backend-design §4.9). No relógio não dá para saber qual dos dois está errado, então a
+ * Explica uma recusa dizendo o que corrigir e em qual aparelho (sincronizacao §3.2 e
+ * banco-de-dados §5.9). No relógio não dá para saber qual dos dois está errado, então a
  * mensagem mostra a diferença e pede para conferir a hora dos dois.
  *
  * @param refusal Motivo.

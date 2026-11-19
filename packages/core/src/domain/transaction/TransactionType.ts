@@ -1,13 +1,13 @@
 import type { Money } from '../shared/Money.ts';
 
-/** Tipo da transação (database-design §4.13). */
+/** Tipo da transação (banco-de-dados §4.13). */
 export type TransactionType = 'income' | 'expense' | 'transference' | 'investment';
 
 export const TRANSACTION_TYPES: readonly TransactionType[] = ['income', 'expense', 'transference', 'investment'];
 
 /**
  * Regra de negócio (Transferência): só transferências e investimentos têm conta de
- * destino — são os tipos que movem dinheiro entre duas contas (database-design §4.13). O
+ * destino — são os tipos que movem dinheiro entre duas contas (banco-de-dados §4.13). O
  * investimento fica no perfil; a transferência pode chegar a uma conta de outro perfil
  * (`TransactionComposer.requireDestination`).
  *
@@ -21,7 +21,7 @@ export function movesToDestination(type: TransactionType): boolean {
 /**
  * Regra de negócio (Metas): a meta é um objetivo de guardar um valor, e só receita e
  * transferência podem ser vinculadas a ela — são os lançamentos que juntam dinheiro
- * (desktop-mvp-plan Fase 9.3, decisão perguntada). Fica ao lado de `movesToDestination` para
+ * (metas §4, decisão perguntada). Fica ao lado de `movesToDestination` para
  * que o formulário mostre o campo "Meta" pela mesma regra que o núcleo aplica.
  *
  * @param type Tipo da transação.
@@ -32,7 +32,7 @@ export function feedsGoal(type: TransactionType): boolean {
 }
 
 /**
- * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): só a transferência pode **retirar**
+ * Regra de negócio (Metas, metas §2): só a transferência pode **retirar**
  * dinheiro da meta — tirar da reserva para um imprevisto é mover dinheiro de uma conta para
  * outra; a receita sempre guarda. Exportada para que o formulário mostre "Guardar/Retirar" pela
  * mesma regra que o núcleo aplica.
@@ -50,14 +50,14 @@ export function withdrawsFromGoal(type: TransactionType): boolean {
  *
  * Regra de negócio (Transações): `value` é lançado positivo e o tipo dá a direção —
  * `income` soma; `expense`, `transference` e `investment` saem da origem; um `value`
- * negativo inverte o efeito (estorno, devolução) (database-design §4.13).
+ * negativo inverte o efeito (estorno, devolução) (banco-de-dados §4.13).
  * Regra de negócio (Encargos): `charges` — juros e tarifas — são **sempre custo da
  * origem**, em qualquer tipo: despesa 100 + 2 → −102; receita 1000 com tarifa 10 → +990;
  * transferência 500 + TED 8 → −508 na origem e +500 no destino (decisão do usuário,
  * registrada aqui por não constar dos documentos de design).
  *
  * A fórmula é linear em `value` e `charges`, e é isso que permite aplicá-la sobre somas
- * agregadas no SQL por tipo, em vez de transação a transação (backend-design §3.2).
+ * agregadas no SQL por tipo, em vez de transação a transação (core §1.2).
  *
  * @param type Tipo da transação; decide a direção.
  * @param value Valor (ou soma de valores) já convertido para a moeda do perfil.
@@ -72,9 +72,9 @@ export function originEffect(type: TransactionType, value: Money, charges: Money
 /**
  * Efeito no saldo da conta de **destino** de uma transferência ou investimento.
  * Regra de negócio (Transferência): uma transferência é uma linha só, que sai da origem e
- * entra no destino com o mesmo valor; os encargos ficam na origem (database-design §4.13).
+ * entra no destino com o mesmo valor; os encargos ficam na origem (banco-de-dados §4.13).
  * Um valor negativo inverte a direção — é assim que o pagamento parcial de fatura tira
- * dinheiro da conta que pagou (§4.7).
+ * dinheiro da conta que pagou (cartoes-e-faturas §3.3).
  *
  * @param value Valor (ou soma de valores) da transferência.
  * @return O efeito no saldo do destino.

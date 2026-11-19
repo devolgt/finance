@@ -24,7 +24,7 @@ export interface TransactionNameSuggestion {
  * Chave que junta as grafias de um mesmo nome nas sugestões. Fica em TypeScript porque o
  * `lower()` do SQLite só trata ASCII: "PÃO DE AÇÚCAR" e "Pão de Açúcar" virariam duas sugestões,
  * cada uma com parte dos usos e a mais antiga com categoria e origem desatualizadas.
- * Regra de negócio (Lançamentos, desktop-mvp-plan Fase 15.2): o nome sugerido não diferencia
+ * Regra de negócio (Lançamentos, transacoes §4.3): o nome sugerido não diferencia
  * acento e maiúscula.
  *
  * @param name Nome como foi gravado no lançamento.

@@ -12,7 +12,7 @@ export interface CreateProfileCommand {
 /**
  * Edição do perfil: nome e moeda. O tipo fica de fora porque mudar de empresarial para
  * pessoal deixaria sócios e transações com sócio num perfil que não os aceita
- * (database-design §4.1), e o MVP não tem sócios para justificar a regra de transição.
+ * (banco-de-dados §4.1), e o MVP não tem sócios para justificar a regra de transição.
  */
 export interface UpdateProfileCommand {
     readonly id: ProfileId;
@@ -20,14 +20,14 @@ export interface UpdateProfileCommand {
     readonly currency: string;
 }
 
-/** Escolha da conta padrão do atalho "Débito" (database-design §4.1). */
+/** Escolha da conta padrão do atalho "Débito" (banco-de-dados §4.1). */
 export interface SetDefaultAccountCommand {
     readonly profileId: ProfileId;
     /** `null` tira o padrão. */
     readonly accountId: AccountId | null;
 }
 
-/** Escolha do cartão padrão do atalho "Crédito" (database-design §4.1). */
+/** Escolha do cartão padrão do atalho "Crédito" (banco-de-dados §4.1). */
 export interface SetDefaultCreditCardCommand {
     readonly profileId: ProfileId;
     /** `null` tira o padrão. */

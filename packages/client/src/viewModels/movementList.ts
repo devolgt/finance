@@ -8,7 +8,7 @@ import type { StatementDirection, StatementSituation, StatementTable } from './s
 import { TRANSACTION_SITUATIONS, type TransactionDirection, type TransactionSituation, type TransactionTableRow } from './transactionTable.ts';
 
 /*
- * Lista única de movimentos (desktop-mvp-plan Fase 13.2): Transações, o extrato de uma conta e a
+ * Lista única de movimentos (transacoes §8.3): Transações, o extrato de uma conta e a
  * fatura de um cartão mostram linhas do mesmo jeito e com as mesmas ações — editar, marcar pago,
  * excluir, abrir a fatura. Cada tela continua com o próprio view-model, porque o valor quer dizer
  * coisas diferentes em cada uma (efeito no perfil, efeito nesta conta, quanto soma à fatura); este
@@ -30,11 +30,11 @@ export type MovementTarget =
           readonly container: string | null;
           /**
            * Transferência recebida de outro perfil: quem edita, paga ou exclui é o perfil de
-           * origem, dono da linha (database-design §4.13).
+           * origem, dono da linha (banco-de-dados §4.13).
            */
           readonly readOnly: boolean;
           /**
-           * Se marcar pago vale para a linha. Regra de negócio (Cartão, database-design §4.7): a
+           * Se marcar pago vale para a linha. Regra de negócio (Cartão, banco-de-dados §4.7): a
            * situação de uma compra no cartão é a da fatura; o pagamento parcial, que sai da conta
            * no dia dele, é a exceção.
            */
@@ -53,7 +53,7 @@ export interface MovementSituation {
     readonly rank: number;
 }
 
-/** Cor do valor; o sinal e o `⇄` já dizem o sentido sem ela (decisão de interface 7). */
+/** Cor do valor; o sinal e o `⇄` já dizem o sentido sem ela (desktop §7.3). */
 export type MovementTone = 'in' | 'out' | 'neutral';
 
 /** Uma linha da listagem, com os textos prontos. */
@@ -90,7 +90,7 @@ export interface MovementRow {
 
 /**
  * Regra de negócio (Transações): quem pode marcar pago. A transferência recebida de outro perfil é
- * de lá (database-design §4.13); a compra no cartão segue a fatura (§4.7), menos o pagamento
+ * de lá (banco-de-dados §4.13); a compra no cartão segue a fatura (§4.7), menos o pagamento
  * parcial, que é dinheiro que sai da conta no dia dele.
  *
  * @param transaction Lançamento da linha.
@@ -270,8 +270,8 @@ export interface GoalContributionSource {
 }
 
 /**
- * Transações vinculadas a uma meta (mockup `DesktopMetas`) na listagem comum, para que se editem,
- * paguem e excluam ali como em Transações (pedido do usuário, desktop-mvp-plan Fase 13.3). Antes a
+ * Transações vinculadas a uma meta na listagem comum, para que se editem,
+ * paguem e excluam ali como em Transações (pedido do usuário, metas §4.5). Antes a
  * meta tinha uma tabela só de leitura. O valor é o que a transação soma à meta — o valor dela, sem
  * encargos —, e não o efeito na conta: a transferência para o Tesouro sai da corrente, mas entra
  * na meta. A retirada desconta, então aparece negativa, e a soma continua igual ao guardado.

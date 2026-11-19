@@ -77,7 +77,7 @@ export function creditCardFormFrom(creditCard: CreditCardResponse): CreditCardFo
 }
 
 /**
- * Contas que podem pagar o cartão. Regra de negócio (Contas, desktop-mvp-plan §5.1): conta
+ * Contas que podem pagar o cartão. Regra de negócio (Contas, contas §5.1): conta
  * desativada some das escolhas de cartões novos. Na edição, a conta que já paga o cartão fica
  * na lista mesmo desativada — o núcleo aceita mantê-la, e sem ela o campo apareceria vazio e
  * o cartão trocaria de conta sem o usuário pedir.
@@ -92,7 +92,7 @@ export function payingAccountOptions(accounts: readonly AccountResponse[], curre
 
 /**
  * Aviso do fechamento num dia que não existe em todo mês. Regra de negócio (Cartão de
- * crédito, database-design §4.5): dia inexistente vira o último dia do mês — um cartão que
+ * crédito, banco-de-dados §4.5): dia inexistente vira o último dia do mês — um cartão que
  * fecha no dia 31 fecha em 30/04 e em 28/02 —, e o dia gravado continua o digitado. O aviso
  * existe porque quem cadastra "31" pode esperar que abril pule o fechamento.
  *
@@ -124,9 +124,9 @@ function readDay(raw: string, label: string): { readonly day: number; readonly e
 
 /**
  * Lê o formulário de cartão e o valida com o schema de conteúdo das rotas de cartão, para que
- * a mensagem da tela e a recusa do núcleo nunca discordem (desktop-shell-design §5.4).
+ * a mensagem da tela e a recusa do núcleo nunca discordem (desktop §3.5).
  * Regra de negócio (Cartão de crédito): limite é zero ou positivo, e fechamento e vencimento
- * são dias de 1 a 31 (database-design §4.5). O limite está na moeda do perfil.
+ * são dias de 1 a 31 (banco-de-dados §4.5). O limite está na moeda do perfil.
  *
  * Campos que nem chegam a ser lidos (limite ou dia que não é número, conta não escolhida) não
  * interrompem a leitura: o schema roda com um valor neutro no lugar, para que os erros dos

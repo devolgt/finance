@@ -9,7 +9,7 @@ const targetFile = join(root, 'packages', 'core', 'src', 'infrastructure', 'migr
 const lockFile = join(sourceDir, 'checksums.lock');
 
 /**
- * Trava de imutabilidade das migrations (backend-design §4.3): uma migration publicada nunca
+ * Trava de imutabilidade das migrations (banco-de-dados §5.3): uma migration publicada nunca
  * é editada, porque aparelhos que já rodaram a versão antiga não rodariam a corrigida e os
  * bancos divergiriam em silêncio. O hash de cada arquivo entra no `checksums.lock` na
  * primeira vez que ele é embutido e, dali em diante, só é conferido — nunca reescrito. Para
@@ -45,7 +45,7 @@ function lockMigrations(files) {
         const hash = createHash('sha256').update(readFileSync(join(sourceDir, file))).digest('hex');
         const expected = locked.get(file);
         if (expected !== undefined && expected !== hash) {
-            throw new Error(`Migration publicada foi editada: ${file}. Corrija com uma migration nova (backend-design §4.3).`);
+            throw new Error(`Migration publicada foi editada: ${file}. Corrija com uma migration nova (banco-de-dados §5.3).`);
         }
         return `${hash}  ${file}`;
     });
@@ -56,7 +56,7 @@ function lockMigrations(files) {
 /**
  * Embute os arquivos de `db/migrations` no bundle do `core` como strings, porque o mobile
  * não tem um diretório de arquivos para varrer em tempo de execução e o desktop empacotado
- * também não deveria depender de um (backend-design §4.4). Os `.sql` continuam sendo a
+ * também não deveria depender de um (banco-de-dados §5.4). Os `.sql` continuam sendo a
  * fonte da verdade; um teste do `core` falha se o arquivo gerado divergir deles.
  *
  * @return {void} Nada; grava o arquivo gerado ao lado do runner de migrations e atualiza o

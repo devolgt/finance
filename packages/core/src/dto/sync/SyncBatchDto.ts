@@ -1,6 +1,6 @@
 /**
  * Forma serializada de um lote de sincronização, a que trafega cifrada entre os aparelhos
- * (sync-design §7.4, passo 5). Só dados simples, como todo DTO, porque vai para JSON; a
+ * (sincronizacao §5.6, passo 5). Só dados simples, como todo DTO, porque vai para JSON; a
  * forma tipada do domínio (`SyncBatch`) sai daqui pela validação de `syncBatchRequest`, já
  * que o lote chega de outro aparelho e não pode ser confiado como veio.
  */

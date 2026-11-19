@@ -6,7 +6,7 @@ import type { AppFileSystem } from './AppFileSystem.ts';
 /**
  * Gerador de UUID v4 sobre o `expo-crypto`, que usa o gerador seguro do sistema. O Hermes não
  * tem `crypto.randomUUID`, e o `Math.random` geraria ids previsíveis e com colisão possível
- * entre aparelhos — fatal quando a sincronização mesclar os bancos (backend-design §3.4).
+ * entre aparelhos — fatal quando a sincronização mesclar os bancos (core §4.1).
  */
 export class ExpoIdGenerator implements IdGenerator {
     /** @return Um UUID v4, validado pelo mesmo parser do núcleo. */
@@ -18,8 +18,8 @@ export class ExpoIdGenerator implements IdGenerator {
 /**
  * Log em JSON Lines no diretório do app (`logs/core.log`), como o do desktop. O app instalado
  * não tem terminal: os desvios da verificação de integridade, as falhas inesperadas do núcleo
- * e o motivo de um bloqueio da abertura só ajudam se ficarem gravados (mobile-mvp-plan,
- * Fase 4). Um log que não consegue gravar não derruba o app: a linha vai para o console.
+ * e o motivo de um bloqueio da abertura só ajudam se ficarem gravados (mobile §3.1).
+ * Um log que não consegue gravar não derruba o app: a linha vai para o console.
  */
 export class FileAppLog implements StartupLog {
     /**

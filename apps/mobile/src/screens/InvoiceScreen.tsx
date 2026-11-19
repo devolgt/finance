@@ -68,9 +68,9 @@ function useInvoicePeriod(requested: string | undefined, period: string): { read
 }
 
 /**
- * Resumo da fatura (mockup `MobileFatura`): a situação, o valor a pagar, o fechamento e o
+ * Resumo da fatura: a situação, o valor a pagar, o fechamento e o
  * vencimento, o limite usado com a barra e as ações da fatura.
- * Regra de negócio (Fatura, database-design §4.7): em aberto, paga-se inteira ou em parte; paga,
+ * Regra de negócio (Fatura, cartoes-e-faturas §3): em aberto, paga-se inteira ou em parte; paga,
  * só se reabre. Sem fatura no mês (nada caiu nela) não há o que pagar, e o parcial precisa de
  * valor a pagar — numa fatura zerada ou credora ele só criaria crédito. A nota do vencimento diz
  * onde a fatura pesa: em aberto, no previsto da conta pagadora; paga, no extrato do pagamento.
@@ -158,7 +158,7 @@ function InvoiceSummary(props: {
 }
 
 /**
- * Lançamentos da fatura (mockup), com o total. É aqui que se abrem as compras do cartão para
+ * Lançamentos da fatura, com o total. É aqui que se abrem as compras do cartão para
  * editar ou excluir: em Transações elas ficam agrupadas na linha da fatura.
  *
  * @param props.cycle Competência mostrada.
@@ -211,7 +211,7 @@ function InvoiceLines({ cycle, accounts }: { readonly cycle: InvoiceCycleRespons
 }
 
 /**
- * Próximas faturas do cartão (mockup), cada uma levando à sua fatura.
+ * Próximas faturas do cartão (cartoes-e-faturas §2.4), cada uma levando à sua fatura.
  *
  * @param props.creditCard Cartão, pelo dia de fechamento que decide a fase de cada fatura.
  * @param props.cycles Saída de `invoices.listByCard` a partir da fatura mostrada.
@@ -249,8 +249,8 @@ function UpcomingInvoices({ creditCard, cycles }: { readonly creditCard: CreditC
 
 /**
  * Ações do cartão em folha: editar, usar como padrão, desativar ou reativar e excluir — as do
- * "⋯" da fatura no desktop, que o `MobileFatura` não desenha.
- * Regra de negócio (Cartões, database-design §4.1): o cartão desativado não aceita lançamentos
+ * "⋯" da fatura no desktop, para o celular fazer o mesmo que ele.
+ * Regra de negócio (Cartões, banco-de-dados §4.1): o cartão desativado não aceita lançamentos
  * novos, então não pode ser o padrão — a ação some enquanto ele estiver desativado.
  *
  * @param props.creditCard Cartão aberto.
@@ -286,7 +286,7 @@ function CardActionsSheet(props: {
 }
 
 /**
- * Fatura do cartão (mockup `MobileFatura`; mobile-mvp-plan, Fase 13): o resumo com pagar, parcial
+ * Fatura do cartão (cartoes-e-faturas §7): o resumo com pagar, parcial
  * e reabrir, os lançamentos e as próximas faturas, com as ações do cartão no "⋯". O cartão vem da
  * mesma consulta da lista de Cartões, já em cache; a fatura, de `invoices.listByCard` a partir da
  * competência mostrada, que traz também as próximas.

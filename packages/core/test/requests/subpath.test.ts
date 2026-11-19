@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { MONEY_MAX_AMOUNT } from '@finance/core';
 import { createTransactionRequest, moneyField, registryNameField, updateAccountRequest } from '@finance/core/requests';
 
-describe('subcaminho @finance/core/requests (desktop-mvp-plan Fase 1.5)', () => {
+describe('subcaminho @finance/core/requests (transacoes §2.3)', () => {
     it('expõe os schemas da camada Request pelo nome do pacote, para os formulários da UI', () => {
         expect(registryNameField.safeParse('x'.repeat(46)).success).toBe(false);
         const parsed = createTransactionRequest.safeParse({

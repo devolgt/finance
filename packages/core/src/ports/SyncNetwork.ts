@@ -1,5 +1,5 @@
 /**
- * Portas de rede da sincronização (mobile-shell-design §5.1). O protocolo, a criptografia e a
+ * Portas de rede da sincronização (decisoes §52). O protocolo, a criptografia e a
  * máquina de estados ficam no núcleo; cada plataforma fornece só o transporte de bytes, a
  * descoberta, o cofre de chaves e a aleatoriedade — o desktop sobre `net`/mDNS/`safeStorage`,
  * o celular sobre `react-native-tcp-socket`/NSD/`expo-secure-store`.
@@ -11,7 +11,7 @@
  * mensagens igual.
  */
 export interface Connection {
-    /** Endereço IP do outro lado, para a regra de endereços locais (sync-design §7.1). */
+    /** Endereço IP do outro lado, para a regra de endereços locais (sincronizacao §5.1). */
     readonly remoteAddress: string;
 
     /**
@@ -42,7 +42,7 @@ export interface Listener {
 export interface Transport {
     /**
      * Começa a escutar numa porta livre. Só existe enquanto a tela de Dispositivos está aberta
-     * (sync-design §7.1).
+     * (sincronizacao §5.1).
      *
      * @param onConnection Recebe cada conexão aceita.
      * @return O listener.
@@ -57,7 +57,7 @@ export interface Transport {
     connect(address: string, port: number): Promise<Connection>;
 }
 
-/** Um aparelho visto pela descoberta (sync-design §7.2). */
+/** Um aparelho visto pela descoberta (sincronizacao §5.2). */
 export interface DiscoveredPeer {
     readonly deviceId: string;
     /** Hash do id do grupo: os vizinhos veem que o aparelho existe, não a qual grupo pertence. */
@@ -82,7 +82,7 @@ export interface Discovery {
 }
 
 /**
- * Cofre da chave privada do aparelho (sync-design §6.1): Keystore no Android, `safeStorage`
+ * Cofre da chave privada do aparelho (sincronizacao §4.1): Keystore no Android, `safeStorage`
  * no desktop. Nunca o arquivo SQLite, para que uma cópia do banco não carregue a capacidade de
  * se passar pelo aparelho.
  */
@@ -111,7 +111,7 @@ export interface RandomSource {
 }
 
 /**
- * Snapshot do banco para quem entra no grupo (sync-design §6.4). O anfitrião gera a cópia
+ * Snapshot do banco para quem entra no grupo (sincronizacao §4.4). O anfitrião gera a cópia
  * consistente por `VACUUM INTO`, e o convidado troca o próprio banco por ela pelo mesmo
  * caminho da importação de uma cópia — os dois dependem do sistema de arquivos, por isso
  * porta.

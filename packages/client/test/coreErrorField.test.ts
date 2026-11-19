@@ -17,7 +17,7 @@ describe('recusa do núcleo no formulário', () => {
         expect(placed).toEqual({ field: 'name', message: 'Já existe uma categoria com o nome "Moradia". Escolha outro nome.' });
     });
 
-    it('Regra de negócio (Perfis, §5): moeda travada vai para baixo do campo da moeda', () => {
+    it('Regra de negócio (Perfis, perfis §2.2): moeda travada vai para baixo do campo da moeda', () => {
         const placed = placeCoreError(coreError('BUSINESS_RULE_VIOLATION', { rule: 'profile-currency-locked', field: 'currency' }), { currency: 'currency' });
         expect(placed).toEqual({ field: 'currency', message: 'A moeda do perfil não pode mudar depois que há lançamentos.' });
     });

@@ -25,13 +25,13 @@ type ChartMode = 'chart' | 'table';
 /**
  * Resultado de um relatório personalizado: a tabela agrupada ou o gráfico, com a alternância
  * Gráfico/Tabela dos outros gráficos do app — a tabela é a versão acessível do gráfico
- * (desktop-mvp-plan §2, Gráficos). Os números e os textos vêm do `reportView` do `client`.
+ * (desktop §5, Gráficos). Os números e os textos vêm do `reportView` do `client`.
  *
  * @param props.result Resultado do núcleo.
  * @param props.format Formato da definição.
  * @param props.name Nome do relatório, para os nomes acessíveis da tabela e do gráfico.
  * @param props.currency Moeda do perfil, para a dica do gráfico.
- * @param props.analysis Se a definição pede a análise (reports-design L9).
+ * @param props.analysis Se a definição pede a análise (relatorios §5.7, L9).
  * @return O resultado, ou o estado vazio quando nada entra no filtro.
  */
 export function ReportResult({
@@ -85,8 +85,8 @@ export function ReportResult({
 
 /**
  * A tabela agrupada: uma linha por grupo da primeira divisão, uma coluna por grupo da segunda e
- * os totais na última coluna e no rodapé. Números à direita e com algarismos tabulares (decisão de
- * interface 8 dos mockups).
+ * os totais na última coluna e no rodapé. Números à direita e com algarismos tabulares
+ * (desktop §7.4).
  *
  * @param props.table Tabela pronta do `client`.
  * @param props.name Nome do relatório.
@@ -141,7 +141,7 @@ function ResultTable({ table, name }: { readonly table: ReportTableView; readonl
     );
 }
 
-/** Seta de cada direção da variação: aumento e redução não dependem só da cor (decisão de interface dos mockups). */
+/** Seta de cada direção da variação: aumento e redução não dependem só da cor (desktop §7.3). */
 const CHANGE_ARROWS: Readonly<Record<ReportChange['direction'], string>> = { up: '▲', down: '▼', same: '=' };
 
 /**
@@ -152,7 +152,7 @@ const CHANGE_ARROWS: Readonly<Record<ReportChange['direction'], string>> = { up:
 const CHANGE_TONES: Readonly<Record<ReportChange['direction'], string>> = { up: 'text-in', down: 'text-out', same: 'text-muted' };
 
 /**
- * Variação de um valor sobre o mês anterior, embaixo do número (reports-design L9), com a seta, o
+ * Variação de um valor sobre o mês anterior, embaixo do número (relatorios §5.7, L9), com a seta, o
  * sinal e a cor da direção.
  *
  * @param props.change Variação; `null` quando não há o que comparar.

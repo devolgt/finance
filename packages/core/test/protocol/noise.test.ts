@@ -42,7 +42,7 @@ function side(vector: Vector, initiator: boolean): NoiseHandshake {
     });
 }
 
-describe('Noise sobre @noble (sync-plan Fase 5)', () => {
+describe('Noise sobre @noble (sincronizacao §5.5)', () => {
     it.each(vectors.map((vector) => [vector.protocol_name, vector] as const))('confere com os vetores públicos: %s', (_name, vector) => {
         const initiator = side(vector, true);
         const responder = side(vector, false);

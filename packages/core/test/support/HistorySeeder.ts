@@ -274,7 +274,7 @@ async function payDueAccountEntries(core: Core, clock: FixedClock, profileId: st
 
 /**
  * Gera um histórico de vários anos pelas rotas do núcleo, mês a mês, com o relógio andando
- * junto. Existe para a medição da Fase 5 do mobile-mvp-plan: o p95 de lançar, editar e
+ * junto. Existe para a medição das chamadas interativas (mobile §12.1): o p95 de lançar, editar e
  * consultar só é significativo num banco do tamanho de um usuário antigo, e o mesmo arquivo
  * serve para medir o desktop. Passa pelas rotas, e não por SQL direto, para que extratos,
  * faturas e saldos em cache sejam os que o código de produção grava.

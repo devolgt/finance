@@ -27,16 +27,16 @@ Foco extra informado pelo usuário (pode estar vazio): $ARGUMENTS
 ## Passo 1 — Contexto
 
 1. Liste os arquivos de instrução que se aplicam: o `CLAUDE.md` da raiz e qualquer `CLAUDE.md` em diretórios que contenham arquivos staged.
-2. Identifique os documentos de `docs/plans/` dos módulos tocados (as regras de negócio estão lá) e, se o diff mexer em telas, `docs/design/mockups/README.md` e o mockup correspondente.
+2. Identifique as páginas de `docs/wiki/` dos módulos tocados (as regras de negócio estão em `docs/wiki/regras-de-negocio/`) e, se o diff mexer em telas, as convenções de UI em `docs/wiki/arquitetura/desktop.md` §7.
 3. Escreva um resumo curto (3 a 6 linhas) do que o diff staged faz. Ele será repassado aos revisores.
 
 ## Passo 2 — Revisores em paralelo
 
 Dispare **em uma única mensagem** os quatro sub-agentes abaixo (`Agent`, tipo `general-purpose`), para rodarem em paralelo. Passe a cada um: o resumo do passo 1, a lista de arquivos staged, os caminhos dos `CLAUDE.md` e dos documentos relevantes, o foco extra do usuário e as regras "Só o staged conta" e "Não corrija nada" acima.
 
-1. **Conformidade com o CLAUDE.md:** confere o diff contra as regras do projeto — tipagem estrita (sem `any`, sem `as` para silenciar), contratos (zod em `requests/`, DTOs em `dto/`, Value Objects), imutabilidade, fronteiras de camadas e portas, docblock com motivação (`@param`, `@return`, `@throws`, regra de negócio citada), testes para regra nova, idioma PT-BR com acentuação, formatação sem alinhamento em colunas, mockups/tokens em telas. Só aponte violação de regra que esteja **escrita** no CLAUDE.md, citando o trecho.
+1. **Conformidade com o CLAUDE.md:** confere o diff contra as regras do projeto — tipagem estrita (sem `any`, sem `as` para silenciar), contratos (zod em `requests/`, DTOs em `dto/`, Value Objects), imutabilidade, fronteiras de camadas e portas, docblock com motivação (`@param`, `@return`, `@throws`, regra de negócio citada), testes para regra nova, idioma PT-BR com acentuação, formatação sem alinhamento em colunas, convenções de UI e tokens em telas, wiki atualizada na mesma entrega. Só aponte violação de regra que esteja **escrita** no CLAUDE.md, citando o trecho.
 2. **Bugs no diff:** leitura focada nas linhas alteradas em busca de bugs evidentes — lógica invertida, casos de borda (lista vazia, `null`, fim de mês, fuso, arredondamento de `Money`), erros não tratados, condições de corrida, vazamento de recursos. Não especule além do diff.
-3. **Bugs no contexto:** lê os chamadores, os chamados, os testes e o documento de `docs/plans/` do módulo para achar quebras que o diff isolado não mostra — contrato alterado sem atualizar quem usa, invalidação de cache faltando, regra de negócio do plano contrariada, migration sem `pnpm embed:migrations`, teste que deixou de cobrir o caso.
+3. **Bugs no contexto:** lê os chamadores, os chamados, os testes e a página de `docs/wiki/` do módulo para achar quebras que o diff isolado não mostra — contrato alterado sem atualizar quem usa, invalidação de cache faltando, regra de negócio da wiki contrariada, migration sem `pnpm embed:migrations`, teste que deixou de cobrir o caso.
 4. **Histórico e comentários:** usa `git log` e `git blame` nas regiões alteradas e lê os comentários e docblocks do código ao redor, procurando alterações que reintroduzem um bug já corrigido, desfazem uma decisão registrada ou contrariam uma instrução deixada em comentário.
 
 Cada revisor devolve uma lista de achados, cada um com: arquivo, linha (na versão staged), categoria, descrição do problema, evidência (trecho de código ou regra citada) e o cenário concreto em que falha. **Cada achado já vem com uma sugestão de solução**, conforme o passo 4.
@@ -56,7 +56,7 @@ Descarte achados com confiança **abaixo de 80** e una duplicados. Também são 
 - Problemas em linhas que não foram alteradas no stage, ou que já existiam antes dele.
 - O que o `pnpm lint` ou o `pnpm typecheck` acusariam sozinhos (import faltando, tipo errado, formatação).
 - Preferências de estilo e "nitpicks" que um engenheiro sênior não levantaria, quando não estão escritos no CLAUDE.md.
-- Alterações intencionais de comportamento que o próprio diff ou o plano em `docs/plans/` justificam.
+- Alterações intencionais de comportamento que o próprio diff ou a wiki em `docs/wiki/` justificam.
 - Trechos silenciados de propósito no código (ex.: comentário de `eslint-disable` com motivo).
 
 ## Passo 4 — Sugestão de solução
@@ -95,7 +95,7 @@ Use este formato, com os achados ordenados do mais grave para o menos grave:
 - **Severidade:** <alta | média | baixa>
 - **Confiança:** <80–100>
 
-**Problema:** <o que está errado e por quê, citando a regra do CLAUDE.md ou de `docs/plans/` quando for o caso.>
+**Problema:** <o que está errado e por quê, citando a regra do CLAUDE.md ou a seção de `docs/wiki/` quando for o caso.>
 
 **Cenário de falha:** <entrada ou estado concreto → resultado errado.>
 

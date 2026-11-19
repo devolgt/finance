@@ -17,7 +17,7 @@ const BODY_SIZE: FontSizePx = 13;
  *
  * O contrato roda depois do primeiro frame, e não no corpo do componente, para que a tela de
  * "rodando" apareça: a suíte é síncrona e prende a thread JavaScript até terminar. A medição da
- * criptografia da sincronização (sync-plan Fase 5) roda depois, num frame seguinte: o título do
+ * criptografia da sincronização (sincronizacao §5.5) roda depois, num frame seguinte: o título do
  * contrato, que o Maestro espera, aparece sem esperar os segundos da cifra no Hermes.
  *
  * @param props.run Execução do contrato; o app passa a do aparelho, os testes uma falsa.

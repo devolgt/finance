@@ -15,7 +15,7 @@ import { handle, type CoreResult, type UnexpectedErrorListener } from './CoreRes
 /**
  * Rotas do cadastro de metas e do progresso delas. Só traduz: valida a entrada pelo schema da
  * rota e converte o resultado em DTO, para que o Service nunca receba dado não validado nem a UI
- * receba entidade de domínio (backend-design, camadas Request → Controller → Service).
+ * receba entidade de domínio (core §2, camadas Request → Controller → Service).
  */
 export class GoalController {
     /**

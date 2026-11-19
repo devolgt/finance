@@ -29,7 +29,7 @@ function sequences(world: TestWorld): readonly number[] {
         .map((row) => Number(row['seq']));
 }
 
-describe('Captura das escritas (sync-plan Fase 2)', () => {
+describe('Captura das escritas (sincronizacao §3.4)', () => {
     it('classifica toda tabela do schema como sincronizada ou local', () => {
         const world = device(1);
         const tables = world.database
@@ -41,7 +41,7 @@ describe('Captura das escritas (sync-plan Fase 2)', () => {
         expect([...classified].filter((table) => !tables.includes(table))).toEqual([]);
     });
 
-    it('ao criar o grupo, toda linha existente ganha entrada com origem neste aparelho (sync-design §10)', async () => {
+    it('ao criar o grupo, toda linha existente ganha entrada com origem neste aparelho (sincronizacao §4.6)', async () => {
         const { world } = await groupWorld();
         const state = syncOf(world).requireState();
 
@@ -79,7 +79,7 @@ describe('Captura das escritas (sync-plan Fase 2)', () => {
         expect(cells).toEqual(['name']);
     });
 
-    it('o recálculo de saldos não gera entrada nem muda updated_at (sync-design §5.4)', async () => {
+    it('o recálculo de saldos não gera entrada nem muda updated_at (sincronizacao §3.4)', async () => {
         const { world, profileId, accountId, subCategoryId } = await groupWorld();
         await world.create({ profileId, subCategoryId }, { source: { kind: 'account', accountId } });
         const before = sequences(world);

@@ -3,7 +3,7 @@ import { z } from 'zod';
 /*
  * Anotação pedida pela URL na tela Anotações. Fica como *search param* `note`, e não num estado do
  * React, para que outras telas levem direto a uma anotação — a lista de anotações da Visão geral
- * (desktop-mvp-plan Fase 13.2) — e para que voltar no histórico devolva o pedido.
+ * (visao-do-mes §6) — e para que voltar no histórico devolva o pedido.
  */
 
 /** Parâmetros de busca próprios da tela Anotações. */

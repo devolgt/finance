@@ -5,14 +5,14 @@ import type { NoteId, ProfileId } from '../shared/ids.ts';
 export interface NoteProps {
     readonly id: NoteId;
     readonly profileId: ProfileId;
-    /** Texto livre, sem limite de tamanho (database-design §4.3). */
+    /** Texto livre, sem limite de tamanho (banco-de-dados §4.3). */
     readonly text: string;
 }
 
 /**
  * Observação ou lembrete de um perfil — deliberadamente uma lista simples, sem ligação com
- * lançamento ou conta (database-design §4.3). O texto é livre; a primeira linha serve de
- * título nas listas (decisão de interface 9 dos mockups), e por isso não há campo de título
+ * lançamento ou conta (banco-de-dados §4.3). O texto é livre; a primeira linha serve de
+ * título nas listas (anotacoes §1.3), e por isso não há campo de título
  * à parte que pudesse discordar do texto.
  */
 export class Note implements NoteProps {

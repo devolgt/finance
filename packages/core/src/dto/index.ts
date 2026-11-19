@@ -1,7 +1,7 @@
 /*
  * DTOs de resposta: o contrato de saída que o pacote `client` consome nas duas plataformas
- * (desktop-shell-design §5.1). São dados serializáveis por tipo — objetos simples, strings,
- * números, booleanos e `null`; nada de classe, `Date` ou `Map` (mobile-shell-design §4.4).
+ * (desktop §3.1). São dados serializáveis por tipo — objetos simples, strings,
+ * números, booleanos e `null`; nada de classe, `Date` ou `Map` (mobile §4).
  * Um DTO que carregasse um `Money` funcionaria no celular, onde nada é serializado, e
  * chegaria ao renderer do desktop sem os métodos.
  *

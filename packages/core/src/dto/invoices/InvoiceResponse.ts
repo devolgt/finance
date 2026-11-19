@@ -12,13 +12,13 @@ export interface InvoiceResponse {
     readonly paymentDate: string | null;
     /** Total com o sinal do efeito na conta: negativo quando há valor a pagar. */
     readonly balance: MoneyResponse;
-    /** Valor a pagar em módulo, como a tela mostra (database-design §4.7); zero quando há crédito. */
+    /** Valor a pagar em módulo, como a tela mostra (banco-de-dados §4.7); zero quando há crédito. */
     readonly amountDue: MoneyResponse;
 }
 
 /**
  * Entrega o saldo com sinal e também o valor a pagar em módulo porque a tela mostra o
- * módulo (database-design §4.7), mas o extrato soma com sinal — derivar aqui evita que a UI
+ * módulo (banco-de-dados §4.7), mas o extrato soma com sinal — derivar aqui evita que a UI
  * decida sozinha o que fazer com uma fatura credora.
  *
  * @param invoice Fatura do domínio; fonte do saldo, do status e do mês e dia do pagamento.

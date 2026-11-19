@@ -22,8 +22,8 @@ export class DatabaseCopyError extends Error {
 
 /**
  * Grava uma cópia consistente do banco aberto, para o usuário guardar onde quiser: sem backup
- * em nuvem, a cópia exportada é a única defesa contra perder o aparelho (mobile-shell-design
- * §6.2; desktop-mvp-plan Fase 13). Usa `VACUUM INTO`, a mesma operação do backup antes de
+ * em nuvem, a cópia exportada é a única defesa contra perder o aparelho (mobile §7.2;
+ * desktop §11.2). Usa `VACUUM INTO`, a mesma operação do backup antes de
  * migrar, e não cópia de arquivo, porque o banco está em WAL: copiar só o `.sqlite` perderia o
  * que ainda está no `-wal`. A cópia leva o `user_version`, então abre como qualquer banco do app.
  *
@@ -64,8 +64,8 @@ export type DatabaseCopyInspection =
  * lugar. Regra de negócio (Cópia do banco): só entra uma cópia legível, gravada pelo app e de
  * versão igual ou anterior à dele. Sem a conferência, a troca só falharia na reabertura — o arquivo
  * ilegível bloquearia o app em "não foi possível abrir", e a cópia mais nova na tela de banco mais
- * novo que o app (backend-design §4.8) —, com os dados do usuário já fora do lugar. A cópia de
- * versão anterior é aceita porque a abertura a migra, com backup antes (backend-design §4.5).
+ * novo que o app (banco-de-dados §5.8) —, com os dados do usuário já fora do lugar. A cópia de
+ * versão anterior é aceita porque a abertura a migra, com backup antes (banco-de-dados §5.5).
  *
  * A conferência só lê: quem abre a cópia o faz em modo somente leitura, e nada aqui liga WAL nem
  * chaves estrangeiras, ao contrário da `configureConnection`, para não gravar no arquivo do

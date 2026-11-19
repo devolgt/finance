@@ -2,7 +2,7 @@ import type { SyncedTable } from './SyncCatalog.ts';
 import type { Provenance } from './SyncState.ts';
 import type { VersionVector } from './VersionVector.ts';
 
-/** Valor de uma célula no lote: os mesmos três tipos do schema mais `NULL` (database-design §3.9). */
+/** Valor de uma célula no lote: os mesmos três tipos do schema mais `NULL` (banco-de-dados §3.9). */
 export type CellValue = string | number | null;
 
 /**
@@ -28,7 +28,7 @@ export interface CellChange {
 /**
  * Tudo o que uma transação de escrita de origem produziu e o par ainda não tem. Agrupado
  * por transação porque uma unidade de trabalho — as duas pernas de uma transferência —
- * trafega e é aplicada junta (sync-design §5.3).
+ * trafega e é aplicada junta (sincronizacao §3.3).
  */
 export interface SyncChange {
     readonly provenance: Provenance;

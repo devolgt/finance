@@ -3,7 +3,7 @@ import { formatDayMonth } from '../format/dates.ts';
 import { formatWeekdayDayMonth } from './transactionDays.ts';
 
 /*
- * Escolha de data no celular (mobile-mvp-plan, Fase 10): uma folha com o calendário do mês, sem
+ * Escolha de data no celular (transacoes §5): uma folha com o calendário do mês, sem
  * módulo nativo de seletor de data. A grade e os rótulos ficam aqui, sobre o `LocalDate` do
  * núcleo, sem `Date` nem `Intl`, que mudam o dia perto da meia-noite e diferem entre runtimes.
  */

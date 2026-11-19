@@ -19,7 +19,7 @@ export interface NativewindTheme {
 
 /**
  * Passos da escala de espaçamento, no vocabulário do Tailwind (`p-3`, `py-2.25`): de quarto
- * em quarto até 24 — onde estão os espaçamentos dos mockups, inclusive os ímpares em px
+ * em quarto até 24 — onde estão os espaçamentos das telas, inclusive os ímpares em px
  * (`py-2.25` é 9px) — e inteiros até 96. O Tailwind 4 do desktop aceita qualquer múltiplo;
  * o 3, do NativeWind 4, só os passos declarados, então a lista precisa cobrir o que o desktop
  * usa para a mesma classe valer nos dois.
@@ -33,11 +33,11 @@ function spacingSteps(): readonly number[] {
 /**
  * O tema do Tailwind 3 para o NativeWind 4 do celular, a partir dos mesmos tokens do CSS do
  * desktop: a v5 do NativeWind, que leria o `theme.generated.css`, ainda não é estável no
- * Expo SDK 58 (mobile-mvp-plan §2, "Estilo"). As cores apontam para variáveis (`var(--bg)`),
+ * Expo SDK 58 (mobile §2.2, "Estilo"). As cores apontam para variáveis (`var(--bg)`),
  * que a raiz do app troca por tema com `vars()`, como a classe `.dark` faz no desktop.
  *
  * Tamanhos em px, e não em rem: no React Native o rem do NativeWind vale 14 por padrão, e o
- * px dos mockups é o que a tela precisa mostrar. O aumento de fonte do sistema continua
+ * px dos tokens é o que a tela precisa mostrar. O aumento de fonte do sistema continua
  * valendo, porque o `Text` do React Native escala sozinho.
  *
  * @return O tema, com as mesmas classes do desktop (`bg-surface`, `text-13`, `rounded-8`, `p-3`).
@@ -92,7 +92,7 @@ function presetTheme(): NativewindTheme & { readonly extend: Pick<NativewindThem
 export function renderNativewindPreset(): string {
     return [
         HEADER,
-        '// Preset do Tailwind 3 para o NativeWind 4 do apps/mobile (mobile-mvp-plan §2, "Estilo").',
+        '// Preset do Tailwind 3 para o NativeWind 4 do apps/mobile (mobile §2.2, "Estilo").',
         `module.exports = { theme: ${JSON.stringify(presetTheme(), null, 4)} };`,
         '',
     ].join('\n');

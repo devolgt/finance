@@ -12,7 +12,7 @@ export interface PlannedOccurrenceResponse {
 
 /**
  * O que uma criação, edição ou exclusão faz com uma série, sem gravar nada — o diálogo de
- * revisão (database-design §4.12). As regras vão inteiras para que a tela descreva o
+ * revisão (banco-de-dados §4.12). As regras vão inteiras para que a tela descreva o
  * que muda ("a série fixa será encerrada", "passa de 12 para 8 parcelas") sem outra consulta.
  */
 export interface SeriesPlanResponse {

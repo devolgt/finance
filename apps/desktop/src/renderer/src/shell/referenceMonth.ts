@@ -4,7 +4,7 @@ import { isValidPeriod } from '@finance/client';
 export { currentDate, currentPeriod, shiftPeriod } from '@finance/client';
 
 /*
- * Mês de referência global (desktop-mvp-plan Fase 4; decisão de interface 2 dos mockups). Fica
+ * Mês de referência global (desktop §7.2 e §8.2). Fica
  * na URL como *search param* `period`, e não num estado do React, para que voltar e avançar no
  * histórico devolvam o mês junto com a tela e para que um link de outra tela ("ver fatura")
  * possa levar o mês que quer abrir.

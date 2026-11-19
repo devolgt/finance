@@ -224,7 +224,7 @@ function daysIn(period: string): number {
 /**
  * Oráculo independente: refaz faturas, cadeias e caches a partir das tabelas cruas, com uma
  * reimplementação direta das regras em JavaScript simples, sem usar nada do domínio. Se a
- * rotina de recálculo tiver um bug, este cálculo não o compartilha (backend-design §5.6).
+ * rotina de recálculo tiver um bug, este cálculo não o compartilha (testes §2.3).
  *
  * @param s Cenário depois de uma operação.
  * @return void
@@ -357,7 +357,7 @@ function assertInvariants(s: Scenario): void {
     }
 }
 
-describe('propriedades dos saldos (backend-design §5.6)', () => {
+describe('propriedades dos saldos (testes §2.3)', () => {
     it('depois de cada operação, todo saldo em cache bate com o oráculo independente', async () => {
         await fc.assert(
             fc.asyncProperty(fc.array(operationArb, { minLength: 1, maxLength: 30 }), async (operations) => {

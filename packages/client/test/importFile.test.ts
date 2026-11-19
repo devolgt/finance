@@ -25,7 +25,7 @@ import {
     withTemplate,
 } from '../src/index.ts';
 
-/** Começo de um export de despesas no formato do app de origem (import-design §1). */
+/** Começo de um export de despesas no formato do app de origem (importacao §1). */
 const EXPENSES = [
     '﻿"Descrição","Valor","Encargos","Lançamento","Vencimento","Efetivação","Recorrência","Parcela","Parcelas","Categoria","Subcategoria","Cartão","Conta","Observações"',
     '"Mercado Oba","46.88","0.00","10/10/2026 10:04","15/11/2026","-","Nenhuma","0","0","Moradia","Mercado","Inter","Banco Inter",""',
@@ -33,7 +33,7 @@ const EXPENSES = [
     '"Seguro","202.65","1.36","12/08/2025 23:09","20/12/2025","20/12/2025","Fixa mensal","0","0","Carro","Seguro","-","Banco Inter","Atraso\nPaga 12/08/2025"',
 ].join('\r\n');
 
-describe('CSV (import-design §3)', () => {
+describe('CSV (importacao §3)', () => {
     it('lê aspas, aspas dobradas, separador e quebra de linha dentro de aspas', () => {
         expect(parseCsv('a,"b,1","c ""x"""\n"d\ne",f,\n\n', ',')).toEqual([
             ['a', 'b,1', 'c "x"'],
@@ -121,7 +121,7 @@ describe('arquivo e tipo', () => {
     });
 });
 
-describe('ligação de colunas (import-design §4)', () => {
+describe('ligação de colunas (importacao §4)', () => {
     const table = readTable(EXPENSES, detectReadSettings(EXPENSES));
 
     it('liga pelo cabeçalho, deixando "Efetivação" e "Lançamento" como dica', () => {

@@ -1,5 +1,5 @@
 /*
- * Ajustes no desktop e no celular (desktop-mvp-plan Fases 13 e 13.9; mobile-mvp-plan Fase 18): o
+ * Ajustes no desktop e no celular (desktop §11 e §11.2; mobile §7.2): o
  * tema, a cópia do banco exportada e importada e a versão do banco, com as mesmas frases nos dois
  * apps. Cada app faz a cópia pelo próprio caminho (diálogo de salvar, folha de compartilhamento);
  * o que ela pode dar, e o que dizer em cada caso, é comum.
@@ -44,7 +44,7 @@ export type DatabaseImportFailure =
     | 'core-busy'
     | 'io-error';
 
-/** Opções de tema na ordem do mockup `DesktopAjustes`: o padrão primeiro. */
+/** Opções de tema na ordem do menu de Ajustes (desktop §7.1): o padrão primeiro. */
 export const THEME_OPTIONS: readonly { readonly value: ThemePreference; readonly label: string }[] = [
     { value: 'system', label: 'Seguir o sistema' },
     { value: 'light', label: 'Claro' },
@@ -78,7 +78,7 @@ export function formatExportInstant(instant: string): string | null {
 /**
  * Linha de apoio do "Exportar cópia do banco". Lembra que não há backup em nuvem, porque é
  * isso que dá sentido à exportação: sem ela, perder o aparelho é perder o histórico
- * (mobile-shell-design §6.1).
+ * (mobile §7.1).
  *
  * @param lastExportAt Instante da última cópia exportada neste aparelho, ou `null`.
  * @return O aviso com a data da última cópia, ou dizendo que ainda não houve nenhuma.
@@ -90,7 +90,7 @@ export function lastExportText(lastExportAt: string | null): string {
 
 /**
  * O que dizer quando a cópia não foi gravada. Cada motivo diz o que fazer, e não só que falhou
- * (brief §4, regra 9: nada de aviso genérico).
+ * (perfis §5.3: nada de aviso genérico).
  *
  * @param reason Motivo devolvido pelo processo principal.
  * @return A mensagem; `null` quando o usuário cancelou o diálogo, que não pede aviso.
@@ -111,7 +111,7 @@ export function exportFailureMessage(reason: DatabaseExportFailure): string | nu
 /**
  * O que dizer depois de importar uma cópia do banco. O sucesso diz onde ficou o banco anterior,
  * porque é o caminho de volta se a cópia escolhida for a errada; cada falha diz se os dados
- * mudaram e o que fazer (brief §4, regra 9: nada de aviso genérico).
+ * mudaram e o que fazer (perfis §5.3: nada de aviso genérico).
  *
  * @param result Resultado devolvido pelo processo principal, na hora ou depois de recarregar.
  * @return A mensagem; `null` quando o usuário cancelou o diálogo, que não pede aviso.

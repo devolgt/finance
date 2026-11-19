@@ -3,7 +3,7 @@ import type { CoreInput, CoreOutput, CoreRoute } from '../controllers/routes.ts'
 import type { TransactionResponse } from '../dto/transactions/TransactionResponse.ts';
 
 /**
- * As chamadas interativas com orçamento de p95 ≤ 50 ms (mobile-shell-design §4.3): lançar,
+ * As chamadas interativas com orçamento de p95 ≤ 50 ms (mobile §3.3): lançar,
  * editar uma transação antiga — o pior caso, que recalcula os meses seguintes da conta —,
  * consultar um mês e abrir uma fatura.
  */
@@ -12,7 +12,7 @@ export type InteractiveOperation = 'lançar' | 'editar antiga' | 'consultar mês
 /** Ordem fixa das operações, a mesma do relatório e do log. */
 export const INTERACTIVE_OPERATIONS: readonly InteractiveOperation[] = ['lançar', 'editar antiga', 'consultar mês', 'abrir fatura'];
 
-/** Orçamento de p95 das chamadas interativas, em milissegundos (mobile-shell-design §4.3). */
+/** Orçamento de p95 das chamadas interativas, em milissegundos (mobile §3.3). */
 export const INTERACTIVE_P95_BUDGET_MS = 50;
 
 /** Estatística de uma operação, em milissegundos. */
@@ -28,7 +28,7 @@ export interface OperationStats {
 export interface InteractiveBenchmarkOptions {
     /**
      * Relógio de alta resolução em milissegundos (`performance.now`). Vem de fora porque o
-     * núcleo não lê relógio fora das portas (backend-design §3.4), e a porta `Clock` dá datas,
+     * núcleo não lê relógio fora das portas (core §4.1), e a porta `Clock` dá datas,
      * não durações.
      */
     readonly now: () => number;
@@ -51,7 +51,7 @@ interface BenchmarkFixture {
 
 /**
  * Mede as chamadas interativas sobre um banco já povoado — o de dez anos da Fase 1 — e devolve
- * p50, p95 e máximo de cada uma (mobile-mvp-plan, Fase 5). Fica no núcleo, e não no app, para
+ * p50, p95 e máximo de cada uma (mobile §12.1). Fica no núcleo, e não no app, para
  * rodar igual no Node (a linha de base do desktop, `pnpm bench:core`) e no Hermes do aparelho:
  * a comparação só vale se o roteiro for o mesmo.
  *

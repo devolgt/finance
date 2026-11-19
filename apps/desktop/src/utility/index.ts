@@ -13,7 +13,7 @@ import { bonjourDiscovery, localAddresses, MainProcessKeyStore, nodeRandom, node
 import { parseUtilityArguments, type MainToUtilityMessage, type UtilityToMainMessage } from './utilityMessages.ts';
 
 /*
- * Processo do núcleo (desktop-shell-design §5.2): dono da única conexão com o banco, fora da
+ * Processo do núcleo (desktop §3.2): dono da única conexão com o banco, fora da
  * thread de UI e do processo principal. Recebe do principal uma ponta de `MessageChannel` por
  * janela carregada e atende as rotas por ela; ao principal só diz como a abertura terminou.
  */

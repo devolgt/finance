@@ -87,7 +87,7 @@ function lines(result: Result): readonly (readonly [string | null, string | null
 
 const BY_SUBCATEGORY: Layout = { format: 'table', primary: 'subCategory' };
 
-describe('execução do relatório — base de data (reports-design F3)', () => {
+describe('execução do relatório — base de data (relatorios §4.1, F3)', () => {
     it('Regra de negócio (Relatórios, F3): pelo pagamento, a transação em aberto fica fora e a paga conta no mês do pagamento', async () => {
         const s = await scene();
         const result = await preview(s.world, s.profileId, october('payment', { types: ['expense'] }), BY_SUBCATEGORY);
@@ -118,7 +118,7 @@ describe('execução do relatório — base de data (reports-design F3)', () => 
     });
 });
 
-describe('execução do relatório — filtros (reports-design §2.2)', () => {
+describe('execução do relatório — filtros (relatorios §4.2)', () => {
     it('sem tipo escolhido entram todos, e o tipo como dimensão separa entradas e saídas', async () => {
         const s = await scene();
         const result = await preview(s.world, s.profileId, october('payment'), { format: 'bar', primary: 'type' });
@@ -196,7 +196,7 @@ describe('execução do relatório — filtros (reports-design §2.2)', () => {
     });
 });
 
-describe('execução do relatório — tags (reports-design A4 e §3)', () => {
+describe('execução do relatório — tags (relatorios §4.2, A4, e §5.5)', () => {
     /**
      * @return O cenário com três despesas de outubro: R$ 300,00 com "viagem" e "trabalho",
      * R$ 100,00 só com "viagem" e R$ 50,00 sem tag.
@@ -223,7 +223,7 @@ describe('execução do relatório — tags (reports-design A4 e §3)', () => {
         expect(all.total).toMatchObject({ total: { amount: 300 }, count: 1 });
     });
 
-    it('Regra de negócio (Relatórios, §3): com a tag como dimensão a transação conta em cada tag, o total conta cada uma vez e a sem tag cai em "Sem tag"', async () => {
+    it('Regra de negócio (Relatórios, relatorios §5.5): com a tag como dimensão a transação conta em cada tag, o total conta cada uma vez e a sem tag cai em "Sem tag"', async () => {
         const { world, profileId, trip, work } = await tagged();
         const result = await preview(world, profileId, october('due'), { format: 'table', primary: 'tag' });
         expect(lines(result)).toEqual([
@@ -331,7 +331,7 @@ describe('execução do relatório — janela e formato', () => {
     });
 });
 
-describe('execução do relatório — entrada e saída e transferências entre perfis (reports-design L8 e §2.2)', () => {
+describe('execução do relatório — entrada e saída e transferências entre perfis (relatorios §5.3, L8, e §4.2)', () => {
     /** Ids do cenário de dois perfis. */
     interface FlowScene {
         readonly world: TestWorld;
@@ -418,7 +418,7 @@ describe('execução do relatório — entrada e saída e transferências entre 
         expect(bySource.rows.map((row) => row.group.key)).toEqual([s.checking]);
     });
 
-    it('Regra de negócio (Relatórios, §2.2): a transferência recebida de outro perfil entra no destino, pela conta de destino e sem a classificação de lá', async () => {
+    it('Regra de negócio (Relatórios, relatorios §4.2): a transferência recebida de outro perfil entra no destino, pela conta de destino e sem a classificação de lá', async () => {
         const s = await flowScene();
         const transfers = october('due', { types: ['transference'] });
         const byCategory = await preview(s.world, s.personal, transfers, { format: 'table', primary: 'category' });

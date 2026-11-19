@@ -36,7 +36,7 @@ const changeSchema = z.strictObject({
 /**
  * Validação de um lote recebido (`SyncBatchDto`) e conversão para o domínio.
  * Regra de negócio (Sincronização): todas as entradas de uma transação de origem carregam o
- * mesmo HLC e a mesma sequência (sync-design §5.3); o relógio precisa ser do aparelho de
+ * mesmo HLC e a mesma sequência (sincronizacao §3.3); o relógio precisa ser do aparelho de
  * origem, senão a escrita seria atribuída a outro aparelho no desempate.
  */
 export const syncBatchRequest = z

@@ -98,7 +98,7 @@ function line(result: PartnerReportResponse, partnerId: string): PartnerLineResp
     return found;
 }
 
-describe('Por sócio — aportes (reports-design §8)', () => {
+describe('Por sócio — aportes (relatorios §7)', () => {
     it('Matheus (60%) e Gustavo (40%) aportaram R$ 1.000,00 cada: Matheus deveria R$ 1.200,00, Gustavo R$ 800,00', async () => {
         const scene = scenario();
         await launch(scene, scene.matheus, { value: 1000 });
@@ -260,7 +260,7 @@ describe('Por sócio — divisão e acerto (P3, P4)', () => {
     });
 });
 
-describe('Por sócio — cobertura do saldo negativo (reports-design §8, P6)', () => {
+describe('Por sócio — cobertura do saldo negativo (relatorios §7, P6)', () => {
     /**
      * @param result Relatório.
      * @return O aporte de cada sócio, em número, na ordem do relatório.

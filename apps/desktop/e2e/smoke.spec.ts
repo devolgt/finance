@@ -7,11 +7,11 @@ import { completeFirstUse } from './firstUse.ts';
 import { freshUserData, launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Teste de fumaça do esqueleto (desktop-mvp-plan Fase 3.3): o caminho inteiro — janela,
+ * Teste de fumaça do esqueleto (desktop §1): o caminho inteiro — janela,
  * preload, `MessagePort`, `utilityProcess`, `better-sqlite3` no ABI do Electron e o arquivo
  * em disco — funcionando no binário real. Tudo pela tela, como o usuário: o perfil nasce no
- * primeiro uso (Fase 5), a despesa é lançada em Transações (Fase 9) e o extrato é conferido em
- * Contas (Fase 7).
+ * primeiro uso (perfis §4.2), a despesa é lançada em Transações (transacoes §5) e o extrato é
+ * conferido em Contas (contas §2).
  */
 
 test('abre, cria perfil, lança uma despesa e vê no extrato; os dados sobrevivem a reabrir o app', async () => {
@@ -53,7 +53,7 @@ test('abre, cria perfil, lança uma despesa e vê no extrato; os dados sobrevive
     }
 });
 
-test('o renderer não tem Node e enxerga só a ponte, sob CSP restrita (desktop-shell-design §3.6)', async () => {
+test('o renderer não tem Node e enxerga só a ponte, sob CSP restrita (desktop §2)', async () => {
     const { app, window: page, userData } = await launchApp();
     try {
         await expect(page.getByRole('heading', { name: 'Vamos começar' })).toBeVisible();

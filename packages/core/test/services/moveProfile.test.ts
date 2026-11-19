@@ -64,7 +64,7 @@ async function series(world: TestWorld, first: Transaction): Promise<readonly Tr
     return world.ok('recurrences.occurrences', { recurrenceId: first.recurrenceId });
 }
 
-describe('Regra de negócio (Mover para outro perfil, database-design §4.13): lançamento avulso', () => {
+describe('Regra de negócio (Mover para outro perfil, banco-de-dados §4.13): lançamento avulso', () => {
     it('a despesa paga sai do saldo do perfil de origem e entra no do destino, com a subcategoria e as tags de lá', async () => {
         const { world, personal, business, personalAccount, businessAccount, personalSub, businessSub } = setup();
         const tag = await world.ok('tags.create', { profileId: business, name: 'Obra' });
@@ -167,7 +167,7 @@ describe('Regra de negócio (Mover para outro perfil, database-design §4.13): l
     });
 });
 
-describe('Regra de negócio (Mover para outro perfil, database-design §4.12): série', () => {
+describe('Regra de negócio (Mover para outro perfil, banco-de-dados §4.12): série', () => {
     it('recusa mover só uma ocorrência ou esta e as futuras: a regra é do perfil', async () => {
         const { world, personal, business, personalAccount, businessAccount, personalSub, businessSub } = setup();
         const first = await world.create({ profileId: personal, subCategoryId: personalSub }, {

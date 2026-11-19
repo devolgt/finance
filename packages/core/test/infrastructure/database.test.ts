@@ -18,7 +18,7 @@ function freshDatabase(): Database {
     return database;
 }
 
-describe('contrato da porta Database sobre o better-sqlite3 (backend-design §5.10)', () => {
+describe('contrato da porta Database sobre o better-sqlite3 (testes §3.2)', () => {
     for (const contractCase of DATABASE_CONTRACT) {
         it(contractCase.name, () => {
             contractCase.run(freshDatabase);
@@ -68,7 +68,7 @@ describe('isSqliteVersionAtLeast', () => {
     });
 });
 
-describe('migrations embutidas (backend-design §4.5)', () => {
+describe('migrations embutidas (banco-de-dados §5.5)', () => {
     it('as migrations embutidas são idênticas aos arquivos de db/migrations', () => {
         const files = readdirSync(MIGRATIONS_DIR).filter((file) => file.endsWith('.sql')).sort();
         expect(embeddedMigrations.map((migration) => `${migration.name}.sql`)).toEqual(files);
@@ -80,7 +80,7 @@ describe('migrations embutidas (backend-design §4.5)', () => {
     });
 });
 
-describe('imutabilidade das migrations (backend-design §4.3)', () => {
+describe('imutabilidade das migrations (banco-de-dados §5.3)', () => {
     /**
      * Lê o lock sem passar pelo script que o grava, para que um bug no script não aprove a
      * si mesmo.

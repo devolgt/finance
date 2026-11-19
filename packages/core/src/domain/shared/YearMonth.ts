@@ -4,7 +4,7 @@ const PATTERN = /^(\d{4})-(\d{2})$/;
 
 /**
  * Competência mensal (ano e mês). É a chave natural de extratos e faturas — "uma linha por
- * mês" (database-design §4.6) — e existe como Value Object para que a aritmética de meses
+ * mês" (banco-de-dados §4.6) — e existe como Value Object para que a aritmética de meses
  * (virada de ano, mês anterior) fique num lugar só, em vez de `month - 1` espalhado e
  * errado em janeiro.
  */
@@ -83,7 +83,7 @@ export class YearMonth {
 
     /**
      * Número de dias do mês, com fevereiro bissexto. Calculado sem `Date` para que o
-     * resultado não dependa do fuso do aparelho (backend-design §5.7).
+     * resultado não dependa do fuso do aparelho (testes §2.4).
      *
      * @return 28 a 31.
      */

@@ -31,7 +31,7 @@ function temporaryFolder(): string {
     return folder;
 }
 
-describe('trava de navegação (desktop-shell-design §3.6)', () => {
+describe('trava de navegação (desktop §2)', () => {
     const packaged = 'file:///opt/financas/resources/app/out/renderer/index.html';
 
     it('aceita só o próprio app, inclusive a troca de rota pelo hash', () => {
@@ -95,7 +95,7 @@ describe('preferências do aparelho', () => {
     });
 });
 
-describe('restaurar backup (backend-design §4.5, passo 4)', () => {
+describe('restaurar backup (banco-de-dados §5.5, passo 4)', () => {
     it('põe a cópia no lugar do banco e guarda o banco que falhou com o seu -wal', () => {
         const folder = temporaryFolder();
         const files = databaseFiles(folder);

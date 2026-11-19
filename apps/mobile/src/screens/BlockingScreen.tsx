@@ -5,7 +5,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { AppText } from '../ui/AppText.tsx';
 
 /**
- * Tela de bloqueio da abertura (backend-design §4.5 e §4.8), com os mesmos textos e as mesmas
+ * Tela de bloqueio da abertura (banco-de-dados §5.5 e §5.8), com os mesmos textos e as mesmas
  * decisões do desktop, vindos do `client`: o banco não foi aberto e o app não segue, porque
  * abrir mesmo assim mostraria número errado ou gravaria num banco pela metade. Sem barra
  * inferior nem mês de referência, já que nada do banco pode ser lido.

@@ -3,7 +3,7 @@ import type { Database } from '../ports/Database.ts';
 /**
  * Unidade de trabalho dos Services. Um caso de uso inteiro — gravar a transação, garantir
  * extrato e fatura, recalcular saldos — precisa acontecer na **mesma** transação de banco
- * (backend-design §3.5).
+ * (core §4.2).
  *
  * É reentrante porque Services chamam Services: o lançamento chama o recálculo, que também
  * é um caso de uso por si só. Só a chamada mais externa abre a transação; as internas
@@ -55,7 +55,7 @@ export class UnitOfWork {
      * Executa `work` numa transação que é **sempre desfeita**. Existe para conferir o que um
      * caso de uso gravaria sem gravar — a verificação de integridade roda a rotina de
      * recálculo de verdade e compara o resultado com o cache, mas um desvio é bug a expor,
-     * não a corrigir em silêncio (database-design §3.7). Reaproveitar a rotina, em vez de
+     * não a corrigir em silêncio (banco-de-dados §3.7). Reaproveitar a rotina, em vez de
      * reimplementar o cálculo só para leitura, mantém um único oráculo.
      *
      * @param work Trabalho cujas escritas são descartadas; o que ele devolve é preservado.

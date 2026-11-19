@@ -7,7 +7,7 @@ export const accountTypeField = z.enum(['checking', 'investment']);
 
 /**
  * Campos do cadastro novo. Os opcionais têm o default do schema — `consider_balance = 1`,
- * `opening_balance = 0` (database-design §4.4) — e o rótulo de moeda, quando ausente, é a
+ * `opening_balance = 0` (banco-de-dados §4.4) — e o rótulo de moeda, quando ausente, é a
  * moeda do perfil, o caso comum.
  */
 export const accountContentShape = {

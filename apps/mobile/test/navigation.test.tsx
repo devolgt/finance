@@ -21,8 +21,8 @@ async function createProfile(core: Core, name: string, type: 'personal' | 'busin
     return result.data.profile.id;
 }
 
-describe('shell e navegação (mobile-mvp-plan, Fase 6)', () => {
-    it('abre no Início, com a barra inferior na ordem dos mockups e a aba aberta anunciada', async () => {
+describe('shell e navegação (mobile §5)', () => {
+    it('abre no Início, com a barra inferior na ordem definida (Início, Transações, Contas, Cartões, Mais) e a aba aberta anunciada', async () => {
         const { core } = testCore();
         await createProfile(core, 'Gustavo');
 

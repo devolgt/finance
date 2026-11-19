@@ -20,7 +20,7 @@ export { YearMonth } from './domain/shared/YearMonth.ts';
 export { Currency } from './domain/shared/Currency.ts';
 export { MONEY_MAX_AMOUNT, Money, roundHalfAwayFromZero } from './domain/shared/Money.ts';
 // Vocabulário dos relatórios personalizados: o editor oferece as mesmas opções e limites que a
-// Request aceita, sem manter uma cópia própria (reports-design §2 e §3).
+// Request aceita, sem manter uma cópia própria (relatorios §4 e §5).
 export {
     REPORT_DATE_BASES,
     REPORT_MAX_PREVIOUS_MONTHS,
@@ -43,19 +43,19 @@ export {
     type ReportRecurrenceGroup,
 } from './domain/report/ReportLayout.ts';
 export { REPORT_NAME_MAX_LENGTH } from './domain/report/ReportDefinition.ts';
-// Janelas da média da projeção de saldo: a tela oferece as mesmas que a Request aceita (reports-design §9).
+// Janelas da média da projeção de saldo: a tela oferece as mesmas que a Request aceita (relatorios §8).
 export { BALANCE_PROJECTION_BASES, type BalanceProjectionBasis } from './domain/report/BalanceProjection.ts';
 export { PARTNER_NAME_MAX_LENGTH } from './domain/partner/Partner.ts';
 // Regras puras do tipo da transação: o formulário de lançamento mostra o sinal do efeito e pede
 // a conta de destino e a meta pela mesma regra que o núcleo aplica, sem reimplementá-la na UI.
 export { feedsGoal, movesToDestination, originEffect, TRANSACTION_TYPES, withdrawsFromGoal, type TransactionType } from './domain/transaction/TransactionType.ts';
 // Análise da importação: a tela de revisão mostra os números pela mesma função que o núcleo usa
-// ao gravar, para que a prévia aprovada nunca discorde do que entra no banco (import-design §2).
+// ao gravar, para que a prévia aprovada nunca discorde do que entra no banco (importacao §2).
 export { analyzeImport, type ImportAccountUse, type ImportAnalysis, type ImportCategoryUse, type ImportCreditCardUse, type ImportIssue, type ImportIssueReason, type ImportSource, type PlannedRow, type PlannedSeries } from './domain/import/ImportAnalysis.ts';
 export { IMPORT_TRANSACTION_TYPES, type ImportOptions, type ImportRepetition, type ImportRow, type ImportTransactionType } from './domain/import/ImportRow.ts';
 export { RECURRENCE_FREQUENCIES, type RecurrenceFrequency } from './domain/recurrence/RecurrenceSchedule.ts';
 // Sincronização: as portas de rede que cada plataforma implementa, o coordenador que a tela de
-// Dispositivos abre e fecha, e os tipos que a tela mostra (sync-plan Fases 5 a 8).
+// Dispositivos abre e fecha, e os tipos que a tela mostra (sincronizacao §5.5 e §6.4).
 export type { Connection, DiscoveredPeer, Discovery, KeyStore, Listener, RandomSource, SnapshotPort, Transport } from './ports/SyncNetwork.ts';
 export { SyncCoordinator, deviceKeys, type CoordinatorObserver, type CoordinatorPorts, type CoordinatorStatus, type PeerStatus, type SessionEnd } from './protocol/SyncCoordinator.ts';
 export type { SessionOutcome, SessionRefusal, SessionStage } from './protocol/SyncSession.ts';

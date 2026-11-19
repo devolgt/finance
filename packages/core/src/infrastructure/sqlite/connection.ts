@@ -15,7 +15,7 @@ export class ConnectionContractError extends Error {
 }
 
 /**
- * Aplica a configuração obrigatória em toda conexão, num lugar só (database-design §3.2).
+ * Aplica a configuração obrigatória em toda conexão, num lugar só (banco-de-dados §3.2).
  * Sem `foreign_keys = ON` toda ação `ON DELETE` silenciosamente não faz nada — por isso o
  * pragma é lido de volta e conferido, em vez de confiar que o driver o aceitou.
  *

@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 /*
- * Layout das telas com lista lateral e detalhe — Contas, Cartões, Metas e os
- * relatórios por conta e por tag (desktop-mvp-plan Fase 13.3, pedido do usuário). Cada painel rola
+ * Layout das telas com lista lateral e detalhe — Contas, Cartões, Metas, Categorias e
+ * Relatórios (desktop §7.6, pedido do usuário). Cada painel rola
  * sozinho: rolar o extrato não leva a lista de contas embora, e uma lista longa de contas não
  * empurra o detalhe. O rodapé da lista (os totais) fica fixo embaixo, sempre à vista.
  *
@@ -32,7 +32,7 @@ export function PaneLayout({ children }: { readonly children: ReactNode }): Reac
  * posiciona de forma absoluta dentro dela.
  *
  * @param props.label Nome acessível do painel.
- * @param props.width Largura do painel, a do mockup (`w-95`).
+ * @param props.width Largura do painel (`w-95`), que cabe o nome e o valor sem quebrar a linha.
  * @param props.header Título, ações e os rótulos das colunas.
  * @param props.footer Totais ou nota da lista; ausente quando a lista não tem.
  * @param props.children Os itens da lista.

@@ -13,7 +13,7 @@ export type ReplaceOutcome = { readonly ok: true } | { readonly ok: false; reado
 /**
  * Põe um arquivo já preparado ao lado do banco no lugar dele, guardando o banco que sai (com os
  * seus `-wal` e `-shm`) em `displacedCopy`. É a troca comum à restauração do backup da migration
- * que falhou (backend-design §4.5, passo 4) e à importação de uma cópia em Ajustes: nas duas, o
+ * que falhou (banco-de-dados §5.5, passo 4) e à importação de uma cópia em Ajustes: nas duas, o
  * banco que sai não é apagado, para que nada se perca se a cópia que entra for a errada.
  *
  * A ordem existe para que nenhuma falha deixe o app sem banco no lugar. O arquivo que entra já

@@ -55,7 +55,7 @@ function options(overrides: Partial<OpenCoreOptions> = {}): OpenCoreOptions & { 
     };
 }
 
-describe('abertura do banco no processo do núcleo (backend-design §4.5)', () => {
+describe('abertura do banco no processo do núcleo (banco-de-dados §5.5)', () => {
     it('banco novo: migra sem backup, monta o núcleo, registra a integridade e completa as recorrências', async () => {
         const opts = options();
         const opened = await openCore(opts);

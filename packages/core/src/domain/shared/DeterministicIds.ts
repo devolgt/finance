@@ -6,7 +6,7 @@ import type { YearMonth } from './YearMonth.ts';
 /**
  * Namespace UUID v5 da aplicação. **Nunca alterar**: todo id determinístico já gravado em
  * qualquer aparelho foi derivado dele, e mudá-lo faria dois dispositivos derivarem ids
- * diferentes para "o extrato de março da conta X" (sync-design §5.6 e §11.2).
+ * diferentes para "o extrato de março da conta X" (sincronizacao §3.7).
  */
 export const APP_UUID_NAMESPACE = '89faa621-91d8-4ede-85ac-30e38e2f9244';
 
@@ -14,7 +14,7 @@ export const APP_UUID_NAMESPACE = '89faa621-91d8-4ede-85ac-30e38e2f9244';
  * Deriva um UUID v5 (RFC 9562) do namespace da aplicação e de uma chave natural. Linhas
  * identificadas pelo conteúdo — extratos e faturas, uma por mês — recebem esse id para
  * que dois aparelhos offline criando "a mesma" linha derivem o mesmo id e a sincronização
- * mescle em vez de colidir no índice único parcial (database-design §3.5). É código do
+ * mescle em vez de colidir no índice único parcial (banco-de-dados §3.5). É código do
  * núcleo, e não porta, porque precisa dar o mesmo resultado byte a byte em todo runtime.
  *
  * @param name Chave natural da linha, num formato estável que também nunca muda.
@@ -72,7 +72,7 @@ export function invoiceIdFor(creditCardId: CreditCardId, period: YearMonth): Inv
 }
 
 /**
- * Id do vínculo entre uma transação e uma tag (database-design §4.14). Derivado do par, e
+ * Id do vínculo entre uma transação e uma tag (banco-de-dados §4.14). Derivado do par, e
  * não aleatório, pelo mesmo motivo dos extratos: dois aparelhos que marcam a mesma tag no
  * mesmo lançamento derivam a mesma linha, e reaplicar uma tag removida revive a linha
  * excluída em vez de esbarrar no índice único do par. O formato da chave é contrato
@@ -87,7 +87,7 @@ export function transactionTagIdFor(transactionId: TransactionId, tagId: TagId):
 }
 
 /**
- * Id de uma ocorrência de recorrência (database-design §4.12; sync-design §5.6). Derivado do
+ * Id de uma ocorrência de recorrência (banco-de-dados §4.12; sincronizacao §3.7). Derivado do
  * **número** da ocorrência, e não da data, porque a data de uma série muda quando o usuário
  * troca o dia âncora; pelo número, dois aparelhos que completam a mesma série offline derivam a
  * mesma linha, e gerar de novo um número já excluído revive a linha. O formato da chave é

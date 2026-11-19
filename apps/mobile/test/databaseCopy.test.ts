@@ -17,7 +17,7 @@ function disk(): MemoryFileSystem {
     return files;
 }
 
-describe('importar a cópia do banco no celular (mobile-mvp-plan, Fase 18)', () => {
+describe('importar a cópia do banco no celular (mobile §7.2)', () => {
     it('Regra de negócio (Cópia do banco): a cópia substitui o banco, e o anterior é guardado com o -wal', () => {
         const files = disk();
 

@@ -7,8 +7,8 @@ import { Button } from '../ui/Button.tsx';
 import { Sheet } from '../ui/Sheet.tsx';
 
 /**
- * Aviso antes de descartar (mockup `MobileParear`, caixa de aviso).
- * Regra de negócio (Sincronização, sync-design §6.4): quem entra num grupo troca os próprios
+ * Aviso antes de descartar (sincronizacao §7.2).
+ * Regra de negócio (Sincronização, sincronizacao §4.4): quem entra num grupo troca os próprios
  * dados pelos do grupo; o aparelho com dados precisa descartá-los antes, e a tela pede
  * confirmação com todas as letras.
  */
@@ -30,7 +30,7 @@ export function setAsideMessage(result: DatabaseSetAsideResult): string {
 }
 
 /**
- * Confirmação de "Entrar num grupo" num aparelho que já tem dados (sync-plan Fase 8). O núcleo não
+ * Confirmação de "Entrar num grupo" num aparelho que já tem dados (sincronizacao §6.4). O núcleo não
  * tem rota para zerar o banco e recusa a entrada com dados, então o descarte é do app: encerra a
  * sincronização — o listener e as sessões usam o banco que vai sair —, tira o banco do lugar pela
  * raiz de composição (`setAsideForJoin`) e reabre o núcleo pelo `StartupGate`, que encontra um

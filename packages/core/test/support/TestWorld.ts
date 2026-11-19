@@ -28,7 +28,7 @@ export interface StatementRow {
  * Um banco SQLite real em memória com todas as migrations aplicadas pelo runner de
  * produção e o núcleo montado sobre ele. Os testes de Service não mockam Repository:
  * metade dos bugs previstos mora no SQL — o `deleted_at IS NULL` esquecido, o `SUM` no
- * contêiner errado — e um mock os esconderia (backend-design §5.4).
+ * contêiner errado — e um mock os esconderia (testes §2.1).
  *
  * Os cadastros (perfil, conta, cartão, categoria) são semeados por SQL direto mesmo tendo
  * Service, para que um teste de saldo não falhe por causa de um defeito no cadastro — os
@@ -282,7 +282,7 @@ export class TestWorld {
 
     /**
      * Lança uma transação pela rota real (camada Request incluída), com padrões válidos para
-     * que cada teste declare só o que importa (builders, backend-design §5.4).
+     * que cada teste declare só o que importa (testes §2.1).
      *
      * @param base Perfil, subcategoria e origem.
      * @param overrides Campos do lançamento que o teste quer fixar.

@@ -40,7 +40,7 @@ export type OnboardingFormResult =
 
 /**
  * Formulário em branco. Pessoal, real e conta corrente são o caso comum de quem instala um
- * app de finanças pessoais no Brasil, e o mockup já os traz marcados.
+ * app de finanças pessoais no Brasil, e por isso já vêm marcados.
  */
 export const EMPTY_ONBOARDING_FORM: OnboardingFormValues = {
     profileName: '',
@@ -66,10 +66,10 @@ const FIELD_BY_PATH: Readonly<Record<string, FieldTarget<OnboardingField>>> = {
 
 /**
  * Lê o formulário e o valida com o `startOnboardingRequest`, o mesmo schema que o núcleo
- * aplica na fronteira (desktop-shell-design §5.4): a mensagem de conforto da tela e a recusa
+ * aplica na fronteira (desktop §3.5): a mensagem de conforto da tela e a recusa
  * do núcleo nunca discordam, e o limite do nome não é repetido aqui.
  * Regra de negócio (Contas): saldo inicial em branco é zero, o padrão do cadastro
- * (database-design §4.4) — quem abre uma conta nova não tem o que digitar.
+ * (banco-de-dados §4.4) — quem abre uma conta nova não tem o que digitar.
  * Regra de negócio (Dinheiro): o saldo fica entre −1 trilhão e 1 trilhão (`MONEY_MAX_AMOUNT`).
  *
  * O saldo recusado pelo `parseMoneyInput` não interrompe a leitura: o schema roda com zero no

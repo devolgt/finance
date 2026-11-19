@@ -11,7 +11,7 @@ import type { ProfileBalances } from './ProfileBalances.ts';
 /**
  * Cálculo de saldo do perfil: contas com consolidado e previsto do mês corrente, e o total.
  * Lê o cache das contas — que existe justamente para a tela inicial abrir sem consultar
- * extratos (database-design §4.4) —, mas o confere contra o mês corrente antes, porque na
+ * extratos (banco-de-dados §4.4) —, mas o confere contra o mês corrente antes, porque na
  * virada do mês o cache ainda aponta o fechamento do mês anterior.
  */
 export class AccountBalanceService {
@@ -30,9 +30,9 @@ export class AccountBalanceService {
 
     /**
      * Regra de negócio (Saldos): o total do perfil soma só as contas com
-     * `consider_balance` ligado (database-design §4.4). Transferências entre contas do perfil
+     * `consider_balance` ligado (banco-de-dados §4.4). Transferências entre contas do perfil
      * somam zero no total por construção — saem de uma e entram na outra —, então nunca
-     * contam como receita ou despesa do perfil (§4.13); só os encargos da origem pesam.
+     * contam como receita ou despesa do perfil (contas §4.3); só os encargos da origem pesam.
      *
      * @param profileId Perfil consultado.
      * @return As contas com os saldos do mês corrente e o total consolidado e previsto.
@@ -56,7 +56,7 @@ export class AccountBalanceService {
     /**
      * Reconstrói do zero todos os saldos de uma conta. É a ferramenta de reparo: um saldo
      * em cache que diverge do recalculado é bug a expor, não a corrigir em silêncio
-     * (database-design §3.7) — por isso é uma ação explícita, e não algo que a leitura faz.
+     * (banco-de-dados §3.7) — por isso é uma ação explícita, e não algo que a leitura faz.
      *
      * @param accountId Conta a reconstruir.
      * @return A conta com os saldos reconstruídos.

@@ -22,7 +22,7 @@ export interface ReferenceMonth {
 }
 
 /**
- * Mês de referência global (desktop-mvp-plan Fase 4). Trocar o mês troca o *search param* da
+ * Mês de referência global (desktop §8). Trocar o mês troca o *search param* da
  * tela atual, sem sair dela, e grava o mês como o último aberto no aparelho, para que o app
  * reabra onde o usuário parou.
  *

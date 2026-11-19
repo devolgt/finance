@@ -38,8 +38,8 @@ export interface SessionContext {
 }
 
 /**
- * Por que uma sessão foi recusada. A tela diz qual aparelho corrigir (sync-design §5.2 e
- * backend-design §4.9): no relógio, mostra os dois horários; na versão, quem está atrás.
+ * Por que uma sessão foi recusada. A tela diz qual aparelho corrigir (sincronizacao §3.2 e
+ * banco-de-dados §5.9): no relógio, mostra os dois horários; na versão, quem está atrás.
  */
 export type SessionRefusal =
     | { readonly reason: 'clock'; readonly localMillis: number; readonly remoteMillis: number }
@@ -67,7 +67,7 @@ export interface SessionObserver {
     stage(peerId: string | null, stage: SessionStage): void;
 
     /**
-     * Um lote foi aplicado: o shell invalida as consultas da UI (sync-plan Fase 7).
+     * Um lote foi aplicado: o shell invalida as consultas da UI (sincronizacao §6.3).
      *
      * @param report O que a aplicação fez.
      */
@@ -86,7 +86,7 @@ class SessionRefused extends Error {
 }
 
 /**
- * Uma sessão aberta com um par. `notifyLocalChange` é o modo ao vivo (sync-design §7.4, passo
+ * Uma sessão aberta com um par. `notifyLocalChange` é o modo ao vivo (sincronizacao §5.6, passo
  * 8): cada escrita local confirmada é enviada enquanto a tela de Dispositivos está aberta.
  */
 export interface LiveSession {
@@ -100,7 +100,7 @@ export interface LiveSession {
 }
 
 /**
- * Abre uma sessão como quem liga (o aparelho de menor id, sync-design §7.3).
+ * Abre uma sessão como quem liga (o aparelho de menor id, sincronizacao §5.3).
  *
  * @param context Aparelho.
  * @param frames Conexão já aberta.
@@ -131,7 +131,7 @@ export function dialSession(context: SessionContext, frames: FrameConnection, pe
 /** O convite em aberto no anfitrião, que só ele conhece. */
 export interface PendingInvite {
     readonly payload: InvitePayload;
-    /** Consumido: um aparelho provou o segredo e entrou no grupo (sync-design §6.3, uso único). */
+    /** Consumido: um aparelho provou o segredo e entrou no grupo (sincronizacao §4.3, uso único). */
     used: boolean;
     /**
      * Reservado por um pareamento em andamento. Fica separado de `used` porque só a decifração
@@ -194,7 +194,7 @@ export interface JoiningDevice {
 }
 
 /**
- * Entra num grupo pelo convite lido do QR (sync-design §6.3 e §6.4), como quem liga. O
+ * Entra num grupo pelo convite lido do QR (sincronizacao §4.3 e §4.4), como quem liga. O
  * aparelho precisa estar vazio; termina com o snapshot instalado (e o app reabre) ou, sem
  * snapshot, já como membro sincronizando.
  *
@@ -274,7 +274,7 @@ async function acceptPairing(
         await frames.send(utf8ToBytes(JSON.stringify({ refused: 'no-invite' })));
         throw new SessionRefused({ reason: 'no-invite' });
     }
-    // Regra de negócio (Sincronização, sync-design §6.3): o convite é de uso único, mas só é
+    // Regra de negócio (Sincronização, sincronizacao §4.3): o convite é de uso único, mas só é
     // consumido depois que o aparelho novo prova o segredo; até lá fica apenas reservado.
     invite.claimed = true;
     let proof: PairingProof;
@@ -395,7 +395,7 @@ function startSession(frames: FrameConnection, outer: SessionObserver, work: (se
 }
 
 /**
- * A troca depois do handshake (sync-design §7.4, passos 3 a 8): membros primeiro, vetores,
+ * A troca depois do handshake (sincronizacao §5.6, passos 3 a 8): membros primeiro, vetores,
  * lotes nos dois sentidos com confirmação, e o modo ao vivo até a conexão fechar.
  *
  * @param context Aparelho.
@@ -405,7 +405,7 @@ function startSession(frames: FrameConnection, outer: SessionObserver, work: (se
  * @param session Estado da sessão, que recebe o empurrão do modo ao vivo.
  * @return O desfecho quando a conexão fecha.
  * @throws {SessionRefused} Quando a troca de membros revela que este aparelho ou o par foi
- * removido (sync-design §7.4, passo 3).
+ * removido (sincronizacao §5.6, passo 3).
  * @throws {Error} Quando o par manda uma mensagem fora da ordem do protocolo.
  */
 async function exchange(context: SessionContext, channel: SecureChannel, peerId: string, observer: SessionObserver, session: SessionHandle): Promise<SessionOutcome> {
@@ -419,7 +419,7 @@ async function exchange(context: SessionContext, channel: SecureChannel, peerId:
         throw unexpected(members);
     }
     sync.apply(syncBatchRequest.parse(members.batch));
-    // Uma remoção aprendida agora vale antes de qualquer dado (sync-design §7.4, passo 3).
+    // Uma remoção aprendida agora vale antes de qualquer dado (sincronizacao §5.6, passo 3).
     if (sync.activeMember(DeviceId(peerId)) === null || sync.activeMember(self) === null) {
         await channel.sendJson({ type: 'refuse', reason: 'removed' } satisfies SessionMessage);
         throw new SessionRefused({ reason: 'removed' });
@@ -504,7 +504,7 @@ function localHello(context: SessionContext): { readonly deviceId: string; reado
 }
 
 /**
- * Regra de negócio (Sincronização, sync-design §5.2 e backend-design §4.9): nada é trocado
+ * Regra de negócio (Sincronização, sincronizacao §3.2 e banco-de-dados §5.9): nada é trocado
  * com relógios divergindo mais de 2 minutos nem com versões de schema diferentes.
  *
  * @param context Aparelho.

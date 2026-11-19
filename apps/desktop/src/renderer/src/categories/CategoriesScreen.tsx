@@ -38,14 +38,14 @@ type CategoryDialogState =
     | { readonly mode: 'delete'; readonly target: CategoryDeletionTarget };
 
 /**
- * Categorias, item próprio do menu (desktop-mvp-plan Fases 6, 13.11 e 13.12): à esquerda a lista
+ * Categorias, item próprio do menu (categorias-e-tags §5.1 e desktop §8.1): à esquerda a lista
  * das categorias com a busca, à direita as subcategorias da categoria aberta, como Contas e
  * Cartões. A categoria aberta fica na URL (`category`); a busca, não, porque é só um atalho
  * para achar a categoria e não deve voltar ao reabrir a tela.
  *
- * Diverge do mockup em três pontos, decididos com o usuário: sem "Mover para" (o núcleo não
- * move subcategoria entre categorias), sem o total do mês (a tela não depende do mês de
- * referência, decisão de interface 2 — os relatórios mostram os valores) e sem
+ * Fica de fora, por decisão do usuário: "Mover para" (o núcleo não move subcategoria entre
+ * categorias), o total do mês (a tela não depende do mês de referência, desktop §7.2 — os
+ * relatórios mostram os valores) e
  * reordenar (o núcleo não guarda ordem de categorias).
  *
  * @return A tela de categorias.
@@ -356,7 +356,7 @@ function SubCategoryTable({ category, onOpen }: { readonly category: CategoryBra
 }
 
 /**
- * "Nova subcategoria" na última linha da tabela, como no mockup: a subcategoria é só um nome, e
+ * "Nova subcategoria" na última linha da tabela: a subcategoria é só um nome, e
  * criá-la sem diálogo deixa cadastrar várias seguidas. O nome repetido volta do núcleo como
  * `CONFLICT` e aparece abaixo do campo.
  *
@@ -618,7 +618,7 @@ function SubCategoryRenameDialog({ subCategory, onClose }: { readonly subCategor
 }
 
 /**
- * Excluir categoria ou subcategoria. Regra de negócio (Categorias, desktop-mvp-plan Fase 1.4):
+ * Excluir categoria ou subcategoria. Regra de negócio (Categorias, categorias-e-tags §2.3):
  * com lançamentos, a exclusão pede para onde movê-los — toda transação aponta para uma
  * subcategoria, e apagar a classificação não pode apagar o lançamento. Sem lançamentos, é só
  * a confirmação. Mover não muda saldo nenhum, porque a categoria não afeta saldo.

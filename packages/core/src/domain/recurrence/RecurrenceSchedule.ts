@@ -1,7 +1,7 @@
 import { BusinessRuleViolation, InvalidValueError } from '../shared/errors.ts';
 import { LocalDate } from '../shared/LocalDate.ts';
 
-/** Intervalo entre ocorrências (database-design §4.12, coluna `recurrence`). */
+/** Intervalo entre ocorrências (banco-de-dados §4.12, coluna `recurrence`). */
 export type RecurrenceFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 export const RECURRENCE_FREQUENCIES: readonly RecurrenceFrequency[] = ['daily', 'weekly', 'monthly', 'yearly'];
@@ -18,7 +18,7 @@ export interface RecurrenceScheduleProps {
 }
 
 /**
- * Calendário de uma série (database-design §4.12). Calcula a data de qualquer ocorrência direto
+ * Calendário de uma série (banco-de-dados §4.12). Calcula a data de qualquer ocorrência direto
  * a partir da de referência, e não avançando uma a uma, para que o "último dia do mês" de um mês
  * curto não contamine as seguintes.
  * Regra de negócio (Recorrências): num mês sem o dia âncora a ocorrência cai no último dia do
@@ -122,13 +122,13 @@ export class RecurrenceSchedule implements RecurrenceScheduleProps {
     }
 }
 
-/** Meses à frente que uma série fixa mantém gravados (database-design §4.12). */
+/** Meses à frente que uma série fixa mantém gravados (banco-de-dados §4.12). */
 const HORIZON_MONTHS = 12;
 
 /**
- * Regra de negócio (Recorrências, database-design §4.12): as fixas são gravadas até um horizonte
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): as fixas são gravadas até um horizonte
  * móvel de 12 meses a partir de hoje. Fica no domínio porque a importação decide pelo mesmo
- * horizonte se uma fixa do arquivo terminou (import-design §5.5) — com uma cópia própria, as duas
+ * horizonte se uma fixa do arquivo terminou (importacao §5.5) — com uma cópia própria, as duas
  * regras poderiam divergir e a série importada seria estendida ou cortada no lugar errado.
  *
  * @param today "Hoje" do usuário.
@@ -165,7 +165,7 @@ export function anchorDayOf(frequency: RecurrenceFrequency, date: LocalDate): nu
  * A data da referência sozinha não basta: no fim de um mês curto ela já foi encurtada (o aluguel
  * do dia 31 vence em 30/09), e tomar esse dia como âncora mudaria a série para o dia 30 em todos
  * os meses seguintes.
- * Regra de negócio (Recorrências, database-design §4.12): num mês sem o dia âncora a ocorrência
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): num mês sem o dia âncora a ocorrência
  * cai no último dia do mês, e a seguinte volta ao dia âncora.
  *
  * @param frequency Frequência da série; só a mensal e a anual têm dia do mês a recuperar.
@@ -203,7 +203,7 @@ function isLastDayOfMonth(date: LocalDate): boolean {
 
 /**
  * Leva uma ocorrência existente para o dia âncora novo **sem trocar o período dela**.
- * Regra de negócio (Recorrências, database-design §4.12): trocar a data em "esta e as futuras"
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): trocar a data em "esta e as futuras"
  * muda o dia dentro do mês em que cada ocorrência já está (último dia do mês quando o dia não
  * existe), ou o dia da semana dentro da semana dela na semanal — nunca a desloca de mês.
  *

@@ -5,7 +5,7 @@ import type { Money } from '../shared/Money.ts';
 import { requireName } from '../shared/names.ts';
 
 /**
- * De onde vem o progresso da meta (database-design §4.11, desktop-mvp-plan Fase 13.3):
+ * De onde vem o progresso da meta (banco-de-dados §4.11, metas §2):
  * - `transactions`: soma dos lançamentos vinculados pelo campo "Meta" — as transferências de
  *   retirada descontam;
  * - `account`: o saldo consolidado de hoje de uma conta de investimento; nenhum lançamento se
@@ -29,14 +29,14 @@ export interface GoalProps extends GoalContent {
     readonly profileId: ProfileId;
     /**
      * Arquivada: fora da lista padrão de Metas e das escolhas de lançamentos novos, mas com os
-     * vínculos e o progresso intactos (database-design §4.11, migration `0006`). Não é conteúdo:
+     * vínculos e o progresso intactos (banco-de-dados §4.11, migration `0006`). Não é conteúdo:
      * muda só por `archive`/`unarchive`, nunca pela edição.
      */
     readonly archived: boolean;
 }
 
 /**
- * Objetivo de guardar um valor, de um perfil (database-design §4.11; mockup `DesktopMetas`).
+ * Objetivo de guardar um valor, de um perfil (banco-de-dados §4.11; metas §1.1).
  * Regra de negócio (Metas): a meta é um alvo de **economia** — um valor que se quer juntar —,
  * alimentado pelos lançamentos vinculados a ela ou pelo saldo de uma conta de investimento
  * (`GoalFunding`); o progresso não é coluna, é sempre calculado (`GoalProgress`). A entidade
@@ -109,7 +109,7 @@ export class Goal implements GoalProps {
     }
 
     /**
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.4): arquivar tira a meta de vista — da
+     * Regra de negócio (Metas, metas §5): arquivar tira a meta de vista — da
      * lista padrão e das escolhas de lançamentos novos — sem apagar nada; é o que se faz com a
      * meta concluída ou abandonada que ainda conta uma história.
      *

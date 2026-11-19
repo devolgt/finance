@@ -18,7 +18,7 @@ export type AccountContent = Omit<CoreInput<'accounts.update'>, 'id'>;
 export interface AccountFormValues {
     readonly name: string;
     readonly type: AccountContent['type'];
-    /** Moeda da conta no mundo real; só rótulo (database-design §4.4). */
+    /** Moeda da conta no mundo real; só rótulo (banco-de-dados §4.4). */
     readonly currency: string;
     readonly considerBalance: boolean;
     readonly openingBalance: string;
@@ -47,7 +47,7 @@ const FIELD_BY_PATH: Readonly<Record<string, FieldTarget<AccountField>>> = {
 
 /**
  * Formulário de conta nova. Corrente, na moeda do perfil e somando no total é o caso comum;
- * os mesmos padrões do schema (database-design §4.4).
+ * os mesmos padrões do schema (banco-de-dados §4.4).
  *
  * @param profileCurrency Moeda do perfil ativo, a moeda padrão da conta.
  * @return Os campos em branco.
@@ -72,10 +72,10 @@ export function accountFormFrom(account: AccountResponse): AccountFormValues {
 
 /**
  * Lê o formulário de conta e o valida com o schema de conteúdo das rotas de conta, para que a
- * mensagem da tela e a recusa do núcleo nunca discordem (desktop-shell-design §5.4).
+ * mensagem da tela e a recusa do núcleo nunca discordem (desktop §3.5).
  * Regra de negócio (Contas): saldo inicial em branco é zero, o padrão do cadastro
- * (database-design §4.4). O saldo está na moeda do **perfil**, e não na da conta: a moeda da
- * conta é só rótulo, e todo valor gravado está na moeda do perfil (database-design §4.1).
+ * (banco-de-dados §4.4). O saldo está na moeda do **perfil**, e não na da conta: a moeda da
+ * conta é só rótulo, e todo valor gravado está na moeda do perfil (banco-de-dados §4.1).
  *
  * O saldo recusado pelo `parseMoneyInput` não interrompe a leitura: o schema roda com zero no
  * lugar dele, para que os erros dos outros campos apareçam no mesmo envio.

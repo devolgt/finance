@@ -84,7 +84,7 @@ async function pairedDevices(network = new MemoryNetwork()): Promise<{ readonly 
     return { desktop, phone, network, ids: { profileId, accountId, subCategoryId } };
 }
 
-describe('Sessão sobre um Transport em memória (sync-plan Fase 5)', () => {
+describe('Sessão sobre um Transport em memória (sincronizacao §5.5)', () => {
     it('entra pelo convite, troca o que falta ao abrir a tela e envia ao vivo enquanto ela está aberta', async () => {
         const { desktop, phone, ids } = await pairedDevices();
         expect(syncOf(desktop.world).listMembers().map((member) => member.name)).toEqual(expect.arrayContaining(['Desktop', 'Celular']));

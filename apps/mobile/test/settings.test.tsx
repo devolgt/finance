@@ -85,7 +85,7 @@ beforeEach(() => {
     mockGetDocumentAsync.mockClear();
 });
 
-describe('Ajustes (mobile-mvp-plan, Fase 18)', () => {
+describe('Ajustes (mobile §7.2)', () => {
     it('troca o tema e mostra a versão do banco', async () => {
         const app = await openSettings(fakeCopies().copies);
 

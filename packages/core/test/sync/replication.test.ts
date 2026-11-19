@@ -34,7 +34,7 @@ function transactionRow(world: TestWorld, id: string): Readonly<Record<string, u
     return world.database.get('SELECT * FROM transactions WHERE id = :id', { id });
 }
 
-describe('Extração e aplicação (sync-plan Fase 3)', () => {
+describe('Extração e aplicação (sincronizacao §3.11)', () => {
     it('o aparelho que entra vazio recebe tudo, com os saldos recalculados', () => {
         const { desktop, phone } = scene();
 
@@ -54,7 +54,7 @@ describe('Extração e aplicação (sync-plan Fase 3)', () => {
         expect(domainDump(phone)).toBe(domainDump(desktop));
     });
 
-    it('edições concorrentes em colunas diferentes da mesma transação sobrevivem as duas (sync-design §5.1)', async () => {
+    it('edições concorrentes em colunas diferentes da mesma transação sobrevivem as duas (sincronizacao §3.1)', async () => {
         const { desktop, phone, profileId, accountId, subCategoryId } = scene();
         const created = await desktop.create({ profileId, subCategoryId }, { source: { kind: 'account', accountId }, name: 'Mercado', value: 100 });
         exchange(desktop, phone);

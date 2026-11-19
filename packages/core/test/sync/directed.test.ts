@@ -76,7 +76,7 @@ async function expectConverged(a: TestWorld, b: TestWorld): Promise<void> {
     }
 }
 
-describe('Testes direcionados da sync-design §11.4', () => {
+describe('Testes direcionados da sincronização (sincronizacao §9)', () => {
     it('colisão de nomes: categoria e subcategoria criadas offline nos dois mesclam no menor id, levando os lançamentos', async () => {
         const { desktop, phone, profileId, accountId } = pair();
         const mine = await desktop.ok('categories.create', { profileId, name: 'Alimentação' });

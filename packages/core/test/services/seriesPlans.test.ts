@@ -4,8 +4,8 @@ import { editedByHand } from '../../src/services/recurrence/SeriesPlanner.ts';
 import { TestWorld } from '../support/TestWorld.ts';
 
 /*
- * Plano das escritas de série para o diálogo de revisão (database-design
- * §4.12). "Hoje" é 05/10/2026: as séries fixas vão até 05/10/2027.
+ * Plano das escritas de série para o diálogo de revisão (recorrencias
+ * §7). "Hoje" é 05/10/2026: as séries fixas vão até 05/10/2027.
  */
 
 type Transaction = CoreOutput<'transactions.get'>;
@@ -74,7 +74,7 @@ function rows(items: Plan['deleted']): readonly (readonly [number | null, string
     return items.map((item) => [item.transaction.occurrence, item.transaction.dueDate, item.transaction.paid] as const);
 }
 
-describe('plano do diálogo de revisão (database-design §4.12)', () => {
+describe('plano do diálogo de revisão (banco-de-dados §4.12)', () => {
     it('trocar o tipo lista as excluídas (com as pagas), as criadas e as regras, e não grava nada', async () => {
         const { world, rent } = await setup();
         const third = await occurrenceOf(world, rent, 3);
@@ -133,7 +133,7 @@ describe('plano do diálogo de revisão (database-design §4.12)', () => {
     });
 });
 
-describe('ocorrência editada à mão (desktop-mvp-plan Fase 9.2)', () => {
+describe('ocorrência editada à mão (recorrencias §7)', () => {
     it('conta como editada quando a última escrita passou da criação mais de um segundo', () => {
         const stamps = (createdAt: string, updatedAt: string): { createdAt: Timestamp; updatedAt: Timestamp } => ({ createdAt: parseTimestamp(createdAt), updatedAt: parseTimestamp(updatedAt) });
         expect(editedByHand(stamps('2026-10-05 12:00:00', '2026-10-05 12:00:00'))).toBe(false);

@@ -19,13 +19,12 @@ import {
 
 /**
  * Estado da abertura do banco, o mesmo nos dois shells: cada estado de bloqueio tem uma tela
- * própria, e o desktop e o celular precisam bloquear pelos mesmos motivos (mobile-mvp-plan,
- * Fase 4).
+ * própria, e o desktop e o celular precisam bloquear pelos mesmos motivos (mobile §3.1).
  */
 export type StartupStatus =
     /** `schemaVersion`: o `user_version` do banco depois de migrar, mostrado em Ajustes. */
     | { readonly kind: 'ready'; readonly schemaVersion: number }
-    /** O banco é de uma versão mais nova do app (backend-design §4.8). */
+    /** O banco é de uma versão mais nova do app (banco-de-dados §5.8). */
     | { readonly kind: 'schemaNewerThanApp'; readonly databaseVersion: number; readonly appVersion: number }
     /** Uma migration falhou e foi desfeita; `backupFile` é a cópia de antes, quando há uma. */
     | { readonly kind: 'migrationFailed'; readonly backupFile: string | null }
@@ -118,7 +117,7 @@ export interface StartupPorts<D extends ClosableDatabase> {
      * @throws {unknown} Quando o arquivo não abre; vira o bloqueio `openFailed`.
      */
     readonly openDatabase: () => D;
-    /** Pasta `backups/` ao lado do banco (backend-design §4.6). */
+    /** Pasta `backups/` ao lado do banco (banco-de-dados §5.6). */
     readonly backups: BackupDirectory;
     readonly markers: StartupMarkers;
     readonly clock: Clock;
@@ -128,10 +127,10 @@ export interface StartupPorts<D extends ClosableDatabase> {
     readonly migrations?: OpenDatabaseOptions['migrations'];
     /**
      * Relógio de parede em milissegundos: com ele o núcleo captura as escritas para a
-     * sincronização (sync-design §5.4). Os dois apps o passam; ferramentas podem omitir.
+     * sincronização (sincronizacao §3.4). Os dois apps o passam; ferramentas podem omitir.
      */
     readonly wallClock?: WallClock;
-    /** Adaptadores de rede da tela de Dispositivos (sync-plan Fases 7 e 8). */
+    /** Adaptadores de rede da tela de Dispositivos (sincronizacao §6.3 e §6.4). */
     readonly syncNetwork?: SyncNetworkPorts;
 }
 
@@ -142,11 +141,11 @@ export type StartupOutcome<D extends ClosableDatabase> =
     | { readonly status: Exclude<StartupStatus, { readonly kind: 'ready' }>; readonly core: null; readonly database: null; readonly close: () => void };
 
 /**
- * A sequência de abertura dos dois shells (backend-design §4.5): abrir o arquivo, migrar com
+ * A sequência de abertura dos dois shells (banco-de-dados §5.5): abrir o arquivo, migrar com
  * backup, montar o núcleo com as portas da plataforma, verificar a integridade e completar as
  * recorrências. Mora no `client`, e não em cada shell, porque é regra — quando bloquear e com
- * qual tela — e o celular precisa bloquear pelos mesmos motivos do desktop (mobile-mvp-plan,
- * Fase 4). Cada falha vira um `StartupStatus` de bloqueio em vez de exceção, porque o shell
+ * qual tela — e o celular precisa bloquear pelos mesmos motivos do desktop (mobile §3.1).
+ * Cada falha vira um `StartupStatus` de bloqueio em vez de exceção, porque o shell
  * precisa continuar vivo para dizer ao usuário o que aconteceu.
  *
  * Antes de tudo, uma restauração de backup interrompida bloqueia sem abrir o arquivo: o driver
@@ -159,10 +158,10 @@ export type StartupOutcome<D extends ClosableDatabase> =
  * backup de uma nova tentativa já não serviria à versão anterior do app.
  *
  * A verificação de integridade só registra os desvios, sem bloquear nem corrigir
- * (desktop-mvp-plan Fase 0): corrigir em silêncio esconderia o bug que causou o desvio. Já a
+ * (contas §3.5): corrigir em silêncio esconderia o bug que causou o desvio. Já a
  * verificação que não consegue rodar bloqueia, porque aí ninguém sabe se o banco está são.
  *
- * O complemento das recorrências vem por último (database-design §4.12), porque escreve no
+ * O complemento das recorrências vem por último (banco-de-dados §4.12), porque escreve no
  * banco. A série que falha só vai para o log: bloquear repetiria a mesma falha em toda
  * abertura, sem o usuário chegar à tela para corrigir a série. Já o complemento que nem
  * consegue rodar bloqueia, como qualquer etapa.
@@ -256,7 +255,7 @@ export async function openCoreSequence<D extends ClosableDatabase>(ports: Startu
 /**
  * Classifica a falha da abertura na tela de bloqueio certa. A migration que falhou é
  * reconhecida pelo tipo do erro, e não pela existência de backup: banco novo não tem backup
- * (backend-design §4.6), e a falha da primeira migration seria tomada por arquivo corrompido.
+ * (banco-de-dados §5.6), e a falha da primeira migration seria tomada por arquivo corrompido.
  *
  * @param error O que `openDatabase` lançou.
  * @param createdBackup Backup gravado nesta tentativa; só existe se a migration chegou a
@@ -279,7 +278,7 @@ function failureStatus(error: unknown, createdBackup: string | null): Exclude<St
 
 /**
  * Mantém na tela o backup de antes da primeira tentativa que falhou. Cada migration roda na
- * própria transação (backend-design §4.5, passo 4), então as anteriores à que falhou ficam
+ * própria transação (banco-de-dados §5.5, passo 4), então as anteriores à que falhou ficam
  * aplicadas: um banco na v3 com as migrations 4 e 5, falhando na 5, fica na v4. A abertura
  * seguinte grava `pre-v4-…`, que a versão anterior do app — que só conhece até a v3 — recusaria
  * por ser mais novo. Por isso a primeira falha grava uma marca com o seu backup, e as
@@ -315,7 +314,7 @@ function rememberedFailure(
 /**
  * Pasta de backups que esconde da rotação a cópia guardada pela marca de migration que falhou.
  * Sem isso, cada nova abertura com falha grava um backup e, depois de três, a rotação
- * (backend-design §4.6) apagaria justamente a cópia de antes da atualização — a única que a
+ * (banco-de-dados §5.6) apagaria justamente a cópia de antes da atualização — a única que a
  * versão anterior do app consegue abrir. Fica nesta sequência, e não na rotação do núcleo,
  * porque é a marca do shell que sabe qual cópia proteger; enquanto ela existir, a pasta guarda
  * até quatro cópias.

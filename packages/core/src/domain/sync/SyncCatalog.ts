@@ -1,5 +1,5 @@
 /**
- * O que acontece com a linha que perde uma colisão de chave natural (sync-design §5.7):
+ * O que acontece com a linha que perde uma colisão de chave natural (sincronizacao §3.8):
  * `merge` grava a perdedora com soft delete e redireciona os filhos dela para a
  * sobrevivente; `unlink` limpa as colunas da chave, que deixam de colidir sem que nenhuma
  * linha financeira seja excluída.
@@ -31,10 +31,10 @@ export interface SyncedTable {
     readonly tombstone: 'deleted_at' | 'removed_at';
     /**
      * Caches derivados que nunca sincronizam: uma linha recebida os grava com `0` e o
-     * recálculo pós-aplicação os preenche (sync-design §5.5).
+     * recálculo pós-aplicação os preenche (sincronizacao §3.6).
      */
     readonly derived: readonly string[];
-    /** Colunas mescladas como máximo, e não por last-writer-wins (sync-design §5.5). */
+    /** Colunas mescladas como máximo, e não por last-writer-wins (sincronizacao §3.6). */
     readonly maxMerged: readonly string[];
     readonly naturalKeys: readonly NaturalKey[];
 }
@@ -58,7 +58,7 @@ function synced(name: string, options: Partial<Omit<SyncedTable, 'name'>> = {}):
 }
 
 /**
- * Catálogo das tabelas sincronizadas (sync-design §5.3 a §5.7).
+ * Catálogo das tabelas sincronizadas (sincronizacao §3.3 a §3.8).
  * Regra de negócio (Sincronização): os saldos são caches e não trafegam; `materialized_count`
  * é marca d'água e mescla como máximo; as chaves naturais com id determinístico
  * (extratos, faturas, vínculos de tag, ocorrências) só colidem por defeito, mas são tratadas
@@ -83,7 +83,7 @@ export const SYNCED_TABLES: readonly SyncedTable[] = [
     synced('recurrences_tags', { naturalKeys: [mergeKey(['recurrence_id', 'tag_id'])] }),
     synced('transactions', {
         // Duas ocorrências com o mesmo número só colidem se a ocorrência mudar de série; desvincular
-        // a perdedora mantém o lançamento, que é dado financeiro (sync-design §5.7).
+        // a perdedora mantém o lançamento, que é dado financeiro (sincronizacao §3.8).
         naturalKeys: [{ columns: ['recurrence_id', 'occurrence'], caseInsensitive: null, strategy: 'unlink' }],
     }),
     synced('transactions_tags', { naturalKeys: [mergeKey(['transaction_id', 'tag_id'])] }),

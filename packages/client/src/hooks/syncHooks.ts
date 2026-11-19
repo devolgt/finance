@@ -11,7 +11,7 @@ const STATUS_INTERVAL_MS = 1_000;
 
 /**
  * Estado da sincronização para a tela de Dispositivos, com o ciclo de vida da sessão
- * (sync-design §7.1; sync-plan §2): montar a tela abre o coordenador (escuta, anúncio, busca)
+ * (sincronizacao §1.3 e §5.2): montar a tela abre o coordenador (escuta, anúncio, busca)
  * e desmontar o fecha — a sincronização só roda com a tela aberta, e nenhum dado muda por
  * baixo de outra tela. O estado é consultado a cada segundo nesse intervalo, e quando um lote
  * chega (`appliedBatches` cresce) todas as consultas do núcleo são invalidadas: os lotes não

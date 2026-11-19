@@ -2,7 +2,7 @@ import type { RecurrenceFrequency } from '../recurrence/RecurrenceSchedule.ts';
 import type { LocalDate } from '../shared/LocalDate.ts';
 
 /**
- * Tipos que um arquivo importado traz (import-design §1). Investimento fica de fora: nenhum
+ * Tipos que um arquivo importado traz (importacao §1). Investimento fica de fora: nenhum
  * export conhecido o distingue de uma transferência, e adivinhar mudaria quem alimenta uma meta.
  */
 export type ImportTransactionType = 'income' | 'expense' | 'transference';
@@ -12,7 +12,7 @@ export const IMPORT_TRANSACTION_TYPES: readonly ImportTransactionType[] = ['inco
 /**
  * Repetição que a linha declara no arquivo. A parcela e o total ficam anuláveis porque o arquivo
  * pode não ter as colunas, ou trazer "0" numa linha que não é parcela — a análise decide se a
- * linha entra numa série (import-design §5.5).
+ * linha entra numa série (importacao §5.5).
  */
 export type ImportRepetition =
     | { readonly kind: 'none' }
@@ -32,7 +32,7 @@ export interface ImportRow {
     /** Positivo; o negativo é estorno ou devolução, como no lançamento manual. */
     readonly value: number;
     readonly charges: number;
-    /** Vencimento; numa compra no cartão, o vencimento da fatura (import-design §5.4). */
+    /** Vencimento; numa compra no cartão, o vencimento da fatura (importacao §5.4). */
     readonly dueDate: LocalDate;
     /** Data de pagamento; `null` = em aberto. */
     readonly paymentDate: LocalDate | null;
@@ -53,7 +53,7 @@ export interface ImportRow {
     readonly repetition: ImportRepetition;
 }
 
-/** Escolhas da revisão que mudam o que a análise produz (mockup `DesktopImportRevisar`). */
+/** Escolhas da revisão que mudam o que a análise produz (importacao §6). */
 export interface ImportOptions {
     /** Agrupa as linhas da mesma série numa recorrência; desligado, toda linha é avulsa. */
     readonly groupSeries: boolean;

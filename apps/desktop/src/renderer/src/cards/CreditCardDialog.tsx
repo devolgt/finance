@@ -25,7 +25,7 @@ import { useActiveProfile } from '@/shell/activeProfile';
 
 /**
  * Desativa ou reativa um cartão, sem confirmação, pelo mesmo motivo das contas: as duas
- * ações se desfazem uma com a outra e não mudam faturas nem saldos (desktop-mvp-plan §5.1).
+ * ações se desfazem uma com a outra e não mudam faturas nem saldos (contas §5).
  * Fica fora da tela porque o "⋯" da fatura e a alternativa do alerta de exclusão o usam.
  *
  * @return A ação de alternar o cartão.
@@ -52,7 +52,7 @@ export function useToggleCreditCard(): (creditCard: CreditCardResponse) => void 
 /**
  * Torna o cartão o padrão do perfil, ou deixa de ser, pelo mesmo motivo e com a mesma regra da
  * conta padrão (`useToggleDefaultAccount`): é o cartão que o atalho "Crédito" do lançamento novo
- * escolhe (database-design §4.1).
+ * escolhe (banco-de-dados §4.1).
  *
  * @return A ação de alternar o cartão padrão.
  */
@@ -78,7 +78,7 @@ export function useToggleDefaultCreditCard(): (creditCard: Pick<CreditCardRespon
 /**
  * Criar ou editar cartão: nome, conta pagadora, limite, fechamento e vencimento. O cadastro do
  * cartão fica na própria tela Cartões ("+ Novo cartão" e "Editar cartão") desde que a tela
- * Cadastros saiu (desktop-mvp-plan Fase 13.11); um diálogo só, para que criar e editar validem do
+ * Cadastros saiu (desktop §8.1); um diálogo só, para que criar e editar validem do
  * mesmo jeito.
  *
  * @param props.creditCard Cartão a editar, ou `null` para criar um.

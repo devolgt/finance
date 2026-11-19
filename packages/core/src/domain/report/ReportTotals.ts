@@ -7,7 +7,7 @@ import type { YearMonth } from '../shared/YearMonth.ts';
  * Somas das entradas de um perfil empresarial por sócio que aportou — receitas do perfil e
  * transferências que chegam de outro perfil, pelo efeito no saldo (a receita sem os encargos, a
  * transferência pelo valor). `partnerId` nulo junta as entradas sem sócio atribuído — inclusive as
- * de um sócio excluído, porque o vínculo morto não diz mais quem aportou (reports-design §8).
+ * de um sócio excluído, porque o vínculo morto não diz mais quem aportou (relatorios §7).
  */
 export interface PartnerContributionTotals {
     readonly partnerId: PartnerId | null;

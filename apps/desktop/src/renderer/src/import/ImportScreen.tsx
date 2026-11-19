@@ -66,12 +66,11 @@ export interface TemplateChoice {
 }
 
 /**
- * Importar transações (desktop-mvp-plan Fase 13.1; mockups `DesktopImportArquivo`,
- * `DesktopImportMapear` e `DesktopImportRevisar`): assistente de três etapas, um arquivo por vez.
+ * Importar transações (importacao §2 e §8): assistente de três etapas, um arquivo por vez.
  * O estado vive aqui, e as etapas só o mostram e pedem mudanças; tabela, linhas e análise são
  * derivadas, para que trocar o separador ou uma coluna refaça a prévia e os números da revisão na
- * hora. **Decisão:** o indicador das etapas fica no topo da tela, e não na barra superior do
- * mockup, porque a barra é do shell e mantém o "+ Lançamento" de toda tela.
+ * hora. **Decisão:** o indicador das etapas fica no topo da tela, e não na barra superior,
+ * porque a barra é do shell e mantém o "+ Lançamento" de toda tela.
  *
  * @return A tela de importação.
  */
@@ -242,7 +241,7 @@ function readRows(table: ImportTable, mapping: ColumnMapping, reading: FileReadi
 }
 
 /**
- * Indicador "1 Arquivo — 2 Colunas — 3 Revisar" do mockup.
+ * Indicador "1 Arquivo — 2 Colunas — 3 Revisar", para o usuário saber quanto falta.
  *
  * @param props.current Etapa atual.
  * @return O indicador, com a etapa atual marcada para leitores de tela.

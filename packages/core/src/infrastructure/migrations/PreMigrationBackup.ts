@@ -2,7 +2,7 @@ import type { BackupDirectory } from '../../ports/BackupDirectory.ts';
 import type { Clock, Timestamp } from '../../ports/Clock.ts';
 import type { Database } from '../../ports/Database.ts';
 
-/** Quantas cópias pré-migration ficam guardadas (backend-design §4.6). */
+/** Quantas cópias pré-migration ficam guardadas (banco-de-dados §5.6). */
 const KEPT_BACKUPS = 3;
 
 /**
@@ -40,14 +40,14 @@ export interface MigrationBackup {
 }
 
 /**
- * Backup automático antes de migrar (backend-design §4.6). Sem DBA, esta cópia é o único
+ * Backup automático antes de migrar (banco-de-dados §5.6). Sem DBA, esta cópia é o único
  * `down` que existe: uma migration que falha num aparelho de usuário só tem volta se o
  * arquivo de antes ainda estiver em disco.
  *
  * Usa `VACUUM INTO`, e não cópia de arquivo, porque o banco está em WAL: copiar só o
  * `.sqlite` perderia o que ainda está no `-wal`, e o `VACUUM INTO` grava uma imagem
  * consistente e compactada pela própria conexão — a mesma operação do snapshot de
- * pareamento (sync-design §6.4).
+ * pareamento (sincronizacao §4.4).
  */
 export class PreMigrationBackup implements MigrationBackup {
     /**
@@ -115,7 +115,7 @@ export function staleBackups(fileNames: readonly string[]): readonly string[] {
 
 /**
  * A cópia que a tela de bloqueio oferece para restaurar quando uma migration falha
- * (backend-design §4.5, passo 4): a mais recente desta rotina, que é a gravada antes da
+ * (banco-de-dados §5.5, passo 4): a mais recente desta rotina, que é a gravada antes da
  * tentativa que falhou. Fica aqui, ao lado da rotação, para que o shell não reimplemente o
  * padrão do nome nem a ordem pelo instante.
  *

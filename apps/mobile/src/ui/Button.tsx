@@ -14,7 +14,7 @@ const VARIANTS: Readonly<Record<ButtonVariant, { readonly box: string; readonly 
 };
 
 /**
- * Botão do app, com o alvo de toque mínimo de 44 px (decisão de interface 12 dos mockups). Em
+ * Botão do app, com o alvo de toque mínimo de 44 px (desktop §7.7). Em
  * andamento, mostra o indicador e não aceita outro toque: no celular o núcleo roda na mesma
  * thread, e um toque duplo em "Salvar" gravaria duas vezes antes de a tela mudar.
  *
@@ -23,7 +23,7 @@ const VARIANTS: Readonly<Record<ButtonVariant, { readonly box: string; readonly 
  * @param props.variant Peso visual; `primary` por padrão.
  * @param props.disabled Quando a ação ainda não pode ser feita (formulário incompleto).
  * @param props.busy Ação em andamento.
- * @param props.large Botão de ação principal da tela (`.bp`/`.bs` dos mockups): 50 px e texto maior.
+ * @param props.large Botão de ação principal da tela: 50 px e texto maior, para se destacar das ações secundárias.
  * @param props.accessibilityHint Explica por que o botão está desabilitado, quando está.
  * @param props.className Classes de posição do chamador (largura, margem).
  * @return O botão.

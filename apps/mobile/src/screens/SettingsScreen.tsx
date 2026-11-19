@@ -16,11 +16,11 @@ import { FormGroup, FormSection, Segmented } from '../ui/form.tsx';
 import { MenuGroup, MenuRow } from '../ui/menu.tsx';
 import { Sheet } from '../ui/Sheet.tsx';
 
-/** O tema nas três escolhas do mockup, com os rótulos curtos que cabem na linha. */
+/** O tema nas três escolhas (desktop §7.1), com os rótulos curtos que cabem na linha. */
 const THEMES = THEME_OPTIONS.map((option) => ({ value: option.value, label: option.value === 'system' ? 'Sistema' : option.label }));
 
 /**
- * Aviso da importação (mobile-mvp-plan §3): a cópia é uma ponte de teste, não sincronização.
+ * Aviso da importação (mobile §7.2): a cópia é uma ponte de teste, não sincronização.
  * Regra de negócio (Cópia do banco): ela substitui o banco do celular inteiro, e depois disso os
  * dois bancos divergem a cada escrita — a tela diz isso com todas as letras antes de abrir o
  * seletor.
@@ -46,14 +46,13 @@ function InfoRow({ label, value, first = false }: { readonly label: string; read
 }
 
 /**
- * Ajustes (mockup `MobileAjustes`; mobile-mvp-plan, Fase 18): o tema, o perfil, a cópia dos dados
- * — exportar, importar e a data da última cópia —, relatar problema e as versões do app, do núcleo
- * e do banco. Diverge do mockup em três linhas: sem "Bloquear com biometria" (fora do MVP), sem
- * "Lembrete de exportação" (descartado, §5.1) e com "Importar cópia do banco" e "Relatar
- * problema", que o plano pede e o mockup não desenha.
+ * Ajustes (mobile §7.2): o tema, o perfil, a cópia dos dados — exportar, importar e a data da
+ * última cópia —, relatar problema e as versões do app, do núcleo e do banco. Sem "Bloquear com
+ * biometria" (fora do MVP) e sem "Lembrete de exportação" (descartado: a recuperação do celular
+ * que é o único aparelho fica para outra funcionalidade; mobile §7.1).
  *
  * Exportar grava a cópia num temporário (`VACUUM INTO`), abre a folha de compartilhamento e apaga
- * o temporário (mobile-shell-design §6.2); a data fica nas preferências do aparelho. Importar
+ * o temporário (mobile §7.2); a data fica nas preferências do aparelho. Importar
  * confere a cópia, troca o banco e reabre o núcleo; a frase do resultado vem do `client`, a mesma
  * do desktop, e o `StartupGate` a mostra por cima do app reaberto.
  *

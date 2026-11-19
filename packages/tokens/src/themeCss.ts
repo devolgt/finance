@@ -11,11 +11,11 @@ const HEADER = '/* Gerado a partir de packages/tokens/src/tokens.ts por `pnpm to
  * bloco `@theme` que transforma cada token em classe. É o "preset" do Tailwind no formato
  * CSS da v4 — o mesmo arquivo que o NativeWind 5 lê no mobile.
  *
- * O tema troca por variável CSS (desktop-shell-design §4.5): as classes apontam para
+ * O tema troca por variável CSS (desktop §6): as classes apontam para
  * `var(--token)` e trocar de tema é trocar a classe da raiz, sem re-renderizar a árvore. As
  * escalas padrão do Tailwind (cores, tamanhos de fonte, raios) são zeradas antes, para que
  * uma classe fora dos tokens (`bg-red-500`, `text-sm`) não gere CSS e o valor literal não
- * entre nas telas por descuido (desktop-mvp-plan §7).
+ * entre nas telas por descuido (desktop §6.4).
  *
  * @return O conteúdo do `theme.generated.css`, determinístico para o mesmo conjunto de tokens.
  */
@@ -84,10 +84,10 @@ function fontStack(families: readonly string[]): string {
 }
 
 /**
- * Tamanhos e espaçamentos em rem acompanham o zoom de fonte do sistema; os mockups estão em
+ * Tamanhos e espaçamentos em rem acompanham o zoom de fonte do sistema; os tokens estão em
  * px sobre uma raiz de 16px.
  *
- * @param px Valor do mockup em pixels.
+ * @param px Valor do token em pixels.
  * @return O valor em rem.
  */
 function rem(px: number): string {

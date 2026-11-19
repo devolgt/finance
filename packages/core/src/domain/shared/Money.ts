@@ -18,17 +18,17 @@ export const MONEY_MAX_AMOUNT = 1_000_000_000_000;
 
 /**
  * Valor monetário imutável na moeda do perfil. Nenhum `number` solto representa dinheiro
- * fora do Repository (backend-design §3.3): é aqui que vivem o arredondamento, a
+ * fora do Repository (core §6.4): é aqui que vivem o arredondamento, a
  * comparação com epsilon e a proibição de somar moedas diferentes, num único lugar.
  *
  * O valor interno não é arredondado — arredondar acontece só nas fronteiras de
  * persistência e apresentação (`rounded`), nunca em valores intermediários acumulados
- * (database-design §3.7).
+ * (banco-de-dados §3.7).
  */
 export class Money {
     /**
      * @param amount Valor em unidades da moeda (não em centavos), possivelmente ainda não
-     * arredondado; dinheiro é double por decisão deliberada (database-design §3.7).
+     * arredondado; dinheiro é double por decisão deliberada (banco-de-dados §3.7).
      * @param currency Moeda do valor; carrega a precisão usada no arredondamento e no epsilon.
      */
     private constructor(public readonly amount: number, public readonly currency: Currency) {}
@@ -109,7 +109,7 @@ export class Money {
 
     /**
      * Divide em partes iguais na precisão da moeda.
-     * Regra de negócio (Parcelamento, database-design §4.12): cada parte é arredondada e **a
+     * Regra de negócio (Parcelamento, banco-de-dados §4.12): cada parte é arredondada e **a
      * diferença do arredondamento vai para a primeira**, para que a soma das partes seja sempre
      * exatamente o total — R$ 1.000,00 em 3 é `333,34 + 333,33 + 333,33`. Trabalha em unidades
      * menores inteiras, e não em float, para que o resto não sofra erro binário.
@@ -132,7 +132,7 @@ export class Money {
     /**
      * Igualdade com epsilon de meia unidade mínima da moeda (`0,005` em BRL). É o único
      * comparador de dinheiro permitido: `===` entre doubles falharia para valores que o
-     * usuário enxerga como iguais (backend-design §3.3).
+     * usuário enxerga como iguais (core §6.4).
      *
      * @param other Valor a comparar; precisa estar na mesma moeda.
      * @return `true` quando a diferença é menor que meia unidade mínima.
@@ -193,7 +193,7 @@ export class Money {
  * Arredonda meio para longe do zero sobre a representação decimal mais curta do número
  * (`toPrecision(15)`), que é o valor que o usuário digitou. A alternativa óbvia,
  * `Math.round(x * 100) / 100`, erra `1,005` (o double guarda `1,00499999…`) e arredonda
- * negativos para o lado errado (backend-design §3.3). A soma do incremento é feita em
+ * negativos para o lado errado (core §6.4). A soma do incremento é feita em
  * `BigInt` sobre os dígitos, para não reintroduzir o erro binário no último passo.
  *
  * @param value Valor a arredondar; finito.

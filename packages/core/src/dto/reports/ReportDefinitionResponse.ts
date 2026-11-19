@@ -49,7 +49,7 @@ export interface ReportDefinitionResponse {
 }
 
 /**
- * Também é o formato gravado no JSON da definição (reports-design §4): o que vai para o banco é o
+ * Também é o formato gravado no JSON da definição (relatorios §6): o que vai para o banco é o
  * que volta pela rota, e os dois são lidos pelo mesmo schema da Request.
  *
  * @param filter Filtro do domínio.

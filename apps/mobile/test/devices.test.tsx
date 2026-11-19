@@ -71,7 +71,7 @@ function fakeCopies(): { readonly copies: DatabaseCopies; readonly setAside: { c
     return { copies, setAside };
 }
 
-describe('Dispositivos e entrar num grupo (sync-plan Fase 8)', () => {
+describe('Dispositivos e entrar num grupo (sincronizacao §6.4)', () => {
     afterEach(() => {
         // Volta ao padrão do `jestSetup`: a câmera já permitida.
         jest.mocked(useCameraPermissions).mockReturnValue([GRANTED, jest.fn(), jest.fn()]);

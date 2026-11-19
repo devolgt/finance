@@ -32,7 +32,7 @@ export interface MobileStartup {
 }
 
 /**
- * Agenda a chamada para depois do frame corrente (mobile-shell-design §4.3): o
+ * Agenda a chamada para depois do frame corrente (mobile §3.2): o
  * `requestAnimationFrame` espera o frame que vai ser desenhado, e o `setTimeout` seguinte roda
  * depois dele. Assim o retorno visual do toque já está na tela quando a thread JavaScript
  * para no SQLite. A ordem de chegada é mantida, porque as duas filas são FIFO.
@@ -46,13 +46,13 @@ export const afterFrame: CoreCallScheduler = (task) => {
 };
 
 /**
- * Raiz de composição do celular (mobile-mvp-plan, Fase 4): o único lugar do app que conhece o
+ * Raiz de composição do celular (mobile §3.1): o único lugar do app que conhece o
  * núcleo e os adaptadores concretos. Abre `finance.sqlite` pelo `expo-sqlite`, roda a
  * sequência de abertura do `client` — a mesma do desktop — com a pasta de backups, as marcas e
  * o log no diretório do app, e entrega às telas só um `CoreClient` com agendamento pós-frame.
  * Marca o fim da abertura para a medição do tempo até a primeira tela, e, no APK de medição
- * (`EXPO_PUBLIC_BENCHMARK=1`), agenda a medição das chamadas interativas (Fase 5). Com o relógio
- * de parede e as portas de rede, o núcleo monta a sincronização (sync-plan Fase 8); ela só liga
+ * (`EXPO_PUBLIC_BENCHMARK=1`), agenda a medição das chamadas interativas (mobile §12.1). Com o relógio
+ * de parede e as portas de rede, o núcleo monta a sincronização (sincronizacao §6.4); ela só liga
  * quando a tela de Dispositivos abre.
  *
  * @param files Disco do aparelho; trocado nos testes.
@@ -109,7 +109,7 @@ export async function openMobileCore(files: AppFileSystem = expoFileSystem, cloc
 }
 
 /**
- * Portas de rede da sincronização do celular (mobile-shell-design §5.2). A regra de endereços
+ * Portas de rede da sincronização do celular (mobile §10.1). A regra de endereços
  * locais do núcleo entra aqui, na raiz de composição, porque os adaptadores não importam código do
  * núcleo (lint de fronteira do `apps/mobile`). Sem snapshot (`snapshots: null`): o celular entra
  * no grupo recebendo os lotes completos, como o desktop nesta entrega.
@@ -130,11 +130,11 @@ function syncNetwork(): SyncNetworkPorts {
 }
 
 /**
- * Exportar e importar a cópia do banco (mobile-mvp-plan, Fase 18; mobile-shell-design §6.2). Fica
+ * Exportar e importar a cópia do banco (mobile §7.2). Fica
  * na raiz de composição porque só ela conhece o banco aberto e o núcleo: a exportação usa o
  * `copyDatabaseTo` — `VACUUM INTO`, nunca o arquivo vivo, que está em WAL — e a importação confere
  * a cópia pelo `inspectDatabaseCopy`, as mesmas regras do desktop, antes de fechar o banco. Tirar
- * o banco do lugar para entrar num grupo (sync-plan Fase 8) fica aqui pelo mesmo motivo: precisa
+ * o banco do lugar para entrar num grupo (sincronizacao §6.4) fica aqui pelo mesmo motivo: precisa
  * fechar a conexão antes de mover o arquivo.
  *
  * @param deps.database Banco aberto.

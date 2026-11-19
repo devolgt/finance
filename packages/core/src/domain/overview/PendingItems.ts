@@ -28,7 +28,7 @@ export interface PendingTransaction {
     readonly where: string;
     /**
      * Se a Visão geral pode marcá-lo como pago. A transferência que chega de outro perfil é uma
-     * linha do perfil de origem (database-design §4.13): quem a paga é a origem, e aqui ela só
+     * linha do perfil de origem (banco-de-dados §4.13): quem a paga é a origem, e aqui ela só
      * aparece para que o perfil saiba o que está por receber.
      */
     readonly canMarkPaid: boolean;
@@ -85,7 +85,7 @@ export function pendingUntil(today: LocalDate): LocalDate {
 
 /**
  * Faturas em aberto com valor a pagar e a data de vencimento de cada uma.
- * Regra de negócio (Fatura): a fatura vence pelo ciclo do cartão (database-design §4.7) e só pede
+ * Regra de negócio (Fatura): a fatura vence pelo ciclo do cartão (banco-de-dados §4.7) e só pede
  * pagamento quando o saldo dela é negativo (`amountDue`) — a zerada ou com crédito não é dívida.
  *
  * @param entries Faturas em aberto do perfil, com o cartão e o nome da conta pagadora.
@@ -117,7 +117,7 @@ export function pendingInvoices(entries: readonly { readonly invoice: Invoice; r
  * que vence hoje ainda está em dia. A compra no cartão não aparece sozinha: ela é paga junto da
  * fatura, e é a fatura inteira que fica atrasada.
  * No mesmo dia, a ordem é pelo nome com `compareNames`, e não `localeCompare`, para o Início do
- * celular e a Visão geral do desktop listarem igual (mobile-shell-design §8); o id desempata.
+ * celular e a Visão geral do desktop listarem igual (mobile §8); o id desempata.
  *
  * @param today Dia de hoje.
  * @param items Lançamentos e faturas em aberto, em qualquer ordem e de qualquer data.
@@ -161,7 +161,7 @@ export interface NextInvoicesSummary {
 /**
  * A próxima fatura de cada cartão: a primeira em aberto, com valor a pagar, que vence de hoje em
  * diante. A que já venceu fica de fora porque está no selo de atrasados. Faturas do mesmo dia
- * seguem o nome do cartão por `compareNames`, igual em todo runtime (mobile-shell-design §8).
+ * seguem o nome do cartão por `compareNames`, igual em todo runtime (mobile §8).
  *
  * @param today Dia de hoje.
  * @param invoices Faturas em aberto com valor a pagar.

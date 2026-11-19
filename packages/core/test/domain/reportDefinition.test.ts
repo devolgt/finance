@@ -59,7 +59,7 @@ function aggregation(overrides: Partial<ReportAggregation>): ReportAggregation {
     return { cells: [], primaryTotals: [], secondaryTotals: [], grandTotal: { total: 0, count: 0 }, ...overrides };
 }
 
-describe('janela do relatório (reports-design §2.1)', () => {
+describe('janela do relatório (relatorios §4.1)', () => {
     it('Regra de negócio (Relatórios, F1 e F2): termina no mês de referência e volta os meses anteriores, virando o ano', () => {
         const filter = ReportFilter.create(filterProps({ period: { anchor: { kind: 'reference' }, previousMonths: 2, basis: 'due' } }));
         const window = filter.windowFor(YearMonth.parse('2026-01'));
@@ -99,7 +99,7 @@ describe('filtro e formato', () => {
     });
 });
 
-describe('montagem do resultado (reports-design §3)', () => {
+describe('montagem do resultado (relatorios §5)', () => {
     const window = { from: YearMonth.parse('2026-08'), to: YearMonth.parse('2026-10') };
 
     it('Regra de negócio (Relatórios, Ordem): o mês traz todos os meses da janela, inclusive os sem lançamento', () => {

@@ -6,14 +6,14 @@ import { cn } from '@/lib/cn';
 /*
  * Peças repetidas pelas telas de cadastro (Categorias, Sócios, Tags, Anotações e Perfis) e pelos
  * diálogos de contas, cartões e metas. Ficam juntas para que todas tenham o mesmo cabeçalho, as
- * mesmas etiquetas e o mesmo diálogo — o mockup `DesktopCadastros` desenha só Categorias, e as
- * outras telas seguem o mesmo desenho.
+ * mesmas etiquetas e o mesmo diálogo (categorias-e-tags §5.1): quem aprende um cadastro já sabe
+ * usar os outros.
  */
 
 /**
- * Cabeçalho da tela de cadastro, como no mockup: título com a explicação abaixo, e as ações à
+ * Cabeçalho da tela de cadastro: título com a explicação abaixo, e as ações à
  * direita. O título é o `h1` da página: cada cadastro virou item próprio do menu
- * (desktop-mvp-plan Fase 13.11), e não há mais um "Cadastros" acima dele.
+ * (desktop §8.1), e não há mais um "Cadastros" acima dele.
  *
  * @param props.title Nome do cadastro ("Categorias").
  * @param props.description Frase sobre o cadastro, que diz a regra que mais importa nele.
@@ -34,7 +34,7 @@ export function SectionHeader({ title, description, actions }: { readonly title:
 
 /**
  * Etiqueta de situação ao lado do nome ("Desativada", "Fora do total"). É texto, e não só
- * cor, para que a situação se leia sem depender dela (decisão de interface 7).
+ * cor, para que a situação se leia sem depender dela (desktop §7.3).
  *
  * @param props.tone `warn` para o que limita o uso (desativado); `neutral` para informação.
  * @param props.children Texto da etiqueta.
@@ -45,7 +45,7 @@ export function StatusTag({ tone, children }: { readonly tone: 'warn' | 'neutral
 }
 
 /**
- * Botão discreto das linhas e cartões ("Editar"), o `.ic` do mockup.
+ * Botão discreto das linhas e cartões ("Editar"), que não disputa a atenção com o conteúdo.
  *
  * @param props.label Texto visível.
  * @param props.accessibleName Nome completo para o leitor de tela ("Editar Moradia"), porque

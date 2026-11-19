@@ -5,7 +5,7 @@ import { ok, SCENARIO_PERIOD, SCENARIO_TODAY, seedScenario } from './support/sce
 
 jest.mock('expo-file-system', () => ({ Paths: {} }));
 
-describe('Início (mobile-mvp-plan, Fase 8)', () => {
+describe('Início (visao-do-mes §6)', () => {
     it('mostra os atrasados no topo, com o valor de cada um e o que ainda vence no mês', async () => {
         const { core } = testCore(SCENARIO_TODAY);
         await seedScenario(core);

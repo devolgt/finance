@@ -344,7 +344,7 @@ const NETWORK_WRITES: readonly WriteRoute[] = [
     'sync.createGroup', 'sync.open', 'sync.close', 'sync.createInvite', 'sync.cancelInvite', 'sync.join', 'sync.connect', 'sync.removeMember', 'sync.leave',
 ];
 
-describe('mapa de invalidação (desktop-mvp-plan Fase 3.2 e §8)', () => {
+describe('mapa de invalidação (desktop §4 e §8)', () => {
     it('toda rota de escrita do núcleo tem uma escrita neste teste, e toda leitura tem sonda', async () => {
         const world = new ClientWorld();
         const covered = new Set([...WRITES.map((write) => write.route), ...NETWORK_WRITES, ...probes(await seedWithSeries(world)).map((probe) => probe.route)]);

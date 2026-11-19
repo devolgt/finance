@@ -63,7 +63,7 @@ function keyBytes(seed: number): Uint8Array {
 }
 
 /**
- * Um handshake KK inteiro, como o da sessão normal entre dois membros (sync-design §7.4): os dois
+ * Um handshake KK inteiro, como o da sessão normal entre dois membros (sincronizacao §5.6): os dois
  * lados já conhecem a chave pública um do outro e trocam as duas mensagens do padrão.
  *
  * @param round Número do handshake, que varia as chaves efêmeras.
@@ -86,7 +86,7 @@ function runKkHandshake(round: number, initiatorKeys: KeyPair, responderKeys: Ke
 }
 
 /**
- * Mede a criptografia da sincronização no runtime (sync-plan Fase 5; mobile-shell-design §5.1,
+ * Mede a criptografia da sincronização no runtime (sincronizacao §5.5; decisoes §52,
  * "Risco aceito"): o Hermes não tem JIT, e a cifra em JavaScript puro das `@noble` pode não dar
  * vazão para um snapshot de alguns megabytes. Usa o código do núcleo — a `CipherState` da sessão
  * e o `NoiseHandshake` —, e não a biblioteca direto, para medir exatamente o que roda na

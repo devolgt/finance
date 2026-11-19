@@ -32,7 +32,7 @@ import { RowDate, RowSearchSelect } from '../ui/pickers.tsx';
 import { Sheet } from '../ui/Sheet.tsx';
 
 /*
- * Ações sobre a fatura no celular (mobile-mvp-plan, Fase 13): pagar, pagamento parcial e reabrir,
+ * Ações sobre a fatura no celular (cartoes-e-faturas §7): pagar, pagamento parcial e reabrir,
  * com as mesmas regras e frases do desktop. Cada uma diz antes o que muda no saldo da conta,
  * porque as três mexem no extrato de uma conta que não está na tela.
  */
@@ -41,7 +41,7 @@ import { Sheet } from '../ui/Sheet.tsx';
 export interface InvoiceActionTarget {
     readonly creditCardId: string;
     readonly creditCardName: string;
-    /** Conta pagadora do cartão: a que a fatura paga debita (database-design §4.7). */
+    /** Conta pagadora do cartão: a que a fatura paga debita (banco-de-dados §4.7). */
     readonly payingAccountId: string;
     readonly payingAccountName: string;
     readonly invoice: InvoiceResponse;
@@ -50,15 +50,15 @@ export interface InvoiceActionTarget {
 }
 
 /**
- * Pagar a fatura inteira (mockup `MobilePagarFatura`): o valor a pagar, a conta pagadora, a data e
+ * Pagar a fatura inteira (cartoes-e-faturas §3.1): o valor a pagar, a conta pagadora, a data e
  * a prévia do saldo da conta antes de confirmar.
  * Regra de negócio (Fatura): quem paga é sempre a conta pagadora do cartão — o vínculo da fatura é
- * com o extrato dela (database-design §4.7) —, então a conta aparece, mas não se escolhe aqui;
+ * com o extrato dela (banco-de-dados §4.7) —, então a conta aparece, mas não se escolhe aqui;
  * trocar é editar o cartão. A data sugerida é hoje.
  *
  * @param props.target Fatura em aberto a pagar.
  * @param props.onClose Fecha a folha, depois de pagar ou ao desistir.
- * @param props.onPartial Troca para o pagamento parcial, como o link do mockup.
+ * @param props.onPartial Troca para o pagamento parcial, sem fechar e reabrir outra ação.
  * @return A folha.
  */
 export function PayInvoiceSheet({ target, onClose, onPartial }: { readonly target: InvoiceActionTarget; readonly onClose: () => void; readonly onPartial: (() => void) | null }): ReactNode {
@@ -139,11 +139,11 @@ export function PayInvoiceSheet({ target, onClose, onPartial }: { readonly targe
 
 /**
  * Pagamento parcial: valor, data, conta que pagou e subcategoria.
- * Regra de negócio (Fatura, database-design §4.7): é uma transferência negativa na fatura, já
+ * Regra de negócio (Fatura, cartoes-e-faturas §3.3): é uma transferência negativa na fatura, já
  * paga, com a conta que pagou como destino — o `readPartialPaymentForm` monta o lançamento. A
  * conta sugerida é a pagadora do cartão, mas pode ser outra ativa: o parcial é um lançamento
  * comum, e não o vínculo da fatura com um extrato. A subcategoria é pedida porque toda transação
- * tem uma (§4.13).
+ * tem uma (banco-de-dados §4.13).
  *
  * @param props.target Fatura em aberto que recebe o pagamento.
  * @param props.accounts Contas do perfil, das quais saem as opções de conta.
@@ -268,7 +268,7 @@ export function PartialPaymentSheet({ target, accounts, onClose }: { readonly ta
 }
 
 /**
- * Confirmação de reabrir a fatura. Regra de negócio (Fatura, database-design §4.7): reabrir
+ * Confirmação de reabrir a fatura. Regra de negócio (Fatura, cartoes-e-faturas §3.4): reabrir
  * desfaz o pagamento e devolve o saldo da conta; a folha diz de qual extrato o valor sai e quando
  * a fatura volta a pesar (`describeInvoiceReopening`).
  *

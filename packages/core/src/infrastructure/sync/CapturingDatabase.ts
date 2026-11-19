@@ -5,11 +5,11 @@ import { SqliteSyncLedgerRepository } from '../sqlite/SqliteSyncLedgerRepository
 import { ROW_INSERTED } from './CaptureTriggers.ts';
 
 /**
- * Decorator da porta `Database` que carimba as escritas capturadas (sync-design §5.4;
- * sync-plan §3.1). Os triggers `TEMP` só sabem *o que* mudou; o relógio e a sequência vêm
+ * Decorator da porta `Database` que carimba as escritas capturadas (sincronizacao §3.4;
+ * sincronizacao §3.4). Os triggers `TEMP` só sabem *o que* mudou; o relógio e a sequência vêm
  * daqui, no fim da transação mais externa e antes do commit, para que toda célula escrita
  * por uma unidade de trabalho compartilhe uma sequência e um HLC — as duas pernas de uma
- * transferência trafegam e são aplicadas juntas (sync-design §5.3).
+ * transferência trafegam e são aplicadas juntas (sincronizacao §3.3).
  *
  * É um decorator, e não código nos Services, para que nenhum caso de uso precise lembrar de
  * carimbar: tudo o que passa pela porta é coberto, inclusive uma escrita fora de transação,
@@ -97,7 +97,7 @@ export class CapturingDatabase implements Database {
 
     /**
      * Avisa depois de cada commit que carimbou alguma escrita. É o gatilho do modo ao vivo
-     * (sync-design §7.4, passo 8): a sessão envia a escrita assim que ela é confirmada, sem
+     * (sincronizacao §5.6, passo 8): a sessão envia a escrita assim que ela é confirmada, sem
      * que cada caso de uso precise saber que há uma sessão aberta.
      *
      * @param listener Chamado fora da transação, depois do commit.
@@ -110,7 +110,7 @@ export class CapturingDatabase implements Database {
      * Converte as células sujas em entradas de relógio. Uma transação sem escrita capturada
      * não consome sequência, para que leituras não inflem o vetor.
      * Regra de negócio (Sincronização): uma linha criada recebe só a entrada de linha; as
-     * colunas alteradas na mesma transação já estão cobertas por ela (sync-design §5.3).
+     * colunas alteradas na mesma transação já estão cobertas por ela (sincronizacao §3.3).
      *
      * @return `true` quando a transação produziu entradas de relógio.
      */

@@ -41,7 +41,7 @@ export function keyPairFrom(privateKey: Uint8Array): KeyPair {
 type Token = 'e' | 's' | 'ee' | 'es' | 'se' | 'ss' | 'psk';
 
 /**
- * Padrões usados pela sincronização (sync-design §7.4 e sync-plan §2):
+ * Padrões usados pela sincronização (sincronizacao §5.6 e sincronizacao §1.4):
  * - `KK` nas sessões normais: os dois lados já conhecem a chave pública do outro, gravada
  *   em `sync_members` no pareamento.
  * - `IKpsk2` no pareamento: o aparelho novo conhece só a chave do anfitrião (do QR) e prova
@@ -264,7 +264,7 @@ export interface TransportCiphers {
 /**
  * Estado do handshake Noise (especificação, §5.3), para os padrões da sincronização. É
  * implementado no núcleo, em TypeScript puro sobre as `@noble`, para que desktop e celular
- * rodem exatamente o mesmo protocolo (mobile-shell-design §5.1); a conformidade é verificada
+ * rodem exatamente o mesmo protocolo (decisoes §52); a conformidade é verificada
  * contra os vetores públicos da cacophony.
  */
 export class NoiseHandshake {

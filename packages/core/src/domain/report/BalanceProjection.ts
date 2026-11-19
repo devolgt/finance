@@ -6,7 +6,7 @@ import type { YearMonth } from '../shared/YearMonth.ts';
 import type { AccountClosingHistory } from './ReportTotals.ts';
 
 /**
- * Quantos meses fechados formam a estimativa dos avulsos (reports-design §9, B1). Uma lista
+ * Quantos meses fechados formam a estimativa dos avulsos (relatorios §8, B1). Uma lista
  * fechada, e não um número livre: são as janelas que a tela oferece, e o padrão é o ano inteiro.
  */
 export const BALANCE_PROJECTION_BASES = [12, 6, 3, 1] as const;
@@ -15,8 +15,8 @@ export const BALANCE_PROJECTION_BASES = [12, 6, 3, 1] as const;
 export type BalanceProjectionBasis = (typeof BALANCE_PROJECTION_BASES)[number];
 
 /**
- * Quantos meses a projeção cobre depois do mês corrente (reports-design §9, B4) — o mesmo horizonte
- * em que as séries fixas já estão gravadas (database-design §4.12).
+ * Quantos meses a projeção cobre depois do mês corrente (relatorios §8, B4) — o mesmo horizonte
+ * em que as séries fixas já estão gravadas (banco-de-dados §4.12).
  */
 export const BALANCE_PROJECTION_MONTHS = 12;
 
@@ -81,7 +81,7 @@ export interface BalanceProjectionInput {
 }
 
 /**
- * Regra de negócio (Relatórios, reports-design §9, B1): a estimativa usa só meses **fechados**,
+ * Regra de negócio (Relatórios, relatorios §8, B1): a estimativa usa só meses **fechados**,
  * do anterior ao corrente para trás, e nunca antes do primeiro extrato. O mês corrente ainda está
  * pela metade e puxaria a média para baixo; os meses antes do primeiro movimento entrariam como
  * zeros e achatariam a média e o desvio. Num perfil novo a janela fica mais curta que `basis`, e
@@ -106,7 +106,7 @@ export function projectionBasisMonths(basis: BalanceProjectionBasis, current: Ye
 /**
  * Projeta o saldo pelo método direto do fluxo de caixa: o que já está lançado mais a estimativa do
  * que ainda não está, com uma faixa de incerteza.
- * Regra de negócio (Relatórios, §9):
+ * Regra de negócio (Relatórios, relatorios §8.1):
  * - **Comprometido (B2):** cada mês futuro soma a variação do saldo **previsto** das contas do
  *   total — tudo o que já está lançado: parcelas, séries fixas (gravadas 12 meses à frente),
  *   contas em aberto, faturas no vencimento, transferências entre perfis e para contas fora do
@@ -134,7 +134,7 @@ export function buildBalanceProjection(input: BalanceProjectionInput): BalancePr
      */
     const closing =(period: YearMonth): BalancePair => input.histories.reduce((total, history) => total.add(closingAt(history, period)), BalancePair.zero(input.currency));
     /**
-     * Regra de negócio (Relatórios, §9, B3): só os avulsos formam a estimativa; o mês sem linha do
+     * Regra de negócio (Relatórios, relatorios §8.1, B3): só os avulsos formam a estimativa; o mês sem linha do
      * banco não teve avulso e vale zero, em vez de sumir da média.
      *
      * @param period Mês fechado do histórico.
@@ -201,7 +201,7 @@ function standardDeviation(values: readonly number[], mean: number, currency: Cu
  * Regra de negócio (Extrato): mês sem extrato não teve movimento e repete o fechamento do extrato
  * vivo anterior; antes do primeiro extrato vale o saldo inicial da conta — por isso a conta aberta
  * no meio da janela não conta o saldo inicial como entrada. Exportada para que o saldo previsto do
- * relatório por sócio (reports-design §8, P6) leia o fim do mês pela mesma regra da projeção.
+ * relatório por sócio (relatorios §7, P6) leia o fim do mês pela mesma regra da projeção.
  *
  * @param history Fechamentos de uma conta, em ordem cronológica.
  * @param period Mês consultado.

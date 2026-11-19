@@ -3,7 +3,7 @@ import { InvalidValueError } from './errors.ts';
 /**
  * Moedas ISO 4217 cuja menor unidade não é o centésimo. O padrão é 2 casas, e só as
  * exceções são listadas: o sistema não se restringe a moedas de duas casas
- * (database-design §3.7), e a precisão errada arredondaria um saldo em iene para centavos
+ * (banco-de-dados §3.7), e a precisão errada arredondaria um saldo em iene para centavos
  * que não existem ou um saldo em dinar kuwaitiano para menos do que ele tem.
  */
 const MINOR_UNIT_EXCEPTIONS: Readonly<Record<string, number>> = {
@@ -19,7 +19,7 @@ const CODE_PATTERN = /^[A-Z]{3}$/;
 /**
  * Moeda ISO 4217 com a precisão decimal que ela carrega. É um Value Object, e não um
  * `string`, porque a precisão é o que governa arredondamento e epsilon de comparação de
- * todo `Money` (backend-design §3.3): uma moeda sem precisão empurraria essa decisão para
+ * todo `Money` (core §6.4): uma moeda sem precisão empurraria essa decisão para
  * cada ponto de chamada.
  */
 export class Currency {

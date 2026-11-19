@@ -18,7 +18,7 @@ import type { MappingTemplate } from '@finance/client';
 
 /*
  * Preload (sandbox, isolamento de contexto): a única ponte entre o renderer e o resto do app
- * (desktop-shell-design §3.6). O `MessagePort` do núcleo fica aqui, no mundo isolado, e o
+ * (desktop §2). O `MessagePort` do núcleo fica aqui, no mundo isolado, e o
  * renderer recebe só a função `call` — nunca a ponta crua nem o `ipcRenderer`.
  */
 

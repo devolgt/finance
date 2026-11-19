@@ -6,7 +6,7 @@ export type { DatabaseExportFailure, DatabaseImportFailure, DatabaseImportResult
 
 /**
  * Preferências do **aparelho**, não do perfil: ficam num JSON em `userData`, fora do banco,
- * porque no banco seriam replicadas pela sincronização para o celular (desktop-mvp-plan §2).
+ * porque no banco seriam replicadas pela sincronização para o celular (desktop §9).
  */
 export interface DevicePreferences {
     readonly theme: ThemePreference;
@@ -17,9 +17,9 @@ export interface DevicePreferences {
 }
 
 /*
- * Como terminou a abertura do banco no `utilityProcess` (backend-design §4.5) e o resultado da
+ * Como terminou a abertura do banco no `utilityProcess` (banco-de-dados §5.5) e o resultado da
  * restauração de backup. Os tipos moram no `client` porque o celular bloqueia pelos mesmos
- * motivos (mobile-mvp-plan, Fase 4); só `ready` deixa o app seguir.
+ * motivos (mobile §3.1); só `ready` deixa o app seguir.
  */
 export type { RestoreResult, StartupStatus } from '@finance/client/startup';
 
@@ -54,7 +54,7 @@ export type ReportResult =
     | { readonly ok: true; readonly logTruncated: boolean }
     | { readonly ok: false };
 
-/** O que Ajustes mostra sobre o app e o arquivo do banco (desktop-mvp-plan Fase 13). */
+/** O que Ajustes mostra sobre o app e o arquivo do banco (desktop §11). */
 export interface AppInfo {
     /** Versão do app, a do `package.json`. */
     readonly appVersion: string;
@@ -77,7 +77,7 @@ export type DatabaseExportResult =
      */
     | { readonly ok: false; readonly reason: DatabaseExportFailure };
 
-/** Arquivo escolhido para importar (desktop-mvp-plan Fase 13.1). */
+/** Arquivo escolhido para importar (importacao §2). */
 export type ImportFileResult =
     /** `name`: só o nome-base, para a tela; o caminho fica no processo principal. */
     | { readonly ok: true; readonly name: string; readonly size: number; readonly bytes: Uint8Array }
@@ -95,7 +95,7 @@ export type ImportFileResult =
 export const TEMPLATE_NAME_MAX_LENGTH = 60;
 
 /**
- * Tudo o que o preload expõe ao renderer (desktop-shell-design §3.6): o `CoreClient`, as
+ * Tudo o que o preload expõe ao renderer (desktop §2): o `CoreClient`, as
  * preferências do aparelho, o estado da abertura com a única ação que ele pede, o aviso de
  * falha fatal, o relato de problema e as ações de Ajustes sobre o arquivo do banco. Nenhuma função genérica de IPC, `fs` ou `shell` — o
  * renderer é tratado como entrada não confiável, e por isso o relato não recebe endereço

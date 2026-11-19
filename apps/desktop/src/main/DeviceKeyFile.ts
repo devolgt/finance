@@ -3,7 +3,7 @@ import { dirname } from 'node:path';
 import { safeStorage } from 'electron';
 
 /**
- * A chave privada do aparelho no desktop (sync-design §6.1; sync-plan §2): um arquivo em
+ * A chave privada do aparelho no desktop (sincronizacao §4.1 e desktop §14): um arquivo em
  * `userData` cifrado pelo `safeStorage`, que é o chaveiro do sistema operacional exposto pelo
  * Electron. Fica fora do banco para que uma cópia ou backup do `.sqlite` não carregue a
  * capacidade de se passar pelo aparelho.

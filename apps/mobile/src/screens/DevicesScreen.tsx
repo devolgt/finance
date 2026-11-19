@@ -25,13 +25,13 @@ const TONES: Readonly<Record<NonNullable<SyncMemberView['status']>['tone'], stri
 };
 
 /**
- * Dispositivos e sincronização no celular (mockup `MobileDispositivos`; sync-plan Fase 8). Abrir a
+ * Dispositivos e sincronização no celular (sincronizacao §6.4 e §7.1). Abrir a
  * tela liga a sincronização — escuta, anuncia e procura — e sair dela desliga (`useSyncScreen`).
- * Regra de negócio (Sincronização, mobile-shell-design §5.3): a tela só sincroniza enquanto está
+ * Regra de negócio (Sincronização, mobile §10): a tela só sincroniza enquanto está
  * em foco **e** o app em primeiro plano; ir para outra aba ou para segundo plano encerra a
  * sessão, fecha o listener e para o anúncio, sem esperar o sistema cortar os sockets.
  *
- * Divergências aprovadas do mockup: sem o código de 8 caracteres e sem "último sync" — cada
+ * Sem o código de 8 caracteres (sincronizacao §10.2) e sem "último sync" — cada
  * aparelho mostra o estado da sessão agora (`syncMemberViews`, o mesmo texto do desktop). Sem
  * "Adicionar dispositivo": o celular não sabe o próprio IP do Wi-Fi sem outra dependência nativa
  * (`mobileLocalAddresses`), e o convite sairia sem endereço; o grupo nasce e convida no computador.
@@ -81,7 +81,7 @@ export function DevicesScreen(): ReactNode {
 /**
  * Fora de um grupo: o que a sincronização faz e "Entrar num grupo". O celular não cria o grupo —
  * ele nasce no computador, que sabe o próprio endereço e mostra o QR.
- * Regra de negócio (Sincronização, sync-design §6.4): com dados no aparelho, "Entrar num grupo"
+ * Regra de negócio (Sincronização, sincronizacao §4.4): com dados no aparelho, "Entrar num grupo"
  * abre antes a confirmação de descarte; sem dados, vai direto à leitura do QR.
  *
  * @param props.status Estado da sincronização.
@@ -210,8 +210,9 @@ function Group({ status }: { readonly status: SyncStatusResponse }): ReactNode {
 }
 
 /**
- * Cartão do topo (mockup `MobileDispositivos`): com quem a sessão está ao vivo agora, ou que o
- * aparelho está procurando os outros. Diz "agora" e não "último sync" (divergência aprovada).
+ * Cartão do topo: com quem a sessão está ao vivo agora, ou que o aparelho está procurando os
+ * outros. Diz "agora" e não "último sync", porque a sincronização só roda com esta tela aberta
+ * (sincronizacao §1.3) e o estado de agora é o que o usuário precisa para saber se está em dia.
  *
  * @param props.status Estado da sincronização.
  * @return O cartão.
@@ -306,7 +307,7 @@ function MemberRow({ member, first }: { readonly member: SyncMemberView; readonl
 }
 
 /**
- * "Digitar endereço manualmente" (sync-design §7.2): para a rede que bloqueia o mDNS, disca para
+ * "Digitar endereço manualmente" (sincronizacao §5.2): para a rede que bloqueia o mDNS, disca para
  * o endereço que o outro aparelho mostra no convite. Pede também qual aparelho é — o núcleo só
  * aceita a sessão com o membro esperado, cuja chave já conhece.
  *
@@ -357,7 +358,7 @@ function ManualAddressSheet({ open, members, onClose }: { readonly open: boolean
 }
 
 /**
- * "Sair do grupo" (sync-design §6.5), com a confirmação do desktop.
+ * "Sair do grupo" (sincronizacao §4.5), com a confirmação do desktop.
  *
  * @param props.open Se a folha está aberta.
  * @param props.onClose Fecha a folha.

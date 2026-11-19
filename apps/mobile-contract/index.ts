@@ -17,7 +17,7 @@ function runDeviceCryptoBenchmark(): CryptoBenchmarkReport {
  * Raiz do app de contrato. Sem Expo Router: é uma tela só, e cada dependência a menos é uma
  * fonte a menos de falha que não seja do núcleo ou do `expo-sqlite`.
  *
- * @return A tela do contrato rodando no aparelho, seguida da medição da cifra (sync-plan Fase 5).
+ * @return A tela do contrato rodando no aparelho, seguida da medição da cifra (sincronizacao §5.5).
  */
 function ContractApp(): ReactNode {
     return createElement(ContractScreen, { run: runDeviceContract, benchmark: runDeviceCryptoBenchmark });

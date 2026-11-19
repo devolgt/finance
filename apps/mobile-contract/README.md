@@ -1,8 +1,8 @@
 # App de contrato (Android)
 
 Prova no Hermes, com o `expo-sqlite` real, o que o Vitest só prova no Node
-([mobile-shell-design §8](../../docs/plans/mobile-shell-design.md#8-paridade-entre-runtimes);
-[mobile-mvp-plan, Fase 3](../../docs/plans/mobile-mvp-plan.md)):
+([mobile §8](../../docs/wiki/arquitetura/mobile.md#8-paridade-entre-runtimes);
+[mobile §8.2](../../docs/wiki/arquitetura/mobile.md#82-appsmobile-contract)):
 
 1. a suíte de contrato da porta `Database` (`@finance/core/contract`) contra o
    `ExpoSqliteDatabase`, com a versão mínima do SQLite e o `STRICT`;

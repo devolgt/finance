@@ -22,7 +22,7 @@ import { RowReader } from './RowReader.ts';
  * Implementação SQLite de `BalanceLedgerRepository`. Toda consulta filtra
  * `deleted_at IS NULL` em cada tabela envolvida: esquecer isso numa soma de saldo
  * ressuscita transações excluídas nos totais — um número errado, não um erro
- * (database-design §3.6). Toda consulta também exige o arco exclusivo íntegro (exatamente
+ * (banco-de-dados §3.6). Toda consulta também exige o arco exclusivo íntegro (exatamente
  * um contêiner), para que uma linha inválida não seja contada duas vezes.
  */
 export class SqliteBalanceLedgerRepository implements BalanceLedgerRepository {
@@ -71,8 +71,8 @@ export class SqliteBalanceLedgerRepository implements BalanceLedgerRepository {
     }
 
     /**
-     * Regra de negócio (Cartão de crédito, desktop-mvp-plan Fase 13.5): a série fixa é gravada 12
-     * meses à frente (database-design §4.12), mas a ocorrência futura não é compra feita — o banco
+     * Regra de negócio (Cartão de crédito, cartoes-e-faturas §4): a série fixa é gravada 12
+     * meses à frente (banco-de-dados §4.12), mas a ocorrência futura não é compra feita — o banco
      * não reserva limite para a assinatura do ano que vem. A ocorrência de parcelamento é: a
      * compra já aconteceu e o limite fica preso até a última parcela.
      *
@@ -146,7 +146,7 @@ export class SqliteBalanceLedgerRepository implements BalanceLedgerRepository {
      * Transferências e investimentos que chegam à conta caem no mês da **data de caixa**
      * (`cashDateSql`: pagamento, ou vencimento em aberto), a mesma que decide o extrato da
      * origem — a transferência é uma linha só, com uma data só dos dois lados
-     * (database-design §4.13). Não usa o mês do contêiner de origem porque a origem pode ser
+     * (banco-de-dados §4.13). Não usa o mês do contêiner de origem porque a origem pode ser
      * uma fatura (pagamento parcial), cujo mês não é o do pagamento.
      *
      * @param accountId Conta de destino.

@@ -1,6 +1,6 @@
 import type { ImportOutcome } from '../../services/import/ImportCommands.ts';
 
-/** O que a importação gravou, para a tela confirmar (mockup `DesktopImportRevisar`). */
+/** O que a importação gravou, para a tela confirmar (importacao §8). */
 export interface ImportResponse {
     readonly transactions: number;
     readonly fixedSeries: number;

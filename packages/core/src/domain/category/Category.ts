@@ -9,9 +9,9 @@ export interface CategoryProps {
 }
 
 /**
- * Nível superior da classificação de dois níveis (database-design §4.8). Pertence a um
+ * Nível superior da classificação de dois níveis (banco-de-dados §4.8). Pertence a um
  * perfil, e não a um vocabulário global, para que pessoal e empresarial mantenham cada um
- * as suas categorias (§3.8). Não classifica transações diretamente: elas apontam para uma
+ * as suas categorias (banco-de-dados §3.8). Não classifica transações diretamente: elas apontam para uma
  * subcategoria.
  */
 export class Category implements CategoryProps {
@@ -31,7 +31,7 @@ export class Category implements CategoryProps {
 
     /**
      * A unicidade do nome no perfil relaciona linhas e por isso é verificada no Service
-     * (database-design §3.10); aqui só o invariante da própria linha.
+     * (banco-de-dados §3.10); aqui só o invariante da própria linha.
      *
      * @param props Dados da categoria, com id já gerado pela aplicação.
      * @return A categoria, com o nome aparado.

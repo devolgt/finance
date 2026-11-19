@@ -14,7 +14,7 @@ export class NotInSyncGroupError extends BusinessRuleViolation {
 /**
  * Criar ou entrar num grupo com o aparelho já num grupo. Recusado porque trocaria a
  * identidade do aparelho e deixaria o vetor apontando para um histórico que não é o do grupo
- * novo (sync-design §6.4).
+ * novo (sincronizacao §4.4).
  */
 export class AlreadyInSyncGroupError extends BusinessRuleViolation {
     /** Mensagem fixa. */
@@ -25,7 +25,7 @@ export class AlreadyInSyncGroupError extends BusinessRuleViolation {
 
 /**
  * Entrar num grupo com dados locais. Recusado porque dois históricos independentes não podem
- * ser mesclados (sync-design §6.4): o usuário descarta os dados antes, explicitamente.
+ * ser mesclados (sincronizacao §4.4): o usuário descarta os dados antes, explicitamente.
  */
 export class DeviceHasDataError extends BusinessRuleViolation {
     /** Mensagem fixa. */

@@ -52,7 +52,7 @@ export function ActiveProfileProvider({ whenEmpty, children }: { readonly whenEm
     // consumidor do perfil renderizar de novo a cada alteração não salva.
     const guardRef = useRef<ProfileSwitchGuard | null>(null);
 
-    // Regra de interface (Fase 4): trocar o perfil invalida todo o cache. As consultas já são
+    // Regra de interface (desktop §8.3): trocar o perfil invalida todo o cache. As consultas já são
     // chaveadas pelo perfil, mas as de perfis e saldos globais não; recarregar tudo garante
     // que nada do perfil anterior fique na tela. Antes, a tela aberta pode recusar a troca.
     const switchTo = useCallback((profileId: string): void => {

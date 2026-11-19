@@ -12,7 +12,7 @@ export type DatabaseSetAsideResult =
 
 /**
  * Tira o banco do lugar para o aparelho entrar num grupo com o banco vazio.
- * Regra de negócio (Sincronização, sync-design §6.4): quem entra num grupo descarta os próprios
+ * Regra de negócio (Sincronização, sincronizacao §4.4): quem entra num grupo descarta os próprios
  * dados e recebe os do grupo — juntar dois históricos que nunca se conheceram duplicaria tudo o
  * que têm em comum. O núcleo recusa a entrada com dados (`has-data`) e não tem rota para zerar o
  * banco, então o celular faz isso pelo disco, com o banco fechado: a próxima abertura cria um

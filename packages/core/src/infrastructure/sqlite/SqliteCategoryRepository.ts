@@ -9,7 +9,7 @@ import { RowReader } from './RowReader.ts';
 const SELECT_CATEGORY = 'SELECT c.id, c.profile_id, c.name FROM transaction_categories c';
 
 // A subcategoria só está viva com a categoria viva, e o perfil vem da categoria: a
-// subcategoria não tem `profile_id` próprio (database-design §4.9).
+// subcategoria não tem `profile_id` próprio (banco-de-dados §4.9).
 const SELECT_SUB_CATEGORY = `
     SELECT s.id, s.category_id, s.name, c.profile_id
     FROM transaction_sub_categories s
@@ -156,7 +156,7 @@ export class SqliteCategoryRepository implements CategoryRepository {
     public moveTransactions(from: SubCategoryId, to: SubCategoryId): number {
         const params = { from, to, now: this.clock.now() };
         // O modelo das recorrências vai junto: senão a próxima ocorrência nasceria na
-        // subcategoria excluída (database-design §4.12).
+        // subcategoria excluída (banco-de-dados §4.12).
         this.database.run('UPDATE recurrences SET sub_category_id = :to, updated_at = :now WHERE sub_category_id = :from AND deleted_at IS NULL', params);
         return this.database.run(
             'UPDATE transactions SET sub_category_id = :to, updated_at = :now WHERE sub_category_id = :from AND deleted_at IS NULL',

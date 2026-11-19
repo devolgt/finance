@@ -30,19 +30,19 @@ import { IconButton } from '../ui/IconButton.tsx';
 import { Sheet } from '../ui/Sheet.tsx';
 import { EmptyState, LoadingState, QueryView } from '../ui/states.tsx';
 
-/** Cor do valor pelo sentido; o sinal e o ⇄ vêm no texto (decisão de interface 7). */
+/** Cor do valor pelo sentido; o sinal e o ⇄ vêm no texto (desktop §7.3). */
 const AMOUNT_TONE: Readonly<Record<StatementRow['direction'], string>> = { in: 'text-in', out: 'text-out', transfer: 'text-ink2' };
 
 /** Folha aberta no extrato: as ações, o formulário de edição ou a exclusão. */
 type StatementSheet = 'actions' | 'edit' | 'delete';
 
 /**
- * Um saldo do resumo: o consolidado em destaque e o previsto abaixo, com peso menor (decisão de
- * interface 6).
+ * Um saldo do resumo: o consolidado em destaque e o previsto abaixo, com peso menor
+ * (desktop §7.5).
  *
  * @param props.label Rótulo.
  * @param props.pair Consolidado e previsto.
- * @param props.end Alinha à direita (a coluna da direita do mockup).
+ * @param props.end Alinha à direita (a coluna da direita do resumo).
  * @return O número.
  */
 function Balance({ label, pair, end = false }: { readonly label: string; readonly pair: BalancePairResponse; readonly end?: boolean }): ReactNode {
@@ -56,9 +56,9 @@ function Balance({ label, pair, end = false }: { readonly label: string; readonl
 }
 
 /**
- * Entradas ou saídas do resumo, com a seta que diz o sentido sem depender da cor (decisão de
- * interface 7). Mostra o consolidado, como o mockup; o previsto vem abaixo, como no desktop,
- * para que inicial + entradas − saídas = final se confira nas duas colunas.
+ * Entradas ou saídas do resumo, com a seta que diz o sentido sem depender da cor
+ * (desktop §7.3). Mostra o consolidado em destaque; o previsto vem abaixo, como no desktop, para
+ * que inicial + entradas − saídas = final se confira nas duas colunas.
  *
  * @param props.label Rótulo com a seta.
  * @param props.pair Consolidado e previsto.
@@ -77,7 +77,7 @@ function Flow({ label, pair, tone, end = false }: { readonly label: string; read
 }
 
 /**
- * Resumo do extrato (mockup `MobileExtrato`): saldos inicial e final em cima, entradas e saídas
+ * Resumo do extrato: saldos inicial e final em cima, entradas e saídas
  * embaixo.
  * Regra de negócio (Extrato): entradas e saídas somam os mesmos movimentos da lista, pagos no
  * consolidado e todos no previsto, então inicial + entradas − saídas = final vale nos dois.
@@ -101,7 +101,7 @@ function StatementSummary({ statement }: { readonly statement: StatementResponse
 }
 
 /**
- * Um movimento do extrato (`.it` do mockup): nome, data e complemento à esquerda; valor e
+ * Um movimento do extrato: nome, data e complemento à esquerda; valor e
  * situação à direita. A fatura em aberto diz que pesa só no previsto e leva à fatura; o
  * lançamento abre o detalhe.
  *
@@ -194,9 +194,9 @@ function StatementMovements({ statement, accounts }: { readonly statement: State
 
 /**
  * Ações da conta em folha: editar, usar como padrão, desativar ou reativar e excluir — as do "⋯"
- * do extrato no desktop. O `MobileExtrato` não desenha as ações; elas ficam atrás de um botão no
- * cabeçalho para não disputar espaço com o resumo (mobile-mvp-plan, Fase 12).
- * Regra de negócio (Contas, database-design §4.1): a conta desativada não aceita lançamentos
+ * do extrato no desktop. Ficam atrás de um botão no cabeçalho para não disputar espaço com o
+ * resumo (contas §6).
+ * Regra de negócio (Contas, banco-de-dados §4.1): a conta desativada não aceita lançamentos
  * novos, então não pode ser a padrão — a ação some enquanto ela estiver desativada.
  *
  * @param props.account Conta aberta.
@@ -232,7 +232,7 @@ function AccountActionsSheet(props: {
 }
 
 /**
- * Extrato da conta no mês (mockup `MobileExtrato`; mobile-mvp-plan, Fase 12): o resumo de
+ * Extrato da conta no mês (contas §6): o resumo de
  * `statements.get` e os movimentos, com as ações da conta no "⋯". A conta vem da mesma consulta
  * da lista de Contas, já em cache, e não de uma rota própria: o cabeçalho e a lista nunca
  * divergem. Alternar padrão e situação não pede confirmação, como no desktop — as duas se

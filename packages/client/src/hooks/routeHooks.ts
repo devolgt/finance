@@ -1,5 +1,5 @@
 /*
- * Hooks nomeados das rotas de leitura (desktop-mvp-plan Fase 3.2). São atalhos finos sobre
+ * Hooks nomeados das rotas de leitura (desktop §4). São atalhos finos sobre
  * `useCoreQuery`: a tela lê `useStatement(...)` em vez de repetir o nome da rota em texto, e
  * o tipo da entrada e da saída vem do contrato do núcleo. As escritas não têm atalho porque
  * `useCoreMutation('transactions.create')` já diz tudo, e um nome a mais por rota só
@@ -99,7 +99,7 @@ export function useNotes(input: CoreInput<'notes.list'> | null): Query<'notes.li
 
 /**
  * Lista da tela de Metas. O mês de referência faz parte da entrada, e portanto da chave do
- * cache, porque o ritmo e a projeção contam a partir do fim dele (desktop-mvp-plan Fase 9.3):
+ * cache, porque o ritmo e a projeção contam a partir do fim dele (metas §4.2):
  * sem ele na chave, navegar pelos meses mostraria o ritmo do mês anterior. Para só listar os
  * nomes, use `useGoalOptions`, que não refaz o progresso.
  *

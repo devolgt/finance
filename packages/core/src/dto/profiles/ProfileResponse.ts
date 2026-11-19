@@ -6,7 +6,7 @@ export interface ProfileResponse {
     readonly name: string;
     readonly type: ProfileType;
     readonly currency: string;
-    /** Conta do atalho "Débito" do lançamento novo; `null` sem padrão (database-design §4.1). */
+    /** Conta do atalho "Débito" do lançamento novo; `null` sem padrão (banco-de-dados §4.1). */
     readonly defaultAccountId: string | null;
     /** Cartão do atalho "Crédito" do lançamento novo; `null` sem padrão. */
     readonly defaultCreditCardId: string | null;

@@ -8,7 +8,7 @@ import { join } from 'node:path';
  * importá-la — a suíte do `core` atribui esta classe a uma variável `BackupDirectory`.
  *
  * Fino e sem regra: quando copiar, como nomear e quantas cópias guardar é decisão do núcleo
- * (backend-design §4.6).
+ * (banco-de-dados §5.6).
  */
 export class NodeBackupDirectory {
     /**

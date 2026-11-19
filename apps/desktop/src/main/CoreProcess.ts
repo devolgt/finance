@@ -15,7 +15,7 @@ const CLOSE_TIMEOUT_MS = 10_000;
 /**
  * O processo do núcleo visto pelo processo principal: cria o `utilityProcess`, entrega a cada
  * janela uma ponta de `MessageChannelMain` e guarda como a abertura do banco terminou. As
- * chamadas de rota não passam por aqui (desktop-shell-design §5.2) — o principal só costura
+ * chamadas de rota não passam por aqui (desktop §3.2) — o principal só costura
  * o canal, e fica livre para janelas e menus.
  *
  * Desde a importação de cópia em Ajustes, o processo pode ser trocado por um novo
@@ -69,7 +69,7 @@ export class CoreProcess {
 
     /**
      * Pede ao processo do núcleo, dono da única conexão, a cópia exportada do banco
-     * (desktop-mvp-plan Fase 13). Sem prazo, ao contrário do fechamento: o `VACUUM INTO` de um
+     * (desktop §11). Sem prazo, ao contrário do fechamento: o `VACUUM INTO` de um
      * banco grande num disco lento pode demorar, e desistir no meio deixaria a cópia sendo
      * gravada sem ninguém para avisar quando termina.
      *
@@ -96,7 +96,7 @@ export class CoreProcess {
 
     /**
      * Troca o processo do núcleo por um novo, que abre o banco do zero: migrations com backup,
-     * verificação de integridade e complemento das recorrências (backend-design §4.5). O processo
+     * verificação de integridade e complemento das recorrências (banco-de-dados §5.5). O processo
      * antigo sai sem avisar as janelas — a saída é pedida, não uma queda, e a tela de erro estaria
      * errada. As janelas continuam ligadas ao antigo até `reloadWindows`.
      *

@@ -36,7 +36,7 @@ async function eventually(condition: () => Promise<boolean>): Promise<void> {
     throw new Error('a condição não aconteceu');
 }
 
-describe('Rotas da tela de Dispositivos (sync-plan Fases 7 e 8)', () => {
+describe('Rotas da tela de Dispositivos (sincronizacao §6.3 e §6.4)', () => {
     it('cria o grupo, convida, o celular entra pelo texto do QR e o modo ao vivo segue os commits', async () => {
         const network = new MemoryNetwork();
         const desktop = deviceOn(network, 1, '192.168.0.10', 'desktop');

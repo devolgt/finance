@@ -2,7 +2,7 @@ import type { DeviceId, GroupId } from '../shared/ids.ts';
 import type { HybridLogicalClock } from './HybridLogicalClock.ts';
 
 /**
- * A identidade deste aparelho dentro do grupo (`sync_state`, sync-design §5.3). Existe só
+ * A identidade deste aparelho dentro do grupo (`sync_state`, sincronizacao §3.3). Existe só
  * enquanto o aparelho pertence a um grupo; sem ela, a captura não carimba nada.
  */
 export interface SyncState {

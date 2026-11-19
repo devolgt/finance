@@ -211,8 +211,8 @@ function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typ
 }
 
 /**
- * Atalho de teclado mostrado à direita do item (`P`, `Del`), como nos mockups da tela de
- * Transações.
+ * Atalho de teclado mostrado à direita do item (`P`, `Del`), para que o menu ensine o atalho da
+ * tabela de Transações (desktop §8.4).
  *
  * @param props Propriedades do elemento ou do primitivo do Radix, repassadas a ele; `className`
  * é somado às classes do componente.

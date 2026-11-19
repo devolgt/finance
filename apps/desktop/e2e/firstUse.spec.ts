@@ -5,7 +5,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Primeiro uso (desktop-mvp-plan Fase 5) no app empacotado: o banco sem perfil abre o
+ * Primeiro uso (perfis §4.2) no app empacotado: o banco sem perfil abre o
  * formulário fora do shell, e concluí-lo cria perfil, conta e categorias e entra na Visão
  * geral do mês atual. Os cliques usam `dispatchEvent` pelo motivo explicado em `firstUse.ts`.
  */

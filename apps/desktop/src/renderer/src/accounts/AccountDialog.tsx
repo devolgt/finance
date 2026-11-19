@@ -14,7 +14,7 @@ const ACCOUNT_TYPES: readonly AccountFormValues['type'][] = ['checking', 'invest
 
 /**
  * Desativa ou reativa uma conta, conforme a situação atual. Sem confirmação: as duas ações
- * se desfazem uma com a outra e não mudam nenhum saldo (desktop-mvp-plan §5.1). O aviso
+ * se desfazem uma com a outra e não mudam nenhum saldo (contas §5). O aviso
  * lembra o que desativar preserva, para que ninguém desative achando que perdeu o histórico.
  * Fica fora da tela porque o "⋯" do extrato e a alternativa do alerta de exclusão o usam.
  *
@@ -42,7 +42,7 @@ export function useToggleAccount(): (account: AccountResponse) => void {
 /**
  * Torna a conta a padrão do perfil, ou deixa de ser, conforme a situação atual. Sem confirmação,
  * como desativar: a ação se desfaz com ela mesma e não muda nenhum saldo.
- * Regra de negócio (Lançamentos, database-design §4.1): a conta padrão é a que o atalho "Débito"
+ * Regra de negócio (Lançamentos, banco-de-dados §4.1): a conta padrão é a que o atalho "Débito"
  * do lançamento novo escolhe; só uma por perfil, então escolher esta substitui a anterior.
  *
  * @return A ação de alternar a conta padrão.
@@ -68,8 +68,8 @@ export function useToggleDefaultAccount(): (account: Pick<AccountResponse, 'id' 
 
 /**
  * Criar ou editar conta: nome, tipo, moeda, saldo inicial e se entra no total. O cadastro da
- * conta fica na própria tela Contas ("+ Nova conta" e "Editar conta", mockup `DesktopContas`)
- * desde que a tela Cadastros saiu (desktop-mvp-plan Fase 13.11); um diálogo só, para que criar e
+ * conta fica na própria tela Contas ("+ Nova conta" e "Editar conta", contas §6)
+ * desde que a tela Cadastros saiu (desktop §8.1); um diálogo só, para que criar e
  * editar validem e expliquem o cadastro do mesmo jeito.
  *
  * @param props.account Conta a editar, ou `null` para criar uma.

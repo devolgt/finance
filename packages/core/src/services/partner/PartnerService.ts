@@ -11,8 +11,8 @@ import type { PartnerEntry, ReplacePartnersCommand } from './PartnerCommands.ts'
 import type { PartnerWithUsage } from './PartnerViews.ts';
 
 /**
- * Cadastro de sócios (database-design §4.2; mockup `DesktopSocios`). Concentra as regras que
- * relacionam linhas e que o banco não garante (§3.10): sócio só em perfil empresarial e
+ * Cadastro de sócios (banco-de-dados §4.2; socios §1). Concentra as regras que
+ * relacionam linhas e que o banco não garante (banco-de-dados §3.10): sócio só em perfil empresarial e
  * participações somando 100%. Sócio não afeta saldo, então nada aqui recalcula.
  */
 export class PartnerService {
@@ -46,9 +46,9 @@ export class PartnerService {
      * Grava a lista de sócios como o cadastro a deixou: cria os novos, regrava os editados e
      * remove os que saíram, tudo na mesma transação — a soma de 100% vale para o resultado, e
      * gravar sócio a sócio passaria por estados intermediários que ela recusa.
-     * Regra de negócio (Sócios, database-design §4.2): só perfis empresariais têm sócios, e as
+     * Regra de negócio (Sócios, banco-de-dados §4.2): só perfis empresariais têm sócios, e as
      * participações somam 100% (`assertSharesComplete`). Remover um sócio deixa os lançamentos
-     * vinculados a ele sem sócio atribuído (decisão de interface 10 dos mockups).
+     * vinculados a ele sem sócio atribuído (socios §2.3).
      *
      * @param command Perfil e a lista completa de sócios.
      * @return A lista gravada, como a `list` a devolve.
@@ -110,7 +110,7 @@ export class PartnerService {
     }
 
     /**
-     * Regra de negócio (Perfil): sócios só existem em perfis empresariais (database-design §4.1);
+     * Regra de negócio (Perfil): sócios só existem em perfis empresariais (banco-de-dados §4.1);
      * o banco não expressa a restrição porque ela relaciona duas tabelas.
      *
      * @param profileId Perfil pedido.

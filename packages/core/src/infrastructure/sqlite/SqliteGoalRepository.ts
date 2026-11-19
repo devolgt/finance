@@ -10,7 +10,7 @@ import type { GoalRepository } from '../../repositories/GoalRepository.ts';
 import { RowReader } from './RowReader.ts';
 
 // A moeda vem do perfil: `goals` não tem coluna de moeda, porque todo valor gravado está na
-// moeda do perfil (database-design §3.7).
+// moeda do perfil (banco-de-dados §3.7).
 const SELECT_GOAL = 'SELECT g.id, g.profile_id, g.name, g.kind, g.account_id, g.value, g.target_date, g.archived_at, p.currency AS profile_currency FROM goals g JOIN profiles p ON p.id = g.profile_id';
 
 /** Código de cada tipo de meta na coluna `goals.kind` (migration `0005`). */
@@ -79,11 +79,11 @@ export class SqliteGoalRepository implements GoalRepository {
      * do pagamento pela mesma regra — duas cópias do `CASE` podiam divergir e fazer a tabela do
      * detalhe não somar o progresso da lista.
      * Regra de negócio (Metas): numa conta, o dia do pagamento; num cartão, o dia em que a
-     * **fatura** foi paga — é quando o dinheiro sai de fato (desktop-mvp-plan §3.1). A fatura
+     * **fatura** foi paga — é quando o dinheiro sai de fato (relatorios §2.1). A fatura
      * paga antes da migration `0003` não tem o dia gravado e vale o 1º dia do mês do extrato do
      * pagamento; a fatura cujo extrato de pagamento foi excluído volta a estar em aberto, como
      * no saldo.
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): a transferência de retirada entra com
+     * Regra de negócio (Metas, metas §2): a transferência de retirada entra com
      * o sinal invertido e desconta do progresso. Só metas por lançamentos têm vínculos: a
      * vinculada a conta é medida pelo saldo dela.
      *
@@ -157,7 +157,7 @@ export class SqliteGoalRepository implements GoalRepository {
 
     /**
      * Os vínculos são desfeitos com `updated_at` novo, como na mudança de subcategoria em massa,
-     * para que a sincronização propague a linha alterada (sync-design §5). A marca de retirada
+     * para que a sincronização propague a linha alterada (sincronizacao §3). A marca de retirada
      * sai junto, porque sem meta não tem sentido.
      *
      * @param id Meta cujos vínculos se desfazem.

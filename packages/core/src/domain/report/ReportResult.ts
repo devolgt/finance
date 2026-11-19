@@ -9,7 +9,7 @@ import { REPORT_FLOW_GROUPS, REPORT_RECURRENCE_GROUPS, type ReportDimension, typ
 /**
  * Um grupo de uma dimensão. A chave é o id do cadastro (categoria, conta, tag...), o mês
  * `YYYY-MM`, o tipo (`expense`...) ou a situação (`paid`, `open`); `null` é o grupo "sem" — sem
- * tag, sem sócio (reports-design §3). O rótulo vem do cadastro e é `null` quando a tela é quem o
+ * tag, sem sócio (relatorios §5). O rótulo vem do cadastro e é `null` quando a tela é quem o
  * escreve: mês, tipo, situação e os grupos "sem".
  */
 export interface ReportGroup {
@@ -29,7 +29,7 @@ export interface ReportAggregateRow {
  * As somas de um relatório em cada nível de agrupamento. Vêm em consultas separadas, e não
  * somadas aqui a partir das células, porque com a tag como dimensão a transação com duas tags
  * está em duas células: só o banco, agrupando de novo, conta cada transação uma vez no total
- * (reports-design §3, "Tag como dimensão").
+ * (relatorios §5, "Tag como dimensão").
  */
 export interface ReportAggregation {
     /** Agrupadas pelas duas dimensões; com uma dimensão só, pela principal. */
@@ -74,7 +74,7 @@ export interface ReportResult {
     readonly total: ReportFigure;
     /**
      * `true` quando a tag é uma das dimensões: a transação com várias tags conta em vários grupos,
-     * e os totais deixam de ser a soma das células (reports-design §3).
+     * e os totais deixam de ser a soma das células (relatorios §5).
      */
     readonly overlapping: boolean;
 }
@@ -96,7 +96,7 @@ const FIXED_ORDERS: Readonly<Partial<Record<ReportDimension, readonly string[]>>
 /**
  * Monta a grade do relatório a partir das somas do banco: ordena os grupos, completa os meses e
  * as combinações sem lançamento com zero e põe cada total no lugar.
- * Regra de negócio (Relatórios, §3 "Ordem"): o mês é cronológico e traz todos os meses da janela;
+ * Regra de negócio (Relatórios, relatorios §5.6): o mês é cronológico e traz todos os meses da janela;
  * tipo, situação, recorrência e entrada × saída seguem a ordem do domínio; as demais dimensões vão do maior número para o menor
  * na medida escolhida, com desempate pelo rótulo, e o grupo "sem" fica por último.
  *

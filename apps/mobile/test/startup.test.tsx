@@ -33,7 +33,7 @@ async function renderGate(startup: MobileStartup): Promise<void> {
     );
 }
 
-describe('abertura do app (mobile-mvp-plan, Fase 4)', () => {
+describe('abertura do app (mobile §3.1)', () => {
     it('banco vazio: abre e chega ao primeiro uso', async () => {
         await renderGate(readyStartup(testCore().core));
 

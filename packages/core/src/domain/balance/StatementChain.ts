@@ -7,12 +7,12 @@ import type { MonthlyMovement } from './MonthlyMovement.ts';
  * Reconstrói a cadeia de fechamentos de uma conta a partir de um ponto.
  * Regra de negócio (Extrato): o saldo inicial de cada extrato é o final do extrato vivo
  * **anterior** da mesma conta — ou o `opening_balance` da conta, no primeiro — e o final é
- * o inicial mais o movimento do mês, no consolidado e no previsto (database-design §4.6).
- * Por isso editar março recalcula março e todos os meses seguintes (backend-design §3.3).
+ * o inicial mais o movimento do mês, no consolidado e no previsto (banco-de-dados §4.6).
+ * Por isso editar março recalcula março e todos os meses seguintes (core §6.4).
  *
  * É deliberadamente a implementação mais simples possível — sem atalho incremental —
  * porque é o oráculo dos testes de propriedade: uma rotina com bug aprovaria o mesmo bug
- * no cache (backend-design §5.6).
+ * no cache (testes §2.3).
  *
  * @param start Saldo inicial do primeiro extrato da lista: o fechamento do extrato vivo
  * anterior a ela, ou o saldo inicial da conta quando não há anterior.
@@ -51,7 +51,7 @@ export function periodsMissingStatement(from: YearMonth, existing: readonly Year
 /**
  * Saldo exibido da conta.
  * Regra de negócio (Contas): o saldo da conta é o fechamento do extrato do **mês
- * corrente** (database-design §4.4). Um mês corrente sem extrato herda o fechamento do
+ * corrente** (banco-de-dados §4.4). Um mês corrente sem extrato herda o fechamento do
  * último extrato anterior — nada aconteceu desde então —, e uma conta sem extrato até hoje
  * mostra o próprio saldo inicial. Extratos futuros (parcelas, fixas) ficam de fora: são
  * previsão de meses que ainda não chegaram.

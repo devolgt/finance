@@ -22,7 +22,7 @@ function edit(id: string, overrides: Partial<CoreInput<'accounts.update'>> = {})
     return { id, name: 'Conta', type: 'checking', currencyLabel: null, considerBalance: true, openingBalance: 0, ...overrides };
 }
 
-describe('cadastro de contas (desktop-mvp-plan Fase 1.2)', () => {
+describe('cadastro de contas (contas §1)', () => {
     it('cria com os padrões do schema: moeda do perfil, dentro do total, saldo inicial zero', async () => {
         const { world, profileId } = setup();
         const account = await world.ok('accounts.create', { profileId, name: 'Nubank', type: 'checking' });
@@ -39,8 +39,8 @@ describe('cadastro de contas (desktop-mvp-plan Fase 1.2)', () => {
     });
 });
 
-describe('testes de mesa do cadastro de contas (desktop-mvp-plan Fase 1.2)', () => {
-    it('saldo inicial editado depois de meses lançados recalcula a cadeia inteira (database-design §4.4)', async () => {
+describe('testes de mesa do cadastro de contas (contas §1)', () => {
+    it('saldo inicial editado depois de meses lançados recalcula a cadeia inteira (banco-de-dados §4.4)', async () => {
         const { world, base, profileId } = setup();
         const accountId = world.account(profileId, { openingBalance: 1000 });
         const source = { kind: 'account', accountId } as const;
@@ -117,7 +117,7 @@ describe('testes de mesa do cadastro de contas (desktop-mvp-plan Fase 1.2)', () 
     });
 });
 
-describe('conta desativada nas escolhas de lançamentos (desktop-mvp-plan §5.1)', () => {
+describe('conta desativada nas escolhas de lançamentos (contas §5)', () => {
     it('recusa a conta desativada como origem e como destino de um lançamento novo', async () => {
         const { world, base, profileId } = setup();
         const active = world.account(profileId);
@@ -181,7 +181,7 @@ describe('conta desativada nas escolhas de lançamentos (desktop-mvp-plan §5.1)
     });
 });
 
-describe('marcar como pago (desktop-mvp-plan Fase 1.5)', () => {
+describe('marcar como pago (transacoes §2.3)', () => {
     it('marca com a data de hoje, recalcula o consolidado e desmarca limpando a data', async () => {
         const { world, base, profileId } = setup();
         const accountId = world.account(profileId, { openingBalance: 1000 });

@@ -67,8 +67,8 @@ export class SyncService {
     }
 
     /**
-     * Cria o grupo neste aparelho, que vira o primeiro membro (sync-design §6.2).
-     * Regra de negócio (Sincronização, sync-design §10 e sync-plan §3.2): toda linha existente
+     * Cria o grupo neste aparelho, que vira o primeiro membro (sincronizacao §4.2).
+     * Regra de negócio (Sincronização, sincronizacao §4.6): toda linha existente
      * ganha uma entrada em `sync_rows` com origem neste aparelho — é assim que um aparelho com
      * histórico passa a sincronizar; o que entrar depois chega vazio e recebe o snapshot.
      *
@@ -93,11 +93,11 @@ export class SyncService {
     }
 
     /**
-     * Entra num grupo com o aparelho vazio (sync-design §6.4): a identidade é a que o aparelho
+     * Entra num grupo com o aparelho vazio (sincronizacao §4.4): a identidade é a que o aparelho
      * apresentou no pareamento, e o vetor começa vazio — tudo chega pelo primeiro lote. É o
      * caminho dos testes e a alternativa ao snapshot quando o banco do anfitrião é pequeno.
      * Regra de negócio (Sincronização): só um aparelho sem dados entra; dois históricos
-     * independentes não são mesclados (sync-design §4 e §6.4).
+     * independentes não são mesclados (sincronizacao §2 e §4.4).
      *
      * @param deviceId Id deste aparelho, o mesmo cuja chave pública o anfitrião registrou.
      * @param groupId Grupo do convite.
@@ -121,7 +121,7 @@ export class SyncService {
 
     /**
      * Assume a identidade própria num banco recém-trocado pelo snapshot do anfitrião
-     * (sync-design §6.4). O snapshot traz as tabelas de relógio, os membros e o vetor do
+     * (sincronizacao §4.4). O snapshot traz as tabelas de relógio, os membros e o vetor do
      * anfitrião — exatamente o que ele representa —, mas também o `sync_state` dele, que é
      * substituído aqui pela identidade deste aparelho. O HLC parte do relógio do anfitrião,
      * para que a primeira escrita local fique depois de tudo o que veio no snapshot.
@@ -159,7 +159,7 @@ export class SyncService {
     }
 
     /**
-     * Registra o aparelho que acabou de parear (sync-design §6.3): quem convidou grava o novo
+     * Registra o aparelho que acabou de parear (sincronizacao §4.3): quem convidou grava o novo
      * membro, e a linha se propaga como qualquer escrita.
      *
      * @param id Id do aparelho novo.
@@ -179,7 +179,7 @@ export class SyncService {
     }
 
     /**
-     * Remove um membro, inclusive este aparelho ("sair do grupo", sync-design §6.5). A remoção
+     * Remove um membro, inclusive este aparelho ("sair do grupo", sincronizacao §4.5). A remoção
      * é uma escrita comum e chega aos outros na próxima sessão; os membros recusam sessões com
      * um aparelho removido.
      *
@@ -194,7 +194,7 @@ export class SyncService {
     }
 
     /**
-     * "Sair do grupo" (sync-design §6.5): a remoção deste aparelho é uma escrita comum, que os
+     * "Sair do grupo" (sincronizacao §4.5): a remoção deste aparelho é uma escrita comum, que os
      * outros aprendem na próxima sessão — pela troca de membros, que vem antes de qualquer
      * dado. A identidade fica, para que essa última sessão aconteça; depois dela, o aparelho é
      * recusado e mantém só a cópia local.
@@ -217,7 +217,7 @@ export class SyncService {
 
     /**
      * @return Um id novo para este aparelho, gerado antes de parear: é ele que vai no
-     * handshake e que o anfitrião grava em `sync_members` (sync-design §6.1).
+     * handshake e que o anfitrião grava em `sync_members` (sincronizacao §4.1).
      */
     public newDeviceId(): DeviceId {
         return DeviceId(this.ids.random());
@@ -225,7 +225,7 @@ export class SyncService {
 
     /**
      * @return O `user_version` do banco; a sessão recusa pares com outra versão de schema
-     * (backend-design §4.9), porque um lote citaria colunas que o outro não tem.
+     * (banco-de-dados §5.9), porque um lote citaria colunas que o outro não tem.
      */
     public schemaVersion(): number {
         return this.ledger.schemaVersion();

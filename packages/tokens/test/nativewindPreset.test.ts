@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { colorTokenNames, colorTokens, nativewindTheme, renderNativewindPreset, themeVariables } from '../src/index.ts';
 
-describe('preset do NativeWind 4 (mobile-mvp-plan §2, "Estilo")', () => {
+describe('preset do NativeWind 4 (mobile §2.2, "Estilo")', () => {
     it('o arquivo versionado está em dia com os tokens (rode `pnpm tokens:css`)', () => {
         const committed = readFileSync(new URL('../src/nativewind-preset.generated.cjs', import.meta.url), 'utf8');
         expect(committed).toBe(renderNativewindPreset());

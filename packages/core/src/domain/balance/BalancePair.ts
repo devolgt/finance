@@ -6,7 +6,7 @@ import { Money } from '../shared/Money.ts';
  * Os dois saldos que todo saldo de conta e de extrato tem, sempre lado a lado.
  * Regra de negócio (Saldos): **consolidado** soma só transações pagas e faturas pagas — o
  * que já aconteceu; **previsto** soma todas as transações vivas e as faturas em aberto no
- * mês do vencimento — o que vai acontecer se nada mudar (database-design §3.7). Os dois
+ * mês do vencimento — o que vai acontecer se nada mudar (banco-de-dados §3.7). Os dois
  * seguem a mesma cadeia e a mesma rotina; existem como par para que nenhum código consiga
  * atualizar um e esquecer o outro.
  */

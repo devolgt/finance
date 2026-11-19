@@ -35,7 +35,7 @@ function goal(id: string, name: string, states: { readonly reached?: boolean; re
     };
 }
 
-describe('formulário de meta (desktop-mvp-plan Fase 9.3)', () => {
+describe('formulário de meta (metas §7.3)', () => {
     it('lê nome aparado, valor em pt-BR e data-alvo opcional', () => {
         expect(readGoalForm({ ...emptyGoalForm(), name: '  Viagem Floripa ', value: '4.000,00', targetDate: '2027-01-15' }, 'BRL')).toEqual({
             ok: true,
@@ -59,7 +59,7 @@ describe('formulário de meta (desktop-mvp-plan Fase 9.3)', () => {
     });
 });
 
-describe('meta vinculada a conta no formulário (desktop-mvp-plan Fase 13.3)', () => {
+describe('meta vinculada a conta no formulário (metas §2)', () => {
     it('pede a conta de investimento e grava o tipo; a por lançamentos não leva conta', () => {
         expect(readGoalForm({ ...emptyGoalForm(), name: 'Casa', value: '20.000,00', fundingKind: 'account' }, 'BRL')).toEqual({ ok: false, errors: { accountId: 'Escolha a conta de investimento.' } });
         expect(readGoalForm({ ...emptyGoalForm(), name: 'Casa', value: '20.000,00', fundingKind: 'account', accountId: ACCOUNT }, 'BRL')).toEqual({

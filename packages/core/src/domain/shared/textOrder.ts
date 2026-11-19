@@ -2,7 +2,7 @@
  * Letras acentuadas e ligaduras que o comparador de nomes reduz à forma sem acento e em
  * minúscula, agrupadas pela forma de destino. A tabela é própria, e não `normalize('NFD')` nem
  * `localeCompare`, porque as duas dependem do ICU do runtime: o Chromium do desktop e o Hermes
- * do celular ordenariam a mesma lista de jeitos diferentes (mobile-shell-design §8). Cobre o
+ * do celular ordenariam a mesma lista de jeitos diferentes (mobile §8). Cobre o
  * Latin-1 e o Latin Extended-A, que bastam para nomes em português e nas línguas vizinhas; o
  * que fica fora dela é comparado pelo código do caractere.
  */
@@ -95,7 +95,7 @@ export function compareCodeUnits(a: string, b: string): number {
  * Ordena nomes de cadastro e de lançamento como o usuário espera ler uma lista em português:
  * ignorando acento e caixa, de modo que "Água" venha antes de "Bebida" e "ônibus" fique junto
  * de "Ótica". Substitui o `localeCompare('pt-BR')`, cujo resultado muda com o ICU do runtime
- * (mobile-shell-design §8). Nomes que só diferem em acento ou caixa desempatam pelo texto
+ * (mobile §8). Nomes que só diferem em acento ou caixa desempatam pelo texto
  * original, para a ordem ser total; o desempate final por id fica com quem chama, porque só
  * ele conhece o id.
  *

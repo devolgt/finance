@@ -62,7 +62,7 @@ describe('mover lançamentos ao excluir categoria', () => {
     });
 });
 
-describe('busca e contagens de categorias (desktop-mvp-plan Fase 13.12)', () => {
+describe('busca e contagens de categorias (categorias-e-tags §5.1)', () => {
     const home = 'b7c4a1e2-1111-4c3d-9e8f-000000000001';
     const other = 'b7c4a1e2-1111-4c3d-9e8f-000000000002';
     const tree: readonly CategoryBranchResponse[] = [

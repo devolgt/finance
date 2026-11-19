@@ -26,18 +26,18 @@ const NAME_SUGGESTION_LIMIT = 1000;
 
 /**
  * CRUD de transações. As regras de montar e conferir um lançamento ficam no
- * `TransactionComposer` (database-design §3.10), compartilhado com as recorrências. Toda
+ * `TransactionComposer` (banco-de-dados §3.10), compartilhado com as recorrências. Toda
  * escrita grava, garante o contêiner e recalcula os saldos afetados numa única unidade de
  * trabalho: um saldo nunca fica visível pela metade.
  *
  * O que é de uma série — criar com repetição, editar e excluir em "esta e as futuras" ou
- * "todas" — é do `RecurrenceService` (database-design §4.12); aqui fica o lançamento avulso e
+ * "todas" — é do `RecurrenceService` (banco-de-dados §4.12); aqui fica o lançamento avulso e
  * o escopo "somente esta".
  */
 export class TransactionService {
     /**
      * @param unitOfWork Escrita e recálculo na mesma transação de banco.
-     * @param ids Gera o UUID v4 da transação nova (database-design §3.5).
+     * @param ids Gera o UUID v4 da transação nova (banco-de-dados §3.5).
      * @param composer Regras de montar e conferir um lançamento.
      * @param accounts Conta do extrato ao marcar pago.
      * @param transactions Transações.
@@ -92,9 +92,9 @@ export class TransactionService {
 
     /**
      * Edita uma transação e recalcula os saldos do estado antigo **e** do novo: mudar de mês,
-     * de conta ou de fatura precisa recalcular os dois contêineres (backend-design §5.1). Os
+     * de conta ou de fatura precisa recalcular os dois contêineres (testes §1.1). Os
      * escopos de série vão para o `RecurrenceService`; "somente esta" deixa a regra intocada.
-     * Regra de negócio (Mover para outro perfil, database-design §4.13): com outro perfil no
+     * Regra de negócio (Mover para outro perfil, banco-de-dados §4.13): com outro perfil no
      * comando, a transação vai para uma conta ou um cartão dele, com as referências dele; o
      * recálculo do estado antigo e do novo cobre as contas dos dois perfis. A ocorrência de uma
      * série não sai sozinha — a regra é do perfil, então a série inteira vai junto ("todas").
@@ -131,9 +131,9 @@ export class TransactionService {
 
     /**
      * Soft delete da transação e recálculo. Excluir um pagamento parcial de fatura devolve o
-     * valor à conta e à fatura (database-design §4.7) — sai naturalmente do recálculo. Os
+     * valor à conta e à fatura (banco-de-dados §4.7) — sai naturalmente do recálculo. Os
      * escopos de série vão para o `RecurrenceService`; "somente esta" exclui só a ocorrência, e
-     * a marca d'água impede que o complemento a recrie (database-design §4.12).
+     * a marca d'água impede que o complemento a recrie (banco-de-dados §4.12).
      *
      * @param id Transação a excluir.
      * @param scope A quais ocorrências da série a exclusão se aplica.
@@ -157,7 +157,7 @@ export class TransactionService {
     /**
      * Marca ou desmarca o pagamento — o atalho `P` da tela de Transações.
      * Regra de negócio (Transações): marcar como paga usa a data de **hoje** como data de
-     * pagamento, porque pago e data de pagamento andam juntos (brief §3, Transação); desmarcar
+     * pagamento, porque pago e data de pagamento andam juntos (transacoes §2.1); desmarcar
      * limpa a data. Regra de negócio (Extrato): numa transação de conta, a nova data decide o
      * extrato (`Transaction.cashDate`), então pagar em outro mês move a transação para o
      * extrato do pagamento, e desmarcar a devolve ao do vencimento. Recalcula o estado antigo
@@ -217,7 +217,7 @@ export class TransactionService {
      * @param current Transação marcada ou desmarcada.
      * @param cashDate Nova data de caixa: a de pagamento, ou o vencimento ao desmarcar.
      * @return O extrato do mês da data, garantido; numa transação de cartão, a fatura atual,
-     * porque a fatura escolhida é a verdade (database-design §4.7).
+     * porque a fatura escolhida é a verdade (banco-de-dados §4.7).
      * @throws {NotFoundError} Quando a conta do extrato não existe mais.
      */
     private containerOnPayment(current: Transaction, cashDate: LocalDate): TransactionContainer {
@@ -242,7 +242,7 @@ export class TransactionService {
     }
 
     /**
-     * Transações do perfil num mês, pelo `due_date` — a lista "Transações do mês" (brief M5) —,
+     * Transações do perfil num mês, pelo `due_date` — a lista "Transações do mês" (transacoes §8.1) —,
      * com as transferências recebidas de outros perfis, que o perfil vê mas não edita.
      *
      * @param profileId Perfil consultado.

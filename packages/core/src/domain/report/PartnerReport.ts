@@ -83,7 +83,7 @@ const SHARES_EPSILON = 1e-9;
 
 /**
  * Monta o relatório por sócio.
- * Regra de negócio (Sócios — aportes, reports-design §8, P1–P5): toda despesa do perfil
+ * Regra de negócio (Sócios — aportes, relatorios §7, P1–P5): toda despesa do perfil
  * empresarial é paga com o dinheiro da empresa, e o que cada sócio põe nela são os **aportes** —
  * receitas e transferências vindas de outro perfil com o sócio vinculado. O total de aportes de
  * **todos os períodos** é dividido pela participação: Matheus (60%) e Gustavo (40%) aportaram
@@ -159,9 +159,9 @@ export function buildPartnerReport(input: PartnerReportInput): PartnerReport {
 }
 
 /**
- * Divide a base pelas participações. Exportada para que a prévia do cadastro de sócios (mockup
- * `DesktopSocios`, "Deveria pagar") divida pela mesma conta do relatório e nunca discorde dele
- * por um centavo.
+ * Divide a base pelas participações. Fica numa função só porque o "Deveria ter aportado" e a
+ * cobertura do déficit dividem pela mesma conta: com duas, as partes de um sócio poderiam
+ * discordar por um centavo.
  * Regra de negócio (Relatórios, P3): com as participações somando 100%, a sobra do arredondamento
  * vai, centavo a centavo, para as maiores frações descartadas (maior resto), e a soma das partes
  * é exatamente a base — R$ 100,00 em três terços é 33,34 + 33,33 + 33,33. Sem somar 100%, a soma

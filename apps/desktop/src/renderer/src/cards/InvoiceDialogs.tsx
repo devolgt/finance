@@ -14,16 +14,16 @@ import { currentDate } from '@/shell/referenceMonth';
 import { SubCategoryPicker } from '@/transactions/pickers';
 
 /*
- * Ações sobre a fatura na tela Cartões (desktop-mvp-plan Fase 8): pagar, pagamento parcial e
+ * Ações sobre a fatura na tela Cartões (cartoes-e-faturas §3): pagar, pagamento parcial e
  * reabrir. Cada uma diz antes o que muda no saldo da conta, porque as três mexem no extrato de
- * uma conta que não está na tela (brief §4, regra 9: nada de aviso genérico).
+ * uma conta que não está na tela (perfis §5.3: nada de aviso genérico).
  */
 
 /** A fatura sobre a qual a ação age, com o que as frases precisam. */
 export interface InvoiceActionTarget {
     readonly creditCardId: string;
     readonly creditCardName: string;
-    /** Conta pagadora do cartão: a que a fatura paga debita (database-design §4.7). */
+    /** Conta pagadora do cartão: a que a fatura paga debita (banco-de-dados §4.7). */
     readonly payingAccountId: string;
     readonly payingAccountName: string;
     readonly invoice: InvoiceResponse;
@@ -32,10 +32,10 @@ export interface InvoiceActionTarget {
 }
 
 /**
- * Pagar a fatura inteira (mockup `MobilePagarFatura`): valor a pagar, conta pagadora e data, e
+ * Pagar a fatura inteira (cartoes-e-faturas §3.1): valor a pagar, conta pagadora e data, e
  * a prévia do saldo da conta antes de confirmar.
  * Regra de negócio (Fatura): quem paga é sempre a conta pagadora do cartão — o vínculo da
- * fatura é com o extrato dela (database-design §4.7) —, então a conta aparece, mas não se
+ * fatura é com o extrato dela (banco-de-dados §4.7) —, então a conta aparece, mas não se
  * escolhe aqui; trocar é editar o cartão. A data sugerida é hoje.
  *
  * @param props.target Fatura em aberto a pagar.
@@ -128,12 +128,12 @@ export function PayInvoiceDialog({ target, onClose }: { readonly target: Invoice
 }
 
 /**
- * Pagamento parcial (desktop-mvp-plan Fase 8): valor, data, conta que pagou e subcategoria.
- * Regra de negócio (Fatura, database-design §4.7): é uma transferência negativa na fatura, já
+ * Pagamento parcial (cartoes-e-faturas §3.3): valor, data, conta que pagou e subcategoria.
+ * Regra de negócio (Fatura, banco-de-dados §4.7): é uma transferência negativa na fatura, já
  * paga, com a conta que pagou como destino — o `readPartialPaymentForm` monta o lançamento. A
  * conta sugerida é a pagadora do cartão, mas pode ser outra ativa: o parcial é um lançamento
  * comum, e não o vínculo da fatura com um extrato. A subcategoria é pedida porque toda
- * transação tem uma (§4.13); transferências ficam fora do relatório por categoria (R2).
+ * transação tem uma (banco-de-dados §4.13).
  *
  * @param props.target Fatura em aberto que recebe o pagamento.
  * @param props.accounts Contas do perfil, das quais saem as opções de conta.
@@ -263,9 +263,10 @@ export function PartialPaymentDialog({
 }
 
 /**
- * Confirmação de reabrir a fatura. Regra de negócio (Fatura, database-design §4.7): reabrir
+ * Confirmação de reabrir a fatura. Regra de negócio (Fatura, banco-de-dados §4.7): reabrir
  * desfaz o pagamento e devolve o saldo da conta; o alerta diz de qual extrato o valor sai e
- * quando a fatura volta a pesar, como pede o plano ("explicando que o saldo da conta volta").
+ * quando a fatura volta a pesar, para o usuário ver o saldo da conta voltar antes de confirmar
+ * (cartoes-e-faturas §3.4).
  *
  * @param props.target Fatura paga a reabrir.
  * @param props.onClose Fecha o alerta, depois de reabrir ou ao desistir.

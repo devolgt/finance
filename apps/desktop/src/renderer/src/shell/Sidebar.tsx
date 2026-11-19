@@ -7,11 +7,11 @@ import { isItemActive, menuFor } from './navigation.ts';
 import { ProfileSwitcher } from './ProfileSwitcher.tsx';
 
 /**
- * Barra lateral do shell (mockup `Main`): marca, seletor de perfil, menu e rodapé. Os relatórios
- * não são subitens do menu, como nos mockups: ficam na lista da página de Relatórios, a pedido do
- * usuário (`ReportsLayout`). O rodapé diz onde os dados estão (`SyncFooter`).
+ * Barra lateral do shell (desktop §8.1): marca, seletor de perfil, menu e rodapé. Os relatórios
+ * não são subitens do menu: ficam na lista da página de Relatórios (`ReportsScreen`), a pedido do
+ * usuário (relatorios §10). O rodapé diz onde os dados estão (`SyncFooter`).
  * Regra de negócio (Perfis): o menu vem do perfil ativo (`menuFor`), e não de uma lista fixa,
- * porque Sócios só existe no perfil empresarial (desktop-mvp-plan, Fase 13.11).
+ * porque Sócios só existe no perfil empresarial (desktop §8.1).
  *
  * @return A navegação principal.
  */
@@ -45,9 +45,9 @@ export function Sidebar(): ReactNode {
 
 /**
  * Rodapé da barra lateral. Diz "Dados só neste aparelho" fora de um grupo ou depois de sair
- * dele; dentro, com quantos aparelhos os dados são compartilhados (sync-plan Fase 7). Não
+ * dele; dentro, com quantos aparelhos os dados são compartilhados (sincronizacao §7.3). Não
  * promete "sincronizado agora": a sincronização só roda com a tela de Dispositivos aberta
- * (sync-design §7.1).
+ * (sincronizacao §1.3).
  *
  * @return O rodapé.
  */

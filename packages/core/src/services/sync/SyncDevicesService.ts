@@ -10,7 +10,7 @@ import type { SyncService } from './SyncService.ts';
 /** O que a plataforma informa de si para a tela de Dispositivos. */
 export interface SyncPlatformInfo {
     readonly platform: SyncPlatform;
-    /** Endereços locais atuais deste aparelho, que vão no convite (sync-design §6.3). */
+    /** Endereços locais atuais deste aparelho, que vão no convite (sincronizacao §4.3). */
     localAddresses(): readonly string[];
 }
 
@@ -21,7 +21,7 @@ export interface SyncCounters {
 }
 
 /**
- * Casos de uso da tela de Dispositivos (sync-plan Fases 7 e 8): estado, grupo, convite,
+ * Casos de uso da tela de Dispositivos (sincronizacao §6.3 e §6.4): estado, grupo, convite,
  * entrada, remoção e o ciclo de abrir e fechar a tela. Fica no núcleo, atrás das mesmas rotas
  * nos dois apps, para que desktop e celular sigam a mesma regra — a tela só mostra.
  */
@@ -84,7 +84,7 @@ export class SyncDevicesService {
     }
 
     /**
-     * A tela de Dispositivos abriu: escuta, anuncia e procura (sync-design §7.1).
+     * A tela de Dispositivos abriu: escuta, anuncia e procura (sincronizacao §5.1).
      *
      * @return O estado.
      */
@@ -123,7 +123,7 @@ export class SyncDevicesService {
     }
 
     /**
-     * Entra no grupo do convite lido do QR (sync-design §6.4).
+     * Entra no grupo do convite lido do QR (sincronizacao §4.4).
      *
      * @param inviteText Texto do QR.
      * @param deviceName Nome deste aparelho.
@@ -138,7 +138,7 @@ export class SyncDevicesService {
         }
         const outcome: SessionOutcome = await coordinator.join(invite, { name: deviceName, platform: this.platform.platform });
         // A sessão de entrada seguiria ao vivo; ela termina aqui, porque a sincronização só roda
-        // com a tela de Dispositivos aberta (sync-design §7.1) — que a reabre se estiver aberta.
+        // com a tela de Dispositivos aberta (sincronizacao §5.1) — que a reabre se estiver aberta.
         await coordinator.close();
         if (outcome.kind === 'joined') {
             return { joined: true, restartRequired: outcome.snapshot, refusal: null };
@@ -147,7 +147,7 @@ export class SyncDevicesService {
     }
 
     /**
-     * Disca para um endereço digitado (sync-design §7.2). Espera a conexão abrir, e não a
+     * Disca para um endereço digitado (sincronizacao §5.2). Espera a conexão abrir, e não a
      * sessão terminar, para que um endereço fora da rede local, um aparelho fora do grupo ou um
      * par inalcançável cheguem à tela como erro, em vez de a folha fechar como se a ligação
      * tivesse dado certo.

@@ -114,7 +114,7 @@ export function useCoreQueries<R extends ReadRoute, T>(route: R, inputs: readonl
 /**
  * Mutação tipada de uma rota de escrita. Ao dar certo, invalida as leituras do mapa de
  * invalidação e só então resolve — quem espera o `mutateAsync` já encontra as consultas
- * marcadas como velhas, e os saldos da tela se refazem sem recarregar (desktop-mvp-plan Fase 9).
+ * marcadas como velhas, e os saldos da tela se refazem sem recarregar (desktop §4.3).
  *
  * @param route Rota de escrita.
  * @return O estado da mutação, com o erro já tipado como `CoreCallError`.
@@ -138,7 +138,7 @@ export async function invalidateAfter(queryClient: QueryClient, route: WriteRout
 }
 
 /**
- * Invalida todo o cache do núcleo. Existe para a troca de perfil (desktop-mvp-plan Fase 4):
+ * Invalida todo o cache do núcleo. Existe para a troca de perfil (desktop §8):
  * toda consulta é de um perfil, e o mapa de invalidação não se aplica a quem não escreveu nada.
  *
  * @param queryClient Cache do app.

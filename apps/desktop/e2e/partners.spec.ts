@@ -3,8 +3,8 @@ import { currentPeriod } from '../src/renderer/src/shell/referenceMonth.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Cadastro de sócios (desktop-mvp-plan Fase 13.7) no app empacotado: o exemplo do mockup
- * `DesktopSocios` — Gustavo (60%) e Ana (40%) no Estúdio GO —, a soma ao vivo que só libera o
+ * Cadastro de sócios (socios §1 e §4.1) no app empacotado: o exemplo de Gustavo (60%) e Ana
+ * (40%) no Estúdio GO, a soma ao vivo que só libera o
  * salvar em 100% e a remoção de um sócio com aporte, que deixa o lançamento sem sócio. Os cliques
  * usam `dispatchEvent`, pelo motivo explicado em `firstUse.ts`.
  */

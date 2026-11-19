@@ -54,7 +54,7 @@ function connect(core: Pick<CoreApi, 'dispatch'>, invalid: unknown[] = []): { re
     return { client, raw: channel.port2 };
 }
 
-describe('IpcCoreClient e serveCore (desktop-mvp-plan Fase 3.3)', () => {
+describe('IpcCoreClient e serveCore (desktop §1)', () => {
     it('leva a rota pelo canal até o núcleo e devolve o resultado tipado', async () => {
         const { client } = connect(memoryCore());
         const created = await client.call('onboarding.start', {

@@ -5,7 +5,7 @@ import { useReferenceMonth } from '@/shell/useReferenceMonth';
 /**
  * Os cadastros que o filtro de um relatório cita por id, para dar nome a eles no cabeçalho e
  * oferecê-los no editor. Os sócios só são pedidos no perfil empresarial, porque o núcleo recusa a
- * rota no pessoal (database-design §4.2).
+ * rota no pessoal (banco-de-dados §4.2).
  *
  * @return Os cadastros do perfil ativo, ou `null` enquanto algum ainda carrega.
  */

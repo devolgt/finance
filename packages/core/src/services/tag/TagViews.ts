@@ -3,8 +3,8 @@ import type { Money } from '../../domain/shared/Money.ts';
 import type { Tag } from '../../domain/tag/Tag.ts';
 
 /**
- * Uma tag com o uso dela em todo o período — o que a lista de Tags mostra (mockup
- * `DesktopTags`) e o que o painel de edição precisa para avisar quantos lançamentos perdem
+ * Uma tag com o uso dela em todo o período — o que a lista de Tags mostra
+ * (categorias-e-tags §3.2) e o que o painel de edição precisa para avisar quantos lançamentos perdem
  * a tag ao excluí-la.
  */
 export interface TagWithUsage {

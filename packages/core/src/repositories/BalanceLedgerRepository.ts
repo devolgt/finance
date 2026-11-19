@@ -7,7 +7,7 @@ import type { YearMonth } from '../domain/shared/YearMonth.ts';
  * Consultas agregadas da rotina de recálculo. Separadas dos Repositories de entidade
  * porque não devolvem entidades, e sim somas: a agregação roda no código C do SQLite
  * (`SUM` por contêiner mensal) e o núcleo só aplica as regras sobre os totais
- * (backend-design §3.2).
+ * (core §1.2).
  */
 export interface BalanceLedgerRepository {
     /**

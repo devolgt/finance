@@ -3,7 +3,7 @@ import { Text, type TextProps } from 'react-native';
 
 /**
  * @param className Classes do chamador.
- * @return As classes com a fonte dos mockups e, só quando o chamador não define, o tamanho
+ * @return As classes com a fonte do app e, só quando o chamador não define, o tamanho
  * (15px) e a cor (`ink`) base. Os padrões entram condicionalmente, e não como prefixo, porque no
  * NativeWind duas classes em conflito resolvem pela ordem da folha de estilos gerada, e não pela
  * ordem na string: um `text-13` do chamador perderia para o `text-15` da base.
@@ -15,7 +15,7 @@ export function appTextClassName(className: string): string {
 }
 
 /**
- * Texto do app com a fonte e a cor base dos mockups (IBM Plex Sans, `ink`, 15px). O React Native
+ * Texto do app com a fonte e a cor base (IBM Plex Sans, `ink`, 15px; mobile §6.1). O React Native
  * não herda fonte do pai como o CSS, então sem este componente cada `Text` precisaria repetir a
  * família e a cor, e o primeiro esquecido apareceria na fonte do sistema.
  *

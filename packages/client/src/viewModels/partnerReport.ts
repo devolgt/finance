@@ -70,7 +70,7 @@ export interface PartnerCoverageView {
     /** `Saldo previsto de out/2026: −R$ 398,10`. */
     readonly headline: string;
     readonly items: readonly PartnerCoverageItem[];
-    /** `R$ 398,10`: a soma dos aportes, que pode passar do déficit (reports-design §8, P6). */
+    /** `R$ 398,10`: a soma dos aportes, que pode passar do déficit (relatorios §7, P6). */
     readonly total: string;
     /** Por que o total passa do déficit; `null` quando é exatamente o déficit. */
     readonly surplusNote: string | null;
@@ -98,7 +98,7 @@ export interface PartnerReportView {
 }
 
 /**
- * Monta o relatório por sócio (D7; reports-design §8). Os números vêm prontos do núcleo; aqui só
+ * Monta o relatório por sócio (relatorios §7). Os números vêm prontos do núcleo; aqui só
  * os textos e as larguras do gráfico.
  * Regra de negócio (Sócios — aportes, P1–P4): a tabela e o acerto são dos aportes de **todos os
  * períodos** — o que cada sócio pôs na empresa contra a parte dele no total aportado. O mês de
@@ -281,7 +281,7 @@ function shareText(share: number): string {
 }
 
 /**
- * A diferença lida sem depender da cor (decisão de interface 7): seta, sinal e as palavras.
+ * A diferença lida sem depender da cor (desktop §7.3): seta, sinal e as palavras.
  *
  * @param difference Aportou − deveria.
  * @return O texto e o lado da diferença.

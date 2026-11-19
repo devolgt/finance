@@ -6,7 +6,7 @@ import { technicalText, type AppFailure } from '../lib/failures.ts';
 import { ReportProblem } from './ReportProblem.tsx';
 
 /**
- * Tela de bloqueio da abertura (backend-design §4.5 e §4.8): o banco não foi aberto e o app
+ * Tela de bloqueio da abertura (banco-de-dados §5.5 e §5.8): o banco não foi aberto e o app
  * não segue para as telas, porque abrir mesmo assim produziria número errado ou gravaria
  * num banco pela metade. Fica fora do shell — sem menu nem mês de referência —, já que nada
  * do banco pode ser lido. Todo bloqueio pode ser relatado, com o log, pela tela de relato.

@@ -16,7 +16,7 @@ import type { UnitOfWork } from '../UnitOfWork.ts';
 const FIRST_PERIOD = YearMonth.of(1900, 1);
 
 /**
- * Visão geral (mockup `DesktopVisaoGeral2`): as perguntas da tela que nenhuma outra rota responde —
+ * Visão geral (visao-do-mes §1): as perguntas da tela que nenhuma outra rota responde —
  * quanto saiu e entrou no mês e para onde foi, o que está atrasado ou ainda vence no mês e a
  * próxima fatura de cada cartão. Os saldos, os cartões do mês e as metas vêm das rotas das
  * próprias telas, para que a Visão geral e cada tela nunca discordem.
@@ -98,7 +98,7 @@ export class OverviewService {
     /**
      * Faturas em aberto, de qualquer competência, dos cartões pagos por contas do perfil.
      * Regra de negócio (Cartões): o cartão desativado continua com as faturas, porque a dívida
-     * não some ao desativar (desktop-mvp-plan §5.1).
+     * não some ao desativar (contas §5).
      *
      * @param profileId Perfil consultado.
      * @return As faturas com valor a pagar e a conta pagadora de cada uma.

@@ -81,7 +81,7 @@ export type ChannelMessage = { readonly kind: 'json'; readonly value: unknown } 
 /**
  * Canal cifrado depois do handshake: mensagens de qualquer tamanho fatiadas em pedaços que
  * cabem numa mensagem Noise, cada um cifrado com a cifra da direção. Os dados nunca trafegam
- * sem criptografia, nem na rede de casa (sync-design §7.4).
+ * sem criptografia, nem na rede de casa (sincronizacao §5.6).
  */
 export class SecureChannel {
     private sending: Promise<void> = Promise.resolve();

@@ -5,11 +5,11 @@ import { formatMoney, formatMoneyCompact, formatMoneyDigits } from '../format/mo
 import type { TransactionTableRow } from './transactionTable.ts';
 
 /*
- * Extrato em vários meses (mockup `DesktopExtrato`): os mesmos lançamentos de Transações, com os
+ * Extrato em vários meses: os mesmos lançamentos de Transações, com os
  * mesmos filtros, mas num período de vários meses, numa tabela com o dia do mês nas linhas e os
  * meses nas colunas. Não cabe descrever cada lançamento numa célula, então ela mostra o resultado
  * do dia. Fica no `client`, e não na tela, porque o celular vai mostrar o mesmo relatório com as
- * mesmas regras e palavras (desktop-shell-design §4.2).
+ * mesmas regras e palavras (desktop §4).
  */
 
 /** Quantos meses o período pode ter: doze colunas já enchem a tela, e cada mês é uma consulta a mais. */
@@ -26,7 +26,7 @@ export type DailyStatementKind = 'all' | 'income' | 'expense';
  */
 export type DailyStatementState = 'paid' | 'upcoming' | 'overdue';
 
-/** Rótulos da situação do dia no detalhe, os do mockup. */
+/** Rótulos da situação do dia no detalhe, os mesmos nos dois apps. */
 const STATE_LABELS: Readonly<Record<DailyStatementState, string>> = {
     paid: 'Tudo pago',
     upcoming: 'Tem lançamento a vencer',
@@ -298,7 +298,7 @@ function sumOf(rows: readonly TransactionTableRow[], direction: 'in' | 'out', cu
 
 /**
  * Regra de negócio (Extrato, situação): pago é o lançamento pago e a fatura paga (a compra no
- * cartão segue a fatura, database-design §4.7, e a tabela de Transações já aplica isso); o resto
+ * cartão segue a fatura, banco-de-dados §4.7, e a tabela de Transações já aplica isso); o resto
  * está em aberto, atrasado quando venceu antes de hoje. A compra numa fatura em aberto, que aparece
  * uma a uma quando há filtro, nunca é atrasada: a data dela é a da compra, e quem vence é a fatura.
  *
@@ -429,7 +429,7 @@ export interface StatementPreset {
 }
 
 /**
- * Os atalhos do mockup, contados a partir do mês corrente: "Últimos N meses" terminam nele, e
+ * Os atalhos de período do filtro, contados a partir do mês corrente: "Últimos N meses" terminam nele, e
  * "Próximos 6 meses" começam no seguinte, para ver o que já está lançado à frente.
  *
  * @param current Mês corrente `YYYY-MM`.

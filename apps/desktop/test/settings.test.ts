@@ -60,7 +60,7 @@ function profileNames(path: string): readonly unknown[] {
     return names;
 }
 
-describe('exportar cópia do banco (desktop-mvp-plan Fase 13)', () => {
+describe('exportar cópia do banco (desktop §11)', () => {
     it('grava a cópia no destino e substitui uma cópia anterior que o usuário confirmou no diálogo', async () => {
         const folder = temporaryFolder();
         const opened = await openedWithProfile(folder);
@@ -212,7 +212,7 @@ describe('importar cópia do banco', () => {
     });
 });
 
-describe('lista de atalhos (desktop-mvp-plan Fase 13)', () => {
+describe('lista de atalhos (desktop §11)', () => {
     /**
      * @param key Tecla impressa na lista.
      * @return A ação que o shell dispara para a tecla solta, numa tela com mês de referência.

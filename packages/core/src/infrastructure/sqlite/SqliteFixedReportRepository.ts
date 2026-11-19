@@ -13,7 +13,7 @@ import { RowReader } from './RowReader.ts';
 /**
  * Contas que entram no saldo do perfil.
  * Regra de negócio (Perfil): o saldo do perfil soma só as contas com "considerar no saldo"
- * ligado; contas desativadas continuam, porque o histórico não muda (desktop-mvp-plan §5.1).
+ * ligado; contas desativadas continuam, porque o histórico não muda (contas §5).
  */
 const BALANCE_ACCOUNTS_SQL = 'a.profile_id = :profileId AND a.deleted_at IS NULL AND a.consider_balance = 1';
 
@@ -26,7 +26,7 @@ export class SqliteFixedReportRepository implements FixedReportRepository {
 
     /**
      * Lê os extratos já calculados, e não recalcula: o extrato é o cache que a rotina de
-     * recálculo mantém certo (database-design §4.6).
+     * recálculo mantém certo (banco-de-dados §4.6).
      *
      * @param profileId Perfil consultado.
      * @param from Primeiro mês da série.
@@ -81,8 +81,8 @@ export class SqliteFixedReportRepository implements FixedReportRepository {
     }
 
     /**
-     * Regra de negócio (Relatórios, §9, B3): o mesmo efeito no saldo do extrato
-     * (database-design §4.13, sinal de `value` e encargos), só dos lançamentos sem série e pagos,
+     * Regra de negócio (Relatórios, relatorios §8.1, B3): o mesmo efeito no saldo do extrato
+     * (banco-de-dados §4.13, sinal de `value` e encargos), só dos lançamentos sem série e pagos,
      * pelo mês de caixa — o do extrato. Quatro caminhos levam dinheiro às contas do total:
      * - o lançamento de uma conta do total, na origem (a receita soma, os demais tipos subtraem, os
      *   encargos saem) e, na transferência ou no investimento para outra conta do total, também no
@@ -90,10 +90,10 @@ export class SqliteFixedReportRepository implements FixedReportRepository {
      * - a transferência que chega a uma conta do total vinda de fora dele (outro perfil, ou conta
      *   fora do total), que só soma o valor;
      * - a compra no cartão, no mês em que a fatura foi paga, quando a conta que a pagou é do total:
-     *   o pagamento da fatura é a saída de caixa (database-design §4.7); o pagamento parcial entra
+     *   o pagamento da fatura é a saída de caixa (banco-de-dados §4.7); o pagamento parcial entra
      *   aqui também e abate as compras, porque a fatura é paga líquida dele;
      * - o pagamento parcial de fatura, que sai da conta do total no mês do próprio pagamento
-     *   (database-design §4.7). Sem ele, o parcial ia parar nas "séries" (a diferença entre a
+     *   (banco-de-dados §4.7). Sem ele, o parcial ia parar nas "séries" (a diferença entre a
      *   variação do saldo e os avulsos) e a média dos avulsos saía com as compras brutas.
      *
      * @param profileId Perfil consultado.

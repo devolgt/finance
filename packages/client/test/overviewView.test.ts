@@ -17,7 +17,7 @@ import { ClientWorld } from './support/ClientWorld.ts';
 
 const PERIOD = '2026-10';
 
-describe('indicadores da Visão geral (mockup DesktopVisaoGeral2)', () => {
+describe('indicadores da Visão geral (visao-do-mes §1)', () => {
     it('saldo consolidado com o previsto na mesma caixa, igual ao total de Contas', async () => {
         const world = new ClientWorld();
         const s = await world.seed();

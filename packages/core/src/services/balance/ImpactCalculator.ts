@@ -8,7 +8,7 @@ import { BalanceImpact } from './BalanceImpact.ts';
 /**
  * Traduz um estado (de uma transação ou fatura) no conjunto de saldos que dependem dele.
  * Quem escreve calcula o impacto **antes e depois** da escrita e soma os dois, para que o
- * contêiner antigo e o novo sejam recalculados juntos (backend-design §5.1).
+ * contêiner antigo e o novo sejam recalculados juntos (testes §1.1).
  */
 export class ImpactCalculator {
     /**
@@ -44,7 +44,7 @@ export class ImpactCalculator {
 
     /**
      * Regra de negócio (Fatura): paga, a fatura entra no extrato do mês do pagamento; em
-     * aberto, entra no previsto do mês do vencimento (database-design §4.7). É desse mês que
+     * aberto, entra no previsto do mês do vencimento (banco-de-dados §4.7). É desse mês que
      * a conta que quita o cartão precisa ser recalculada.
      *
      * @param invoice Estado da fatura (antes ou depois da escrita).

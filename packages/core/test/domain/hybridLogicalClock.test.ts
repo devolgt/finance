@@ -29,7 +29,7 @@ function phoneClock(millis: number, counter: number): HybridLogicalClock {
     return HybridLogicalClock.parse(`${String(millis).padStart(13, '0')}.${String(counter).padStart(5, '0')}.${PHONE}`);
 }
 
-describe('HybridLogicalClock (sync-design §5.2)', () => {
+describe('HybridLogicalClock (sincronizacao §3.2)', () => {
     it('serializa na largura fixa {ms 13}.{contador 5}.{device_id}', () => {
         const clock = HybridLogicalClock.initial(DESKTOP).tick(NOW);
 

@@ -40,7 +40,7 @@ export class SqliteReportDefinitionRepository implements ReportDefinitionReposit
     }
 
     /**
-     * Grava o filtro e o formato no JSON versionado da coluna `definition` (reports-design §4).
+     * Grava o filtro e o formato no JSON versionado da coluna `definition` (relatorios §6).
      *
      * @param definition Definição a gravar.
      * @return void

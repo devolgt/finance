@@ -8,7 +8,7 @@ export type NoteFormResult = { readonly ok: true; readonly text: string } | { re
 /**
  * Lê o editor de anotação com o `noteTextField`, o mesmo campo das rotas de anotação. Só há
  * uma regra — não pode ficar vazia —, e ela vem do schema para que a tela e o núcleo nunca
- * discordem; não há limite de tamanho (database-design §4.3).
+ * discordem; não há limite de tamanho (banco-de-dados §4.3).
  *
  * @param raw Texto do editor.
  * @return O texto aparado, como o núcleo o grava, ou a mensagem que aparece abaixo do editor.
@@ -28,7 +28,7 @@ function foldForSearch(text: string): string {
 }
 
 /**
- * Filtra a lista pela busca do mockup ("texto da anotação…"). Procura no texto inteiro, e
+ * Filtra a lista pela busca da tela ("texto da anotação…"; anotacoes §2). Procura no texto inteiro, e
  * não só no título, porque o que se lembra de uma anotação costuma estar no corpo. Fica na
  * tela, e não numa rota, porque a lista de um perfil é curta e já está em cache.
  *

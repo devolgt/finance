@@ -1,5 +1,5 @@
 /**
- * Variáveis de ambiente da chave de release (mobile-mvp-plan, Fase 19). A chave e as senhas
+ * Variáveis de ambiente da chave de release (mobile §11). A chave e as senhas
  * ficam fora do repositório e fora do `android/` gerado: o Gradle as lê no build, e o
  * `pnpm dist:mobile` confere que existem antes de começar.
  */
@@ -44,8 +44,8 @@ const RELEASE_SIGNING_CHOICE = `signingConfig System.getenv('${RELEASE_SIGNING_E
  * assina o release com a chave de depuração, que é pública: um APK assim pode ser substituído
  * por qualquer outro assinado com ela, e a atualização do app instalado deixaria de provar que
  * veio do mesmo autor. Sem a variável da chave, o release continua com a de depuração, porque o
- * CI e a medição da Fase 5 (que instala o release por cima do development build, mantendo os
- * dados) dependem disso; o `pnpm dist:mobile` é que recusa gerar o APK distribuído sem ela.
+ * CI e a medição no aparelho (mobile §12.1, que instala o release por cima do development build,
+ * mantendo os dados) dependem disso; o `pnpm dist:mobile` é que recusa gerar o APK distribuído sem ela.
  *
  * A troca é por texto porque o `android/` não é versionado: um plugin é o único lugar estável
  * para a mudança. Se o template do Expo mudar a ponto de a âncora sumir, o `prebuild` falha, em

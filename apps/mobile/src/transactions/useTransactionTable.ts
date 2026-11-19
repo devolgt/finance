@@ -28,7 +28,7 @@ export interface TransactionTableState {
  * Monta a tabela de Transações do mês com as mesmas consultas e o mesmo `buildTransactionTable`
  * do desktop — lançamentos, contas, contas de outros perfis, cartões, categorias, séries, faturas
  * das compras e faturas que pesam no mês —, para que a lista do celular, o agrupamento das compras
- * do cartão na linha da fatura e o resultado sejam os mesmos (mobile-mvp-plan §5.1).
+ * do cartão na linha da fatura e o resultado sejam os mesmos (cartoes-e-faturas §5).
  *
  * @param profileId Perfil ativo.
  * @param period Mês de referência.

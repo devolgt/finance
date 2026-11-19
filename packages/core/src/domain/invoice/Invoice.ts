@@ -25,14 +25,14 @@ export interface InvoiceProps {
     readonly payment: InvoicePayment | null;
     /**
      * Total da fatura com o **sinal do efeito na conta que a quita**: negativo quando há
-     * valor a pagar (database-design §4.7). Cache da rotina de recálculo.
+     * valor a pagar (banco-de-dados §4.7). Cache da rotina de recálculo.
      */
     readonly balance: Money;
 }
 
 /**
  * Fatura mensal de um cartão — o contêiner das transações do cartão naquele mês
- * (database-design §4.7).
+ * (banco-de-dados §4.7).
  * Regra de negócio (Fatura): uma fatura está **paga** ou **em aberto**, nunca paga pela
  * metade; pagamento parcial é uma transferência dentro da fatura, não um estado dela.
  */
@@ -58,7 +58,7 @@ export class Invoice implements InvoiceProps {
 
     /**
      * Abre a fatura de um mês ainda sem linha, em aberto e zerada. O id é o UUID v5 da chave
-     * natural (cartão, competência), pelo mesmo motivo do extrato (sync-design §5.6).
+     * natural (cartão, competência), pelo mesmo motivo do extrato (sincronizacao §3.7).
      *
      * @param creditCardId Cartão dono da fatura.
      * @param period Competência da fatura.
@@ -86,7 +86,7 @@ export class Invoice implements InvoiceProps {
 
     /**
      * Regra de negócio (Fatura): pagar vincula a fatura ao extrato do mês do pagamento, para
-     * que a movimentação do cartão entre no saldo da conta dona (database-design §4.7).
+     * que a movimentação do cartão entre no saldo da conta dona (banco-de-dados §4.7).
      *
      * @param payment Extrato do mês do pagamento e o dia em que ele aconteceu.
      * @return A fatura paga.
@@ -98,7 +98,7 @@ export class Invoice implements InvoiceProps {
     /**
      * Regra de negócio (Fatura): reabrir desfaz o pagamento — o valor sai do extrato onde
      * tinha sido pago e o saldo da conta volta como se o pagamento não tivesse acontecido
-     * (database-design §4.7).
+     * (banco-de-dados §4.7).
      *
      * @return A fatura em aberto.
      */
@@ -133,7 +133,7 @@ export class Invoice implements InvoiceProps {
 }
 
 /**
- * Valor a pagar de uma fatura, em módulo, como a tela mostra (database-design §4.7).
+ * Valor a pagar de uma fatura, em módulo, como a tela mostra (banco-de-dados §4.7).
  * Regra de negócio (Fatura): fatura credora (estornos maiores que as compras) conta como
  * zero — crédito não paga outra fatura nem libera limite de outro mês. Fica no domínio
  * para que a lista de cartões e os relatórios apliquem a mesma regra.

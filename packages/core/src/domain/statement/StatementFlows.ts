@@ -19,7 +19,7 @@ export interface StatementMovement extends StatementEffect {
     readonly invoice: boolean;
 }
 
-/** O que forma o movimento de um extrato no mês (database-design §4.6). */
+/** O que forma o movimento de um extrato no mês (banco-de-dados §4.6). */
 export interface StatementParts {
     readonly transactions: readonly Transaction[];
     readonly incomingTransfers: readonly Transaction[];
@@ -28,14 +28,14 @@ export interface StatementParts {
 }
 
 /**
- * Reduz cada movimento do extrato ao efeito no saldo da conta e se já aconteceu. Fica num lugar
- * só porque o extrato (entradas e saídas) e o fluxo por conta (que separa as faturas) precisam
- * da mesma lista: com duas cópias, um movimento novo entraria num e faltaria no outro, e o
- * relatório deixaria de fechar com a tela Contas (desktop-mvp-plan §3.4, F2).
+ * Reduz cada movimento do extrato ao efeito no saldo da conta e se já aconteceu. Fica no domínio,
+ * numa lista só, para que as entradas e saídas do extrato saiam dos mesmos movimentos que o saldo:
+ * um movimento esquecido aqui faria entradas menos saídas deixar de fechar com a variação do saldo
+ * (contas §2.2 e §2.3).
  * Regra de negócio (Extrato): as transações do extrato pelo efeito na origem; as transferências
  * que chegam pelo efeito no destino — o pagamento parcial de fatura é uma delas, com valor
  * negativo; as faturas pagas no consolidado e no previsto; as em aberto que vencem no mês só no
- * previsto (database-design §4.6 e §4.7).
+ * previsto (banco-de-dados §4.6 e §4.7).
  *
  * @param parts Transações, transferências que chegam e faturas do mês.
  * @return Um movimento por linha do extrato, com as faturas e os pagamentos parciais marcados.
@@ -69,7 +69,7 @@ export interface StatementFlows {
  * conta**, e não pelo tipo — um estorno de despesa é entrada, uma receita com tarifa maior
  * que o valor é saída, e o pagamento parcial de fatura (transferência negativa que chega) é
  * saída. O consolidado soma só o que já aconteceu e o previsto soma tudo, a mesma regra do
- * saldo (database-design §4.6); por isso as duas somas sempre fecham com o movimento do mês
+ * saldo (banco-de-dados §4.6); por isso as duas somas sempre fecham com o movimento do mês
  * que o recálculo gravou no extrato.
  *
  * A separação precisa do efeito de cada linha, que o movimento agregado do recálculo

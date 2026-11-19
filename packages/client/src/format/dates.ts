@@ -3,9 +3,9 @@ import { LocalDate, YearMonth } from '@finance/core';
 const MONTH_NAMES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'] as const;
 
 /*
- * Datas e meses no padrão dos mockups, sem `Intl` nem `Date`: o resultado de `Intl` difere
+ * Datas e meses no padrão pt-BR das telas (desktop §7.4), sem `Intl` nem `Date`: o resultado de `Intl` difere
  * entre o Chromium e o Hermes, e um `Date` construído no fuso errado muda o dia perto da
- * meia-noite (backend-design §5.7). As entradas são o texto ISO dos DTOs, interpretado pelos
+ * meia-noite (testes §2.4). As entradas são o texto ISO dos DTOs, interpretado pelos
  * Value Objects do núcleo, que recusam data inexistente.
  */
 

@@ -5,7 +5,7 @@ export type SyncSessionStage = 'handshake' | 'syncing' | 'live';
 
 /**
  * Por que a última sessão foi recusada. A tela diz o que corrigir e em qual aparelho
- * (sync-design §5.2 e backend-design §4.9).
+ * (sincronizacao §3.2 e banco-de-dados §5.9).
  */
 export type SyncRefusalResponse =
     | { readonly reason: 'clock'; readonly localMillis: number; readonly remoteMillis: number }
@@ -33,7 +33,7 @@ export interface SyncInviteResponse {
 
 /**
  * Estado da sincronização para a tela de Dispositivos. A tela o consulta periodicamente
- * enquanto está aberta — a única hora em que a sincronização roda (sync-design §7.1) — e
+ * enquanto está aberta — a única hora em que a sincronização roda (sincronizacao §5.1) — e
  * invalida as consultas da UI quando `appliedBatches` cresce.
  */
 export interface SyncStatusResponse {
@@ -41,7 +41,7 @@ export interface SyncStatusResponse {
     readonly available: boolean;
     readonly deviceId: string | null;
     readonly groupId: string | null;
-    /** Há dados locais: entrar num grupo exige descartá-los antes (sync-design §6.4). */
+    /** Há dados locais: entrar num grupo exige descartá-los antes (sincronizacao §4.4). */
     readonly hasData: boolean;
     readonly members: readonly SyncMemberResponse[];
     /** A tela está aberta: escutando, anunciando e procurando. */
@@ -52,7 +52,7 @@ export interface SyncStatusResponse {
     readonly lastRefusal: { readonly deviceId: string | null; readonly refusal: SyncRefusalResponse } | null;
     /** Lotes aplicados desde que o núcleo abriu. */
     readonly appliedBatches: number;
-    /** Pais excluídos que um lote reviveu desde que o núcleo abriu (sync-design §5.8). */
+    /** Pais excluídos que um lote reviveu desde que o núcleo abriu (sincronizacao §3.9). */
     readonly revivedRows: number;
 }
 

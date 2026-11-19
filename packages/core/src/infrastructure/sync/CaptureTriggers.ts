@@ -17,18 +17,18 @@ export function columnsOf(database: Database, table: string): readonly string[] 
 /**
  * @param database Conexão.
  * @param table Tabela sincronizada.
- * @return As colunas que trafegam: todas menos o id e os caches derivados (sync-design §5.5).
+ * @return As colunas que trafegam: todas menos o id e os caches derivados (sincronizacao §3.6).
  */
 export function syncedColumnsOf(database: Database, table: SyncedTable): readonly string[] {
     return columnsOf(database, table.name).filter((column) => column !== IDENTITY_COLUMN && !table.derived.includes(column));
 }
 
 /**
- * Instala, só nesta conexão, a captura das escritas (sync-design §5.4; sync-plan §3.1): a
+ * Instala, só nesta conexão, a captura das escritas (sincronizacao §3.4): a
  * tabela temporária de células sujas, a flag que a liga e um trigger `TEMP` por tabela
  * sincronizada. Os triggers são gerados do `PRAGMA table_info` a cada abertura, para que
  * uma coluna nova de migration entre sozinha; e são `TEMP` para que nada fique gravado no
- * arquivo — as migrations rodam antes e ficam fora da captura (backend-design §4.9).
+ * arquivo — as migrations rodam antes e ficam fora da captura (banco-de-dados §5.9).
  *
  * Por que trigger e não instrumentar cada Repository: são ~70 pontos de escrita, vários em
  * upsert que não sabe quais colunas mudaram; uma escrita esquecida viraria divergência
@@ -60,7 +60,7 @@ export function installCapture(database: Database, enabled: boolean): void {
  * - `AFTER UPDATE` marca cada coluna sincronizada com `OLD.c IS NOT NEW.c`, para que gravar
  *   o mesmo valor (upserts reescrevem tudo) não gere mudança.
  * - `BEFORE DELETE` aborta sempre: um hard delete não deixa nada para replicar, e um par
- *   que nunca visse a lápide manteria a linha viva (sync-design §9).
+ *   que nunca visse a lápide manteria a linha viva (sincronizacao §3.12).
  *
  * @param table Tabela sincronizada.
  * @param columns Colunas capturadas na alteração.

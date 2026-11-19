@@ -3,7 +3,7 @@ import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon
 import type { CSSProperties, ReactNode } from 'react';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
-/** Raio dos avisos, da escala dos tokens (o mesmo dos botões nos mockups). */
+/** Raio dos avisos, da escala dos tokens: o mesmo dos botões, para o aviso parecer parte do app. */
 const TOAST_RADIUS: RadiusPx = 8;
 
 /**

@@ -15,7 +15,7 @@ function steppingClock(stepMs: number): () => number {
     };
 }
 
-describe('medição da cifra da sincronização (sync-plan Fase 5)', () => {
+describe('medição da cifra da sincronização (sincronizacao §5.5)', () => {
     it('converte bytes e tempo em MB/s decimais e ms por operação, sem infinito com o relógio parado', () => {
         expect(megabytesPerSecond(8_000_000, 2_000)).toBe(4);
         expect(megabytesPerSecond(1_000, 0)).toBe(0);

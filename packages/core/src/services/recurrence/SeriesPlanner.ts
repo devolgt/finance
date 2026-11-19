@@ -20,7 +20,7 @@ export interface PlannedOccurrence {
 
 /**
  * O que uma criação, edição ou exclusão faz com uma série, sem gravar nada — o conteúdo do
- * diálogo de revisão (database-design §4.12).
+ * diálogo de revisão (banco-de-dados §4.12).
  */
 export interface SeriesPlan {
     /** A regra antes da operação; `null` numa criação. */
@@ -45,7 +45,7 @@ const EMPTY: SeriesSnapshot = { recurrence: null, occurrences: [], stamps: new M
 
 /**
  * Monta o plano de uma operação sobre uma série para o diálogo de revisão
- * (database-design §4.12): a criação, edição ou exclusão de uma
+ * (banco-de-dados §4.12): a criação, edição ou exclusão de uma
  * transação recorrente só é gravada depois que o usuário vê o que será excluído, criado e
  * alterado. Em vez de prever o resultado com uma segunda implementação das regras, executa a
  * própria operação numa transação desfeita (`UnitOfWork.rehearse`) e compara a série antes e
@@ -177,7 +177,7 @@ function diffSeries(before: SeriesSnapshot, after: SeriesSnapshot, fresh: Series
 const EDIT_TOLERANCE_SECONDS = 1;
 
 /**
- * Regra do diálogo de revisão (desktop-mvp-plan Fase 9.2): uma ocorrência conta como
+ * Regra do diálogo de revisão (recorrencias §7): uma ocorrência conta como
  * editada à mão quando foi escrita depois de criada. É uma aproximação aceita: marcar como paga
  * também escreve na linha, e uma edição de série escreve nas outras ocorrências do escopo.
  *
@@ -191,7 +191,7 @@ export function editedByHand(stamps: RowStamps | undefined): boolean {
 /**
  * @param timestamp Instante `YYYY-MM-DD HH:MM:SS`.
  * @return Segundos desde a época, para medir a distância entre dois carimbos sem `Date`, que o
- * núcleo não lê (backend-design §3.4).
+ * núcleo não lê (core §4.1).
  */
 function secondsOf(timestamp: Timestamp): number {
     const [date = '', time = ''] = timestamp.split(' ');

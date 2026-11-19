@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { CoreInput, PartnerResponse } from '../../src/index.ts';
 import { TestWorld } from '../support/TestWorld.ts';
 
-/** O cenário do mockup `DesktopSocios`: o Estúdio GO, com Gustavo (60%) e Ana (40%). */
+/** Cenário de exemplo: o Estúdio GO, com Gustavo (60%) e Ana (40%). */
 interface Scenario {
     readonly world: TestWorld;
     readonly profileId: string;
@@ -64,7 +64,7 @@ async function launch(scene: Scenario, partnerId: string | null, overrides: Part
     return created.id;
 }
 
-describe('cadastro de sócios (mockup DesktopSocios)', () => {
+describe('cadastro de sócios (socios §1)', () => {
     it('lista pela participação, maior primeiro, com os aportes de cada um', async () => {
         const scene = await scenario();
         await launch(scene, scene.ana);

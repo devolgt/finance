@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData, type LaunchedApp } from './launchApp.ts';
 
 /*
- * Teste de fumaça da sincronização (sync-plan Fase 7): dois apps desktop no mesmo computador.
+ * Teste de fumaça da sincronização (sincronizacao §6.3): dois apps desktop no mesmo computador.
  * O primeiro cria o grupo e convida; o segundo entra pelo primeiro uso colando o convite e
  * recebe os dados; com a tela de Dispositivos aberta nos dois, um lançamento feito no segundo
  * chega ao primeiro. A segunda sessão é discada pelo endereço do convite, e não pela

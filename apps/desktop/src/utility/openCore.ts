@@ -10,7 +10,7 @@ import type { Log } from './FileLog.ts';
 export interface OpenCoreOptions {
     /** `userData/finance.sqlite`. */
     readonly databasePath: string;
-    /** `userData/backups`, ao lado do banco (backend-design §4.6). */
+    /** `userData/backups`, ao lado do banco (banco-de-dados §5.6). */
     readonly backupsPath: string;
     /** Marca de restauração pela metade; enquanto existir, o banco não é aberto. */
     readonly restoreMarkerPath: string;
@@ -23,7 +23,7 @@ export interface OpenCoreOptions {
     readonly migrations?: OpenDatabaseOptions['migrations'];
     /** Relógio de parede da sincronização; sem ele nada é capturado (testes de abertura). */
     readonly wallClock?: WallClock;
-    /** Rede da tela de Dispositivos (sync-plan Fase 7). */
+    /** Rede da tela de Dispositivos (sincronizacao §6.3). */
     readonly syncNetwork?: SyncNetworkPorts;
 }
 
@@ -35,7 +35,7 @@ export interface OpenedCore {
     /** Fecha a conexão; o processo principal pede antes de restaurar um backup. */
     close(): void;
     /**
-     * Grava a cópia exportada do banco (desktop-mvp-plan Fase 13).
+     * Grava a cópia exportada do banco (desktop §11).
      *
      * @param destination Arquivo escolhido no diálogo de salvar do processo principal.
      * @return `ok`, ou o motivo da recusa; `unavailable` em qualquer estado de bloqueio, em que

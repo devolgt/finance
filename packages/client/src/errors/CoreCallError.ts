@@ -2,7 +2,7 @@ import type { CoreError, CoreRoute, ErrorCode, ErrorDetails } from '@finance/cor
 
 /**
  * Falha de uma rota do núcleo transformada em exceção do lado da UI. O núcleo devolve erro
- * como dado (desktop-shell-design §5.3), mas o TanStack Query só entra no estado de erro
+ * como dado (desktop §3.3), mas o TanStack Query só entra no estado de erro
  * quando a função da consulta rejeita — esta classe é a ponte, e carrega o `CoreError`
  * inteiro para que a tela trate o código de forma exaustiva em vez de ler a mensagem.
  */

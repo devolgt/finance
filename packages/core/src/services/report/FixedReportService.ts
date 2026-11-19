@@ -22,7 +22,7 @@ import type { UnitOfWork } from '../UnitOfWork.ts';
 import type { EntriesWithoutPartnerView } from './FixedReportViews.ts';
 
 /**
- * Relatórios fixos (reports-design §8 e §9): os que ficam no topo da lista de Relatórios e não se
+ * Relatórios fixos (relatorios §7 e §8): os que ficam no topo da lista de Relatórios e não se
  * montam no editor, porque cada um responde uma pergunta própria — a divisão dos aportes pela
  * participação dos sócios e a projeção do saldo —, que o filtro e o agrupamento não expressam.
  */
@@ -50,7 +50,7 @@ export class FixedReportService {
     /**
      * Relatório por sócio: quanto cada sócio aportou, em todos os períodos, contra quanto deveria
      * pela participação no total de aportes, os números do mês, o acerto e a cobertura do saldo
-     * negativo do mês (reports-design §8, P1–P6). O saldo previsto sai dos fechamentos já
+     * negativo do mês (relatorios §7, P1–P6). O saldo previsto sai dos fechamentos já
      * calculados dos extratos, os mesmos da projeção de saldo, para que os dois relatórios
      * concordem sobre o fim do mês.
      *
@@ -103,7 +103,7 @@ export class FixedReportService {
     }
 
     /**
-     * Projeção de saldo (reports-design §9): o saldo consolidado de hoje, mais o que já está lançado
+     * Projeção de saldo (relatorios §8): o saldo consolidado de hoje, mais o que já está lançado
      * para cada mês (a variação do saldo previsto), mais a estimativa dos avulsos pela média dos
      * últimos meses fechados, com a faixa de incerteza. Vale para todo tipo de perfil. Não depende
      * do mês de referência da barra: projeta a partir de hoje, porque o saldo de partida é o de hoje.
@@ -134,7 +134,7 @@ export class FixedReportService {
 
     /**
      * Regra de negócio (Perfil): sócio só existe em perfil empresarial, e o relatório por sócio
-     * não está disponível no pessoal (database-design §4.1). Recusar, em vez de devolver um
+     * não está disponível no pessoal (banco-de-dados §4.1). Recusar, em vez de devolver um
      * relatório vazio, impede que a tela mostre "nenhum sócio" num perfil em que sócio nem existe.
      *
      * @param profileId Perfil consultado.

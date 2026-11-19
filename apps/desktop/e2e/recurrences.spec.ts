@@ -5,7 +5,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Recorrências (desktop-mvp-plan Fases 9.1 e 9.2) no app empacotado:
+ * Recorrências (recorrencias §1 e §7) no app empacotado:
  * parcelar no cartão com a prévia e o diálogo de revisão, a coluna "Rec." e as parcelas nos meses
  * seguintes; série fixa editada em "esta e as futuras"; mudar a periodicidade, que vai direto
  * para a revisão de uma série nova; e excluir "todas" com o aviso das pagas na revisão. Os cliques

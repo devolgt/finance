@@ -6,7 +6,7 @@ export interface NoteSummary {
 }
 
 /**
- * Separa título e prévia de uma anotação. Regra de interface (mockups, decisão 9): anotação
+ * Separa título e prévia de uma anotação. Regra de negócio (Anotações, anotacoes §1.3): anotação
  * é texto livre, e a primeira linha é usada como título na lista — não existe campo de título,
  * então ele nunca discorda do texto. A prévia junta as linhas seguintes com espaço, porque a
  * lista mostra uma ou duas linhas cortadas e quebras de linha ali só desperdiçariam espaço.

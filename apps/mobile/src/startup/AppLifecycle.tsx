@@ -8,7 +8,7 @@ export interface LifecycleListener {
 }
 
 /**
- * O único ponto do app que escuta o `AppState` (mobile-shell-design §5.3). A tela de Dispositivos
+ * O único ponto do app que escuta o `AppState` (mobile §10). A tela de Dispositivos
  * se inscreve (`useAppForeground`) para encerrar a sessão, fechar o listener e parar o anúncio
  * quando o app sai do primeiro plano; um ponto só evita que cada tela assine o `AppState` por
  * conta própria e uma esqueça de desligar. A sincronização só acontece com a tela de
@@ -85,7 +85,7 @@ export function AppLifecycleRoot(props: { readonly children: ReactNode; readonly
 
 /**
  * Diz se o app está em primeiro plano, e re-renderiza quando isso muda. A sincronização usa como
- * interruptor (mobile-shell-design §5.3): sair do primeiro plano encerra a sessão sem esperar o
+ * interruptor (mobile §10): sair do primeiro plano encerra a sessão sem esperar o
  * sistema cortar os sockets — um lote pela metade seria descartado de qualquer jeito, e o listener
  * aberto em segundo plano aceitaria conexões que o app não consegue atender.
  *

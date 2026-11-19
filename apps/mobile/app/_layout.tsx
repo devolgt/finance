@@ -1,4 +1,4 @@
-// Primeiro import: marca o início do JavaScript para a medição da abertura (Fase 5).
+// Primeiro import: marca o início do JavaScript para a medição da abertura (mobile §12.1).
 import '../src/startup/startupTiming.ts';
 import '../global.css';
 import { useState, type ReactNode } from 'react';

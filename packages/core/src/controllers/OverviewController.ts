@@ -10,7 +10,7 @@ import { overviewProfileRequest, overviewSpendingRequest } from '../requests/ove
 import type { OverviewService } from '../services/overview/OverviewService.ts';
 import { handle, type CoreResult, type UnexpectedErrorListener } from './CoreResult.ts';
 
-/** Rotas da Visão geral (mockup `DesktopVisaoGeral2`). */
+/** Rotas da Visão geral (visao-do-mes §1). */
 export class OverviewController {
     /**
      * @param overview Resumos da Visão geral.

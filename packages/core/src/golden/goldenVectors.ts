@@ -86,7 +86,7 @@ const NAMES: readonly string[] = [
 
 /**
  * Calcula os vetores de ouro do núcleo: as operações cujo resultado precisa ser idêntico, bit a
- * bit, no Node do desktop e no Hermes do celular (mobile-shell-design §8). O Node gera o arquivo
+ * bit, no Node do desktop e no Hermes do celular (mobile §8). O Node gera o arquivo
  * versionado; o `apps/mobile-contract` chama esta mesma função no Hermes e compara. As entradas
  * ficam aqui, e não no JSON, para que o caso e o cálculo nunca se desencontrem.
  *

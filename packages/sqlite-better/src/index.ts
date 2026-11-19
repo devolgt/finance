@@ -2,7 +2,7 @@ import BetterSqlite3 from 'better-sqlite3';
 
 /*
  * Os tipos abaixo espelham a porta `Database` do `@finance/core` em vez de importá-la. O
- * adaptador é fino e não tem regra (backend-design §3.4), e o TypeScript é estrutural: a
+ * adaptador é fino e não tem regra (core §4.1), e o TypeScript é estrutural: a
  * suíte de contrato do `core` atribui esta classe a uma variável do tipo `Database`, então
  * qualquer divergência quebra a compilação lá. Importar a porta criaria um ciclo entre os
  * pacotes do workspace, já que o `core` usa este adaptador nos próprios testes.
@@ -14,7 +14,7 @@ export type SqlRow = Readonly<Record<string, SqlValue>>;
 /**
  * Adaptador da porta `Database` sobre o `better-sqlite3`: API síncrona madura, com
  * `transaction()`, e a mesma versão do SQLite embarcada em produção e nos testes
- * (backend-design §3.7).
+ * (banco-de-dados §6).
  */
 export class BetterSqliteDatabase {
     private readonly statements = new Map<string, BetterSqlite3.Statement>();
@@ -31,7 +31,7 @@ export class BetterSqliteDatabase {
      * modo de conferir uma cópia escolhida pelo usuário antes de importá-la, sem criar um banco
      * vazio no lugar de um caminho errado nem alterar o arquivo dele.
      * @return O adaptador sobre a conexão aberta. A configuração obrigatória
-     * (`foreign_keys`, WAL) é aplicada pelo núcleo, num lugar só (database-design §3.2).
+     * (`foreign_keys`, WAL) é aplicada pelo núcleo, num lugar só (banco-de-dados §3.2).
      */
     public static open(filename: string, options: { readonly readOnly?: boolean } = {}): BetterSqliteDatabase {
         const readOnly = options.readOnly ?? false;

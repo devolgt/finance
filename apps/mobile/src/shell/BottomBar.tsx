@@ -9,7 +9,7 @@ import { Icon, type IconName } from '../ui/Icon.tsx';
 export type TabName = 'home' | 'transactions' | 'accounts' | 'cards' | 'more';
 
 /**
- * As abas da barra inferior, na ordem da decisão de interface 12 dos mockups: Início ·
+ * As abas da barra inferior, na ordem definida para o celular (desktop §7.7): Início ·
  * Transações · Contas · Cartões · Mais.
  */
 export const TABS: readonly { readonly name: TabName; readonly label: string; readonly icon: IconName }[] = [
@@ -21,8 +21,8 @@ export const TABS: readonly { readonly name: TabName; readonly label: string; re
 ];
 
 /**
- * Barra inferior (`.tab` dos mockups), própria em vez da padrão do roteador para ter o desenho
- * do mockup com os tokens. O toque emite o `tabPress` como a barra padrão: assim, tocar na aba já
+ * Barra inferior própria, em vez da padrão do roteador, para ter o desenho do app com os tokens
+ * (mobile §5.1). O toque emite o `tabPress` como a barra padrão: assim, tocar na aba já
  * aberta faz a pilha dela voltar ao topo, o comportamento que o Android e o iOS ensinam. A aba
  * aberta é anunciada como selecionada, porque a cor sozinha não basta.
  *

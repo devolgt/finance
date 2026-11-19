@@ -33,7 +33,7 @@ function template(name: string): MappingTemplate {
     return { name, kind: 'expenses', headers: ['descricao', 'valor'], fields: { name: 'descricao', value: 'valor' } };
 }
 
-describe('arquivo escolhido no processo principal (desktop-mvp-plan Fase 13.1)', () => {
+describe('arquivo escolhido no processo principal (importacao §2)', () => {
     it('devolve o nome-base e os bytes, nunca o caminho', async () => {
         const path = join(folder(), 'Despesas.csv');
         writeFileSync(path, 'a,b\n1,2\n');
@@ -123,7 +123,7 @@ describe('textos da importação', () => {
         expect(issueText({ line: 5, reason: 'destination-equals-origin' })).toBe('Linha 5: transferência com origem e destino iguais');
     });
 
-    it('mostra na prévia o sinal pelo tipo, e não só pela cor (decisão de interface 7)', () => {
+    it('mostra na prévia o sinal pelo tipo, e não só pela cor (desktop §7.3)', () => {
         const rows = previewRows([
             { line: 1, type: 'expense', name: 'Mercado', value: 46.88, dueDate: '2026-11-15', account: 'Banco', creditCard: 'Inter', category: 'Moradia', subCategory: 'Mercado', paymentDate: null },
             { line: 2, type: 'expense', name: 'Estorno', value: -10, dueDate: '2026-11-15', account: 'Banco', category: 'Outros', subCategory: 'Estorno', paymentDate: '2026-11-10' },

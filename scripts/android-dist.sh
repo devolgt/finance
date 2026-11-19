@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# APK de release distribuído do app do celular (mobile-mvp-plan, Fase 19): assinado com a chave
+# APK de release distribuído do app do celular (mobile §11): assinado com a chave
 # do usuário, que fica fora do repositório, com o caminho e as senhas em variáveis de ambiente.
-# É o APK que vai para o aparelho por instalação direta (mobile-shell-design §7).
+# É o APK que vai para o aparelho por instalação direta (mobile §11).
 #
 # Uso: pnpm dist:mobile
 #   FINANCE_ANDROID_KEYSTORE           caminho do keystore, fora do repositório
@@ -46,7 +46,7 @@ version="$(node -p "require('$app/package.json').version")"
 echo "== APK de release $version"
 cd "$app"
 npx expo prebuild --platform android --no-install
-# Sem a medição da Fase 5, mesmo que a variável tenha ficado no terminal do build:benchmark.
+# Sem a medição das chamadas interativas (mobile §12.1), mesmo que a variável tenha ficado no terminal do build:benchmark.
 (cd android && env -u EXPO_PUBLIC_BENCHMARK ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a,x86_64)
 
 apk="$app/android/app/build/outputs/apk/release/app-release.apk"

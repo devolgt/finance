@@ -21,7 +21,7 @@ import { installSecurityGuards } from './security.ts';
  * Processo principal: cria a janela e o processo do núcleo, costura o canal entre eles e
  * atende as poucas operações que só ele pode fazer (preferências do aparelho, restaurar
  * backup, diálogos de salvar e de abrir da cópia do banco). Não executa rota alguma
- * (desktop-shell-design §5.2).
+ * (desktop §3.2).
  */
 
 // Pasta de dados alternativa para os testes de ponta a ponta, que não podem tocar no banco
@@ -83,7 +83,7 @@ function fileInstant(date: Date): string {
 }
 
 /**
- * Cria a janela com a configuração de segurança obrigatória (desktop-shell-design §3.6). O
+ * Cria a janela com a configuração de segurança obrigatória (desktop §2). O
  * fundo inicial vem do token `bg` no tema que o aparelho vai mostrar, para que a janela não
  * pisque em branco antes do primeiro quadro no tema escuro. O ícone da janela vem do pacote
  * compartilhado `@finance/assets`: no `.deb` o sistema já o acha pelo `.desktop`, mas no
@@ -244,7 +244,7 @@ function registerIpc(core: CoreProcess, preferences: DevicePreferencesStore): vo
 }
 
 /**
- * Exporta a cópia do banco (desktop-mvp-plan Fase 13): pergunta o destino no diálogo de salvar
+ * Exporta a cópia do banco (desktop §11): pergunta o destino no diálogo de salvar
  * do sistema, pede a cópia ao processo do núcleo, que é o dono da conexão, e só então registra
  * a data da última cópia — registrar antes diria que há uma cópia que o disco recusou. O destino
  * nasce aqui, e nunca vem do renderer, que é entrada não confiável. Toda falha vira resultado,
@@ -349,8 +349,8 @@ async function runImport(core: CoreProcess, files: DatabaseFiles, window: Browse
 }
 
 /**
- * Pergunta o arquivo a importar no diálogo de abrir do sistema e o lê aqui (desktop-mvp-plan Fase
- * 13.1). O caminho nasce e morre no processo principal: o renderer recebe só o nome e os bytes.
+ * Pergunta o arquivo a importar no diálogo de abrir do sistema e o lê aqui (importacao §8).
+ * O caminho nasce e morre no processo principal: o renderer recebe só o nome e os bytes.
  *
  * @param window Janela que pediu, dona do diálogo; `null` se ela fechou no meio do pedido.
  * @return O arquivo, ou por que não foi lido.

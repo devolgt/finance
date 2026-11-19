@@ -89,7 +89,7 @@ import type { CoreResult } from './CoreResult.ts';
 /**
  * Mapa de rotas do núcleo: para cada rota, o DTO de entrada (o que o schema da camada
  * Request aceita) e o de saída. É o contrato tipado que o pacote `client` consome nas duas
- * plataformas (desktop-shell-design §5.1) — mudar uma rota aqui quebra a compilação da UI,
+ * plataformas (desktop §3.1) — mudar uma rota aqui quebra a compilação da UI,
  * não o app em produção.
  */
 export interface CoreRoutes {

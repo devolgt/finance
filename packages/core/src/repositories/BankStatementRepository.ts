@@ -36,7 +36,7 @@ export interface BankStatementRepository {
     /**
      * Insere o extrato ou, se a linha com o mesmo id determinístico existe com soft
      * delete, a revive. Recriar uma linha identificada pelo conteúdo significa revivê-la,
-     * não inserir outra (sync-design §5.6).
+     * não inserir outra (sincronizacao §3.7).
      *
      * @param statement Extrato a garantir.
      * @return void

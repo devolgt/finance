@@ -32,7 +32,7 @@ const LOOKUPS: ReportLookups = {
     goals: [],
 };
 
-describe('editor de relatórios (reports-design §2 e §3)', () => {
+describe('editor de relatórios (relatorios §4 e §5)', () => {
     it('o relatório novo abre nas despesas do mês de referência, em tabela por categoria', () => {
         const reading = readReportDraft(draft(), 'BRL');
         expect(reading.errors).toEqual({});

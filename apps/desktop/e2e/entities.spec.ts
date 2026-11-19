@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Cadastros (desktop-mvp-plan Fases 6 e 13.11) no app empacotado: o cadastro de contas e cartões nas
+ * Cadastros (categorias-e-tags §5.1 e desktop §8.1) no app empacotado: o cadastro de contas e cartões nas
  * telas Contas e Cartões, e as telas de categorias, perfis, tags e anotações, com os diálogos, o
  * alerta de exclusão em cadeia e as recusas do núcleo nos campos. Os cliques usam
  * `dispatchEvent` e as listas de escolha do Radix são operadas pelo teclado, pelo motivo
@@ -38,7 +38,7 @@ async function chooseMoreAction(page: Page, name: string): Promise<void> {
 
 /**
  * Escolhe a opção já visível da lista aberta. No seletor com busca dos cadastros (`Combobox`,
- * desktop-mvp-plan Fase 13.2) o foco fica no campo de busca e a opção não recebe foco, então o
+ * transacoes §8.3) o foco fica no campo de busca e a opção não recebe foco, então o
  * clique (por `dispatchEvent`, como os outros cliques destes testes) é o caminho; no `Select` do Radix, que ficou nas listas curtas, o foco vai direto à
  * opção e o Enter confirma, sem a busca por digitação do Radix, que pode parar numa opção de nome
  * parecido.
@@ -215,7 +215,7 @@ test('categorias: nome repetido apontado no campo, categoria criada aberta e exc
         );
 
         await openScreen(page, 'Categorias');
-        // Regra de interface (mockups, decisão 2): o mês de referência não aparece em configuração.
+        // Regra de interface (desktop §7.2): o mês de referência não aparece em configuração.
         await expect(page.getByTestId('reference-month')).toHaveCount(0);
 
         await page.getByRole('button', { name: 'Nova categoria' }).dispatchEvent('click');

@@ -14,8 +14,8 @@ import { IconButton } from '../ui/IconButton.tsx';
 type ProfileSheetState = { readonly mode: 'create' } | { readonly mode: 'edit'; readonly profile: ProfileResponse };
 
 /**
- * Perfis (mobile-mvp-plan, Fase 15; sem mockup no celular, as informações da tela do desktop no
- * modelo das telas mobile — §5.1): a lista com o perfil em uso marcado, "Abrir" nos outros e a
+ * Perfis (perfis §1.2; as informações da tela do desktop no modelo das outras telas do celular,
+ * lista e edição em folha, para não inventar um desenho só desta): a lista com o perfil em uso marcado, "Abrir" nos outros e a
  * edição em folha ao tocar na linha. Não há exclusão no MVP — o núcleo não tem rota para ela, e
  * apagar um perfil apagaria todo o histórico dele. O perfil criado aparece na lista com "Abrir",
  * como a ação do aviso do desktop.

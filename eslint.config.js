@@ -2,54 +2,54 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 /**
- * Regras de fronteira do núcleo (backend-design §3.1 e §3.4): o `core` roda igual no
+ * Regras de fronteira do núcleo (core §1.1 e §4.1): o `core` roda igual no
  * Electron, no Hermes do React Native e num servidor, então não pode importar nada do
  * Node nem de uma plataforma, nem ler relógio ou aleatoriedade fora das portas. A regra
  * é verificada por lint, e não por disciplina, porque a quebra só apareceria no celular.
  * `localeCompare`, `Intl` e `toLocale*` ficam de fora pelo mesmo motivo: dependem do ICU
  * de cada runtime, e o Chromium e o Hermes ordenam e formatam diferente
- * (mobile-shell-design §8).
+ * (mobile §8).
  */
 const coreBoundaryRules = {
     'no-restricted-imports': ['error', {
         patterns: [
-            { group: ['node:*'], message: 'O core não pode depender do Node (backend-design §3.1).' },
-            { group: ['fs', 'path', 'crypto', 'os', 'electron', 'react-native', 'expo-*', 'better-sqlite3'], message: 'Plataforma entra no core só por portas (backend-design §3.4).' },
+            { group: ['node:*'], message: 'O core não pode depender do Node (core §1.1).' },
+            { group: ['fs', 'path', 'crypto', 'os', 'electron', 'react-native', 'expo-*', 'better-sqlite3'], message: 'Plataforma entra no core só por portas (core §4.1).' },
         ],
     }],
     'no-restricted-syntax': ['error',
-        { selector: "NewExpression[callee.name='Date']", message: 'Use a porta Clock: datas são a maior fonte de bug em finanças (backend-design §3.4).' },
-        { selector: "MemberExpression[object.name='Date'][property.name='now']", message: 'Use a porta Clock (backend-design §3.4).' },
-        { selector: "MemberExpression[object.name='Math'][property.name='random']", message: 'Use a porta IdGenerator (backend-design §3.4).' },
-        { selector: "MemberExpression[object.name='crypto']", message: 'Use a porta IdGenerator: o React Native não tem crypto (backend-design §3.4).' },
-        { selector: "MemberExpression[property.name='localeCompare']", message: 'Use compareNames ou compareCodeUnits de domain/shared/textOrder.ts: localeCompare muda com o ICU do runtime (mobile-shell-design §8).' },
-        { selector: 'MemberExpression[property.name=/^toLocale/]', message: 'toLocale* formata pelo ICU do runtime e diverge entre Chromium e Hermes (mobile-shell-design §8).' },
+        { selector: "NewExpression[callee.name='Date']", message: 'Use a porta Clock: datas são a maior fonte de bug em finanças (core §4.1).' },
+        { selector: "MemberExpression[object.name='Date'][property.name='now']", message: 'Use a porta Clock (core §4.1).' },
+        { selector: "MemberExpression[object.name='Math'][property.name='random']", message: 'Use a porta IdGenerator (core §4.1).' },
+        { selector: "MemberExpression[object.name='crypto']", message: 'Use a porta IdGenerator: o React Native não tem crypto (core §4.1).' },
+        { selector: "MemberExpression[property.name='localeCompare']", message: 'Use compareNames ou compareCodeUnits de domain/shared/textOrder.ts: localeCompare muda com o ICU do runtime (mobile §8).' },
+        { selector: 'MemberExpression[property.name=/^toLocale/]', message: 'toLocale* formata pelo ICU do runtime e diverge entre Chromium e Hermes (mobile §8).' },
     ],
     'no-restricted-globals': ['error',
-        { name: 'Intl', message: 'Intl difere entre Chromium e Hermes (mobile-shell-design §8); formate no client e ordene com domain/shared/textOrder.ts.' },
+        { name: 'Intl', message: 'Intl difere entre Chromium e Hermes (mobile §8); formate no client e ordene com domain/shared/textOrder.ts.' },
     ],
 };
 
 /**
- * Fronteira do `client` (desktop-shell-design §4.2): a camada headless é compartilhada com o
+ * Fronteira do `client` (desktop §4.1): a camada headless é compartilhada com o
  * React Native, então não pode depender do React DOM, do React Native, do Electron nem do
  * Node. `Intl` também fica de fora porque formata diferente no Chromium e no Hermes
- * (mobile-shell-design §8): o mesmo saldo apareceria de dois jeitos.
+ * (mobile §8): o mesmo saldo apareceria de dois jeitos.
  */
 const clientBoundaryRules = {
     'no-restricted-imports': ['error', {
         patterns: [
-            { group: ['react-dom', 'react-dom/*', 'react-native', 'react-native/*', 'electron', 'electron/*'], message: 'O client é compartilhado entre desktop e mobile (desktop-shell-design §4.2).' },
+            { group: ['react-dom', 'react-dom/*', 'react-native', 'react-native/*', 'electron', 'electron/*'], message: 'O client é compartilhado entre desktop e mobile (desktop §4.1).' },
             { group: ['node:*', 'fs', 'path', 'crypto', 'os'], message: 'O client roda também no Hermes do mobile, sem Node.' },
         ],
     }],
     'no-restricted-globals': ['error',
-        { name: 'Intl', message: 'Formate com os formatadores do client: Intl difere entre Chromium e Hermes (desktop-shell-design §4.2).' },
+        { name: 'Intl', message: 'Formate com os formatadores do client: Intl difere entre Chromium e Hermes (desktop §4.6).' },
     ],
 };
 
 /**
- * Fronteira do adaptador do mobile (mobile-mvp-plan, Fase 2): fino e sem regra, como o do
+ * Fronteira do adaptador do mobile (mobile §9): fino e sem regra, como o do
  * desktop, ele só conhece as portas do núcleo e a suíte de contrato que as verifica. Importar
  * Service, Repository ou o `client` levaria regra para dentro do driver; e o Node não existe
  * no Hermes, onde o pacote roda.
@@ -65,7 +65,7 @@ const sqliteExpoBoundaryRules = {
 };
 
 /**
- * Fronteira do app do celular (mobile-mvp-plan, Fase 4), a mesma do desktop: as telas só
+ * Fronteira do app do celular (mobile §3.1; mapa-do-sistema §1.2): as telas só
  * falam com o `client`; o núcleo, o adaptador do banco e o driver entram só pela raiz de
  * composição — do núcleo, as telas leem só os tipos das respostas. Uma tela que chamasse o
  * núcleo direto pularia o agendamento pós-frame e o cache de consultas. `Intl` fica de fora
@@ -82,7 +82,7 @@ const mobileBoundaryRules = {
         ],
     }],
     'no-restricted-globals': ['error',
-        { name: 'Intl', message: 'Formate com os formatadores do client: Intl difere entre Chromium e Hermes (mobile-shell-design §8).' },
+        { name: 'Intl', message: 'Formate com os formatadores do client: Intl difere entre Chromium e Hermes (mobile §8).' },
     ],
 };
 
@@ -98,11 +98,11 @@ const mobileCompositionRules = {
 
 /**
  * Os tokens são dados sem dependências, lidos pelo desktop, pelo mobile e pelo gerador
- * (desktop-shell-design §4.5); só o script de geração toca o disco.
+ * (desktop §6); só o script de geração toca o disco.
  */
 const tokensBoundaryRules = {
     'no-restricted-imports': ['error', {
-        patterns: [{ regex: '^(?!\\./)', message: 'packages/tokens/src não tem dependências (desktop-shell-design §4.5).' }],
+        patterns: [{ regex: '^(?!\\./)', message: 'packages/tokens/src não tem dependências (desktop §6).' }],
     }],
 };
 
@@ -150,7 +150,7 @@ export default tseslint.config(
         rules: mobileCompositionRules,
     },
     {
-        // O app de contrato (mobile-mvp-plan, Fase 3) é todo raiz de composição: existe para
+        // O app de contrato (mobile §8.2) é todo raiz de composição: existe para
         // ligar o núcleo ao `expo-sqlite` e conferir o resultado no Hermes, também sem Node.
         files: ['apps/mobile-contract/index.ts', 'apps/mobile-contract/src/**/*.{ts,tsx}'],
         rules: mobileCompositionRules,

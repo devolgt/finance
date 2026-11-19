@@ -8,8 +8,8 @@ export type CoreErrorPlacement<F extends string> =
     | { readonly field: null; readonly message: string };
 
 /**
- * Decide onde mostrar a recusa do núcleo num formulário. Regra de interface (desktop-mvp-plan
- * Fase 1.5 e 6): quando o núcleo aponta o campo (`CONFLICT` de nome, moeda travada, conta
+ * Decide onde mostrar a recusa do núcleo num formulário. Regra de interface
+ * (categorias-e-tags §1.4): quando o núcleo aponta o campo (`CONFLICT` de nome, moeda travada, conta
  * pagadora desativada), a mensagem vai para baixo dele, como um erro de validação, em vez de
  * um aviso genérico longe do que o usuário precisa corrigir.
  *

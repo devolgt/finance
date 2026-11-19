@@ -12,10 +12,10 @@ import { AppText } from '../ui/AppText.tsx';
 import { MenuGroup, MenuRow } from '../ui/menu.tsx';
 
 /**
- * Menu Mais (mockup `MobileMais`): perfil com "Trocar perfil", Metas, Anotações, Cadastros,
+ * Menu Mais (mobile §5.1): perfil com "Trocar perfil", Metas, Anotações, Cadastros,
  * Dispositivos e Ajustes. As contagens são das metas ativas e das anotações do perfil. Em
  * Dispositivos, diz onde os dados estão (`syncDetail`), e não "sincronizado": a sincronização só
- * roda com a tela de Dispositivos aberta (sync-design §7.1).
+ * roda com a tela de Dispositivos aberta (sincronizacao §1.3).
  *
  * @return A tela.
  */

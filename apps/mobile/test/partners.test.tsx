@@ -22,7 +22,7 @@ async function openPartners(): Promise<{ readonly core: ReturnType<typeof testCo
     return { core, profileId: profile.id };
 }
 
-describe('Sócios (mobile-mvp-plan, Fase 17)', () => {
+describe('Sócios (socios §4.2)', () => {
     it('Regra de negócio (Sócios): a soma aparece ao vivo e só salva quando fecha em 100%', async () => {
         const { core, profileId } = await openPartners();
 

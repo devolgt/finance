@@ -29,7 +29,7 @@ export function resolveTheme(preference: ThemePreference, system: string | null 
 }
 
 /**
- * Raiz do tema (decisão de interface 1 dos mockups): aplica as variáveis de cor do tema
+ * Raiz do tema (desktop §7.1; mobile §6.2): aplica as variáveis de cor do tema
  * efetivo na raiz, e toda classe de cor (`bg-surface`, `text-ink`) lê a variável — o mesmo
  * mecanismo da classe `.dark` no desktop, com os mesmos tokens. A preferência vem das
  * preferências do aparelho (botão de tema do cabeçalho e, depois, Ajustes).

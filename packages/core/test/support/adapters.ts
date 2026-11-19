@@ -5,7 +5,7 @@ import { parseUuid, type Uuid } from '../../src/domain/shared/ids.ts';
 /**
  * Relógio de teste controlado pelo próprio teste. Não é mock: é um adaptador de verdade da
  * porta `Clock`, cujo "hoje" o teste fixa e move, porque saldo do mês corrente, fatura em
- * aberto e virada de mês dependem de "hoje" (backend-design §5.7).
+ * aberto e virada de mês dependem de "hoje" (testes §2.4).
  */
 export class FixedClock implements Clock {
     private current: LocalDate;
@@ -66,7 +66,7 @@ export class SequentialIds implements IdGenerator {
 /**
  * Relógio de parede de teste, em milissegundos. Anda 1 ms a cada leitura por padrão, para
  * que carimbos seguidos tenham relógios distintos como no mundo real, e pode ser parado ou
- * voltado — o caso que o HLC precisa tolerar (sync-design §5.2).
+ * voltado — o caso que o HLC precisa tolerar (sincronizacao §3.2).
  */
 export class ManualWallClock implements WallClock {
     /**

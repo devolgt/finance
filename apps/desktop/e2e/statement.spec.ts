@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Extrato (mockup `DesktopExtrato`) no app empacotado: o resultado de cada dia na tabela dia × mês
+ * Extrato (desktop §8.1) no app empacotado: o resultado de cada dia na tabela dia × mês
  * dos últimos 12 meses, o atraso, o detalhe do dia, o filtro "Tipo" e a volta para a lista de
  * Transações. O cenário fica no mês anterior, que já passou inteiro: o vencimento do dia 5 é
  * atrasado em qualquer dia em que o teste rode. Os cliques usam `dispatchEvent`, pelo motivo

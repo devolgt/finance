@@ -2,11 +2,12 @@
 
 Expo SDK 58 (Nova Arquitetura e Hermes), Expo Router, NativeWind 4 sobre os tokens de
 `packages/tokens`, e o núcleo rodando na própria thread JavaScript, sobre o `expo-sqlite`
-síncrono (`packages/sqlite-expo`). Plano: [mobile-mvp-plan.md](../../docs/plans/mobile-mvp-plan.md).
+síncrono (`packages/sqlite-expo`). Arquitetura e decisões: [wiki do celular](../../docs/wiki/arquitetura/mobile.md).
 
 ## Ciclo de desenvolvimento no devcontainer
 
-Validado na Fase 0 do plano, com o emulador do container:
+Validado com o emulador do container
+([mobile §13](../../docs/wiki/arquitetura/mobile.md#13-ambiente-android-no-devcontainer)):
 
 1. `pnpm emulator:android` num terminal próprio (cria o AVD na primeira vez).
 2. `pnpm build:mobile` gera o development build (`android/` vem do `expo prebuild` e não é
@@ -21,7 +22,7 @@ Validado na Fase 0 do plano, com o emulador do container:
    (`adb shell am start -a android.intent.action.VIEW -d '<link>'`) ou pela lista do próprio
    development build.
 
-No celular (a partir da Fase 5), o mesmo caminho com `adb pair` + `adb connect` sem fio e o
+Num celular físico, o mesmo caminho com `adb pair` + `adb connect` sem fio e o
 `adb reverse` do passo 3.
 
 ## Como o app é montado
@@ -48,7 +49,10 @@ No celular (a partir da Fase 5), o mesmo caminho com `adb pair` + `adb connect` 
 - Cores, tamanhos e raios só pelas classes dos tokens (`bg-surface`, `text-13`,
   `rounded-8`); o teste `tokensOnly` acusa cor literal e classe fora da escala.
 
-## Medição da Fase 5
+## Medição de desempenho
+
+O roteiro e o orçamento estão em
+[mobile §12.1](../../docs/wiki/arquitetura/mobile.md#121-medição-das-chamadas-interativas).
 
 Com o aparelho no `adb` (o S23 FE por `adb pair` + `adb connect`, ou o emulador para ensaio):
 
@@ -96,7 +100,7 @@ recusa instalar um APK mais antigo por cima.
   por cima do outro falha com `INSTALL_FAILED_UPDATE_INCOMPATIBLE`. Trocar exige desinstalar
   e perder os dados; exporte a cópia do banco em Ajustes antes.
 - Sem as variáveis, o Gradle continua assinando o release com a chave de depuração: é o que
-  o CI e a medição da Fase 5 usam. Só o `pnpm dist:mobile` exige a chave.
+  o CI e a medição de desempenho usam. Só o `pnpm dist:mobile` exige a chave.
 
 ## Testes
 

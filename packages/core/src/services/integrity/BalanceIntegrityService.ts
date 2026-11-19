@@ -30,17 +30,17 @@ interface AccountSnapshot {
 }
 
 /**
- * Verificação de integridade mínima da abertura (backend-design §4.5, passo 5): confere
+ * Verificação de integridade mínima da abertura (banco-de-dados §5.5, passo 5): confere
  * cada saldo em cache contra o que a rotina de recálculo produz do zero.
  * Regra de negócio (Saldos): um saldo recalculado que diverge do armazenado além do epsilon
- * da moeda é bug a ser **exposto, não corrigido em silêncio** (database-design §3.7) — por
+ * da moeda é bug a ser **exposto, não corrigido em silêncio** (banco-de-dados §3.7) — por
  * isso o recálculo roda numa unidade de trabalho desfeita ao final e o resultado é só um
  * relatório para log. A correção continua sendo a ação explícita `balances.rebuildAccount`.
  *
  * Usa a própria rotina de recálculo como oráculo, em vez de um cálculo paralelo só de
  * leitura, porque duas implementações da mesma regra poderiam discordar entre si e o
  * relatório acusaria a divergência errada. Órfãs e anexos ausentes, as outras verificações
- * da rotina completa (database-design §3.10), ficam para quando houver o que as produza.
+ * da rotina completa (banco-de-dados §3.10), ficam para quando houver o que as produza.
  */
 export class BalanceIntegrityService {
     /**

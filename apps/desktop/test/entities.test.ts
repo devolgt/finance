@@ -4,7 +4,7 @@ import { filterCategories } from '@finance/client';
 import { openCategory, parseCategoriesSearch } from '../src/renderer/src/categories/categoriesSearch.ts';
 import { parseNotesSearch } from '../src/renderer/src/notes/notesSearch.ts';
 
-describe('lista e detalhe de categorias (desktop-mvp-plan Fase 13.12)', () => {
+describe('lista e detalhe de categorias (categorias-e-tags §5.1)', () => {
     const home = 'b7c4a1e2-1111-4c3d-9e8f-000000000001';
     const other = 'b7c4a1e2-1111-4c3d-9e8f-000000000002';
     const tree: readonly CategoryBranchResponse[] = [
@@ -35,8 +35,8 @@ describe('lista e detalhe de categorias (desktop-mvp-plan Fase 13.12)', () => {
     });
 });
 
-describe('anotação aberta na URL (mockup DesktopAnotacoes)', () => {
-    it('a anotação pedida pela URL vem do `note` (a Visão geral leva a ela, Fase 13.2); pedido vazio é descartado', () => {
+describe('anotação aberta na URL (anotacoes §4)', () => {
+    it('a anotação pedida pela URL vem do `note` (a Visão geral leva a ela, visao-do-mes §6); pedido vazio é descartado', () => {
         expect(parseNotesSearch({ note: 'n1', period: '2026-10' })).toEqual({ note: 'n1' });
         expect(parseNotesSearch({ note: '' })).toEqual({});
         expect(parseNotesSearch({ note: 42 })).toEqual({});

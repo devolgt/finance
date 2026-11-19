@@ -14,7 +14,7 @@ const PUBLIC_KEY_PATTERN = /^[0-9a-f]{64}$/;
 /**
  * Chave pública X25519 de um aparelho, em hexadecimal minúsculo. Valida o formato porque ela
  * chega pela rede no pareamento e é o que autentica o aparelho em toda sessão seguinte
- * (sync-design §6.1).
+ * (sincronizacao §4.1).
  *
  * @param raw Texto recebido.
  * @return A chave canônica.
@@ -29,8 +29,8 @@ export function parsePublicKey(raw: string): string {
 }
 
 /**
- * Um aparelho do grupo (sync-design §6.2). Replicado como dado de domínio; a remoção é a
- * lápide `removedAt` e é permanente para aquele id (§6.5).
+ * Um aparelho do grupo (sincronizacao §4.2). Replicado como dado de domínio; a remoção é a
+ * lápide `removedAt` e é permanente para aquele id (sincronizacao §4.5).
  */
 export interface SyncMember {
     readonly id: DeviceId;

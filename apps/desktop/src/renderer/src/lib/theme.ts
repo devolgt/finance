@@ -6,7 +6,7 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 /**
  * Liga o tema na raiz do documento. O tema troca por classe, e as cores vêm das variáveis
- * CSS dos tokens (desktop-shell-design §4.5): trocar de tema não re-renderiza a árvore.
+ * CSS dos tokens (desktop §6): trocar de tema não re-renderiza a árvore.
  *
  * @param preference Tema escolhido no aparelho.
  * @param systemPrefersDark Se o sistema operacional está no escuro; decide o `system`.

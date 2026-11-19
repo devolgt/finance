@@ -19,7 +19,7 @@ import type { InvoiceSuggestion, InvoiceView } from './InvoiceViews.ts';
 /**
  * Casos de uso da fatura de cartão: sugerir em qual fatura cai uma compra, pagar e reabrir.
  * Regra de negócio (Fatura): uma fatura está paga ou em aberto; pagar a vincula ao extrato
- * do mês do pagamento e reabrir desfaz esse vínculo (database-design §4.7).
+ * do mês do pagamento e reabrir desfaz esse vínculo (banco-de-dados §4.7).
  */
 export class InvoiceService {
     /**
@@ -46,7 +46,7 @@ export class InvoiceService {
     /**
      * Regra de negócio (Cartão de crédito): o app sugere a fatura pela data da compra e
      * pelo dia de fechamento, e a compra no dia do fechamento cai na fatura seguinte
-     * (database-design §4.5). É só a sugestão: a escolha do usuário é a verdade (§4.7).
+     * (banco-de-dados §4.5). É só a sugestão: a escolha do usuário é a verdade (cartoes-e-faturas §2.2).
      *
      * @param creditCardId Cartão da compra.
      * @param purchaseDate Data da compra.
@@ -88,8 +88,8 @@ export class InvoiceService {
     }
 
     /**
-     * A fatura de um mês e as próximas do cartão — "Próximas faturas" (mockup
-     * `DesktopCartoes`). O mês pedido vem sempre, mesmo sem linha, porque a tela mostra a
+     * A fatura de um mês e as próximas do cartão — "Próximas faturas"
+     * (cartoes-e-faturas §2.4). O mês pedido vem sempre, mesmo sem linha, porque a tela mostra a
      * fatura do mês com fechamento e vencimento ainda que nada tenha caído nela; os meses
      * seguintes vêm só quando têm fatura (parcelas e compras já lançadas).
      *
@@ -114,7 +114,7 @@ export class InvoiceService {
      * Paga a fatura inteira.
      * Regra de negócio (Fatura): pagar vincula a fatura ao extrato do mês do pagamento da
      * conta que quita o cartão; a fatura sai do previsto do vencimento e entra, no
-     * consolidado e no previsto, no mês em que o pagamento aconteceu (database-design §4.7).
+     * consolidado e no previsto, no mês em que o pagamento aconteceu (banco-de-dados §4.7).
      * Pagar uma fatura já paga é recusado: mudar o mês do pagamento é reabrir e pagar de novo.
      *
      * @param invoiceId Fatura a pagar.
@@ -136,7 +136,7 @@ export class InvoiceService {
 
     /**
      * Paga a fatura sem recalcular, devolvendo o impacto para quem compõe um caso de uso maior.
-     * Existe para a importação, que paga centenas de faturas do histórico (import-design §5.4) e
+     * Existe para a importação, que paga centenas de faturas do histórico (importacao §5.4) e
      * recalcula tudo uma vez só, no fim — um recálculo por fatura refaria a cadeia de extratos da
      * conta pagadora a cada uma.
      *
@@ -161,7 +161,7 @@ export class InvoiceService {
      * Reabre uma fatura paga e recalcula os saldos.
      * Regra de negócio (Fatura): reabrir desfaz o pagamento — o valor sai do extrato onde
      * tinha sido pago e o saldo da conta volta como se o pagamento não tivesse acontecido
-     * (database-design §4.7).
+     * (banco-de-dados §4.7).
      *
      * @param invoiceId Fatura a reabrir.
      * @return A fatura em aberto.
@@ -182,7 +182,7 @@ export class InvoiceService {
     /**
      * Reabre a fatura sem recalcular, devolvendo o impacto para quem compõe um caso de uso
      * maior. Existe para o lançamento numa fatura paga, que a reabre
-     * (database-design §4.7) e recalcula tudo uma vez só, no fim da própria escrita.
+     * (banco-de-dados §4.7) e recalcula tudo uma vez só, no fim da própria escrita.
      *
      * @param invoice Fatura paga a reabrir.
      * @param creditCard Cartão dono da fatura.

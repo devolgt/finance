@@ -20,7 +20,7 @@ export interface ReportDefinitionProps {
 }
 
 /**
- * Relatório personalizado salvo do perfil (reports-design §1): nome, filtro e formato. Não guarda
+ * Relatório personalizado salvo do perfil (relatorios §3.1): nome, filtro e formato. Não guarda
  * resultado — abrir o relatório roda o filtro contra as transações do momento —, então editar uma
  * transação nunca deixa um relatório desatualizado.
  */
@@ -45,7 +45,7 @@ export class ReportDefinition implements ReportDefinitionProps {
 
     /**
      * A unicidade do nome no perfil e a posse das referências do filtro relacionam linhas, e por
-     * isso ficam no Service (database-design §3.10); aqui só o invariante da própria linha.
+     * isso ficam no Service (banco-de-dados §3.10); aqui só o invariante da própria linha.
      *
      * @param props Dados da definição, com id já gerado pela aplicação.
      * @return A definição, com o nome aparado.
@@ -65,7 +65,7 @@ export class ReportDefinition implements ReportDefinitionProps {
 
     /**
      * Regrava a definição inteira, e não campo a campo, porque o filtro e o formato sincronizam
-     * como uma célula só (reports-design §4).
+     * como uma célula só (relatorios §6).
      *
      * @param name Novo nome, como o usuário digitou.
      * @param filter Novo filtro.

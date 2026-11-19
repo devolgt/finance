@@ -15,7 +15,7 @@ import { acceptSession, dialSession, joinWithInvite, type LiveSession, type Pend
 /** Adaptadores da plataforma que o coordenador usa. */
 export interface CoordinatorPorts {
     readonly transport: Transport;
-    /** `null` quando a plataforma não tem mDNS; sobra o endereço digitado (sync-design §7.2). */
+    /** `null` quando a plataforma não tem mDNS; sobra o endereço digitado (sincronizacao §5.2). */
     readonly discovery: Discovery | null;
     readonly keyStore: KeyStore;
     readonly random: RandomSource;
@@ -59,7 +59,7 @@ export interface CoordinatorObserver {
 }
 
 /**
- * Lê a chave do aparelho do cofre, gerando-a no primeiro uso (sync-design §6.1).
+ * Lê a chave do aparelho do cofre, gerando-a no primeiro uso (sincronizacao §4.1).
  *
  * @param keyStore Cofre da plataforma.
  * @param random Aleatoriedade criptográfica.
@@ -83,8 +83,8 @@ interface Running {
 }
 
 /**
- * Coordena a sincronização enquanto a tela de Dispositivos está aberta (sync-design §7.1 e
- * §7.3; sync-plan §2): escuta e se anuncia só nesse intervalo, disca para os membros
+ * Coordena a sincronização enquanto a tela de Dispositivos está aberta (sincronizacao §1.3,
+ * §5.1 e §5.3): escuta e se anuncia só nesse intervalo, disca para os membros
  * encontrados quando tem o menor id, atende conexões de membros e de quem traz o convite em
  * aberto, e repassa cada escrita local às sessões ao vivo. Fechar a tela fecha tudo — nenhum
  * dado muda por baixo de outra tela.
@@ -157,7 +157,7 @@ export class SyncCoordinator {
     }
 
     /**
-     * Abre um convite de uso único válido por 5 minutos (sync-design §6.3).
+     * Abre um convite de uso único válido por 5 minutos (sincronizacao §4.3).
      *
      * @param addresses Endereços locais deste aparelho, que vão no QR.
      * @return O convite, para virar QR.
@@ -206,11 +206,11 @@ export class SyncCoordinator {
     }
 
     /**
-     * Disca para um endereço digitado (sync-design §7.2, alternativa ao mDNS) e devolve assim
+     * Disca para um endereço digitado (sincronizacao §5.2, alternativa ao mDNS) e devolve assim
      * que a conexão abre, com a sessão seguindo em segundo plano. Toda recusa anterior a isso
      * vira regra de negócio, para que a tela de Dispositivos a mostre em vez de fechar a folha
      * como se a ligação tivesse dado certo.
-     * Regra de negócio (Sincronização, sync-design §7.1): só se disca para endereços da rede local.
+     * Regra de negócio (Sincronização, sincronizacao §5.1): só se disca para endereços da rede local.
      *
      * @param address Endereço local do par.
      * @param port Porta do par.
@@ -225,7 +225,7 @@ export class SyncCoordinator {
             throw new BusinessRuleViolation('sync-address-not-local', `${address} não é um endereço da rede local`);
         }
         // Um membro removido também recebe a ligação: a troca de membros vem primeiro e é por ela
-        // que ele aprende a remoção, antes de a sessão ser recusada (sync-design §6.5).
+        // que ele aprende a remoção, antes de a sessão ser recusada (sincronizacao §4.5).
         const member = this.sync.knownMember(DeviceId(peerId));
         if (member === null) {
             throw new BusinessRuleViolation('sync-not-a-member', 'o aparelho não é membro do grupo');
@@ -244,7 +244,7 @@ export class SyncCoordinator {
     }
 
     /**
-     * Entra num grupo pelo convite (sync-design §6.4), tentando cada endereço do QR.
+     * Entra num grupo pelo convite (sincronizacao §4.4), tentando cada endereço do QR.
      *
      * @param invite Convite lido.
      * @param device Nome e plataforma deste aparelho.
@@ -269,7 +269,7 @@ export class SyncCoordinator {
         throw lastError;
     }
 
-    /** Uma escrita local foi confirmada: as sessões ao vivo a enviam (sync-design §7.4, passo 8). */
+    /** Uma escrita local foi confirmada: as sessões ao vivo a enviam (sincronizacao §5.6, passo 8). */
     public notifyLocalChange(): void {
         for (const running of this.running) {
             running.session.notifyLocalChange();
@@ -290,7 +290,7 @@ export class SyncCoordinator {
     }
 
     /**
-     * Regra de negócio (Sincronização, sync-design §7.3): o aparelho de menor id disca, para
+     * Regra de negócio (Sincronização, sincronizacao §5.3): o aparelho de menor id disca, para
      * que um par não abra duas conexões; o outro só atende.
      *
      * @param peer Aparelho anunciado.

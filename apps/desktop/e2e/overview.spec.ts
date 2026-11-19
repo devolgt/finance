@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Visão geral (mockup `DesktopVisaoGeral2`) no app empacotado: os indicadores, o selo de atrasados
+ * Visão geral (visao-do-mes §6) no app empacotado: os indicadores, o selo de atrasados
  * com o "Marcar como pago" e o "Desfazer", e os resumos de contas e cartões, com a navegação para
  * os detalhes. Os cliques usam `dispatchEvent`, pelo motivo explicado em
  * `firstUse.ts`.

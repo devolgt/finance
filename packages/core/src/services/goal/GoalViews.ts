@@ -5,7 +5,7 @@ import type { Transaction } from '../../domain/transaction/Transaction.ts';
 
 /**
  * Uma meta com o progresso e o ritmo no mês de referência — o que a lista e o detalhe de
- * Metas mostram (mockup `DesktopMetas`).
+ * Metas mostram (metas §7).
  */
 export interface GoalWithProgress {
     readonly goal: Goal;
@@ -16,7 +16,7 @@ export interface GoalWithProgress {
 
 /**
  * Meta como opção do campo "Meta" do lançamento: o formulário agrupa as atingidas à parte e só
- * oferece a arquivada ao lançamento que já está vinculado a ela (desktop-mvp-plan Fase 13.4).
+ * oferece a arquivada ao lançamento que já está vinculado a ela (metas §5).
  */
 export interface GoalOptionView {
     readonly goal: Goal;

@@ -52,7 +52,7 @@ const rootRoute = createRootRoute({ component: RootLayout });
 /**
  * Rota de layout do shell, sem caminho próprio. É dona do *search param* `period` (mês de
  * referência): valida a URL e o preserva em toda navegação entre as telas do shell, para que
- * trocar de tela não volte ao mês corrente (desktop-mvp-plan Fase 4).
+ * trocar de tela não volte ao mês corrente (desktop §8).
  */
 const shellRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -68,7 +68,7 @@ const shellRoute = createRoute({
  */
 const routeTree = rootRoute.addChildren([
     shellRoute.addChildren([
-        // Telas do MVP (desktop-mvp-plan §6).
+        // Telas do MVP (desktop §8).
         createRoute({ getParentRoute: () => shellRoute, path: '/' satisfies AppPath, component: OverviewScreen }),
         createRoute({
             getParentRoute: () => shellRoute,
@@ -76,14 +76,14 @@ const routeTree = rootRoute.addChildren([
             component: TransactionsScreen,
             validateSearch: (search: Record<string, unknown>): TransactionsSearch => parseTransactionsSearch(search),
         }),
-        // Extrato em vários meses, dia × mês (mockup `DesktopExtrato`), fora do plano do MVP.
+        // Extrato em vários meses, dia × mês (desktop §8.1).
         createRoute({
             getParentRoute: () => shellRoute,
             path: '/statement' satisfies AppPath,
             component: StatementScreen,
             validateSearch: (search: Record<string, unknown>): StatementSearch => parseStatementSearch(search),
         }),
-        // Calendário do mês (mockup `DesktopCalendario`), fora do plano do MVP.
+        // Calendário do mês (desktop §8.1).
         createRoute({ getParentRoute: () => shellRoute, path: '/calendar' satisfies AppPath, component: CalendarScreen }),
         createRoute({
             getParentRoute: () => shellRoute,
@@ -97,7 +97,7 @@ const routeTree = rootRoute.addChildren([
             component: CardsScreen,
             validateSearch: (search: Record<string, unknown>): CardsSearch => parseCardsSearch(search),
         }),
-        // Relatórios personalizados (reports-design, Fase 15): a lista com o aberto e o editor.
+        // Relatórios personalizados (relatorios §3): a lista com o aberto e o editor.
         createRoute({
             getParentRoute: () => shellRoute,
             path: '/reports' satisfies AppPath,
@@ -116,7 +116,7 @@ const routeTree = rootRoute.addChildren([
             component: GoalsScreen,
             validateSearch: (search: Record<string, unknown>): GoalsSearch => parseGoalsSearch(search),
         }),
-        // Cadastros, cada um com item próprio no menu (desktop-mvp-plan Fase 13.11).
+        // Cadastros, cada um com item próprio no menu (desktop §8.1).
         createRoute({
             getParentRoute: () => shellRoute,
             path: '/categories' satisfies AppPath,
@@ -134,14 +134,14 @@ const routeTree = rootRoute.addChildren([
         createRoute({ getParentRoute: () => shellRoute, path: '/profiles' satisfies AppPath, component: ProfilesScreen }),
         createRoute({ getParentRoute: () => shellRoute, path: '/settings' satisfies AppPath, component: SettingsScreen }),
         createRoute({ getParentRoute: () => shellRoute, path: '/settings/import' satisfies AppPath, component: ImportScreen }),
-        // Fora do MVP: tela em branco, com a rota e o mês já prontos (desktop-mvp-plan §5).
+        // Dispositivos: a sincronização entre aparelhos (sincronizacao §7.1).
         createRoute({ getParentRoute: () => shellRoute, path: '/devices' satisfies AppPath, component: DevicesScreen }),
     ]),
 ]);
 
 /**
  * Roteador do app. Histórico em hash porque o app empacotado é servido de `file://`, onde não
- * há servidor para responder a `/transactions` (desktop-mvp-plan §2); com hash, navegar nunca
+ * há servidor para responder a `/transactions` (desktop §5); com hash, navegar nunca
  * troca o documento, e a trava de navegação do processo principal continua valendo.
  *
  * @return O roteador com a árvore de rotas.

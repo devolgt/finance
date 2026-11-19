@@ -13,7 +13,7 @@ import {
 import { ClientWorld, type Scenario } from './support/ClientWorld.ts';
 
 /*
- * Fatura do cartão na tela Cartões (desktop-mvp-plan Fase 8), sobre o núcleo de verdade: o
+ * Fatura do cartão na tela Cartões (cartoes-e-faturas §3), sobre o núcleo de verdade: o
  * Roxinho do cenário fecha dia 3 e vence dia 10, a fatura de setembro foi paga em 02/10 e o
  * Supermercado de 06/10 caiu na de novembro.
  */

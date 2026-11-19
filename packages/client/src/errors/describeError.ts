@@ -86,7 +86,7 @@ const ENTITY_NAMES: Readonly<Record<string, string>> = {
 
 /**
  * Traduz o erro do núcleo para o que a tela mostra. O `switch` é exaustivo sobre o
- * `ErrorCode` fechado (desktop-shell-design §5.3): um código novo quebra a compilação aqui,
+ * `ErrorCode` fechado (desktop §3.3): um código novo quebra a compilação aqui,
  * em vez de cair num `default` silencioso. A mensagem vem do código e dos detalhes, nunca do
  * texto técnico do núcleo, que é para log.
  *

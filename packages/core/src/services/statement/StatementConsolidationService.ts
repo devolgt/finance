@@ -20,7 +20,7 @@ import type { OpenInvoiceDue, ProfileInvoiceView, StatementView } from './Statem
  * Consolidação mensal: garante os contêineres (extrato e fatura) em que as transações
  * caem e monta o extrato do mês. Os saldos são lidos do cache que a rotina de recálculo
  * mantém — esta camada nunca soma transações para chegar a um saldo, para que exista uma
- * só fonte do número (backend-design §3.3).
+ * só fonte do número (core §6.4).
  */
 export class StatementConsolidationService {
     /**
@@ -42,7 +42,7 @@ export class StatementConsolidationService {
 
     /**
      * Garante o extrato de uma conta num mês, criando ou revivendo a linha.
-     * Regra de negócio (Extrato): uma linha por conta por mês (database-design §4.6). O
+     * Regra de negócio (Extrato): uma linha por conta por mês (banco-de-dados §4.6). O
      * extrato nasce com saldos provisórios; quem o garante precisa incluir a conta no
      * impacto de recálculo da mesma unidade de trabalho, que os corrige.
      *
@@ -63,7 +63,7 @@ export class StatementConsolidationService {
 
     /**
      * Garante a fatura de um cartão num mês, criando ou revivendo a linha, em aberto.
-     * Regra de negócio (Fatura): uma linha por cartão por mês (database-design §4.7).
+     * Regra de negócio (Fatura): uma linha por cartão por mês (banco-de-dados §4.7).
      *
      * @param creditCard Cartão dono da fatura.
      * @param period Competência da fatura.
@@ -82,7 +82,7 @@ export class StatementConsolidationService {
 
     /**
      * Monta o extrato consolidado de um mês. Um mês sem linha não é erro — é um mês sem
-     * movimento, cujo inicial e final são o fechamento anterior (database-design §4.6).
+     * movimento, cujo inicial e final são o fechamento anterior (banco-de-dados §4.6).
      * Entradas e saídas saem dos mesmos movimentos listados, com a regra de efeito e de
      * consolidado × previsto do recálculo, para que a tela nunca mostre um total que a tabela
      * não explica.
@@ -130,10 +130,10 @@ export class StatementConsolidationService {
     /**
      * Faturas que pesam no saldo das contas do perfil num mês, com a data de caixa de cada uma.
      * Regra de negócio (Extrato e Transações): a fatura paga conta no dia do pagamento, no
-     * extrato em que foi paga; a em aberto, no dia do vencimento (database-design §4.7 e §4.13).
+     * extrato em que foi paga; a em aberto, no dia do vencimento (banco-de-dados §4.7 e §4.13).
      * Usa o mesmo critério do extrato de cada conta (`openFrom` e `dueIn`), para que a linha da
      * fatura em Transações e a do extrato nunca discordem sobre o mês, o dia e o valor
-     * (desktop-mvp-plan Fase 11.1). As consultas são por perfil, e não por conta, porque a lista é
+     * (cartoes-e-faturas §5). As consultas são por perfil, e não por conta, porque a lista é
      * refeita a cada escrita de transação: por conta, o custo cresceria com o número de contas.
      *
      * @param profileId Perfil consultado.
@@ -163,7 +163,7 @@ export class StatementConsolidationService {
      * faturas do perfil precisam usar exatamente o mesmo critério.
      * Regra de negócio (Extrato): a fatura paga entra no extrato em que foi paga; a em aberto,
      * no mês do vencimento — que é o da competência seguinte ou o da própria, conforme o ciclo,
-     * por isso a busca começa na competência anterior (database-design §4.7).
+     * por isso a busca começa na competência anterior (banco-de-dados §4.7).
      *
      * @param accountId Conta que quita os cartões.
      * @param statementId Extrato da conta no mês; `null` quando o mês não tem extrato, e então
@@ -194,7 +194,7 @@ export class StatementConsolidationService {
 
 /**
  * Primeira competência em que uma fatura em aberto pode vencer no mês: a do mês anterior, porque
- * o vencimento cai na competência seguinte ou na própria, conforme o ciclo (database-design §4.7).
+ * o vencimento cai na competência seguinte ou na própria, conforme o ciclo (banco-de-dados §4.7).
  * Num lugar só para que o extrato de uma conta e as faturas do perfil usem o mesmo corte.
  *
  * @param period Mês do extrato.
@@ -206,7 +206,7 @@ function openFrom(period: YearMonth): YearMonth {
 
 /**
  * Regra de negócio (Extrato): a fatura em aberto pesa no previsto do mês do vencimento
- * (database-design §4.7). Compartilhado pelo extrato e pelas faturas do perfil, para que os dois
+ * (banco-de-dados §4.7). Compartilhado pelo extrato e pelas faturas do perfil, para que os dois
  * nunca discordem sobre o mês.
  *
  * @param entries Faturas em aberto a partir de `openFrom(period)`, com o cartão.

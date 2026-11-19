@@ -8,12 +8,12 @@ import type { SyncBatchDto } from '../dto/sync/SyncBatchDto.ts';
 export const SYNC_PROTOCOL_VERSION = 1;
 
 /**
- * Divergência máxima de relógio aceita numa sessão (sync-design §5.2): além dela, "a escrita
+ * Divergência máxima de relógio aceita numa sessão (sincronizacao §3.2): além dela, "a escrita
  * mais recente vence" deixa de significar o que o usuário espera.
  */
 export const MAX_CLOCK_SKEW_MS = 2 * 60 * 1000;
 
-/** Validade de um convite (sync-design §6.3). */
+/** Validade de um convite (sincronizacao §4.3). */
 export const INVITE_TTL_MS = 5 * 60 * 1000;
 
 const deviceIdField = z.string().length(36);
@@ -34,7 +34,7 @@ export type ClearHello = z.infer<typeof clearHelloSchema>;
 /** Recusa em claro, antes do handshake: quem liga não é membro ou não há convite ativo. */
 export const clearRefusalSchema = z.strictObject({ refused: z.enum(['not-member', 'no-invite', 'busy']) });
 
-/** Carga do handshake da sessão: o que cada lado compara antes de trocar dados (sync-design §7.4, passo 2). */
+/** Carga do handshake da sessão: o que cada lado compara antes de trocar dados (sincronizacao §5.6, passo 2). */
 export const sessionHelloSchema = z.strictObject({
     deviceId: deviceIdField,
     wallMillis: z.number().int().nonnegative(),
@@ -70,7 +70,7 @@ export const sessionMessageSchema = z.discriminatedUnion('type', [
 export type SessionMessage = z.infer<typeof sessionMessageSchema>;
 
 /**
- * O convite lido do QR (sync-design §6.3): grupo, id e chave de quem convida, endereço local
+ * O convite lido do QR (sincronizacao §4.3): grupo, id e chave de quem convida, endereço local
  * e o segredo de 128 bits de uso único.
  */
 export const invitePayloadSchema = z.strictObject({
@@ -256,7 +256,7 @@ export function invitePsk(secretHex: string, groupId: string): Uint8Array {
 }
 
 /**
- * Hash do grupo anunciado no mDNS (sync-design §7.2): vizinhos veem que um aparelho existe,
+ * Hash do grupo anunciado no mDNS (sincronizacao §5.2): vizinhos veem que um aparelho existe,
  * não a qual grupo pertence; membros do mesmo grupo se reconhecem.
  *
  * @param groupId Id do grupo.

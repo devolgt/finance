@@ -7,10 +7,10 @@ import { buildStatementTable, type StatementRow } from './statementTable.ts';
 import type { TransactionTableRow } from './transactionTable.ts';
 
 /*
- * Calendário do mês (mockup `DesktopCalendario`): os lançamentos de Transações distribuídos pelos
+ * Calendário do mês: os lançamentos de Transações distribuídos pelos
  * dias do vencimento, nos modos "Receitas × despesas" e "Saldo do dia". Fica no `client`, e não na
  * tela, porque o celular vai mostrar o mesmo mês com as mesmas regras e as mesmas palavras
- * (desktop-shell-design §4.2).
+ * (desktop §4).
  */
 
 /** O que cada dia mostra: entradas e saídas ou o saldo no fim do dia. */
@@ -24,7 +24,7 @@ export type CalendarMode = 'flows' | 'balance';
  */
 export type CalendarEntryState = 'paid' | 'upcoming' | 'overdue';
 
-/** Rótulos da situação no painel do dia, os do mockup. */
+/** Rótulos da situação no painel do dia, os mesmos nos dois apps. */
 const STATE_LABELS: Readonly<Record<CalendarEntryState, string>> = {
     paid: 'Pago',
     upcoming: 'A vencer',
@@ -75,7 +75,7 @@ export interface CalendarLine {
 export interface CalendarDayBalance {
     readonly value: string;
     readonly negative: boolean;
-    /** Dia que ainda não chegou: o valor é o previsto, com peso menor (decisão de interface 6). */
+    /** Dia que ainda não chegou: o valor é o previsto, com peso menor (desktop §7.5). */
     readonly projected: boolean;
     /** `+R$ 515,00 no dia`, `sem mudança no consolidado` ou `previsto`. */
     readonly detail: string;
@@ -121,7 +121,7 @@ export interface CalendarSummary {
 
 /** O mês pronto para a grade. */
 export interface CalendarView {
-    /** Casas vazias antes do dia 1, com a semana começando no domingo, como no mockup. */
+    /** Casas vazias antes do dia 1, com a semana começando no domingo, como no calendário brasileiro. */
     readonly leadingBlanks: number;
     /** Casas vazias depois do último dia, para fechar a última semana. */
     readonly trailingBlanks: number;
@@ -233,7 +233,7 @@ function groupEntries(rows: readonly TransactionTableRow[], movements: ReadonlyM
 
 /**
  * Regra de negócio (Calendário): pago é o lançamento pago e a fatura paga; o resto está em aberto,
- * atrasado quando venceu antes de hoje. A compra no cartão segue a fatura (database-design §4.7),
+ * atrasado quando venceu antes de hoje. A compra no cartão segue a fatura (banco-de-dados §4.7),
  * por isso a situação vem da tabela de Transações, que já aplica essa regra.
  *
  * @param row Linha de Transações.
@@ -285,7 +285,7 @@ interface DailyBalances {
  * de Contas, para que a data de caixa, a situação e o sinal de cada uma sejam os de lá; os nomes não
  * importam aqui, então os cadastros vão vazios. A fatura paga sem dia gravado entra no último dia,
  * porque não se sabe em que ponto do mês ela saiu.
- * Regra de negócio (Saldos, database-design §3.7): o consolidado soma só o pago; o previsto, tudo.
+ * Regra de negócio (Saldos, banco-de-dados §3.7): o consolidado soma só o pago; o previsto, tudo.
  *
  * @param statements Extratos do mês das contas do total.
  * @param month Mês de referência.

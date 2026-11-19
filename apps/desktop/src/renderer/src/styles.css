@@ -7,7 +7,7 @@
 
 /*
  * Base do app: fonte e cores dos tokens, e algarismos tabulares em todo número
- * (decisão de interface 8 dos mockups) — valores alinham nas tabelas sem classe por célula.
+ * (desktop §7.4) — valores alinham nas tabelas sem classe por célula.
  */
 @layer base {
     html,

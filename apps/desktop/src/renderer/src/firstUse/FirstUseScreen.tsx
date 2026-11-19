@@ -10,14 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useDevicePreferences } from '@/lib/devicePreferences';
 import { ThemeMenu } from '@/shell/ThemeMenu';
 
-/** Tipos de perfil, na ordem do mockup. */
+/** Tipos de perfil, com o pessoal primeiro por ser o caso mais comum. */
 const PROFILE_TYPES: readonly OnboardingFormValues['profileType'][] = ['personal', 'business'];
 
-/** Tipos de conta, na ordem do mockup. */
+/** Tipos de conta, com a corrente primeiro por ser a primeira conta mais comum. */
 const ACCOUNT_TYPES: readonly OnboardingFormValues['accountType'][] = ['checking', 'investment'];
 
 /**
- * Primeiro uso (mockup `DesktopPrimeiroUso`; desktop-mvp-plan Fase 5): o banco sem perfil
+ * Primeiro uso (perfis §4.2): o banco sem perfil
  * abre aqui, fora do shell, porque toda tela do shell lê dados de um perfil. Cria o perfil e a
  * primeira conta juntos pelo `onboarding.start` — o primeiro uso não pode deixar perfil sem
  * conta — e, ao concluir, o app entra na Visão geral do mês atual.
@@ -208,8 +208,8 @@ function StartFromScratch(): ReactNode {
 }
 
 /**
- * "Já usa em outro aparelho?" (sync-plan Fase 7). O aparelho do primeiro uso ainda não tem
- * dados, então pode entrar num grupo e receber tudo do outro (sync-design §6.4). No
+ * "Já usa em outro aparelho?" (sincronizacao §7.2). O aparelho do primeiro uso ainda não tem
+ * dados, então pode entrar num grupo e receber tudo do outro (sincronizacao §4.4). No
  * computador não há câmera: o convite chega pelo "Copiar convite" do outro aparelho, colado
  * aqui — o mesmo texto que vai no QR.
  *

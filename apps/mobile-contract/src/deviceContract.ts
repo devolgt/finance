@@ -9,7 +9,7 @@ import { runContract, type ContractReport } from './contractReport.ts';
 
 /**
  * Roda o contrato no aparelho: o adaptador do app (`ExpoSqliteDatabase`) sobre o `expo-sqlite`
- * real, pela JSI, e os vetores gerados no Node recalculados no Hermes (mobile-shell-design §8,
+ * real, pela JSI, e os vetores gerados no Node recalculados no Hermes (mobile §8,
  * itens 1 e 2). Os vetores entram pelo bundle, do mesmo arquivo versionado que o Vitest
  * confere no Node.
  *

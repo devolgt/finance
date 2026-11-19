@@ -6,7 +6,7 @@ import { dayOfMonthField, moneyField, parsedText, registryNameField, yearMonthFi
 /**
  * Campos do cadastro do cartão; todos obrigatórios, no cadastro e na edição. Exportado, como
  * o `accountContentShape`, para o formulário do cartão validar o conteúdo com o mesmo
- * schema antes de saber se vai criar ou editar (desktop-shell-design §5.4).
+ * schema antes de saber se vai criar ou editar (desktop §3.5).
  */
 export const creditCardContentShape = {
     accountId: parsedText(AccountId),

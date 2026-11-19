@@ -29,7 +29,7 @@ const LOG_TAIL_LINES = 40;
 const LOG_TAIL_BYTES = 64 * 1024;
 
 /**
- * O relato como chega do renderer, que é entrada não confiável (desktop-shell-design §3.6):
+ * O relato como chega do renderer, que é entrada não confiável (desktop §2):
  * os limites impedem que um texto gigante trave a montagem do endereço.
  */
 export const problemReportSchema = z.object({

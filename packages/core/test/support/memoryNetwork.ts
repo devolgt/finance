@@ -4,7 +4,7 @@ import type { Connection, DiscoveredPeer, Discovery, KeyStore, Listener, RandomS
 /**
  * Uma ponta de uma conexão em memória. Entrega os bytes em pedaços como chegaram e pode ser
  * programada para cair depois de N escritas, o que exercita a queda de conexão em cada passo
- * da sessão (sync-plan Fase 5).
+ * da sessão (sincronizacao §5.5).
  */
 class MemoryConnection implements Connection {
     private readonly inbox: Uint8Array[] = [];

@@ -8,7 +8,7 @@ import type { UnitOfWork } from '../UnitOfWork.ts';
 import type { CreateNoteCommand, RewriteNoteCommand } from './NoteCommands.ts';
 
 /**
- * Anotações do perfil (database-design §4.3; mockup `DesktopAnotacoes`). Uma lista simples:
+ * Anotações do perfil (banco-de-dados §4.3; anotacoes §1.1). Uma lista simples:
  * sem vínculo com lançamento, sem regra entre linhas — o Service só garante que o perfil
  * existe e que a escrita passa pela unidade de trabalho, como toda escrita do núcleo.
  */

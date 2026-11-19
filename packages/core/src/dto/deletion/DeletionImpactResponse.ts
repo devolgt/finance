@@ -8,7 +8,7 @@ export interface AffectedAccountResponse {
 
 /**
  * O alerta antes de excluir uma conta: tudo o que será apagado junto, contado, e as outras
- * contas cujo saldo muda (desktop-mvp-plan §5.1).
+ * contas cujo saldo muda (contas §5).
  */
 export interface AccountDeletionImpactResponse {
     readonly accountId: string;
@@ -21,14 +21,14 @@ export interface AccountDeletionImpactResponse {
     readonly cardTransactions: number;
     /** Transferências e investimentos de outras contas que chegam a esta. */
     readonly incomingTransfers: number;
-    /** Séries que param de emitir junto com a conta (database-design §4.12). */
+    /** Séries que param de emitir junto com a conta (banco-de-dados §4.12). */
     readonly recurrences: number;
-    /** Metas vinculadas à conta, excluídas junto (database-design §4.11). */
+    /** Metas vinculadas à conta, excluídas junto (banco-de-dados §4.11). */
     readonly goals: number;
     readonly affectedAccounts: readonly AffectedAccountResponse[];
 }
 
-/** O alerta antes de excluir um cartão (desktop-mvp-plan §5.1). */
+/** O alerta antes de excluir um cartão (contas §5). */
 export interface CreditCardDeletionImpactResponse {
     readonly creditCardId: string;
     readonly invoices: number;
@@ -66,7 +66,7 @@ export function toAccountDeletionImpactResponse(impact: DeletionImpact): Account
 
 /**
  * Regra de negócio (Fatura): pagamento parcial é uma transferência dentro da fatura
- * (database-design §4.7) — por isso é contado pelo tipo.
+ * (banco-de-dados §4.7) — por isso é contado pelo tipo.
  *
  * @param impact Escopo e contas afetadas, montados pelo Service.
  * @return O alerta de exclusão de cartão.

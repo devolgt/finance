@@ -4,7 +4,7 @@ import { compareCodeUnits } from '../shared/textOrder.ts';
 
 /**
  * Vetor de versões: por aparelho de origem, a maior sequência de origem que um aparelho
- * possui (sync-design §5.3). É prefixo-completo — ter N significa ter todas as entradas até
+ * possui (sincronizacao §3.3). É prefixo-completo — ter N significa ter todas as entradas até
  * N daquela origem —, porque um lote é aplicado inteiro numa transação. Com isso, "o que
  * falta ao par" é só "toda entrada com sequência maior que a do vetor dele".
  *

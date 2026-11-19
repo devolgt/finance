@@ -3,7 +3,7 @@ import { connectSyncPeerRequest, createSyncGroupRequest, joinSyncGroupRequest, s
 import type { SyncDevicesService } from '../services/sync/SyncDevicesService.ts';
 import { handle, handleAsync, type CoreResult, type UnexpectedErrorListener } from './CoreResult.ts';
 
-/** Rotas da tela de Dispositivos (sync-plan Fases 7 e 8). */
+/** Rotas da tela de Dispositivos (sincronizacao §6.3 e §6.4). */
 export class SyncController {
     /**
      * @param devices Casos de uso da tela.

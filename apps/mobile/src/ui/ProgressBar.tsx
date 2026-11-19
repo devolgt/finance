@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 /**
- * Barra de progresso dos mockups (limite usado do cartão, progresso da meta): a trilha `track` e o
+ * Barra de progresso do app (limite usado do cartão, progresso da meta): a trilha `track` e o
  * preenchimento `accent`, ou `out` quando passou do limite. Decorativa: quem a usa mostra o
  * percentual em texto ao lado, porque a barra sozinha não é lida pelo leitor de tela.
  *

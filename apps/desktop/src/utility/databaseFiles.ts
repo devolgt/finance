@@ -7,7 +7,7 @@ import { z } from 'zod';
 export interface DatabaseFiles {
     /** `userData/finance.sqlite`. */
     readonly databasePath: string;
-    /** `userData/backups`, ao lado do banco (backend-design §4.6). */
+    /** `userData/backups`, ao lado do banco (banco-de-dados §5.6). */
     readonly backupsPath: string;
     /** `userData/restore-pending.json`, presente só enquanto uma restauração não terminou. */
     readonly restoreMarkerPath: string;
@@ -66,7 +66,7 @@ export function readRestoreMarker(path: string): RestoreMarker | null {
 
 /**
  * Lê a marca de migration que falhou. Ela existe porque cada migration roda na própria
- * transação (backend-design §4.5): as anteriores à que falhou ficam aplicadas, e a próxima
+ * transação (banco-de-dados §5.5): as anteriores à que falhou ficam aplicadas, e a próxima
  * abertura grava um backup novo já com elas. Esse backup não serve à versão anterior do app,
  * que recusaria o banco por ser mais novo; o que serve é o da primeira tentativa, que a marca
  * guarda.
@@ -100,7 +100,7 @@ export function writeMigrationFailureMarker(path: string, marker: MigrationFailu
 
 /**
  * Apaga a marca quando a migration enfim passa: o backup que ela protegia volta à rotação
- * normal das três cópias (backend-design §4.6). A restauração bem-sucedida também apaga a
+ * normal das três cópias (banco-de-dados §5.6). A restauração bem-sucedida também apaga a
  * marca, direto em `restoreBackup`, porque o banco que ela descrevia saiu do lugar.
  *
  * @param path Caminho da marca; ausente não é erro.

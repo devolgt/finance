@@ -6,7 +6,7 @@ import { Combobox, type ComboboxAria, type ComboboxOption } from '@/components/C
 /*
  * Escolhas de cadastro que mais de um formulário oferece — a subcategoria, que todo lançamento
  * tem, e as tags, que são várias de uma vez —, sobre o seletor com busca (`Combobox`). A
- * subcategoria precisa da busca desde a Fase 9: a árvore inteira passa de cem itens num perfil real.
+ * subcategoria sempre precisou da busca: a árvore inteira passa de cem itens num perfil real.
  */
 
 /**

@@ -32,7 +32,7 @@ const BUSINESS_WITH_PARTNERS = 'Perfil empresarial: tem sócios com participaç�
  * Criar perfil (nome, tipo, moeda) ou editar (nome e moeda), numa folha, com a validação do
  * desktop (`readProfileForm` do `client`). O tipo não muda depois de criado: `profiles.update`
  * não o recebe, e trocar pessoal por empresarial mudaria o que o perfil pode ter (sócios).
- * Regra de negócio (Perfis, desktop-mvp-plan §5): a moeda só muda sem lançamentos; a recusa do
+ * Regra de negócio (Perfis, perfis §2.2): a moeda só muda sem lançamentos; a recusa do
  * núcleo aparece abaixo da moeda.
  *
  * @param props.profile Perfil a editar, ou `null` para criar um.

@@ -1,4 +1,4 @@
-# Teste de fumaça (mobile-mvp-plan, Fase 4): o app instalado abre num banco vazio e chega ao
+# Teste de fumaça (mobile §8.3 e §12.2): o app instalado abre num banco vazio e chega ao
 # primeiro uso. Prova o que o Jest não alcança — Hermes, expo-sqlite pela JSI, migrations no
 # aparelho, NativeWind e a fonte embutida — com o APK de release, que traz o bundle dentro.
 appId: br.com.finance.app

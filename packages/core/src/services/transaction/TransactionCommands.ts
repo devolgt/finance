@@ -26,7 +26,7 @@ export interface TransactionInput {
     readonly destinationAccountId: AccountId | null;
     readonly partnerId: PartnerId | null;
     readonly goalId: GoalId | null;
-    /** A transferência vinculada retira dinheiro da meta (database-design §4.11). */
+    /** A transferência vinculada retira dinheiro da meta (banco-de-dados §4.11). */
     readonly goalWithdrawal: boolean;
     readonly name: string;
     readonly description: string | null;
@@ -42,7 +42,7 @@ export interface TransactionInput {
 }
 
 /**
- * Repetição pedida no formulário (mockup `MobileParcelar`; database-design §4.12): parcelar
+ * Repetição pedida no formulário (recorrencias §3.3; banco-de-dados §4.12): parcelar
  * num número fixo de partes, ou repetir sem fim inerente até uma data ou para sempre.
  */
 export type RepeatInput =
@@ -50,7 +50,7 @@ export type RepeatInput =
     | { readonly kind: 'fixed'; readonly frequency: RecurrenceFrequency; readonly endAt: LocalDate | null };
 
 /**
- * A quais ocorrências de uma série a edição ou a exclusão se aplica (database-design §4.12).
+ * A quais ocorrências de uma série a edição ou a exclusão se aplica (banco-de-dados §4.12).
  * Num lançamento avulso só existe `single`.
  */
 export type EditScope = 'single' | 'future' | 'all';
@@ -66,7 +66,7 @@ export interface CreateTransactionCommand extends TransactionInput {
 export interface UpdateTransactionCommand extends TransactionInput {
     readonly id: TransactionId;
     /**
-     * Perfil para onde a transação vai (database-design §4.13, "Mover para outro perfil"); `null`
+     * Perfil para onde a transação vai (banco-de-dados §4.13, "Mover para outro perfil"); `null`
      * a mantém no perfil atual. As referências do conteúdo precisam ser do perfil de destino.
      */
     readonly profileId: ProfileId | null;

@@ -23,7 +23,7 @@ function nodeInputs(openDatabase: () => ClosableDatabase = () => BetterSqliteDat
     };
 }
 
-describe('resultado do contrato (mobile-mvp-plan, Fase 3)', () => {
+describe('resultado do contrato (mobile §8.2)', () => {
     it('passa no Node, com todos os casos do banco e todos os vetores conferidos', () => {
         const report = runContract(nodeInputs());
 

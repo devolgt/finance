@@ -11,9 +11,9 @@ import { StatusTag } from '@/components/entityUi';
 import type { TransactionActions } from './useTransactionActions.tsx';
 
 /*
- * Listagem de movimentos (desktop-mvp-plan Fase 13.2): a mesma tabela em Transações, no extrato de
+ * Listagem de movimentos (transacoes §8.3): a mesma tabela em Transações, no extrato de
  * Contas e na fatura de Cartões, com o mesmo teclado, o mesmo menu e a mesma ordenação. Nasceu da
- * tabela densa de Transações (mockup `DesktopTransacoes`, Fase 9). A TanStack Table cuida do
+ * tabela densa de Transações (transacoes §8.1). A TanStack Table cuida do
  * estado da ordenação; a marcação, o teclado e a acessibilidade são daqui. As comparações são as
  * do `client` (`compareMovementRows`), para que o celular ordene igual.
  */
@@ -45,7 +45,7 @@ const ALL_COLUMNS = helper.columns([
     helper.display({ id: 'actions', enableSorting: false }),
 ]);
 
-/** Cabeçalho e largura de cada coluna, nas proporções da grade do mockup. */
+/** Cabeçalho e largura de cada coluna: o nome fica com a sobra, porque é a coluna que mais varia. */
 const COLUMN_LAYOUT: Readonly<Record<MovementColumn | 'actions', { readonly label: string; readonly className: string }>> = {
     date: { label: 'Data', className: 'w-18 pl-4' },
     name: { label: 'Nome', className: '' },
@@ -57,7 +57,7 @@ const COLUMN_LAYOUT: Readonly<Record<MovementColumn | 'actions', { readonly labe
     actions: { label: 'Ações', className: 'w-12 pr-4' },
 };
 
-/** Ordem inicial: pela data, como o mockup ("Data ↓"). */
+/** Ordem inicial: pela data, do começo para o fim do mês, a ordem em que o dinheiro se move. */
 const INITIAL_SORTING: SortingState = [{ id: 'date', desc: false }];
 
 /** O que a listagem mostra e faz com as linhas. */
@@ -79,12 +79,12 @@ export interface MovementGridProps {
 
 /**
  * A listagem com ordenação por coluna, navegação pelo teclado, menu de contexto e o "⋯".
- * Teclado (desktop-mvp-plan Fase 9): `↑↓` navegam, `Enter` abre, `P` marca ou desmarca o
+ * Teclado (transacoes §5): `↑↓` navegam, `Enter` abre, `P` marca ou desmarca o
  * pagamento, `Del` exclui; o botão direito e o "⋯" têm as mesmas ações, para quem usa o mouse. A
  * linha selecionada é a única que entra no `Tab` (*roving tabindex*), para que atravessar a tela
  * não exija passar por centenas de linhas. Na linha da fatura, `Enter` e o clique abrem a fatura.
  * A situação "Pendente"/"Pago" é um botão que alterna o pagamento — o atalho de mouse do `P`. O
- * cabeçalho fica fixo no topo da tela ao rolar (desktop-mvp-plan Fase 13.3), para que as colunas e
+ * cabeçalho fica fixo no topo da tela ao rolar, para que as colunas e
  * a ordenação continuem à vista numa lista longa; por isso a seção em volta recorta as bordas com
  * `overflow-clip`, e não `overflow-hidden`, que criaria um contêiner de rolagem e prenderia o
  * cabeçalho nele.
@@ -329,7 +329,7 @@ function RowContextMenu({ row, actions }: { readonly row: MovementRow; readonly 
 
 /**
  * Uma linha da listagem. Entrada e saída se leem pelo sinal, pelo `⇄` da transferência e pela
- * etiqueta de estorno, não só pela cor (decisão de interface 7); os números são tabulares e
+ * etiqueta de estorno, não só pela cor (desktop §7.3); os números são tabulares e
  * alinhados à direita (decisão 8).
  *
  * @param props.row Linha montada pelo view-model.
@@ -441,7 +441,7 @@ function GridRow({
 
 /**
  * A situação da linha. Onde marcar pago vale, ela é um botão que alterna o pagamento com a data de
- * hoje — o atalho de mouse do `P` (desktop-mvp-plan Fase 13.2). O que ainda vai sair da conta — o
+ * hoje — o atalho de mouse do `P` (transacoes §8.3). O que ainda vai sair da conta — o
  * pendente e a fatura em aberto — fica em destaque; a compra numa fatura em aberto fica apagada,
  * porque quem pesa é a fatura, não ela.
  *

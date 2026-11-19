@@ -1,11 +1,11 @@
 /**
- * Regra de endereços locais (sync-design §7.1): só se aceita e só se disca para a rede local
+ * Regra de endereços locais (sincronizacao §5.1): só se aceita e só se disca para a rede local
  * — faixas privadas IPv4 (`10/8`, `172.16/12`, `192.168/16`), link-local (`169.254/16`) e os
  * IPv6 link-local (`fe80::/10`) e unique-local (`fc00::/7`). Endereços públicos e a faixa de
  * carrier-grade NAT (`100.64/10`, usada por VPNs overlay como o Tailscale) são recusados.
  *
  * O loopback (`127/8`, `::1`) também é aceito: é o próprio aparelho, que nunca chega à rede,
- * e é o que permite rodar dois apps no mesmo computador no teste de fumaça (sync-plan Fase 7).
+ * e é o que permite rodar dois apps no mesmo computador no teste de fumaça (sincronizacao §6.3).
  *
  * Fica no núcleo, e não em cada plataforma, para que desktop e celular recusem exatamente o
  * mesmo conjunto.

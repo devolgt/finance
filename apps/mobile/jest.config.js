@@ -31,7 +31,7 @@ const TRANSFORMED = [
 ];
 
 /**
- * Jest do app (mobile-mvp-plan §2, "Testes de tela"): jest-expo com React Native Testing
+ * Jest do app (mobile §2.2, "Testes de tela"): jest-expo com React Native Testing
  * Library, e o núcleo real sobre `better-sqlite3` em memória atrás do `DirectCoreClient`, para
  * que a tela seja testada no Node contra as regras de verdade.
  *

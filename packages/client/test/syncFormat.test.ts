@@ -28,7 +28,7 @@ function status(overrides: Partial<SyncStatusResponse> = {}): SyncStatusResponse
     };
 }
 
-describe('Tela de Dispositivos (sync-plan Fases 7 e 8)', () => {
+describe('Tela de Dispositivos (sincronizacao §6.3 e §6.4)', () => {
     it('lista este aparelho primeiro, esconde os removidos e mostra o estado e o aviso de cada um', () => {
         const views = syncMemberViews(status());
 

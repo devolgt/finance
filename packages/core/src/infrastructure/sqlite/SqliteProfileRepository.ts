@@ -7,7 +7,7 @@ import type { ProfileRepository } from '../../repositories/ProfileRepository.ts'
 import { decodeEnum, PROFILE_TYPE_CODE } from './enumCodes.ts';
 import { RowReader } from './RowReader.ts';
 
-// Regra de negócio (Lançamentos, database-design §4.1): a conta e o cartão padrão só valem
+// Regra de negócio (Lançamentos, banco-de-dados §4.1): a conta e o cartão padrão só valem
 // vivos, ativos e do próprio perfil. O filtro fica na leitura, e não na desativação, para que
 // reativar devolva o padrão e para que uma desativação recebida pela sincronização também o tire.
 const SELECT_PROFILE = `
@@ -25,7 +25,7 @@ export class SqliteProfileRepository implements ProfileRepository {
      * @param database Conexão compartilhada com os demais Repositories, para que todos
      * participem da mesma unidade de trabalho.
      * @param clock Relógio que carimba `updated_at`; a aplicação carimba, não um trigger
-     * (database-design §3.6).
+     * (banco-de-dados §3.6).
      */
     public constructor(private readonly database: Database, private readonly clock: Clock) {}
 

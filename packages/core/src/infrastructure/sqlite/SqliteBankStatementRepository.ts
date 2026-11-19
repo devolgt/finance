@@ -79,7 +79,7 @@ export class SqliteBankStatementRepository implements BankStatementRepository {
 
     /**
      * O `ON CONFLICT` sobre o id determinístico é o que faz "recriar" virar "reviver"
-     * (sync-design §5.6); uma linha viva com o mesmo id fica intocada.
+     * (sincronizacao §3.7); uma linha viva com o mesmo id fica intocada.
      *
      * @param statement Extrato a garantir.
      * @return void
@@ -99,7 +99,7 @@ export class SqliteBankStatementRepository implements BankStatementRepository {
      * Grava só os saldos, sem carimbar `updated_at`: recalcular um cache não é uma revisão do
      * usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o receptor —
      * que recalcula com a captura desligada — ficaria com outro `updated_at`, quebrando a
-     * convergência (sync-design §5.4).
+     * convergência (sincronizacao §3.4).
      *
      * @param statement Extrato com os saldos recalculados.
      * @return void

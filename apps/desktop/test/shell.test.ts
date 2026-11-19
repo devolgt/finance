@@ -16,8 +16,8 @@ function menuItem(label: string): MenuItem {
     return item;
 }
 
-describe('menu do shell (desktop-mvp-plan Fase 4)', () => {
-    it('tem um item por cadastro no lugar de "Cadastros" (Fase 13.11), na ordem da barra lateral', () => {
+describe('menu do shell (desktop §8)', () => {
+    it('tem um item por cadastro no lugar de "Cadastros" (desktop §8.1), na ordem da barra lateral', () => {
         expect(MENU.map((item) => item.label)).toEqual([
             'Visão geral',
             'Transações',
@@ -61,7 +61,7 @@ describe('menu do shell (desktop-mvp-plan Fase 4)', () => {
         expect(showsReferenceMonth('/settings/import')).toBe(false);
     });
 
-    it('Regra de interface (mockup DesktopExtrato): no Extrato, a barra mostra o período no lugar do mês', () => {
+    it('Regra de interface (desktop §7.2): no Extrato, a barra mostra o período no lugar do mês', () => {
         expect(MENU.filter((item) => showsPeriodRange(item.to)).map((item) => item.label)).toEqual(['Extrato']);
     });
 

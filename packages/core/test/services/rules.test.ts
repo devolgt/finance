@@ -11,7 +11,7 @@ function setup(): { world: TestWorld; profileId: string; accountId: string; base
     return { world, profileId, accountId, base: { profileId, subCategoryId: world.subCategory(profileId) } };
 }
 
-describe('ponto de controle das regras de negócio (database-design §3.10)', () => {
+describe('ponto de controle das regras de negócio (banco-de-dados §3.10)', () => {
     it('recusa sócio numa receita de perfil pessoal', async () => {
         const { world, accountId, base } = setup();
         const business = world.profile({ type: 'business' });
@@ -76,7 +76,7 @@ describe('ponto de controle das regras de negócio (database-design §3.10)', ()
         expect(error.details['rule']).toBe('destination-not-allowed');
     });
 
-    it('Regra de negócio (Transação, database-design §4.13): o tipo do lançamento não muda na edição', async () => {
+    it('Regra de negócio (Transação, banco-de-dados §4.13): o tipo do lançamento não muda na edição', async () => {
         const { world, profileId, accountId, base } = setup();
         const savingsId = world.account(profileId);
         const source = { kind: 'account', accountId } as const;
@@ -112,7 +112,7 @@ describe('ponto de controle das regras de negócio (database-design §3.10)', ()
     });
 });
 
-describe('camada Request e CoreResult (desktop-shell-design §5.3)', () => {
+describe('camada Request e CoreResult (desktop §3.3)', () => {
     it('devolve VALIDATION_FAILED apontando o campo de uma data inexistente', async () => {
         const { world, accountId, base } = setup();
         const error = await world.failure('transactions.create', {
@@ -158,7 +158,7 @@ describe('camada Request e CoreResult (desktop-shell-design §5.3)', () => {
         expect(unknown.ok ? null : unknown.error.code).toBe('VALIDATION_FAILED');
     });
 
-    it('todo DTO sobrevive a structuredClone, como no IPC do desktop (mobile-shell-design §4.4)', async () => {
+    it('todo DTO sobrevive a structuredClone, como no IPC do desktop (mobile §4)', async () => {
         const { world, profileId, accountId, base } = setup();
         const creditCardId = world.creditCard(profileId, accountId, 10, 17);
         const transaction = await world.create(base, { source: { kind: 'creditCard', creditCardId }, dueDate: '2026-03-05' });

@@ -49,7 +49,7 @@ describe('rótulos dos grupos', () => {
     });
 });
 
-describe('visualização do resultado (reports-design §3)', () => {
+describe('visualização do resultado (relatorios §5)', () => {
     it('monta a tabela e o gráfico de uma divisão a partir do núcleo real', async () => {
         const world = new ClientWorld();
         const s = await world.seed();
@@ -96,7 +96,7 @@ describe('visualização do resultado (reports-design §3)', () => {
         expect(view.table.totalHeader).toBe('Total');
     });
 
-    it('Regra de negócio (Relatórios, §3): com a tag numa divisão, avisa que os totais contam cada lançamento uma vez', () => {
+    it('Regra de negócio (Relatórios, relatorios §5.5): com a tag numa divisão, avisa que os totais contam cada lançamento uma vez', () => {
         expect(buildReportView(byMonthAndTag(2), 'bar').overlapNote).toMatch(/mais de uma tag/);
     });
 
@@ -185,7 +185,7 @@ describe('visualização do resultado (reports-design §3)', () => {
         expect(buildReportView(byMonthAndTag(2), 'table').flowNote).toBeNull();
     });
 
-    describe('análise (reports-design L9)', () => {
+    describe('análise (relatorios §5.7, L9)', () => {
         /**
          * @param primary Dimensão das linhas.
          * @param rows Chave e valor de cada linha, na ordem.

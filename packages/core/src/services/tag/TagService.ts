@@ -11,7 +11,7 @@ import type { CreateTagCommand, RenameTagCommand } from './TagCommands.ts';
 import type { TagWithUsage } from './TagViews.ts';
 
 /**
- * Cadastro de tags (database-design §4.10; mockup `DesktopTags`). Concentra a regra que o
+ * Cadastro de tags (banco-de-dados §4.10; categorias-e-tags §3). Concentra a regra que o
  * banco não expressa de forma legível — o nome único sem diferenciar maiúsculas, que o
  * índice `NOCASE` só cobre em ASCII — e a exclusão, que tira a tag dos lançamentos sem
  * mexer neles. Tag não afeta saldo, então nada aqui recalcula.
@@ -54,7 +54,7 @@ export class TagService {
 
     /**
      * Regra de negócio (Tags): nomes únicos no perfil, sem diferenciar maiúsculas
-     * (database-design §4.10).
+     * (banco-de-dados §4.10).
      *
      * @param command Perfil e nome.
      * @return A tag gravada.
@@ -88,7 +88,7 @@ export class TagService {
 
     /**
      * Regra de negócio (Tags): excluir remove a tag dos lançamentos, que continuam existindo
-     * (mockup `DesktopTags`) — diferente da subcategoria, a tag é opcional no lançamento, e
+     * (categorias-e-tags §3.3) — diferente da subcategoria, a tag é opcional no lançamento, e
      * nada precisa ser movido.
      *
      * @param id Tag a excluir.

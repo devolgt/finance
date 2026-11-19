@@ -26,16 +26,16 @@ interface RowRef {
 export interface ApplyReport {
     /** Transações de origem aplicadas. */
     readonly changes: number;
-    /** Pais donos revividos porque um filho vivo apontava para eles (sync-design §5.8). */
+    /** Pais donos revividos porque um filho vivo apontava para eles (sincronizacao §3.9). */
     readonly revived: readonly { readonly table: string; readonly id: string }[];
-    /** Linhas que perderam uma colisão de chave natural e foram mescladas (sync-design §5.7). */
+    /** Linhas que perderam uma colisão de chave natural e foram mescladas (sincronizacao §3.8). */
     readonly merged: number;
-    /** Ocorrências excluídas por estarem além do término da série (sync-design §5.6). */
+    /** Ocorrências excluídas por estarem além do término da série (sincronizacao §3.7). */
     readonly trimmed: number;
 }
 
 /**
- * Aplica um lote recebido (sync-design §5.9): last-writer-wins por célula contra o relógio
+ * Aplica um lote recebido (sincronizacao §3.11): last-writer-wins por célula contra o relógio
  * efetivo, numa transação só, seguido da passada pós-aplicação. A ordem do lote é a causal
  * (por HLC), e as chaves estrangeiras são adiadas para que a ordem dentro de uma transação de
  * origem não importe.
@@ -101,7 +101,7 @@ export class BatchApplier {
                 null,
             );
             if (latest !== null) {
-                // As escritas da passada seguinte ficam depois de tudo o que chegou (sync-design §5.2).
+                // As escritas da passada seguinte ficam depois de tudo o que chegou (sincronizacao §3.2).
                 this.ledger.saveState({ ...state, clock: state.clock.receive(latest, this.wallClock.millis()) });
             }
 
@@ -127,7 +127,7 @@ export class BatchApplier {
 
     /**
      * Regra de negócio (Recorrências): ocorrências além do término de uma série encerrada são
-     * excluídas na mesclagem. É a pendência da sync-design §5.6 e da Fase 9.2 do desktop: um
+     * excluídas na mesclagem. É a pendência da sincronizacao §3.7 e da Fase 9.2 do desktop: um
      * aparelho que completou offline a regra antiga traz ocorrências que a mudança de
      * periodicidade ou de tipo, feita no outro, já encerrou.
      *
@@ -169,7 +169,7 @@ export class BatchApplier {
     /**
      * Contas cujos saldos podem ter mudado com o lote. Lida antes e depois da aplicação para
      * que uma transação que mudou de lugar recalcule o contêiner antigo e o novo
-     * (sync-design §5.9, passo 2).
+     * (sincronizacao §3.11, passo 2).
      *
      * @param refs Linhas recebidas ou escritas pela passada.
      * @return Ids das contas.
@@ -209,7 +209,7 @@ class ApplyPass {
 
     /**
      * Aplica a criação de uma linha. Se ela não existe, é inserida com os valores da origem
-     * (inclusive `created_at`, sync-design §5.5); se existe — id determinístico criado nos dois
+     * (inclusive `created_at`, sincronizacao §3.6); se existe — id determinístico criado nos dois
      * aparelhos, ou o mesmo lote recebido de novo —, cada coluna é decidida pelo relógio.
      *
      * @param change Criação recebida.
@@ -254,7 +254,7 @@ class ApplyPass {
 
     /**
      * Redireciona os filhos de toda linha que perdeu uma colisão "merge" para a sobrevivente
-     * (sync-design §5.7). O redirecionamento é escrita local e se propaga; ele pode criar
+     * (sincronizacao §3.8). O redirecionamento é escrita local e se propaga; ele pode criar
      * novas colisões nos filhos (a mesma tag duas vezes num lançamento), resolvidas pela mesma
      * regra, por isso a fila.
      */
@@ -277,7 +277,7 @@ class ApplyPass {
     }
 
     /**
-     * Regra de negócio (Sincronização, sync-design §5.8): uma linha viva sob um pai dono
+     * Regra de negócio (Sincronização, sincronizacao §3.9): uma linha viva sob um pai dono
      * excluído revive o pai, com aviso; dado financeiro nunca é excluído por um merge que o
      * usuário não viu. Se o pai morto tem uma gêmea viva (perdeu uma colisão), o filho vai
      * para ela em vez de reviver o perdedor. Pais donos são as chaves `CASCADE` e o
@@ -338,8 +338,8 @@ class ApplyPass {
 
     /**
      * Last-writer-wins célula a célula contra o relógio efetivo local: a entrada em
-     * `sync_cells` ou, sem ela, a da linha (sync-design §5.3). `materialized_count` é o máximo
-     * dos dois, qualquer que seja o relógio (sync-design §5.5).
+     * `sync_cells` ou, sem ela, a da linha (sincronizacao §3.3). `materialized_count` é o máximo
+     * dos dois, qualquer que seja o relógio (sincronizacao §3.6).
      *
      * @param table Tabela.
      * @param id Linha local existente.
@@ -380,7 +380,7 @@ class ApplyPass {
 
     /**
      * Resolve, antes da escrita, as colisões de chave natural que a linha causaria: o índice
-     * único não é adiável. Sobrevive a de menor id (sync-design §5.7), decidido só pelos ids
+     * único não é adiável. Sobrevive a de menor id (sincronizacao §3.8), decidido só pelos ids
      * para que todo aparelho escolha a mesma. Quando a perdedora é a linha local, ela é
      * ajustada já (escrita local, capturada); quando é a recebida, o ajuste é aplicado em
      * `row` e devolvido, para que ela seja gravada sem colidir e o ajuste, marcado como
@@ -515,7 +515,7 @@ class ApplyPass {
 /**
  * @param link Chave estrangeira.
  * @return `true` para as chaves de propriedade e de vocabulário obrigatório, cujo pai excluído
- * com filho vivo é o caso da sync-design §5.8.
+ * com filho vivo é o caso da sincronizacao §3.9.
  */
 function isOwnerLink(link: ForeignKeyLink): boolean {
     return link.onDelete !== 'SET NULL';

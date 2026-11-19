@@ -40,12 +40,12 @@ import { goalListView, openGoal, parseGoalsSearch } from './goalsSearch.ts';
 type GoalDialogState = { readonly mode: 'create' } | { readonly mode: 'edit'; readonly goal: GoalProgressResponse } | { readonly mode: 'delete'; readonly goal: GoalProgressResponse };
 
 /**
- * Metas (mockup `DesktopMetas`; desktop-mvp-plan Fase 9.3): à esquerda a lista com o progresso
+ * Metas (metas §7.1): à esquerda a lista com o progresso
  * de cada meta, à direita o detalhe da meta aberta — progresso, quanto falta, data-alvo, ritmo
  * necessário e as transações que contam. A meta aberta fica na URL (`goal`), como a conta em
  * Contas. O mês de referência só move o ritmo: o progresso é o que já foi pago até hoje. A lista
  * mostra por padrão só as ativas; as atingidas e as arquivadas ficam no seletor de visualização
- * (`view`, desktop-mvp-plan Fase 13.4).
+ * (`view`, metas §5.2).
  *
  * @return A tela de Metas.
  */
@@ -128,7 +128,7 @@ export function GoalsScreen(): ReactNode {
 const EMPTY_VIEW: Readonly<Record<GoalListView, string>> = { active: 'Nenhuma meta ativa', reached: 'Nenhuma meta atingida', archived: 'Nenhuma meta arquivada' };
 
 /**
- * Lista lateral: cada meta com o percentual, a barra e "quanto de quanto · prazo" (mockup).
+ * Lista lateral: cada meta com o percentual, a barra e "quanto de quanto · prazo" (metas §7.1).
  *
  * @param props.goals Metas da visualização escolhida, por nome.
  * @param props.view Visualização escolhida: ativas, atingidas ou arquivadas.
@@ -214,7 +214,7 @@ function GoalLink({ goal, current }: { readonly goal: GoalProgressResponse; read
 /**
  * Detalhe da meta aberta: cabeçalho com as ações, progresso, os três números, a projeção e a
  * tabela das transações que contam — ou, na meta vinculada a conta, de onde vem o saldo
- * (desktop-mvp-plan Fase 13.3).
+ * (metas §2.2 e §4.5).
  *
  * @param props.goal Meta aberta.
  * @param props.onEdit Abre "Editar meta".
@@ -296,7 +296,7 @@ function GoalDetail({
 }
 
 /**
- * Um dos três números do detalhe (`.kpi` do mockup).
+ * Um dos três números do detalhe, no mesmo formato dos números das outras telas de detalhe.
  *
  * @param props.figure Rótulo, valor e nota já montados pelo `goalFigures`.
  * @return O cartão do número.
@@ -315,9 +315,9 @@ function Figure({ figure }: { readonly figure: GoalFigure }): ReactNode {
 const CONTRIBUTION_COLUMNS: readonly MovementColumn[] = ['date', 'name', 'category', 'container', 'amount'];
 
 /**
- * "Transações vinculadas" (mockup) na listagem comum de movimentos, com o total, que é o próprio
+ * "Transações vinculadas" (metas §4.5) na listagem comum de movimentos, com o total, que é o próprio
  * progresso. Editar, marcar pago e excluir funcionam como em Transações (pedido do usuário,
- * desktop-mvp-plan Fase 13.3): é aqui que se nota a vinculada errada. Contas, cartões e categorias
+ * transacoes §8.3): é aqui que se nota a vinculada errada. Contas, cartões e categorias
  * só dão nome às linhas.
  *
  * @param props.goal Meta aberta.
@@ -379,7 +379,7 @@ function Contributions({ goal, pendingNote }: { readonly goal: GoalProgressRespo
 
 /**
  * No lugar da tabela, na meta vinculada a conta: não há transações vinculadas — o progresso é o
- * saldo consolidado de hoje da conta (database-design §4.11) —, e o extrato dela explica cada
+ * saldo consolidado de hoje da conta (banco-de-dados §4.11) —, e o extrato dela explica cada
  * movimento.
  *
  * @param props.accountId Conta vinculada.

@@ -16,7 +16,7 @@ import { useActiveProfile } from '@/shell/activeProfile';
 const TAG_NAME_LABEL = 'o nome da tag';
 
 /**
- * Tags, item próprio do menu (mockup `DesktopTags`; desktop-mvp-plan Fase 13.11): a lista com o uso
+ * Tags, item próprio do menu (categorias-e-tags §5.1 e desktop §8.1): a lista com o uso
  * de cada tag em todo o período e, ao lado, o painel da tag escolhida para renomear ou excluir. A
  * criação fica no topo, num campo só, porque a tag é só um nome.
  *
@@ -58,7 +58,7 @@ export function TagsScreen(): ReactNode {
 }
 
 /**
- * "Nova tag" e "Adicionar", no cabeçalho como no mockup. O nome repetido volta do núcleo como
+ * "Nova tag" e "Adicionar", no cabeçalho, sempre à vista acima da lista. O nome repetido volta do núcleo como
  * `CONFLICT` e aparece abaixo do campo.
  *
  * @return O formulário de tag nova.
@@ -122,7 +122,7 @@ function NewTagForm(): ReactNode {
 
 /**
  * Tabela das tags: nome, lançamentos, total e último uso, com os números à direita e
- * tabulares (decisões de interface 8). Clicar na linha abre o painel; o nome é um botão, para
+ * tabulares (desktop §7.4). Clicar na linha abre o painel; o nome é um botão, para
  * que o teclado chegue à mesma ação.
  *
  * @param props.tags Tags do perfil, por nome.
@@ -189,9 +189,9 @@ function TagTable({ tags, selectedId, onSelect }: { readonly tags: readonly TagU
 }
 
 /**
- * Painel "Editar tag" do mockup: nome, o uso em números, o atalho para Transações com a tag
- * aberta, salvar e excluir. O atalho para o relatório por tag saiu com os relatórios fixos
- * (reports-design). Regra de negócio (Tags): excluir tira a tag dos lançamentos, que continuam
+ * Painel "Editar tag": nome, o uso em números, o atalho para Transações com a tag aberta, salvar
+ * e excluir. O atalho para o relatório por tag saiu com os relatórios fixos (relatorios §9.4).
+ * Regra de negócio (Tags, categorias-e-tags §3.3): excluir tira a tag dos lançamentos, que continuam
  * existindo — o aviso diz quantos, e por isso a exclusão não pede outra confirmação: nada além
  * da etiqueta se perde.
  *
@@ -305,7 +305,7 @@ function TagPanel({ tag, onClose }: { readonly tag: TagUsageResponse; readonly o
 }
 
 /**
- * Número do painel com rótulo, o `.kpi` do mockup.
+ * Número do painel com rótulo, o mesmo formato dos números das outras telas de detalhe.
  *
  * @param props.label Rótulo acima do número.
  * @param props.value Número já formatado.

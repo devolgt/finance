@@ -11,11 +11,11 @@ import { bridge } from '@/lib/bridge';
 import { cn } from '@/lib/cn';
 
 /**
- * Tela de Dispositivos do desktop (mockup `DesktopDispositivos`; sync-plan Fase 7). Abrir a
+ * Tela de Dispositivos do desktop (sincronizacao §6.3 e §7.1). Abrir a
  * tela liga a sincronização e sair dela desliga (`useSyncScreen`): é a única hora em que o
- * aparelho escuta, se anuncia e troca dados (sync-design §7.1).
- * Divergência aprovada do mockup (sync-plan §7): sem o código de 8 caracteres (o convite por
- * código ficou para uma próxima entrega) e sem "último sync" — cada aparelho mostra o estado
+ * aparelho escuta, se anuncia e troca dados (sincronizacao §1.3).
+ * Fica de fora (sincronizacao §7.1): o código de 8 caracteres (o convite por código ficou para
+ * uma próxima entrega, sincronizacao §10.2) e o "último sync" — cada aparelho mostra o estado
  * da sessão agora.
  *
  * @return A tela.
@@ -165,7 +165,7 @@ function MemberRow({ member }: { readonly member: SyncMemberView }): ReactNode {
 }
 
 /**
- * "Sair do grupo" (sync-design §6.5).
+ * "Sair do grupo" (sincronizacao §4.5).
  *
  * @return O rodapé do cartão do grupo.
  */
@@ -199,7 +199,7 @@ function LeaveGroup(): ReactNode {
 }
 
 /**
- * Convite de uso único com QR code, válido por 5 minutos (sync-design §6.3).
+ * Convite de uso único com QR code, válido por 5 minutos (sincronizacao §4.3).
  *
  * @param props.status Estado, que traz o convite em aberto.
  * @return O cartão de adicionar dispositivo.

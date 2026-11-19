@@ -4,7 +4,7 @@ import type { CreateNoteCommand, RewriteNoteCommand } from '../services/note/Not
 import { parsedText } from './fields.ts';
 
 /**
- * Texto da anotação: livre e sem limite de tamanho (database-design §4.3), mas não vazio.
+ * Texto da anotação: livre e sem limite de tamanho (banco-de-dados §4.3), mas não vazio.
  * Repete o invariante do `Note` só por conforto do formulário, como o `registryNameField`.
  */
 export const noteTextField = z.string().trim().min(1);

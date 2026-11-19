@@ -14,7 +14,7 @@ export interface OpenInvoiceDue extends InvoiceWithCard {
  * O extrato consolidado de uma conta num mês: os quatro saldos e tudo que os forma.
  * Regra de negócio (Extrato): mostra as transações do mês, as transferências que chegam e
  * as faturas pagas no mês; as faturas em aberto que vencem no mês entram só no previsto
- * (database-design §4.6; brief §3, Extrato).
+ * (banco-de-dados §4.6; contas §2.2).
  * Fica fora do arquivo do `StatementConsolidationService` para que a camada DTO dependa só
  * do contrato de saída, e não da implementação do caso de uso.
  */
@@ -37,7 +37,7 @@ export interface StatementView {
 
 /**
  * Fatura que pesa no mês, vista do perfil: a conta que a quita e a data de caixa. É a linha da
- * fatura na tela de Transações, que agrupa as compras do cartão (desktop-mvp-plan Fase 11.1).
+ * fatura na tela de Transações, que agrupa as compras do cartão (cartoes-e-faturas §5).
  */
 export interface ProfileInvoiceView extends InvoiceWithCard {
     /** Conta que quita o cartão, em cujo extrato a fatura pesa. */

@@ -16,13 +16,13 @@ import { otherProfileAccountLabel, type OtherProfileAccount } from './otherProfi
 import { formatTransactionAmount, type TransactionDirection } from './transactionTable.ts';
 
 /*
- * Regras de apresentação do formulário de lançamento (desktop-mvp-plan Fase 9; mockups
- * `DesktopTransacoes` e `MobileLancamento`). Ficam no `client` porque o celular terá o mesmo
+ * Regras de apresentação do formulário de lançamento (transacoes §5). Ficam no `client` porque
+ * o celular terá o mesmo
  * formulário: o que se oferece em cada escolha e os avisos antes de salvar não podem divergir
  * entre os dois apps.
  */
 
-/** Rótulos dos tipos, na ordem do seletor do mockup `MobileLancamento`. */
+/** Rótulos dos tipos, na ordem do seletor de tipo do formulário (`TRANSACTION_TYPE_ORDER`). */
 const TYPE_LABELS: Readonly<Record<TransactionResponse['type'], string>> = {
     expense: 'Despesa',
     income: 'Receita',
@@ -58,7 +58,7 @@ export interface SourceOptions {
 
 /**
  * Contas e cartões que o lançamento pode usar como origem.
- * Regra de negócio (Contas e Cartões, desktop-mvp-plan §5.1): desativado some das escolhas de
+ * Regra de negócio (Contas e Cartões, transacoes §4.1): desativado some das escolhas de
  * lançamentos novos, mas o lançamento antigo que já está nele continua editável sem reativá-lo
  * — então a origem atual da edição aparece mesmo desativada, e o núcleo a aceita.
  *
@@ -123,7 +123,7 @@ export type PaymentMethod = 'debit' | 'credit';
 
 /**
  * Origem que o atalho "Débito / Crédito" do lançamento novo escolhe.
- * Regra de negócio (Lançamentos, database-design §4.1): vale a conta (no débito) ou o cartão (no
+ * Regra de negócio (Lançamentos, banco-de-dados §4.1): vale a conta (no débito) ou o cartão (no
  * crédito) padrão do perfil. Sem padrão, vale a única conta ou o único cartão ativo, porque não
  * há o que escolher; com vários e sem padrão, nenhum — escolher um por conta própria lançaria na
  * conta errada sem o usuário perceber.
@@ -199,7 +199,7 @@ export interface SubCategoryOption {
 }
 
 /**
- * Subcategorias que casam com a busca do campo "Categoria" (desktop-mvp-plan Fase 9: subcategoria
+ * Subcategorias que casam com a busca do campo "Categoria" (transacoes §5: subcategoria
  * com busca). A busca olha a categoria e a subcategoria juntas, para que "alim" mostre todas as
  * de Alimentação e "mercado" ache "Alimentação › Mercado".
  *
@@ -229,10 +229,10 @@ export interface InvoiceChoice {
 }
 
 /**
- * Faturas oferecidas na troca ("Trocar" do mockup `MobileLancamento`): a anterior, a sugerida
+ * Faturas oferecidas na troca ("Trocar" no campo da fatura): a anterior, a sugerida
  * e as duas seguintes — a compra lançada atrasada e a que o usuário prefere jogar para frente —,
  * mais a atual na edição.
- * Regra de negócio (Cartão de crédito, database-design §4.7): a sugestão é só sugestão; a
+ * Regra de negócio (Cartão de crédito, banco-de-dados §4.7): a sugestão é só sugestão; a
  * fatura escolhida é a verdade, e escolher uma paga a reabre.
  *
  * @param params.suggestedPeriod Competência sugerida pela data da compra.
@@ -265,8 +265,8 @@ export function invoiceChoices(params: {
 }
 
 /**
- * Aviso de que salvar vai reabrir a fatura escolhida (desktop-mvp-plan Fase 9).
- * Regra de negócio (Cartão de crédito, database-design §4.7): lançar numa fatura paga a reabre —
+ * Aviso de que salvar vai reabrir a fatura escolhida (transacoes §5.2).
+ * Regra de negócio (Cartão de crédito, banco-de-dados §4.7): lançar numa fatura paga a reabre —
  * o pagamento sai do extrato da conta pagadora e a fatura volta ao previsto do vencimento. Na
  * edição que mantém a fatura atual nada é reaberto, e não há aviso.
  *
@@ -289,8 +289,8 @@ export function invoiceReopenWarning(params: {
 }
 
 /**
- * Aviso de que salvar recalcula os meses seguintes (desktop-mvp-plan Fase 9).
- * Regra de negócio (Saldos, database-design §4.6): o saldo final de um mês é o inicial do
+ * Aviso de que salvar recalcula os meses seguintes (transacoes §5.2).
+ * Regra de negócio (Saldos, banco-de-dados §4.6): o saldo final de um mês é o inicial do
  * seguinte, então mexer num mês passado refaz a cadeia de saldos até hoje — e os números que o
  * usuário já conferia nos meses seguintes mudam. Vale para o mês de onde o lançamento sai e para
  * o mês para onde ele vai.
@@ -322,8 +322,8 @@ export interface TransactionValuePreview {
 }
 
 /**
- * Prévia do efeito do lançamento enquanto o usuário digita (o valor grande com sinal do mockup
- * `MobileLancamento`), pela mesma regra de sinal do núcleo (`originEffect`): o tipo dá a
+ * Prévia do efeito do lançamento enquanto o usuário digita (o valor grande com sinal no topo do
+ * formulário; transacoes §5.1), pela mesma regra de sinal do núcleo (`originEffect`): o tipo dá a
  * direção, o valor negativo a inverte e os encargos são sempre custo da origem.
  *
  * @param params.type Tipo escolhido.
@@ -352,8 +352,8 @@ export interface TransactionDeletionText {
 
 /**
  * Confirmação de excluir um lançamento: diz de onde o valor sai e o que muda, em vez de um aviso
- * genérico (brief §4, regra 9).
- * Regra de negócio (Fatura, database-design §4.7): excluir o pagamento parcial devolve o valor à
+ * genérico (perfis §5.3).
+ * Regra de negócio (Fatura, banco-de-dados §4.7): excluir o pagamento parcial devolve o valor à
  * fatura e à conta que pagou. Regra de negócio (Saldos): excluir de um extrato recalcula a conta
  * dali em diante; numa transferência, as duas contas.
  *

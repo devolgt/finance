@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 /**
  * Regra que impede o R8 de apagar os construtores dos registradores do ML Kit, criados por
  * reflexão. Sem ela, o build de release não lê nenhum QR: o leitor falha ao iniciar, o
- * `expo-camera` só registra no log e a câmera mostra a imagem sem reagir (sync-plan §3.3) —
+ * `expo-camera` só registra no log e a câmera mostra a imagem sem reagir (sincronizacao §6.4) —
  * e o build de depuração, sem R8, funciona, então só se percebe no aparelho.
  */
 const REGISTRAR_KEEP_RULE = '-keep class * implements com.google.firebase.components.ComponentRegistrar { void <init>(); }';

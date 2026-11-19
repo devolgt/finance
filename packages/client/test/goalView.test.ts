@@ -13,7 +13,7 @@ function brl(amount: number): { readonly amount: number; readonly currency: stri
 
 /**
  * @param overrides Campos que o teste fixa.
- * @return A meta "Viagem Floripa" do mockup: 1.400 de 4.000 até 15/01/2027, em outubro.
+ * @return A meta de exemplo "Viagem Floripa": 1.400 de 4.000 até 15/01/2027, em outubro.
  */
 function trip(overrides: Partial<GoalProgressResponse> = {}): GoalProgressResponse {
     return {
@@ -58,7 +58,7 @@ async function contributionMovements(world: ClientWorld, s: Scenario): Promise<r
     return movementsFromGoalContributions({ contributions, accounts: accounts.accounts, creditCards: creditCards.creditCards, categories, recurrences, profileId: s.profileId });
 }
 
-describe('lista e detalhe de Metas (mockup DesktopMetas)', () => {
+describe('lista e detalhe de Metas (metas §7.1)', () => {
     it('item da lista: percentual, barra limitada e "quanto de quanto · prazo"', () => {
         expect(describeGoalListItem(trip())).toEqual({ percentText: '35%', barRatio: 0.35, summary: 'R$ 1.400,00 de R$ 4.000,00 · até 15/01/2027' });
         expect(describeGoalListItem(trip({ targetDate: null, ratio: 1.2 }))).toMatchObject({ percentText: '120%', barRatio: 1, summary: 'R$ 1.400,00 de R$ 4.000,00 · sem data-alvo' });
@@ -162,14 +162,14 @@ describe('lista e detalhe de Metas (mockup DesktopMetas)', () => {
             ['04/10', 'Reserva', 'Alimentação › Mercado', 'Nubank', '→ Tesouro', 'R$ 700,00', [], 'in'],
             ['06/10', 'Devolução', 'Alimentação › Mercado', 'Nubank', null, '−R$ 50,00', ['estorno'], 'out'],
         ]);
-        // As linhas se editam e pagam como em Transações (desktop-mvp-plan Fase 13.3).
+        // As linhas se editam e pagam como em Transações (metas §4.5).
         expect(rows.every((row) => row.target.kind === 'transaction' && row.target.payable && !row.target.readOnly)).toBe(true);
         const [goal] = await world.ok('goals.list', { profileId: s.profileId, period: '2026-10' });
         expect(goal?.saved.amount).toBe(10150);
     });
 });
 
-describe('meta vinculada a conta e retirada (desktop-mvp-plan Fase 13.3)', () => {
+describe('meta vinculada a conta e retirada (metas §2)', () => {
     it('diz de onde vem o progresso e quantos lançamentos perdem o vínculo na troca', () => {
         const accounts = [{ id: 'a1', name: 'Tesouro' }];
         expect(describeGoalFunding(trip(), accounts)).toBe('Por lançamentos');

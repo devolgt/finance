@@ -6,7 +6,7 @@ import type { YearMonth } from '../shared/YearMonth.ts';
  * Ciclo de faturamento de um cartão: dia de fechamento e dia de vencimento. Concentra as
  * regras de data do cartão num Value Object puro porque são elas que mais produzem
  * "números errados que parecem certos" — uma compra na fatura errada, o dia 31 em
- * fevereiro (backend-design §5.1).
+ * fevereiro (testes §1.1).
  */
 export class BillingCycle {
     /**
@@ -34,7 +34,7 @@ export class BillingCycle {
 
     /**
      * Regra de negócio (Cartão de crédito): dia inexistente vira o último dia do mês — um
-     * cartão que fecha no dia 31 fecha em 30/04 e em 28 ou 29/02 (database-design §4.5).
+     * cartão que fecha no dia 31 fecha em 30/04 e em 28 ou 29/02 (banco-de-dados §4.5).
      *
      * @param invoicePeriod Competência da fatura.
      * @return A data em que a fatura daquela competência fecha.
@@ -47,8 +47,8 @@ export class BillingCycle {
      * Fatura sugerida para uma compra.
      * Regra de negócio (Cartão de crédito): a fatura de um mês reúne as compras feitas
      * depois do fechamento anterior e antes do seu próprio fechamento, e **a compra feita no
-     * dia do fechamento entra na fatura seguinte** (database-design §4.5). É só a sugestão:
-     * o usuário pode escolher outra fatura, e a escolhida é a verdade (§4.7).
+     * dia do fechamento entra na fatura seguinte** (banco-de-dados §4.5). É só a sugestão:
+     * o usuário pode escolher outra fatura, e a escolhida é a verdade (cartoes-e-faturas §2.2).
      *
      * @param purchaseDate Data da compra.
      * @return A competência da fatura sugerida.
@@ -62,7 +62,7 @@ export class BillingCycle {
      * Vencimento de uma fatura.
      * Regra de negócio (Fatura): a fatura vence no primeiro dia `due_date` do cartão —
      * ajustado para o último dia em meses curtos — **depois** do fechamento dela. É esse
-     * mês que recebe a fatura em aberto no saldo previsto (database-design §4.7).
+     * mês que recebe a fatura em aberto no saldo previsto (banco-de-dados §4.7).
      *
      * @param invoicePeriod Competência da fatura.
      * @return A data de vencimento; no mesmo mês do fechamento ou no seguinte.
@@ -76,9 +76,9 @@ export class BillingCycle {
     /**
      * Competência da fatura que vence num mês — o caminho inverso do `dueDateOf`. Existe para a
      * importação: o arquivo diz em que fatura a compra caiu pelo vencimento dela, e a fatura
-     * escolhida é a verdade (database-design §4.7), mesmo quando a data da compra sugeriria outra.
+     * escolhida é a verdade (banco-de-dados §4.7), mesmo quando a data da compra sugeriria outra.
      * Regra de negócio (Importação): a compra vai para a fatura que vence no mês do Vencimento da
-     * linha (import-design §5.4).
+     * linha (importacao §5.4).
      *
      * @param duePeriod Mês do vencimento informado.
      * @return A competência cujo vencimento cai nesse mês: a do próprio mês quando o cartão vence

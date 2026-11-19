@@ -16,7 +16,7 @@ const PATTERN = /^(\d{13})\.(\d{5})\.(.+)$/;
  * milissegundo, de ordem estrita quando o relógio de parede para ou volta e de um desempate
  * entre aparelhos — três coisas que `updated_at` não oferece.
  * Regra de negócio (Sincronização): a escrita com o maior relógio vence a célula, e uma
- * mudança feita depois de ver outra sempre fica ordenada depois dela (sync-design §5.1 e §5.2).
+ * mudança feita depois de ver outra sempre fica ordenada depois dela (sincronizacao §3.1 e §3.2).
  *
  * O valor é imutável: `tick` e `receive` devolvem um relógio novo, que o chamador persiste em
  * `sync_state`. A forma serializada tem largura fixa (`{ms 13}.{contador 5}.{device_id}`)
@@ -78,7 +78,7 @@ export class HybridLogicalClock {
      * anterior.
      *
      * @param wallMillis Relógio de parede atual, em milissegundos; vem da plataforma porque o
-     * domínio não lê o relógio do sistema (backend-design §5.7).
+     * domínio não lê o relógio do sistema (testes §2.4).
      * @return O novo relógio, estritamente maior que este; é também o carimbo da escrita.
      * @throws {InvalidValueError} Quando o relógio de parede não é um inteiro não negativo ou o
      * resultado não cabe no formato.
@@ -96,7 +96,7 @@ export class HybridLogicalClock {
      * com o relógio de parede atrasado carimbaria a próxima edição *antes* da mudança que
      * acabou de receber, e a edição dele — feita depois, por quem já via o valor remoto —
      * perderia o last-writer-wins.
-     * Regra de negócio (Sincronização): a causalidade é preservada (sync-design §5.2).
+     * Regra de negócio (Sincronização): a causalidade é preservada (sincronizacao §3.2).
      *
      * @param remote Relógio de uma entrada recebida de outro aparelho.
      * @param wallMillis Relógio de parede atual, em milissegundos.
@@ -152,7 +152,7 @@ export class HybridLogicalClock {
      * (um relógio de parede muito atrasado diante de um remoto adiantado) não pode nem
      * quebrar a largura fixa nem lançar erro no meio de uma escrita do usuário. Adiantar o
      * componente físico em 1 ms mantém a ordem estrita, e a recusa de sessão por divergência
-     * de relógio (sync-design §5.2) limita quanto ele pode se afastar do relógio real.
+     * de relógio (sincronizacao §3.2) limita quanto ele pode se afastar do relógio real.
      *
      * @param millis Componente físico desejado.
      * @param counter Contador desejado; pode passar do máximo, e então transborda.

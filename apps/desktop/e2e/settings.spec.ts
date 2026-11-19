@@ -8,7 +8,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Ajustes (desktop-mvp-plan Fase 13) no app empacotado: tema, exportar a cópia do banco, local
+ * Ajustes (desktop §11) no app empacotado: tema, exportar a cópia do banco, local
  * do arquivo, atalhos e versões. O diálogo de salvar e o "mostrar na pasta" são nativos, fora do
  * alcance do Playwright: o teste os troca no processo principal por versões que respondem o
  * destino e registram o pedido. Os cliques usam `dispatchEvent`, pelo mesmo motivo do teste de
@@ -143,7 +143,8 @@ test('tema, cópia do banco, local do arquivo, atalhos e versões', async () => 
     try {
         await completeFirstUse(page, { profileName: 'Gustavo', accountName: 'Nubank' });
         await openSettings(page);
-        // Tela de configuração: sem a barra do mês (Fase 4) e sem a seção de perfil do mockup.
+        // Tela de configuração: sem a barra do mês (desktop §7.2) e sem a seção de perfil, que se
+        // edita só em Perfis.
         await expect(page.getByTestId('reference-month')).toHaveCount(0);
         await expect(page.getByRole('region', { name: 'Perfil atual' })).toHaveCount(0);
 

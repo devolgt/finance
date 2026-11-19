@@ -86,14 +86,14 @@ import { TransactionComposer } from '../services/transaction/TransactionComposer
 import { TransactionService } from '../services/transaction/TransactionService.ts';
 import { UnitOfWork } from '../services/UnitOfWork.ts';
 
-/** Adaptadores que cada plataforma fornece ao núcleo (backend-design §3.4). */
+/** Adaptadores que cada plataforma fornece ao núcleo (core §4.1). */
 export interface CorePorts {
     readonly database: Database;
     readonly clock: Clock;
     readonly ids: IdGenerator;
     /**
      * Relógio de parede em milissegundos. Com ele, o núcleo instala a captura das escritas e
-     * monta a sincronização (sync-design §5.4); sem ele — ferramentas, benchmarks — a
+     * monta a sincronização (sincronizacao §3.4); sem ele — ferramentas, benchmarks — a
      * sincronização fica indisponível e nada é capturado.
      */
     readonly wallClock?: WallClock;
@@ -104,7 +104,7 @@ export interface CorePorts {
 }
 
 /**
- * Adaptadores de rede da sincronização (mobile-shell-design §5.1). Sem eles o núcleo ainda
+ * Adaptadores de rede da sincronização (decisoes §52). Sem eles o núcleo ainda
  * captura e aplica lotes (os testes fazem assim), mas a tela de Dispositivos não conecta.
  */
 export interface SyncNetworkPorts extends SyncPlatformInfo {
@@ -149,7 +149,7 @@ export interface OpenDatabaseOptions {
     /**
      * Pasta `backups/` ao lado do banco. Obrigatória, com `null` explícito para banco em
      * memória: sendo opcional, um shell que esquecesse de passá-la migraria sem cópia — e o
-     * backup é o único `down` que existe (backend-design §4.6).
+     * backup é o único `down` que existe (banco-de-dados §5.6).
      */
     readonly backups: BackupDirectory | null;
     /** Instante da cópia, que entra no nome do arquivo de backup. */
@@ -160,7 +160,7 @@ export interface OpenDatabaseOptions {
 
 /**
  * Prepara o banco para uso: configuração obrigatória da conexão, backup e migrations
- * pendentes, nessa ordem (backend-design §4.5, passos 1 a 4). Fica separado de `createCore`
+ * pendentes, nessa ordem (banco-de-dados §5.5, passos 1 a 4). Fica separado de `createCore`
  * porque pode falhar de formas que a plataforma trata antes de existir UI — banco mais novo
  * que o app, backup ou migration que falhou. O passo 5, a verificação de integridade, roda
  * depois de montar o núcleo, pela rota `integrity.verifyBalances`, porque usa a rotina de
@@ -184,7 +184,7 @@ export function openDatabase(database: Database, options: OpenDatabaseOptions): 
  * Raiz de composição do núcleo: o único lugar que conhece as implementações concretas.
  * Services e Controllers dependem de interfaces de Repository e de portas, e só aqui elas
  * são ligadas ao SQLite e aos adaptadores da plataforma — trocar o driver é trocar a
- * `Database` injetada, sem tocar em regra (database-design §3.3).
+ * `Database` injetada, sem tocar em regra (banco-de-dados §3.3).
  *
  * @param ports Adaptadores da plataforma; o banco já precisa ter passado por `openDatabase`.
  * @return O núcleo com o despacho de rotas e os Services.
@@ -394,7 +394,7 @@ export function createCore(ports: CorePorts): Core {
 }
 
 /**
- * Instala a captura na conexão e a embrulha no decorator que carimba (sync-plan §3.1). A
+ * Instala a captura na conexão e a embrulha no decorator que carimba (sincronizacao §3.4). A
  * captura nasce ligada só se o aparelho já pertence a um grupo; criar ou entrar num grupo a
  * liga depois. Roda depois de `openDatabase`, para que as migrations fiquem fora dela.
  *

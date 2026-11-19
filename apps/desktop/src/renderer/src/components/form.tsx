@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn';
 /*
  * Peças comuns dos formulários (primeiro uso e cadastros). Ficam num lugar só para que todo
  * formulário mostre o erro do mesmo jeito: texto abaixo do campo, ligado a ele por
- * `aria-describedby`, além da borda — a cor nunca é o único sinal (decisão de interface 7).
+ * `aria-describedby`, além da borda — a cor nunca é o único sinal (desktop §7.3).
  */
 
 /**
@@ -90,8 +90,8 @@ export function toFieldErrors<V extends FieldValues>(fields: readonly Path<V>[],
 }
 
 /**
- * Título de grupo de campos, em caixa alta e discreto como no mockup do primeiro uso, para
- * separar blocos sem dividir o cartão ou o diálogo.
+ * Título de grupo de campos, em caixa alta e discreto, para separar blocos sem dividir o cartão
+ * ou o diálogo nem competir com os rótulos dos campos.
  *
  * @param props.children Texto do título.
  * @return O título.

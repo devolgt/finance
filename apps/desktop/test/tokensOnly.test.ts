@@ -17,7 +17,7 @@ const FORBIDDEN: readonly { readonly pattern: RegExp; readonly why: string }[] =
         pattern: /\b(?:bg|text|border|ring|fill|stroke|outline)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|black|white)\b/,
         why: 'paleta padrão do Tailwind; use um token',
     },
-    { pattern: /\b(?:text|rounded(?:-[trbl]{1,2})?)-(?:xs|sm|base|md|lg|xl|[2-9]xl)\b/, why: 'escala padrão do Tailwind; os tokens nomeiam tamanho e raio pelo px do mockup (text-13, rounded-8)' },
+    { pattern: /\b(?:text|rounded(?:-[trbl]{1,2})?)-(?:xs|sm|base|md|lg|xl|[2-9]xl)\b/, why: 'escala padrão do Tailwind; os tokens nomeiam tamanho e raio pelo valor em px (text-13, rounded-8)' },
 ];
 
 /**
@@ -34,7 +34,7 @@ function sourceFiles(folder: string): readonly string[] {
     });
 }
 
-describe('estilo só a partir dos tokens (desktop-mvp-plan §7, CLAUDE.md "Telas")', () => {
+describe('estilo só a partir dos tokens (desktop §6.4, CLAUDE.md "Telas")', () => {
     it('o renderer não tem cor literal nem classe fora da escala dos tokens', () => {
         const violations = sourceFiles(RENDERER).flatMap((file) =>
             readFileSync(file, 'utf8').split('\n').flatMap((line, index) =>

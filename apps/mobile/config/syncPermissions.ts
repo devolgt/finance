@@ -1,5 +1,5 @@
 /**
- * Permissões Android da sincronização (mobile-shell-design §5.2; sync-plan Fase 8), declaradas
+ * Permissões Android da sincronização (mobile §10.1; sincronizacao §6.4), declaradas
  * pelo `app.config.ts` (`withSyncPermissions`) e não à mão no `android/`, que é gerado pelo
  * `prebuild` e não é versionado.
  *

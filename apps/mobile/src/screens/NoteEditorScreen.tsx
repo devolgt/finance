@@ -14,7 +14,7 @@ import { Sheet } from '../ui/Sheet.tsx';
 import { EmptyState, QueryView } from '../ui/states.tsx';
 
 /**
- * Editor de uma anotação (mockup `MobileAnotacaoEditar`): o texto inteiro num campo só, "Salvar"
+ * Editor de uma anotação (anotacoes §3): o texto inteiro num campo só, "Salvar"
  * no cabeçalho e "Excluir" embaixo, numa existente.
  * Sair com alteração não salva — o "voltar" do cabeçalho ou do Android — pergunta antes se salva
  * ou descarta, como o desktop: o texto de uma anotação não está em nenhum outro lugar, e
@@ -83,7 +83,7 @@ function NoteEditor({ note }: { readonly note: NoteResponse | null }): ReactNode
     };
 
     /**
-     * "Salvar" do cabeçalho: grava e volta à lista, como o link do mockup. Desliga a prevenção
+     * "Salvar" do cabeçalho: grava e volta à lista (anotacoes §4). Desliga a prevenção
      * antes de voltar, porque o render que a desligaria pelo `dirty` pode ainda não ter
      * acontecido quando a gravação responde.
      */
@@ -221,7 +221,7 @@ function NoteEditor({ note }: { readonly note: NoteResponse | null }): ReactNode
 }
 
 /**
- * Rota do editor (mobile-mvp-plan, Fase 16): `new` escreve uma anotação nova; um id abre a
+ * Rota do editor (anotacoes §4): `new` escreve uma anotação nova; um id abre a
  * anotação, que vem da lista do perfil, já em cache.
  *
  * @return A tela.

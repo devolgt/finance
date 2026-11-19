@@ -91,7 +91,7 @@ export class SqliteInvoiceRepository implements InvoiceRepository {
      * Grava só os saldos, sem carimbar `updated_at`: recalcular um cache não é uma revisão do
      * usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o receptor —
      * que recalcula com a captura desligada — ficaria com outro `updated_at`, quebrando a
-     * convergência (sync-design §5.4).
+     * convergência (sincronizacao §3.4).
      *
      * @param invoice Fatura com o total recalculado.
      * @return void

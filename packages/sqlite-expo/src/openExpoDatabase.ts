@@ -13,7 +13,7 @@ export interface ExpoDatabaseLocation {
     readonly folder: Directory;
     /** O arquivo do banco. */
     readonly databaseFile: File;
-    /** `backups/`, ao lado do banco (backend-design §4.6). */
+    /** `backups/`, ao lado do banco (banco-de-dados §5.6). */
     readonly backupsFolder: Directory;
     /** A porta `BackupDirectory` sobre `backupsFolder`. */
     readonly backups: ExpoBackupDirectory;
@@ -63,7 +63,7 @@ export function openExpoDatabase(location: ExpoDatabaseLocation = databaseLocati
 
 /**
  * Abre um arquivo SQLite qualquer do aparelho numa conexão própria, para conferir uma cópia
- * escolhida pelo usuário antes de ela entrar no lugar do banco (mobile-mvp-plan, Fase 18). Sem a
+ * escolhida pelo usuário antes de ela entrar no lugar do banco (mobile §7.2). Sem a
  * conferência das capacidades do SQLite e sem configurar a conexão: quem chama só lê, com o
  * `inspectDatabaseCopy` do núcleo, e fecha.
  *

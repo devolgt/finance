@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Medição do esqueleto (desktop-shell-design §6, passo 4): tempo até a primeira tela com dado
+ * Medição do esqueleto (desktop §13): tempo até a primeira tela com dado
  * do núcleo e memória com a janela aberta. Fica fora do `pnpm check` — o número depende da
  * máquina e serve para registrar no documento, não para reprovar um build. Rodar com
  * `pnpm --filter @finance/desktop measure`.

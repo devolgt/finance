@@ -3,7 +3,7 @@ import type { SqlRow, SqlValue } from '../ports/Database.ts';
 
 /**
  * Uma chave estrangeira entre duas tabelas sincronizadas, lida do schema. A ação de
- * exclusão diz que tipo de vínculo é (database-design §3.8): `CASCADE` é propriedade,
+ * exclusão diz que tipo de vínculo é (banco-de-dados §3.8): `CASCADE` é propriedade,
  * `NO ACTION` é vocabulário obrigatório, `SET NULL` é só referência.
  */
 export interface ForeignKeyLink {
@@ -41,7 +41,7 @@ export interface ReplicaRepository {
     findMany(table: SyncedTable, ids: readonly string[]): ReadonlyMap<string, SqlRow>;
 
     /**
-     * Insere uma linha recebida com os caches derivados zerados (sync-design §5.5).
+     * Insere uma linha recebida com os caches derivados zerados (sincronizacao §3.6).
      *
      * @param table Tabela sincronizada.
      * @param id Linha.

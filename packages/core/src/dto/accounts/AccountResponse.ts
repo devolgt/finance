@@ -7,10 +7,10 @@ export interface AccountResponse {
     readonly profileId: string;
     readonly name: string;
     readonly type: AccountType;
-    /** Moeda da conta no mundo real; só rótulo (database-design §4.4). */
+    /** Moeda da conta no mundo real; só rótulo (banco-de-dados §4.4). */
     readonly currency: string;
     readonly considerBalance: boolean;
-    /** Desativada some das escolhas de lançamentos novos (desktop-mvp-plan §5.1). */
+    /** Desativada some das escolhas de lançamentos novos (contas §5). */
     readonly disabled: boolean;
     readonly openingBalance: MoneyResponse;
 }

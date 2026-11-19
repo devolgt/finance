@@ -25,8 +25,8 @@ function counted(count: number, singular: string, plural: string): string {
 }
 
 /**
- * Categorias (mobile-mvp-plan, Fase 15; sem mockup no celular, a lista da tela do desktop — Fase
- * 13.12 — no modelo das telas mobile): a busca por categoria **ou** subcategoria
+ * Categorias (categorias-e-tags §5.2; a lista da tela do desktop, categorias-e-tags §5.1, no
+ * modelo das outras telas do celular): a busca por categoria **ou** subcategoria
  * (`filterCategories`, sem acento e sem caixa), o resumo do que a lista mostra e, em cada linha,
  * quantas subcategorias e lançamentos a categoria tem. Tocar abre as subcategorias; o "+" cria
  * uma categoria e a abre, para que criar as subcategorias já esteja à mão. Fora do mês de

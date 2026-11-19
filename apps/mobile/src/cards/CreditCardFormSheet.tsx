@@ -23,7 +23,7 @@ import { RowSearchSelect } from '../ui/pickers.tsx';
 import { Sheet } from '../ui/Sheet.tsx';
 
 /**
- * Criar ou editar cartão numa folha (mobile-mvp-plan, Fase 13): nome, conta pagadora, limite e os
+ * Criar ou editar cartão numa folha (cartoes-e-faturas §7): nome, conta pagadora, limite e os
  * dias de fechamento e vencimento — os campos e a validação do diálogo do desktop
  * (`readCreditCardForm` do `client`). Quem abre monta a folha só enquanto ela está aberta, para
  * que cada abertura comece dos valores do cartão.

@@ -4,7 +4,7 @@ import { networkInterfaces } from 'node:os';
 import { Bonjour, type Service } from 'bonjour-service';
 import { isLocalAddress, type Connection, type DiscoveredPeer, type Discovery, type KeyStore, type Listener, type RandomSource, type Transport } from '@finance/core';
 
-/** Tipo do serviço anunciado no mDNS (sync-design §7.2). */
+/** Tipo do serviço anunciado no mDNS (sincronizacao §5.2). */
 const SERVICE_TYPE = 'financas-sync';
 
 /**
@@ -82,7 +82,7 @@ class SocketConnection implements Connection {
 }
 
 /**
- * Transporte TCP do `utilityProcess` (sync-plan Fase 7). Escuta em todas as interfaces numa
+ * Transporte TCP do `utilityProcess` (sincronizacao §6.3). Escuta em todas as interfaces numa
  * porta livre; a regra de endereços locais, que recusa quem vem de fora, é do núcleo.
  */
 export const nodeTransport: Transport = {
@@ -170,7 +170,7 @@ function peersOf(service: Service): readonly DiscoveredPeer[] {
 export const nodeRandom: RandomSource = { bytes: (length) => new Uint8Array(randomBytes(length)) };
 
 /**
- * @return Os endereços IPv4 locais das interfaces de rede, para o convite (sync-design §6.3).
+ * @return Os endereços IPv4 locais das interfaces de rede, para o convite (sincronizacao §4.3).
  * IPv4 primeiro porque é o que o celular alcança em praticamente toda rede doméstica.
  */
 export function localAddresses(): readonly string[] {
@@ -189,7 +189,7 @@ export type KeyStoreReply =
 /**
  * Cofre de chave do desktop visto do `utilityProcess`. O `safeStorage` do Electron só existe
  * no processo principal, então a chave vai e volta por mensagem, em hexadecimal, e é o
- * principal quem a cifra no arquivo em `userData` (sync-plan §2).
+ * principal quem a cifra no arquivo em `userData` (desktop §14).
  */
 export class MainProcessKeyStore implements KeyStore {
     private nextId = 1;

@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Cartões (desktop-mvp-plan Fase 8) no app empacotado: a lista com a fatura do mês e os totais,
+ * Cartões (cartoes-e-faturas §3) no app empacotado: a lista com a fatura do mês e os totais,
  * o detalhe com os quatro números, os lançamentos e as próximas faturas, e as ações pagar,
  * pagamento parcial e reabrir. Os cliques usam `dispatchEvent` e os menus e listas do Radix são
  * operados pelo teclado, pelo motivo explicado em `firstUse.ts`.
@@ -68,7 +68,7 @@ async function openCards(page: Page): Promise<void> {
 
 /**
  * Escolhe a opção já visível da lista aberta. No seletor com busca dos cadastros (`Combobox`,
- * desktop-mvp-plan Fase 13.2) o foco fica no campo de busca e a opção não recebe foco, então o
+ * transacoes §8.3) o foco fica no campo de busca e a opção não recebe foco, então o
  * clique (por `dispatchEvent`, como os outros cliques destes testes) é o caminho; no `Select` do Radix, que ficou nas listas curtas, o foco vai direto à
  * opção e o Enter confirma, sem a busca por digitação do Radix, que pode parar numa opção de nome
  * parecido.

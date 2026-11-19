@@ -9,11 +9,11 @@ import { currentDate } from '@/shell/referenceMonth';
 import { useReferenceMonth } from '@/shell/useReferenceMonth';
 import { useTransactionActions } from '@/transactions/useTransactionActions';
 
-/** Nomes curtos dos dias no cabeçalho da grade, de domingo a sábado, como no mockup. */
+/** Nomes curtos dos dias no cabeçalho da grade, de domingo a sábado, como nos calendários de parede. */
 const WEEKDAY_HEADERS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'] as const;
 
 /**
- * Calendário (mockup `DesktopCalendario`): os lançamentos do mês de referência distribuídos pelos
+ * Calendário (desktop §8.1): os lançamentos do mês de referência distribuídos pelos
  * dias do vencimento, com os indicadores do mês e o painel do dia escolhido. Os dois modos —
  * "Receitas × despesas" e "Saldo do dia" — e todas as regras vêm do `calendarView` do `client`; a
  * tela só desenha. Os dados são os da tabela agrupada de Transações e os extratos das contas que

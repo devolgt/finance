@@ -5,7 +5,7 @@ export interface ManualAddress {
 }
 
 /**
- * Lê o endereço digitado em "Digitar endereço manualmente" (sync-design §7.2), no formato que o
+ * Lê o endereço digitado em "Digitar endereço manualmente" (sincronizacao §5.2), no formato que o
  * desktop mostra no convite: `192.168.0.10:45123`, ou `[fe80::1]:45123` para IPv6 — os colchetes
  * separam a porta dos `:` do próprio endereço. A tela confere aqui só o formato; se o endereço é
  * da rede local, quem decide é o núcleo, com a mesma regra da descoberta.

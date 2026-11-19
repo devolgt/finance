@@ -1,7 +1,7 @@
 import type { AccountResponse } from '@finance/core';
 
 /**
- * Nome de cada tipo de conta como os mockups o escrevem. `Record` sobre a união do núcleo:
+ * Nome de cada tipo de conta como as telas o escrevem. `Record` sobre a união do núcleo:
  * um tipo novo quebra a compilação aqui em vez de aparecer na tela como `checking`.
  */
 const ACCOUNT_TYPE_LABELS: Readonly<Record<AccountResponse['type'], string>> = {
@@ -24,7 +24,7 @@ const ACCOUNT_TYPE_HEADINGS: Readonly<Record<AccountResponse['type'], string>> =
 };
 
 /**
- * Linha acima do nome no extrato da conta (mockup `DesktopContas`). Diz se a conta entra no
+ * Linha acima do nome no extrato da conta (contas §6). Diz se a conta entra no
  * saldo total porque é isso que explica por que o saldo dela soma ou não no rodapé da lista.
  *
  * @param account Tipo, se entra no total e se está desativada.

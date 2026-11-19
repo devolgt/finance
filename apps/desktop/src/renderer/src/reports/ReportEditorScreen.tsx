@@ -60,11 +60,10 @@ const FIELD_BY_CORE_FIELD: Readonly<Partial<Record<string, ReportDraftField>>> =
 };
 
 /**
- * Editor dos relatórios personalizados (reports-design §2 e §3), em `/reports/edit`: o formulário
+ * Editor dos relatórios personalizados (relatorios §4 e §5), em `/reports/edit`: o formulário
  * à esquerda — nome, período, os filtros dos lançamentos e o formato — e o resultado ao vivo à
  * direita, que roda o rascunho pela rota `reports.preview` sem salvar. Sem `report` na URL cria um
- * relatório novo; com ele, edita o salvo. Sem mockup próprio: segue a lista e o detalhe das outras
- * telas, com o formulário no lugar da lista. A barra do mês continua à vista, porque o resultado
+ * relatório novo; com ele, edita o salvo. Segue a lista e o detalhe das outras telas (desktop §7.6), com o formulário no lugar da lista. A barra do mês continua à vista, porque o resultado
  * ao vivo e o período "mês de referência" dependem dela.
  *
  * @return O editor.
@@ -238,7 +237,7 @@ interface SectionProps {
 }
 
 /**
- * Intervalo de tempo (reports-design §2.1): onde termina, quantos meses antes e qual data decide o
+ * Intervalo de tempo (relatorios §4.1): onde termina, quantos meses antes e qual data decide o
  * mês de cada lançamento.
  *
  * @param props Rascunho, erros e a mudança.
@@ -295,7 +294,7 @@ function PeriodSection({ draft, errors, onChange }: SectionProps): ReactNode {
 }
 
 /**
- * Os filtros dos lançamentos (reports-design §2.2). Cada escolha vazia não restringe; dentro de um
+ * Os filtros dos lançamentos (relatorios §4.2). Cada escolha vazia não restringe; dentro de um
  * filtro as escolhas se somam, e entre filtros todos valem.
  *
  * @param props Rascunho, erros, cadastros do perfil e a mudança.
@@ -439,7 +438,7 @@ function FilterSection({ draft, errors, lookups, onChange }: SectionProps & { re
 }
 
 /**
- * Formato (reports-design §3): tabela ou gráfico, a primeira divisão (linhas ou eixo), a segunda
+ * Formato (relatorios §5): tabela ou gráfico, a primeira divisão (linhas ou eixo), a segunda
  * (colunas ou séries) e a medida. Os rótulos mudam com o formato para dizer onde cada divisão
  * aparece; na pizza a segunda divisão some, porque ela não vale lá (L7). A análise (L9) diz embaixo
  * da caixa o que acrescenta no formato escolhido, porque isso muda com as divisões.
@@ -614,7 +613,7 @@ function MultiField({
 }
 
 /**
- * Regra de negócio (Relatórios, §2.2): o cadastro excluído depois de salvo continua no filtro e não
+ * Regra de negócio (Relatórios, relatorios §4.2): o cadastro excluído depois de salvo continua no filtro e não
  * casa com nada. Ele entra nas opções como "(excluída)", para que a escolha mostre que ele está lá
  * e o usuário possa tirá-lo.
  *

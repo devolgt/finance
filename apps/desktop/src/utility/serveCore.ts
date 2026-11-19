@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { CoreResponseMessage, MessageEndpoint } from '../shared/coreProtocol.ts';
 
 /**
- * Formato do pedido. O renderer é entrada não confiável (desktop-shell-design §3.6): a
+ * Formato do pedido. O renderer é entrada não confiável (desktop §2): a
  * mensagem é validada antes de chegar ao núcleo, que valida a entrada da rota de novo.
  */
 const requestSchema = z.strictObject({

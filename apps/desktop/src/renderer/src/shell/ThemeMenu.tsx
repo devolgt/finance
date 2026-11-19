@@ -29,9 +29,9 @@ function isThemePreference(value: string): value is ThemePreference {
 }
 
 /**
- * Tema claro, escuro ou do sistema, gravado nas preferências do aparelho. É um menu, e não o
- * botão de alternar do mockup, porque "seguir o sistema" é a terceira opção e o padrão
- * (decisão registrada na Fase 4 do plano); o botão mostra o tema escolhido. Tem arquivo
+ * Tema claro, escuro ou do sistema, gravado nas preferências do aparelho. É um menu, e não um
+ * botão de alternar, porque "seguir o sistema" é a terceira opção e o padrão (desktop §7.1); o
+ * botão mostra o tema escolhido. Tem arquivo
  * próprio, e não fica na barra superior, porque o primeiro uso abre antes do shell e tem o
  * mesmo botão no topo.
  *

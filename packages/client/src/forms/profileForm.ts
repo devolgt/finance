@@ -50,7 +50,7 @@ export function profileFormFrom(profile: ProfileResponse): ProfileFormValues {
  * A edição usa a mesma leitura: o tipo não muda depois de criado (`profiles.update` não o
  * recebe), mas validar o cadastro inteiro mantém uma única fonte para as mensagens.
  * Regra de negócio (Perfis): a moeda só muda enquanto o perfil não tem lançamentos
- * (desktop-mvp-plan §5). Essa recusa não é conferida aqui, porque só o núcleo sabe se há
+ * (perfis §2.2). Essa recusa não é conferida aqui, porque só o núcleo sabe se há
  * lançamentos; ela volta apontando o campo da moeda.
  *
  * @param values Valores dos campos, como o usuário os deixou.

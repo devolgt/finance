@@ -1,7 +1,7 @@
 import type { ProfileResponse } from '@finance/core';
 
 /**
- * Nome de cada tipo de perfil como os mockups o escrevem. `Record` sobre a união do núcleo:
+ * Nome de cada tipo de perfil como as telas o escrevem. `Record` sobre a união do núcleo:
  * um tipo novo quebra a compilação aqui em vez de aparecer na tela como `business`.
  */
 const PROFILE_TYPE_LABELS: Readonly<Record<ProfileResponse['type'], string>> = {

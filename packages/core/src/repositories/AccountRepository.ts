@@ -12,7 +12,7 @@ export interface AccountRepository {
     /**
      * @param profileId Perfil dono das contas.
      * @return As contas vivas do perfil, ativas e desativadas, por nome — desativada
-     * continua nos saldos e nos relatórios (desktop-mvp-plan §5.1).
+     * continua nos saldos e nos relatórios (contas §5).
      */
     listByProfile(profileId: ProfileId): readonly Account[];
 

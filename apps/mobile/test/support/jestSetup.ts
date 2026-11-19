@@ -5,7 +5,7 @@ import type * as React from 'react';
 import type * as ReactNative from 'react-native';
 
 
-// Módulos nativos da sincronização (sync-plan Fase 8). A raiz de composição os importa, e o Jest
+// Módulos nativos da sincronização (sincronizacao §6.4). A raiz de composição os importa, e o Jest
 // não tem o lado nativo: os testes de tela usam o núcleo com uma rede em memória
 // (`syncTestCore`), e os adaptadores são testados pelas partes sem módulo nativo.
 jest.mock('react-native-tcp-socket', () => ({ __esModule: true, default: {} }));

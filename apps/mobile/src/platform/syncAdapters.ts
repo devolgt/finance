@@ -4,7 +4,7 @@ import { getItemAsync, setItemAsync, WHEN_UNLOCKED_THIS_DEVICE_ONLY } from 'expo
 import TcpSocket from 'react-native-tcp-socket';
 import Zeroconf, { type Service } from 'react-native-zeroconf';
 
-/** Tipo do serviço anunciado no mDNS, o mesmo do desktop (sync-design §7.2). */
+/** Tipo do serviço anunciado no mDNS, o mesmo do desktop (sincronizacao §5.2). */
 export const SERVICE_TYPE = 'financas-sync';
 
 /** Quanto esperar a resposta de um par antes de desistir de discar. */
@@ -131,11 +131,11 @@ class TcpConnection implements Connection {
 }
 
 /**
- * Transporte TCP do celular (mobile-shell-design §5.2) sobre o `react-native-tcp-socket`.
+ * Transporte TCP do celular (mobile §10.1) sobre o `react-native-tcp-socket`.
  * Escuta em todas as interfaces numa porta livre (0): a porta vai no anúncio, e a regra de
  * endereços locais, que recusa quem vem de fora, é do núcleo.
  *
- * Risco aceito (sync-plan Fase 8): a biblioteca não declara `codegenConfig` e roda na Nova
+ * Risco aceito (sincronizacao §6.4): a biblioteca não declara `codegenConfig` e roda na Nova
  * Arquitetura do RN 0.88 pela camada de compatibilidade (interop) dos módulos antigos. Se uma
  * versão futura do React Native tirar essa camada, o adaptador precisa de outra biblioteca ou
  * de um módulo Expo próprio; a porta `Transport` não muda.
@@ -208,9 +208,9 @@ export function peersOf(service: Pick<Service, 'txt' | 'addresses' | 'port'>, is
  * que a implementação alternativa `DNSSD` adquire sozinha. A permissão
  * `CHANGE_WIFI_MULTICAST_STATE` fica declarada mesmo assim (o manifesto da biblioteca já a traz).
  *
- * Risco aceito (sync-plan Fase 8): como o `react-native-tcp-socket`, a biblioteca não declara
+ * Risco aceito (sincronizacao §6.4): como o `react-native-tcp-socket`, a biblioteca não declara
  * `codegenConfig` e depende da camada de compatibilidade da Nova Arquitetura do RN 0.88. O plano
- * B é um módulo Expo próprio sobre o `NsdManager` (mobile-shell-design §5.2).
+ * B é um módulo Expo próprio sobre o `NsdManager` (mobile §10.1).
  *
  * @param isLocal Regra de endereços locais do núcleo; vem da raiz de composição porque só ela
  * importa código do núcleo.
@@ -314,10 +314,10 @@ export function fromHex(text: string): Uint8Array | null {
 }
 
 /**
- * Cofre da chave do aparelho sobre o `expo-secure-store` (mobile-shell-design §5.2 e §6.3): no
+ * Cofre da chave do aparelho sobre o `expo-secure-store` (mobile §10.1 e §7.3): no
  * Android, cifrada pelo Keystore. O acesso `WHEN_UNLOCKED_THIS_DEVICE_ONLY` impede que a chave
  * saia num backup ou numa transferência para outro aparelho — quem restaurasse a cópia poderia se
- * passar por este celular no grupo (sync-design §6.1).
+ * passar por este celular no grupo (sincronizacao §4.1).
  */
 export const secureStoreKeyStore: KeyStore = {
     load: async () => {
@@ -331,7 +331,7 @@ export const secureStoreKeyStore: KeyStore = {
 export const expoRandom: RandomSource = { bytes: (length) => getRandomBytes(length) };
 
 /**
- * Endereços locais que vão no convite (sync-design §6.3). Devolve vazio: nem o
+ * Endereços locais que vão no convite (sincronizacao §4.3). Devolve vazio: nem o
  * `react-native-tcp-socket` nem o `react-native-zeroconf` informam o IP do Wi-Fi antes de uma
  * conexão, e o `expo-network` não está no app — uma dependência nativa só para isso não se paga,
  * porque no celular o caso comum é entrar no grupo do computador, e não convidar. O celular não

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { TestWorld } from '../support/TestWorld.ts';
 
-describe('cadastro de perfis (desktop-mvp-plan Fase 1.1)', () => {
+describe('cadastro de perfis (perfis §1)', () => {
     it('cria, lista por nome e renomeia', async () => {
         const world = new TestWorld();
         const business = await world.ok('profiles.create', { name: 'Empresa', type: 'business', currency: 'brl' });
@@ -41,7 +41,7 @@ describe('cadastro de perfis (desktop-mvp-plan Fase 1.1)', () => {
     });
 });
 
-describe('primeiro uso (desktop-mvp-plan Fase 1.1)', () => {
+describe('primeiro uso (perfis §1)', () => {
     it('cria perfil, primeira conta e as categorias sugeridas de uma vez', async () => {
         const world = new TestWorld();
         const { profile, account } = await world.ok('onboarding.start', {
@@ -81,7 +81,7 @@ describe('primeiro uso (desktop-mvp-plan Fase 1.1)', () => {
     });
 });
 
-describe('conta e cartão padrão do lançamento (database-design §4.1)', () => {
+describe('conta e cartão padrão do lançamento (banco-de-dados §4.1)', () => {
     /**
      * Perfil com duas contas e um cartão, o cenário mínimo para trocar o padrão de um para outro.
      *

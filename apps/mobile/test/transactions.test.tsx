@@ -16,7 +16,7 @@ async function openTransactions(): Promise<{ readonly core: ReturnType<typeof te
     return { core, s, app };
 }
 
-describe('Transações (mobile-mvp-plan, Fase 9)', () => {
+describe('Transações (transacoes §8.3)', () => {
     it('lista o mês por dia, com as compras do cartão na linha da fatura e os totais', async () => {
         await openTransactions();
 

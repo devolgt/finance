@@ -23,8 +23,8 @@ const DEFAULT_DEVICE_NAME = 'Celular';
 
 /**
  * Entra no grupo e, ao chegar, encerra a sessão de entrada.
- * Regra de negócio (Sincronização, mobile-shell-design §5.3): a sincronização só roda com a tela
- * de Dispositivos aberta. A entrada termina quando a sessão fica "ao vivo" — tudo o que o
+ * Regra de negócio (Sincronização, sincronizacao §1.3): a sincronização só roda com a
+ * tela de Dispositivos aberta. A entrada termina quando a sessão fica "ao vivo" — tudo o que o
  * anfitrião tinha já chegou —, e a sessão seria mantida aberta por baixo do Início; fechá-la aqui
  * desliga o socket junto com a tela de entrar. O fechamento fica dentro da mutação, e não num
  * `onSuccess` da tela, porque a invalidação troca o primeiro uso pelo app e a tela desmonta antes.
@@ -55,11 +55,11 @@ function useJoinGroup(): UseMutationResult<SyncJoinResponse, CoreCallError, Join
 }
 
 /**
- * Entrar num grupo (mockups `MobileParear` e `MobileRecebendo`; sync-plan Fase 8): lê o QR code do
+ * Entrar num grupo (sincronizacao §6.4 e §7.2): lê o QR code do
  * convite pela câmera e chama `sync.join`; enquanto os dados chegam, "Recebendo dados…". Quando a
  * entrada termina, a invalidação traz os perfis do grupo e o primeiro uso dá lugar ao app.
- * Divergências aprovadas dos mockups: sem o código de 8 caracteres e sem "3 tentativas" (o
- * convite por código ficou para outra entrega), e "Recebendo dados…" sem porcentagem — o núcleo
+ * Sem o código de 8 caracteres e sem "3 tentativas" (o convite por código ficou para outra
+ * entrega, sincronizacao §10.2), e "Recebendo dados…" sem porcentagem — o núcleo
  * não informa o total antes de terminar. Acrescenta "Colar o convite", o texto que o desktop copia
  * em "Copiar convite", para quando a câmera foi negada.
  *
@@ -178,7 +178,7 @@ export function JoinGroupScreen({ onBack }: { readonly onBack: () => void }): Re
 }
 
 /**
- * Leitura do QR code pelo `expo-camera` (mobile-shell-design §5.2), com o pedido de permissão:
+ * Leitura do QR code pelo `expo-camera` (mobile §10.1), com o pedido de permissão:
  * sem ela, a tela explica o porquê e oferece pedir de novo — ou, quando o sistema não pergunta
  * mais, aponta as configurações e o campo de colar o convite.
  *
@@ -230,8 +230,7 @@ function QrScanner({ onScan, paused }: { readonly onScan: (data: string) => void
 }
 
 /**
- * "Recebendo dados…" (mockup `MobileRecebendo`, sem porcentagem — divergência aprovada): a
- * entrada é uma chamada só ao núcleo, que não informa o progresso, e não tem "Cancelar" pelo
+ * "Recebendo dados…", sem porcentagem: a entrada é uma chamada só ao núcleo, que não informa o progresso, e não tem "Cancelar" pelo
  * mesmo motivo.
  *
  * @return A tela de espera.

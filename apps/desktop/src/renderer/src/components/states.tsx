@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 
 /*
- * Estados genéricos das telas (desktop-mvp-plan Fase 4): carregando, erro e vazio. Ficam num
+ * Estados genéricos das telas (desktop §8): carregando, erro e vazio. Ficam num
  * lugar só para que toda tela fale do mesmo jeito quando não tem o que mostrar, e para que o
  * erro sempre traga o código — é o que o usuário copia num relato de problema.
  */
@@ -23,7 +23,7 @@ export function Skeleton({ className }: { readonly className?: string }): ReactN
 
 /**
  * Esqueleto genérico de uma tela: título, uma linha de indicadores e um bloco de conteúdo,
- * a forma comum das telas dos mockups. As telas com forma própria montam o seu com `Skeleton`.
+ * a forma comum à maioria das telas, para o conteúdo não pular de lugar ao chegar. As telas com forma própria montam o seu com `Skeleton`.
  *
  * @param props.label O que está carregando, para o leitor de tela.
  * @return O esqueleto marcado como ocupado.

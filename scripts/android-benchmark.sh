@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Medição da Fase 5 do mobile-mvp-plan no aparelho conectado ao adb (o S23 FE, ou o emulador
-# para ensaio): leva o banco de dez anos ao app e mede, no APK de release, o tempo da abertura
-# até a primeira tela interativa e o p95 das chamadas interativas.
+# Medição das chamadas interativas (mobile §12.1) no aparelho conectado ao adb (o S23 FE, ou o
+# emulador para ensaio): leva o banco de dez anos ao app e mede, no APK de release, o tempo da
+# abertura até a primeira tela interativa e o p95 das chamadas interativas.
 #
-# O banco entra por uma ação só de build de desenvolvimento, como o plano pede: o development
-# build é depurável e aceita o `run-as`, que copia o arquivo para dentro do diretório do app; o
-# APK de release, que não aceita, é instalado por cima com `install -r`. Os dois são assinados
-# com a mesma chave de depuração do `expo prebuild`, então o Android mantém os dados.
+# O banco entra por uma ação só de build de desenvolvimento, que o APK distribuído não tem: o
+# development build é depurável e aceita o `run-as`, que copia o arquivo para dentro do
+# diretório do app; o APK de release, que não aceita, é instalado por cima com `install -r`. Os
+# dois são assinados com a mesma chave de depuração do `expo prebuild`, então o Android mantém
+# os dados.
 #
 # Uso: pnpm bench:android <banco.sqlite> [--replace]
 #   banco.sqlite: gerado com `pnpm db:history <arquivo>`
@@ -21,7 +22,7 @@ android_dir="$(cd "$(dirname "$0")/../apps/mobile/android" 2>/dev/null && pwd ||
 debug_apk="$android_dir/app/build/outputs/apk/debug/app-debug.apk"
 release_apk="$android_dir/app/build/outputs/apk/release/app-release.apk"
 # Aberturas medidas: a primeira, depois de instalar, paga a compilação inicial do ART e não é
-# típica; a mediana das seguintes é o número que vai para o design.
+# típica; a mediana das seguintes é o número registrado em mobile §12.1.
 launches=6
 
 database="${1:-}"

@@ -6,8 +6,8 @@ import { AppText } from '../ui/AppText.tsx';
 import { ThemeButton } from './ThemeButton.tsx';
 
 /**
- * Cabeçalho das telas (`.hdr` dos mockups): título — ou o conteúdo de `left`, como o seletor de
- * perfil do Início —, as ações da tela e o botão de tema, que todo mockup tem. Telas empilhadas
+ * Cabeçalho das telas: título — ou o conteúdo de `left`, como o seletor de perfil do Início —,
+ * as ações da tela e o botão de tema, presente em todas. Telas empilhadas
  * dentro de uma aba ganham o "voltar", que faz o mesmo que o "voltar" do Android. Desce abaixo
  * da barra de status, que no Android 15+ fica por cima do app.
  *

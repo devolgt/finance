@@ -2,16 +2,15 @@ import type { CategoryBranchResponse, SubCategoryResponse } from '@finance/core'
 import { matchesAllTerms } from '../format/searchText.ts';
 
 /*
- * Categorias como as telas as mostram (desktop-mvp-plan Fases 1.4 e 13.12; mobile-mvp-plan
- * Fase 15): a busca, as contagens e a exclusão que move os lançamentos, iguais no desktop e no
+ * Categorias como as telas as mostram (categorias-e-tags §2 e §5): a busca, as contagens e a exclusão que move os lançamentos, iguais no desktop e no
  * celular.
  */
 
 /**
  * Categorias da lista lateral que casam com a busca. A categoria entra quando o nome dela ou o
  * de alguma subcategoria casa, porque a lista só mostra categorias: buscar "uber" precisa
- * levar a "Outros", onde a subcategoria está, como o campo "Buscar categoria ou subcategoria" do
- * mockup promete.
+ * levar a "Outros", onde a subcategoria está, como o campo "Buscar categoria ou subcategoria"
+ * promete.
  *
  * @param tree Árvore de categorias do perfil, na ordem do núcleo.
  * @param query Texto digitado na busca; vazio devolve a árvore inteira.
@@ -78,7 +77,7 @@ export function transactionsToMove(target: CategoryDeletionTarget): number {
 
 /**
  * Destinos possíveis dos lançamentos de uma exclusão. Regra de negócio (Categorias,
- * desktop-mvp-plan Fase 1.4): excluir subcategoria em uso exige mover os lançamentos antes, e
+ * categorias-e-tags §2.3): excluir subcategoria em uso exige mover os lançamentos antes, e
  * o destino não pode ser uma das subcategorias que somem junto — a própria subcategoria, ou
  * qualquer uma da categoria excluída. A lista já sai sem elas, para que o núcleo nunca precise
  * recusar a escolha (`move-target-deleted`).
