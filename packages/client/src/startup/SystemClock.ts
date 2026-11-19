@@ -1,4 +1,4 @@
-import { LocalDate, parseTimestamp, type Clock, type Timestamp } from '@finance/core';
+import { LocalDate, parseTimestamp, type Clock, type Timestamp, type WallClock } from '@finance/core';
 
 /**
  * Relógio real dos dois shells (porta `Clock`, backend-design §5.7), no `client` porque o
@@ -22,5 +22,24 @@ export class SystemClock implements Clock {
     public today(): LocalDate {
         const instant = this.current();
         return LocalDate.of(instant.getFullYear(), instant.getMonth() + 1, instant.getDate());
+    }
+}
+
+/**
+ * Relógio de parede do sistema para o HLC da sincronização (sync-design §5.2). Mora junto do
+ * `SystemClock` porque desktop e celular leem o relógio do mesmo jeito; o HLC tolera que ele
+ * pare ou volte.
+ */
+export class SystemWallClock implements WallClock {
+    /**
+     * @param current Fonte do instante; os testes a fixam.
+     */
+    public constructor(private readonly current: () => number = () => Date.now()) {}
+
+    /**
+     * @return Milissegundos desde a época Unix.
+     */
+    public millis(): number {
+        return this.current();
     }
 }

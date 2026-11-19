@@ -91,11 +91,16 @@ export class SqliteBankStatementRepository implements BankStatementRepository {
             VALUES (:id, :accountId, :month, :year, :opening, :closing, :projectedOpening, :projectedClosing, :now)
             ON CONFLICT (id) DO UPDATE SET deleted_at = NULL, updated_at = excluded.updated_at
             WHERE bank_statements.deleted_at IS NOT NULL`,
-            { ...this.balanceParams(statement), accountId: statement.accountId, month: statement.period.month, year: statement.period.year },
+            { ...this.balanceParams(statement), accountId: statement.accountId, month: statement.period.month, year: statement.period.year, now: this.clock.now() },
         );
     }
 
     /**
+     * Grava só os saldos, sem carimbar `updated_at`: recalcular um cache não é uma revisão do
+     * usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o receptor —
+     * que recalcula com a captura desligada — ficaria com outro `updated_at`, quebrando a
+     * convergência (sync-design §5.4).
+     *
      * @param statement Extrato com os saldos recalculados.
      * @return void
      */
@@ -103,8 +108,7 @@ export class SqliteBankStatementRepository implements BankStatementRepository {
         this.database.run(
             `UPDATE bank_statements
             SET opening_balance = :opening, closing_balance = :closing,
-                projected_opening_balance = :projectedOpening, projected_closing_balance = :projectedClosing,
-                updated_at = :now
+                projected_opening_balance = :projectedOpening, projected_closing_balance = :projectedClosing
             WHERE id = :id`,
             this.balanceParams(statement),
         );
@@ -123,7 +127,6 @@ export class SqliteBankStatementRepository implements BankStatementRepository {
             closing: statement.closing.consolidated.rounded().amount,
             projectedOpening: statement.opening.projected.rounded().amount,
             projectedClosing: statement.closing.projected.rounded().amount,
-            now: this.clock.now(),
         };
     }
 

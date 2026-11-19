@@ -23,7 +23,9 @@ module.exports = { theme: {
         "track": "var(--track)",
         "danger": "var(--danger)",
         "dot": "var(--dot)",
-        "scrim": "var(--scrim)"
+        "scrim": "var(--scrim)",
+        "qr-ink": "var(--qr-ink)",
+        "qr-bg": "var(--qr-bg)"
     },
     "fontFamily": {
         "sans": [

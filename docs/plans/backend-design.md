@@ -182,7 +182,7 @@ Elas entram no diagrama junto com a implementação da sincronização.
 
 **Por quê:** a unidade de trabalho é sagrada neste design — as duas pernas de uma
 transferência, a série inteira de uma recorrência, o recálculo de saldos e a captura da
-sincronização ([sync-design.md §5.4](sync-design.md#54-a-captura-acontece-na-fronteira-do-repository))
+sincronização ([sync-design.md §5.4](sync-design.md#54-a-captura-acontece-na-conexão-do-app-e-o-carimbo-na-porta-de-banco))
 precisam acontecer na **mesma** transação de banco. Com uma API assíncrona sobre uma
 única conexão, outro trecho de código pode intercalar um `await` no meio da transação de
 alguém e escrever dentro dela; evitar isso exige uma fila ou um mutex em volta de toda
@@ -415,9 +415,9 @@ regra desatualizada. Recusar é a única resposta que não produz número errado
   até que concordem. Aceitar células de uma coluna que o receptor não tem, ou ignorar uma
   coluna nova que o emissor tem, quebraria a convergência byte a byte que o design
   promete.
-- **Migrations não passam pela captura da sincronização.** Elas escrevem pela porta
-  `Database`, abaixo do Repository, então não geram entradas em `sync_rows` ou
-  `sync_cells` ([sync-design.md §5.4](sync-design.md#54-a-captura-acontece-na-fronteira-do-repository)).
+- **Migrations não passam pela captura da sincronização.** Elas rodam na abertura,
+  antes de a raiz de composição criar os triggers `TEMP` de captura, então não geram
+  entradas em `sync_rows` ou `sync_cells` ([sync-design.md §5.4](sync-design.md#54-a-captura-acontece-na-conexão-do-app-e-o-carimbo-na-porta-de-banco)).
   Por isso **toda migration de dados precisa ser determinística e depender só dos dados
   locais**: cada aparelho a roda por conta própria e chega ao mesmo resultado, em vez de
   receber o resultado pela rede. Uma migration que precisasse de um valor aleatório ou do

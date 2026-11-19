@@ -45,6 +45,21 @@ import type { BackupDirectory } from '../ports/BackupDirectory.ts';
 import type { Clock } from '../ports/Clock.ts';
 import type { Database } from '../ports/Database.ts';
 import type { IdGenerator } from '../ports/IdGenerator.ts';
+import type { WallClock } from '../ports/WallClock.ts';
+import { installCapture } from '../infrastructure/sync/CaptureTriggers.ts';
+import { CapturingDatabase } from '../infrastructure/sync/CapturingDatabase.ts';
+import { SqliteReplicaRepository } from '../infrastructure/sqlite/SqliteReplicaRepository.ts';
+import { SqliteSyncLedgerRepository } from '../infrastructure/sqlite/SqliteSyncLedgerRepository.ts';
+import { SqliteSyncMemberRepository } from '../infrastructure/sqlite/SqliteSyncMemberRepository.ts';
+import { BatchApplier } from '../services/sync/BatchApplier.ts';
+import { ChangeExtractor } from '../services/sync/ChangeExtractor.ts';
+import { SyncService } from '../services/sync/SyncService.ts';
+import { SyncController } from '../controllers/SyncController.ts';
+import { SyncCoordinator } from '../protocol/SyncCoordinator.ts';
+import type { Discovery, KeyStore, RandomSource, SnapshotPort, Transport } from '../ports/SyncNetwork.ts';
+import { SyncDevicesService, type SyncCounters, type SyncPlatformInfo } from '../services/sync/SyncDevicesService.ts';
+import { BusinessRuleViolation } from '../domain/shared/errors.ts';
+import { toCoreError } from '../controllers/CoreResult.ts';
 import { AccountService } from '../services/account/AccountService.ts';
 import { AccountBalanceService } from '../services/balance/AccountBalanceService.ts';
 import { BalanceRecalculationService } from '../services/balance/BalanceRecalculationService.ts';
@@ -76,8 +91,28 @@ export interface CorePorts {
     readonly database: Database;
     readonly clock: Clock;
     readonly ids: IdGenerator;
+    /**
+     * Relógio de parede em milissegundos. Com ele, o núcleo instala a captura das escritas e
+     * monta a sincronização (sync-design §5.4); sem ele — ferramentas, benchmarks — a
+     * sincronização fica indisponível e nada é capturado.
+     */
+    readonly wallClock?: WallClock;
+    /** Rede da sincronização; só faz efeito junto com `wallClock`. */
+    readonly syncNetwork?: SyncNetworkPorts;
     /** Log de falhas inesperadas; o padrão descarta, para quem não tem onde registrar. */
     readonly onUnexpectedError?: UnexpectedErrorListener;
+}
+
+/**
+ * Adaptadores de rede da sincronização (mobile-shell-design §5.1). Sem eles o núcleo ainda
+ * captura e aplica lotes (os testes fazem assim), mas a tela de Dispositivos não conecta.
+ */
+export interface SyncNetworkPorts extends SyncPlatformInfo {
+    readonly transport: Transport;
+    readonly discovery: Discovery | null;
+    readonly keyStore: KeyStore;
+    readonly random: RandomSource;
+    readonly snapshots: SnapshotPort | null;
 }
 
 /** Os Services montados, para quem compõe casos de uso no próprio processo (testes, jobs). */
@@ -100,6 +135,8 @@ export interface CoreServices {
     readonly recalculation: BalanceRecalculationService;
     readonly integrity: BalanceIntegrityService;
     readonly reports: ReportService;
+    /** `null` quando o núcleo foi montado sem `wallClock`. */
+    readonly sync: SyncService | null;
 }
 
 /** O núcleo montado. */
@@ -153,7 +190,9 @@ export function openDatabase(database: Database, options: OpenDatabaseOptions): 
  * @return O núcleo com o despacho de rotas e os Services.
  */
 export function createCore(ports: CorePorts): Core {
-    const { database, clock, ids } = ports;
+    const { clock, ids, wallClock } = ports;
+    const captured = wallClock === undefined ? null : capturing(ports.database, wallClock);
+    const database = captured ?? ports.database;
     const onUnexpected = ports.onUnexpectedError ?? ((): void => undefined);
     const unitOfWork = new UnitOfWork(database);
 
@@ -199,11 +238,13 @@ export function createCore(ports: CorePorts): Core {
     const fixedReportService = new FixedReportService(unitOfWork, clock, profileService, partners, transactions, fixedReports, balances);
     const overviewService = new OverviewService(unitOfWork, clock, profileService, overviewQueries, invoices, accounts);
     const integrity = new BalanceIntegrityService(unitOfWork, accounts, statements, invoices, recalculation, clock);
+    const syncService = wallClock === undefined ? null : syncServiceOf(database, unitOfWork, ids, clock, wallClock, accounts, recurrenceRepository, transactions, recalculation);
     const importService = new ImportService(
         unitOfWork, clock, ids, composer, transactions, accounts, creditCards, invoices, categories, tags,
         accountService, creditCardService, categoryService, tagService, recurrenceService, invoiceService, impacts, recalculation,
     );
 
+    const syncController = syncControllerOf(syncService, captured, wallClock, ports.syncNetwork, onUnexpected);
     const transactionController = new TransactionController(transactionService, onUnexpected);
     const recurrenceController = new RecurrenceController(recurrenceService, new SeriesPlanner(unitOfWork, transactionService, composer, transactions, recurrenceRepository), onUnexpected);
     const statementController = new StatementController(consolidation, balances, onUnexpected);
@@ -308,6 +349,16 @@ export function createCore(ports: CorePorts): Core {
         'overview.pending': (raw) => overviewController.pending(raw),
         'overview.nextInvoices': (raw) => overviewController.nextInvoices(raw),
         'imports.run': (raw) => importController.run(raw),
+        'sync.status': (raw) => syncController.status(raw),
+        'sync.createGroup': (raw) => syncController.createGroup(raw),
+        'sync.open': (raw) => syncController.open(raw),
+        'sync.close': (raw) => syncController.close(raw),
+        'sync.createInvite': (raw) => syncController.createInvite(raw),
+        'sync.cancelInvite': (raw) => syncController.cancelInvite(raw),
+        'sync.join': (raw) => syncController.join(raw),
+        'sync.connect': (raw) => syncController.connect(raw),
+        'sync.removeMember': (raw) => syncController.removeMember(raw),
+        'sync.leave': (raw) => syncController.leave(raw),
     };
 
     return {
@@ -330,6 +381,7 @@ export function createCore(ports: CorePorts): Core {
             recalculation,
             integrity,
             reports: reportService,
+            sync: syncService,
         },
         call: (route, input) => handlers[route](input),
         dispatch: (route, input): Promise<CoreResult<unknown>> => {
@@ -339,6 +391,93 @@ export function createCore(ports: CorePorts): Core {
             return handlers[route](input);
         },
     };
+}
+
+/**
+ * Instala a captura na conexão e a embrulha no decorator que carimba (sync-plan §3.1). A
+ * captura nasce ligada só se o aparelho já pertence a um grupo; criar ou entrar num grupo a
+ * liga depois. Roda depois de `openDatabase`, para que as migrations fiquem fora dela.
+ *
+ * @param database Conexão já migrada.
+ * @param wallClock Relógio de parede do HLC.
+ * @return A porta decorada, que todo Repository passa a usar.
+ */
+function capturing(database: Database, wallClock: WallClock): CapturingDatabase {
+    installCapture(database, new SqliteSyncLedgerRepository(database).findState() !== null);
+    return new CapturingDatabase(database, wallClock);
+}
+
+/**
+ * Monta as rotas da tela de Dispositivos. Sem `wallClock` não há sincronização nenhuma, e
+ * toda rota responde `sync-unavailable`; sem a rede, o estado responde, mas conectar não.
+ *
+ * @param sync Service da sincronização, ou `null`.
+ * @param captured Porta decorada, cujo commit dispara o modo ao vivo.
+ * @param wallClock Relógio de parede.
+ * @param network Adaptadores de rede da plataforma.
+ * @param onUnexpected Log de falha inesperada.
+ * @return As rotas, ou um substituto que recusa todas.
+ */
+function syncControllerOf(
+    sync: SyncService | null,
+    captured: CapturingDatabase | null,
+    wallClock: WallClock | undefined,
+    network: SyncNetworkPorts | undefined,
+    onUnexpected: (error: unknown) => void,
+): Pick<SyncController, 'status' | 'createGroup' | 'open' | 'close' | 'createInvite' | 'cancelInvite' | 'join' | 'connect' | 'removeMember' | 'leave'> {
+    if (sync === null || captured === null || wallClock === undefined) {
+        const unavailable = (): Promise<CoreResult<never>> => Promise.resolve({
+            ok: false,
+            error: toCoreError(new BusinessRuleViolation('sync-unavailable', 'núcleo montado sem wallClock'), onUnexpected),
+        });
+        return { status: unavailable, createGroup: unavailable, open: unavailable, close: unavailable, createInvite: unavailable, cancelInvite: unavailable, join: unavailable, connect: unavailable, removeMember: unavailable, leave: unavailable };
+    }
+    const counters: SyncCounters = { appliedBatches: 0, revivedRows: 0 };
+    const coordinator = network === undefined ? null : new SyncCoordinator(sync, { ...network, wallClock }, {
+        changed: () => undefined,
+        applied: (report) => {
+            counters.appliedBatches++;
+            counters.revivedRows += report.revived.length;
+        },
+    });
+    if (coordinator !== null) {
+        captured.onCommit(() => {
+            coordinator.notifyLocalChange();
+        });
+    }
+    const platform: SyncPlatformInfo = network ?? { platform: 'desktop', localAddresses: () => [] };
+    return new SyncController(new SyncDevicesService(sync, coordinator, platform, counters), onUnexpected);
+}
+
+/**
+ * Monta os Services da sincronização sobre a porta decorada.
+ *
+ * @param database Porta com captura.
+ * @param unitOfWork Unidade de trabalho do núcleo.
+ * @param ids Gerador de ids.
+ * @param clock Relógio do schema.
+ * @param wallClock Relógio de parede.
+ * @param accounts Repository de contas.
+ * @param recurrences Repository de recorrências.
+ * @param transactions Repository de lançamentos.
+ * @param recalculation Recálculo de saldos.
+ * @return O Service da sincronização.
+ */
+function syncServiceOf(
+    database: Database,
+    unitOfWork: UnitOfWork,
+    ids: IdGenerator,
+    clock: Clock,
+    wallClock: WallClock,
+    accounts: SqliteAccountRepository,
+    recurrences: SqliteRecurrenceRepository,
+    transactions: SqliteTransactionRepository,
+    recalculation: BalanceRecalculationService,
+): SyncService {
+    const ledger = new SqliteSyncLedgerRepository(database);
+    const replica = new SqliteReplicaRepository(database);
+    const applier = new BatchApplier(unitOfWork, ledger, replica, accounts, recurrences, transactions, recalculation, clock, wallClock);
+    return new SyncService(unitOfWork, ids, wallClock, ledger, new SqliteSyncMemberRepository(database, clock), new ChangeExtractor(ledger, replica), applier);
 }
 
 /**

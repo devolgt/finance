@@ -24,11 +24,16 @@ describe('tokens de cor (desktop-mvp-plan Fase 3.1)', () => {
         }
     });
 
-    it('cobre a paleta do README dos mockups, mais o indicador de sincronização e o véu dos diálogos', () => {
+    it('cobre a paleta do README dos mockups, mais o indicador de sincronização, o véu dos diálogos e o QR do convite', () => {
         expect(colorTokenNames()).toEqual([
             'bg', 'surface', 'surface2', 'line', 'line2', 'ink', 'ink2', 'muted', 'accent', 'on-accent', 'soft', 'soft-ink',
-            'in', 'out', 'warn-bg', 'warn-ink', 'ok-bg', 'ok-ink', 'track', 'danger', 'dot', 'scrim',
+            'in', 'out', 'warn-bg', 'warn-ink', 'ok-bg', 'ok-ink', 'track', 'danger', 'dot', 'scrim', 'qr-ink', 'qr-bg',
         ]);
+    });
+
+    it('mantém o QR escuro sobre claro nos dois temas, para qualquer leitor conseguir ler', () => {
+        expect([colorTokens['qr-ink'].light, colorTokens['qr-ink'].dark]).toEqual(['#000000', '#000000']);
+        expect([colorTokens['qr-bg'].light, colorTokens['qr-bg'].dark]).toEqual(['#FFFFFF', '#FFFFFF']);
     });
 
     it('declara cada token no :root e no .dark do CSS gerado, com o valor do tema', () => {

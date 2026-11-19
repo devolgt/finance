@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react-native';
 import type { ContractReport } from '../src/contractReport.ts';
 import { ContractScreen } from '../src/ContractScreen.tsx';
+import type { CryptoBenchmarkReport } from '../src/cryptoBenchmark.ts';
 
 /**
  * Resultado de teste com os contadores preenchidos.
@@ -27,6 +28,16 @@ describe('tela do contrato', () => {
         expect(await screen.findByText('Contrato: passou')).toBeOnTheScreen();
         expect(screen.getByText('SQLite 3.53.3 · 13 casos do banco · 900 vetores de ouro')).toBeOnTheScreen();
         expect(console.log).toHaveBeenCalledWith('[contrato] PASSOU sqlite=3.53.3 banco=13 vetores=900 falhas=0');
+    });
+
+    it('depois do contrato, mede a cifra da sincronização e mostra a vazão e o handshake', async () => {
+        /** @return Uma medição fixa, para conferir o texto da tela e do log. */
+        const benchmark = (): CryptoBenchmarkReport => ({ cipherMbPerSecond: 3.25, cipherBytes: 8_388_608, handshakeMs: 41.5, handshakes: 20 });
+        await render(<ContractScreen run={() => report([])} benchmark={benchmark} />);
+
+        expect(await screen.findByText('Cifra ChaCha20-Poly1305: 3.3 MB/s · handshake Noise KK: 41.5 ms')).toBeOnTheScreen();
+        expect(screen.getByText('Contrato: passou')).toBeOnTheScreen();
+        expect(console.log).toHaveBeenCalledWith('[cifra] chacha20poly1305=3.25MB/s bytes=8388608 handshake-kk=41.50ms n=20');
     });
 
     it('mostra cada falha quando diverge', async () => {

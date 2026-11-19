@@ -1,4 +1,4 @@
-import type { Clock, IdGenerator, Timestamp } from '../../src/index.ts';
+import type { Clock, IdGenerator, Timestamp, WallClock } from '../../src/index.ts';
 import { LocalDate } from '../../src/index.ts';
 import { parseUuid, type Uuid } from '../../src/domain/shared/ids.ts';
 
@@ -48,10 +48,46 @@ export class SequentialIds implements IdGenerator {
     private counter = 0;
 
     /**
+     * @param namespace Distingue os aparelhos de um teste de sincronização: cada réplica gera
+     * ids próprios, como UUIDs v4 de verdade fariam, sem perder a previsibilidade.
+     */
+    public constructor(private readonly namespace = 0) {}
+
+    /**
      * @return O próximo id, com versão 4 e variante RFC para passar em qualquer validação.
      */
     public random(): Uuid {
         this.counter++;
-        return parseUuid(`00000000-0000-4000-8000-${this.counter.toString(16).padStart(12, '0')}`);
+        const variant = (0x8000 + this.namespace).toString(16);
+        return parseUuid(`00000000-0000-4000-${variant}-${this.counter.toString(16).padStart(12, '0')}`);
+    }
+}
+
+/**
+ * Relógio de parede de teste, em milissegundos. Anda 1 ms a cada leitura por padrão, para
+ * que carimbos seguidos tenham relógios distintos como no mundo real, e pode ser parado ou
+ * voltado — o caso que o HLC precisa tolerar (sync-design §5.2).
+ */
+export class ManualWallClock implements WallClock {
+    /**
+     * @param current Milissegundos da próxima leitura.
+     * @param step Quanto o relógio anda a cada leitura; `0` simula um relógio parado.
+     */
+    public constructor(private current = 1_773_576_000_000, public step = 1) {}
+
+    /**
+     * @return A leitura atual; avança `step` depois de ler.
+     */
+    public millis(): number {
+        const value = this.current;
+        this.current += this.step;
+        return value;
+    }
+
+    /**
+     * @param millis Nova leitura; pode voltar no tempo.
+     */
+    public set(millis: number): void {
+        this.current = millis;
     }
 }

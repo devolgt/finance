@@ -44,3 +44,5 @@ export * from './reports/ReportResultResponse.ts';
 export * from './reports/PartnerReportResponse.ts';
 export * from './reports/BalanceProjectionResponse.ts';
 export * from './overview/OverviewResponse.ts';
+export * from './sync/SyncStatusResponse.ts';
+export type * from './sync/SyncBatchDto.ts';

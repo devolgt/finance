@@ -187,6 +187,19 @@ const INVALIDATIONS: Readonly<Record<WriteRoute, readonly ReadRoute[]>> = {
     'recurrences.topUp': MONEY,
     // A importação cria cadastros, lançamentos, séries e pagamentos de fatura em qualquer perfil.
     'imports.run': EVERYTHING,
+    // A tela de Dispositivos: abrir, convidar, remover e sair mudam só o estado da sincronização.
+    // Os lotes que chegam com a tela aberta invalidam tudo pelo hook da tela (`useSyncScreen`),
+    // porque não passam por mutação nenhuma deste lado.
+    'sync.createGroup': ['sync.status'],
+    'sync.open': ['sync.status'],
+    'sync.close': ['sync.status'],
+    'sync.createInvite': ['sync.status'],
+    'sync.cancelInvite': ['sync.status'],
+    'sync.connect': ['sync.status'],
+    'sync.removeMember': ['sync.status'],
+    'sync.leave': ['sync.status'],
+    // Entrar num grupo troca os dados do aparelho pelos do grupo.
+    'sync.join': [...EVERYTHING, 'sync.status'],
     'balances.rebuildAccount': MONEY,
     'invoices.pay': MONEY,
     'invoices.reopen': MONEY,

@@ -110,6 +110,15 @@ export type BusinessRule =
     | 'report-dimensions-repeated'
     | 'report-pie-secondary'
     | 'sub-category-in-use'
+    | 'sync-address-not-local'
+    | 'sync-already-in-group'
+    | 'sync-device-has-data'
+    | 'sync-invite-invalid'
+    | 'sync-member-removed'
+    | 'sync-not-a-member'
+    | 'sync-not-in-group'
+    | 'sync-peer-unreachable'
+    | 'sync-unavailable'
     | 'transaction-move-currency-mismatch'
     | 'transaction-type-locked';
 

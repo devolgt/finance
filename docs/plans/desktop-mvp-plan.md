@@ -1,6 +1,6 @@
 # Plano do MVP Desktop — CRUD e primeiros relatórios
 
-**Status:** Em andamento — Fases 0 a 13.5 concluídas, e a 15 (relatórios personalizados, que substituiu os relatórios fixos) entregue (ficaram pendentes só o `Ctrl K` da Fase 4, a pendência da Fase 9.2 que depende da sincronização, o XLSX da Fase 13.1 e a decisão da Fase 11.1 sobre a data dos lançamentos de conta em Transações). Primeira entrega com tela do projeto: o app desktop
+**Status:** Em andamento — Fases 0 a 13.5 concluídas, e a 15 (relatórios personalizados, que substituiu os relatórios fixos) entregue (ficaram pendentes só o `Ctrl K` da Fase 4, o XLSX da Fase 13.1 e a decisão da Fase 11.1 sobre a data dos lançamentos de conta em Transações). Primeira entrega com tela do projeto: o app desktop
 (Electron) com os cadastros e lançamentos básicos e os dois primeiros relatórios
 personalizados, que são a motivação original do projeto ([README](../../README.md#motivação)).
 O mobile fica inteiro para depois.
@@ -487,7 +487,7 @@ itens abaixo.
 - [x] `scopeChoices` pelo número e só com a escolha; `describeSeriesPlan` monta o resumo, os avisos (pagas, editadas à mão) e os grupos excluídas/criadas/alteradas, com 5 linhas e "e mais n transações"
 - [x] `SeriesReviewDialog.tsx`: toda criação, edição e exclusão de transação recorrente passa por ele, depois do escopo quando há escolha; mudar a série vai direto para a revisão. "Repetir" na edição oferece Parcelado e Fixo, e a fixa que vira parcelada pede a quantidade e a leitura do valor
 - [x] Testes: `client` (`test/recurrenceView.test.ts`, invalidação com as rotas de plano), desktop (`test/transactions.test.ts`) e ponta a ponta (`e2e/recurrences.spec.ts`)
-- [ ] Pendência: a duplicação vinda de um aparelho offline quando a série é recomeçada fica para a sincronização (sync-design §5.6)
+- [x] Pendência: a duplicação vinda de um aparelho offline quando a série é recomeçada fica para a sincronização (sync-design §5.6) — resolvida na passada pós-aplicação da sincronização (`BatchApplier`, sync-plan Fase 3), que exclui as ocorrências vivas além do término; coberta pelo teste direcionado da série recomeçada (`packages/core/test/sync/directed.test.ts`)
 
 ### Fase 9.3 — Metas
 

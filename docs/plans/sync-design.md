@@ -1,8 +1,10 @@
 # Design de Sincronização
 
-**Status:** Design concluído — não implementado. Nada aqui exige uma migration hoje; a
-única regra que precisa valer desde a primeira linha de código é a regra de ids
-determinísticos da
+**Status:** Design concluído — implementação em andamento pelo
+[sync-plan.md](sync-plan.md), que ajustou a captura
+([§5.4](#54-a-captura-acontece-na-conexão-do-app-e-o-carimbo-na-porta-de-banco)) e o momento da
+sessão ([§7.1](#71-somente-a-mesma-rede-local)). A regra que vale desde a primeira linha
+de código é a regra de ids determinísticos da
 [§5.6](#56-linhas-identificadas-pelo-conteúdo-recebem-ids-determinísticos), já
 incorporada à [database-design.md §3.5](database-design.md#35-chaves-primárias-são-uuids).
 O modo remoto da [§7.7](#77-modo-remoto-o-celular-usa-o-banco-do-desktop) foi acrescentado
@@ -197,23 +199,44 @@ o desktop entrega ao celular toda entrada que possui, de *qualquer* origem, que 
 celular, então as mudanças de um terceiro dispositivo chegam ao celular por meio do
 desktop.
 
-### 5.4 A captura acontece na fronteira do Repository
+### 5.4 A captura acontece na conexão do app, e o carimbo na porta de banco
 
-Toda escrita já passa pela porta do Repository, que já carimba `updated_at`
-([database-design.md §3.6](database-design.md#36-colunas-presentes-em-todas-as-tabelas)).
-O mesmo ponto registra as entradas de sincronização, **na mesma transação de banco** da
-escrita: pega a próxima sequência e o HLC e, então, escreve uma entrada em `sync_rows`
-para cada insert e uma entrada em `sync_cells` para cada coluna alterada de cada update.
-Updates em massa — o escopo "esta e as futuras ocorrências", um soft delete de perfil —
-usam `UPDATE … RETURNING id` para saber quais linhas tocaram.
+A captura acontece em dois tempos, **na mesma transação de banco** da escrita:
 
-**Por que não triggers:** pelo mesmo motivo que `updated_at` não é carimbado por um —
-isso mantém um único lugar dono das escritas, e um trigger não tem forma limpa de receber
-o HLC da transação.
+1. **Triggers `TEMP` marcam o que mudou.** Ao abrir o núcleo com a sincronização ativada,
+   a raiz de composição cria, só nesta conexão, uma tabela temporária de células sujas e
+   um trigger `TEMP` por tabela sincronizada, gerados do `PRAGMA table_info`: um insert
+   marca a linha; um update marca cada coluna sincronizada com `OLD.c IS NOT NEW.c`; um
+   hard delete é abortado ([§9](#9-impacto-no-design-do-banco-de-dados)). As colunas da
+   [§5.5](#55-colunas-que-nunca-sincronizam) ficam fora.
+2. **O decorator da porta `Database` carimba.** Em `transaction()`, depois do trabalho e
+   antes do commit, se houver células sujas, ele toma a próxima sequência e o HLC, escreve
+   uma entrada em `sync_rows` para cada linha inserida e uma em `sync_cells` para cada
+   coluna alterada, e limpa a tabela temporária. Uma escrita fora de transação é
+   embrulhada numa.
 
-**Consequência:** uma escrita que contorna a porta — uma edição manual em um navegador de
-banco de dados — é invisível para a sincronização. Ela fica local e pode ser sobrescrita
-por qualquer escrita sincronizada posterior na mesma célula. Aceito e documentado.
+Durante a aplicação de um lote recebido, uma flag na tabela temporária desliga os
+triggers; ela volta a valer para as escritas locais da passada pós-aplicação
+([§5.9](#59-após-a-aplicação)), que precisam se propagar.
+
+**Por que não na fronteira de cada Repository**, como este documento previa antes: são
+cerca de 70 pontos de escrita em 14 repositórios, vários deles upserts
+`ON CONFLICT DO UPDATE` que não sabem quais colunas mudaram, e uma exclusão em cascata que
+monta o nome da tabela em tempo de execução. Instrumentar um a um é grande, e uma escrita
+esquecida vira divergência silenciosa. O trigger vê toda escrita da conexão, inclusive os
+updates em massa, e o HLC — o motivo pelo qual triggers tinham sido descartados — é
+carimbado pela porta, não por eles. Uma tabela nova precisa ser classificada como
+sincronizada ou local num catálogo do núcleo; um teste falha se alguma ficar sem
+classificação.
+
+**Consequência — o recálculo não carimba `updated_at`.** Recalcular um cache não é uma
+revisão do usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o
+receptor, que recalcula com a captura desligada, ficaria com outro `updated_at`.
+
+**Consequência — edições manuais.** Triggers `TEMP` não ficam gravados no arquivo: uma
+escrita feita por fora do app — uma edição manual em um navegador de banco de dados — é
+invisível para a sincronização. Ela fica local e pode ser sobrescrita por qualquer escrita
+sincronizada posterior na mesma célula. Aceito e documentado.
 
 ### 5.5 Colunas que nunca sincronizam
 
@@ -271,8 +294,8 @@ Consequências:
   encerra a regra e cria outra, com id aleatório (database-design §4.12). Um dispositivo
   que completou a regra antiga offline traz, ao sincronizar, ocorrências dela além do novo
   término, que ficam vivas em duplicidade com as da regra nova. A correção prevista é a
-  mesclagem da regra excluir as ocorrências vivas com número além do término; fica para a
-  implementação da sincronização (desktop-mvp-plan Fase 9.2).
+  mesclagem da regra excluir as ocorrências vivas com número além do término — feita na
+  passada pós-aplicação ([§5.9](#59-após-a-aplicação); sync-plan Fase 3).
 - **Esta regra é barata agora e cara depois.** Uma vez que existam linhas com ids
   aleatórios — especialmente após a importação do histórico —, adotá-la significa
   reescrever ids e toda chave estrangeira que aponta para eles. Ela vale desde a primeira
@@ -413,8 +436,8 @@ Limites, ditos com clareza:
 
 ### 7.1 Somente a mesma rede local
 
-Dois dispositivos só sincronizam quando estão na **mesma rede local**, com os dois apps
-abertos.
+Dois dispositivos só sincronizam quando estão na **mesma rede local**, com a **tela de
+Dispositivos aberta** nos dois apps.
 
 **Por quê:** nenhum servidor é necessário, nenhum terceiro jamais transporta os dados, e
 um dispositivo precisa estar fisicamente presente na rede do usuário para sincronizar — o
@@ -422,10 +445,11 @@ acesso remoto não está apenas não implementado, ele é recusado.
 
 Como a regra é garantida:
 
-- Um dispositivo **só escuta enquanto o app está em primeiro plano** — no iOS a
-  plataforma exige isso de qualquer forma. A única exceção é o desktop com o modo remoto
-  ativo, que escuta enquanto o app estiver aberto, inclusive minimizado
-  ([§7.7](#77-modo-remoto-o-celular-usa-o-banco-do-desktop)).
+- Um dispositivo **só escuta e se anuncia enquanto a tela de Dispositivos está aberta**,
+  com o app em primeiro plano — no iOS a plataforma exige o primeiro plano de qualquer
+  forma. Assim nenhum dado muda por baixo de outra tela, como um editor aberto. A única
+  exceção é o desktop com o modo remoto ativo, que escuta enquanto o app estiver aberto,
+  inclusive minimizado ([§7.7](#77-modo-remoto-o-celular-usa-o-banco-do-desktop)).
 - Ele **só aceita e só disca para endereços locais**: faixas privadas IPv4 (`10/8`,
   `172.16/12`, `192.168/16`), link-local (`169.254/16`), e os endereços IPv6 link-local
   (`fe80::/10`) e unique-local (`fc00::/7`). Endereços públicos e a faixa de
@@ -453,7 +477,8 @@ de quem convida.
 
 ### 7.3 Quem se conecta a quem
 
-Enquanto está em primeiro plano, todo dispositivo tanto escuta quanto se anuncia. Para
+Enquanto está com a tela de Dispositivos aberta, todo dispositivo tanto escuta quanto se
+anuncia. Para
 evitar duas conexões por par, **o dispositivo com o menor id disca** e o outro aceita.
 Quaisquer dois membros podem sincronizar; não há hub.
 
@@ -477,9 +502,9 @@ Quaisquer dois membros podem sincronizar; não há hub.
    origem.
 6. **Aplicar** ([§5.9](#59-após-a-aplicação)) e confirmar o recebimento.
 7. **Anexos** ([§7.6](#76-anexos)).
-8. **Modo ao vivo:** enquanto os dois apps permanecem em primeiro plano, cada escrita
-   local confirmada é enviada imediatamente; a sessão termina quando qualquer um dos
-   apps sai do primeiro plano.
+8. **Modo ao vivo:** enquanto a tela de Dispositivos permanece aberta nos dois apps,
+   cada escrita local confirmada é enviada imediatamente; a sessão termina quando
+   qualquer um dos dois sai da tela ou do primeiro plano.
 
 ### 7.5 Restrições de plataforma
 
@@ -639,7 +664,7 @@ Reunidas em um só lugar:
   Qualquer purga futura só pode remover linhas cuja exclusão todos os membros atuais já
   confirmaram.
 - **Edições manuais contornam a sincronização**
-  ([§5.4](#54-a-captura-acontece-na-fronteira-do-repository)).
+  ([§5.4](#54-a-captura-acontece-na-conexão-do-app-e-o-carimbo-na-porta-de-banco)).
 
 ---
 

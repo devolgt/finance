@@ -8,6 +8,8 @@ import { prepareDatabaseImport } from './importDatabase.ts';
 import { openCore } from './openCore.ts';
 import { serveCore } from './serveCore.ts';
 import { CryptoIdGenerator, SystemClock } from './systemAdapters.ts';
+import { SystemWallClock } from '@finance/client/startup';
+import { bonjourDiscovery, localAddresses, MainProcessKeyStore, nodeRandom, nodeTransport } from './syncAdapters.ts';
 import { parseUtilityArguments, type MainToUtilityMessage, type UtilityToMainMessage } from './utilityMessages.ts';
 
 /*
@@ -29,11 +31,28 @@ process.on('uncaughtException', (error) => {
     process.exit(1);
 });
 
+// A chave do aparelho mora no principal (safeStorage); o cofre daqui só pede e recebe.
+const keyStore = new MainProcessKeyStore((message) => {
+    post(message);
+});
+
 const opened = await openCore({
     ...files,
     clock: new SystemClock(),
     ids: new CryptoIdGenerator(),
     log,
+    wallClock: new SystemWallClock(),
+    syncNetwork: {
+        platform: 'desktop',
+        localAddresses,
+        transport: nodeTransport,
+        discovery: bonjourDiscovery(),
+        keyStore,
+        random: nodeRandom,
+        // A entrada no grupo é por lote completo; a troca do banco por snapshot no desktop fica
+        // para quando o desktop for o aparelho que entra (no uso real, ele cria o grupo).
+        snapshots: null,
+    },
 });
 
 /**
@@ -55,6 +74,9 @@ parentPort.on('message', (event: { readonly data: MainToUtilityMessage; readonly
         serveCore(endpointOf(port), opened.core ?? blockedCore, (message) => {
             log.write('warn', 'ipc.invalid-message', { message });
         });
+    }
+    if (event.data.kind === 'keystore-loaded' || event.data.kind === 'keystore-saved') {
+        keyStore.receive(event.data);
     }
     if (event.data.kind === 'close-database') {
         opened.close();

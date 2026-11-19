@@ -4,6 +4,7 @@ import { AndroidConfig, withAndroidManifest, withAppBuildGradle, withDangerousMo
 import type { ExpoConfig } from 'expo/config';
 import corePackageJson from '../../packages/core/package.json';
 import { addReleaseSigning, versionCodeOf } from './config/releaseSigning.ts';
+import { CAMERA_PLUGIN_OPTIONS, SYNC_ANDROID_PERMISSIONS } from './config/syncPermissions.ts';
 import packageJson from './package.json';
 
 /** Pacote Android escolhido pelo usuário (mobile-mvp-plan, Fase 4). Nunca mudar: é a identidade do app instalado. */
@@ -82,6 +83,19 @@ const withReleaseSigning: ConfigPlugin = (config) => withAppBuildGradle(config, 
 });
 
 /**
+ * Permissões da sincronização na rede local (sync-plan Fase 8): o porquê de cada uma está em
+ * `SYNC_ANDROID_PERMISSIONS`. Plugin, e não a lista `android.permissions`, para que a regra fique
+ * num lugar só e testável, junto do motivo de cada permissão.
+ *
+ * @param config Configuração do Expo recebida da cadeia de plugins.
+ * @return A configuração com o `AndroidManifest` ajustado no `prebuild`.
+ */
+const withSyncPermissions: ConfigPlugin = (config) => withAndroidManifest(config, (modConfig) => {
+    AndroidConfig.Permissions.ensurePermissions(modConfig.modResults, [...SYNC_ANDROID_PERMISSIONS]);
+    return modConfig;
+});
+
+/**
  * Configuração do app (mobile-mvp-plan, Fase 4): Expo SDK 58 — em que a Nova Arquitetura, o
  * Hermes e o edge-to-edge são o único modo, sem chave na configuração —, development build e
  * `android/` gerado pelo `prebuild`, nunca versionado. As permissões que
@@ -124,6 +138,8 @@ const config: ExpoConfig = {
         'expo-sqlite',
         // Folha de compartilhamento da cópia do banco e do log (mobile-mvp-plan, Fase 18).
         'expo-sharing',
+        // Leitura do QR do convite de sincronização (sync-plan Fase 8), sem microfone.
+        ['expo-camera', CAMERA_PLUGIN_OPTIONS],
         [
             'expo-font',
             {
@@ -144,4 +160,4 @@ const config: ExpoConfig = {
     ],
 };
 
-export default withReleaseSigning(withNoDataExtraction(config));
+export default withReleaseSigning(withSyncPermissions(withNoDataExtraction(config)));

@@ -7,9 +7,11 @@ import {
     type CoreInput,
     type CoreOutput,
     type CoreRoute,
+    type IdGenerator,
     type MoneyResponse,
+    type SyncNetworkPorts,
 } from '../../src/index.ts';
-import { FixedClock, SequentialIds } from './adapters.ts';
+import { FixedClock, ManualWallClock, SequentialIds } from './adapters.ts';
 
 type CreateInput = CoreInput<'transactions.create'>;
 type UpdateInput = CoreInput<'transactions.update'>;
@@ -35,16 +37,21 @@ export interface StatementRow {
  */
 export class TestWorld {
     public readonly clock: FixedClock;
-    public readonly ids = new SequentialIds();
+    public readonly ids: IdGenerator;
     public readonly database: BetterSqliteDatabase;
     public readonly core: Core;
     public readonly currency: string;
+    public readonly wall = new ManualWallClock();
 
     /**
      * @param today "Hoje" inicial; decide o mês corrente do saldo das contas.
      * @param currency Moeda dos perfis semeados.
+     * @param ids Gerador de ids; as réplicas de sincronização passam um por aparelho, para que
+     * dois aparelhos não gerem o mesmo UUID "aleatório".
+     * @param syncNetwork Rede da sincronização, para os testes da tela de Dispositivos.
      */
-    public constructor(today = '2026-03-15', currency = 'BRL') {
+    public constructor(today = '2026-03-15', currency = 'BRL', ids: IdGenerator = new SequentialIds(), syncNetwork?: SyncNetworkPorts) {
+        this.ids = ids;
         this.clock = new FixedClock(today);
         this.currency = currency;
         this.database = BetterSqliteDatabase.open(':memory:');
@@ -53,6 +60,8 @@ export class TestWorld {
             database: this.database,
             clock: this.clock,
             ids: this.ids,
+            wallClock: this.wall,
+            ...(syncNetwork === undefined ? {} : { syncNetwork }),
             onUnexpectedError: (error) => {
                 throw error;
             },

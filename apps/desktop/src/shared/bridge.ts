@@ -134,6 +134,17 @@ export interface FinanceBridge {
         /** @return As versões, o caminho do banco e a data da última cópia exportada. */
         info(): Promise<AppInfo>;
     };
+    readonly clipboard: {
+        /**
+         * Copia texto para a área de transferência pelo processo principal. Existe porque o
+         * renderer não tem permissão nenhuma do navegador — o `navigator.clipboard` é negado pelo
+         * guarda de segurança (`installSecurityGuards`) — e abrir essa permissão abriria também a
+         * leitura; só a escrita, de texto, passa por aqui.
+         *
+         * @param text Texto a copiar (o convite de sincronização).
+         */
+        writeText(text: string): Promise<void>;
+    };
     readonly database: {
         /**
          * Pergunta o destino no diálogo de salvar do sistema e grava ali uma cópia do banco. O
@@ -208,6 +219,7 @@ export const IPC_CHANNELS = {
     reportLogTail: 'report:log-tail',
     reportSend: 'report:send',
     aboutInfo: 'about:info',
+    clipboardWriteText: 'clipboard:write-text',
     databaseExport: 'database:export',
     databaseImport: 'database:import',
     databaseImportNotice: 'database:import-notice',

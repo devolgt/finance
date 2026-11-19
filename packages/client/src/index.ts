@@ -9,6 +9,9 @@ export { invalidatedBy, isRehearsalRoute, REHEARSAL_ROUTES, type RehearsalRoute 
 export { CoreClientProvider, useCoreClient } from './hooks/CoreClientContext.tsx';
 export { callOrThrow, createQueryClient, invalidateAfter, invalidateAllCoreQueries, useCoreMutation, useCoreQueries, useCoreQuery } from './hooks/coreHooks.ts';
 export * from './hooks/routeHooks.ts';
+export { useSyncScreen } from './hooks/syncHooks.ts';
+export { describeSyncRefusal, inviteCountdown, syncMemberViews, type SyncMemberView } from './format/sync.ts';
+export { SYNC_PLATFORM_LABELS } from './format/syncLabels.ts';
 export * from './hooks/transactionForm.ts';
 export { formatMoney, formatMoneyCompact, formatMoneyDigits, formatMoneyForInput, MINUS, type MoneySign } from './format/money.ts';
 export { formatDate, formatDayMonth, formatMonthAbbreviation, formatMonthLong, formatMonthShort } from './format/dates.ts';

@@ -356,14 +356,14 @@ vigente — conferida no momento da implementação.
 
 ### 5.3 Ciclo de vida do app
 
-A sincronização só acontece em primeiro plano
-([sync-design.md §7.1](sync-design.md#71-somente-a-mesma-rede-local)), então o
-ciclo de vida é o interruptor dela:
+A sincronização só acontece com a tela de Dispositivos aberta e o app em primeiro plano
+([sync-design.md §7.1](sync-design.md#71-somente-a-mesma-rede-local)): a tela liga e
+desliga a sessão, e o ciclo de vida é o interruptor dentro dela (`useAppForeground`):
 
-- **Ao entrar em primeiro plano:** abrir o listener, anunciar via mDNS e procurar os
-  membros.
-- **Ao sair do primeiro plano:** encerrar a sessão, fechar o listener e parar o anúncio —
-  sem esperar o sistema operacional cortar os sockets.
+- **Ao abrir Dispositivos, ou voltar ao primeiro plano com ela aberta:** abrir o listener,
+  anunciar via mDNS e procurar os membros.
+- **Ao sair da tela ou do primeiro plano:** encerrar a sessão, fechar o listener e parar o
+  anúncio — sem esperar o sistema operacional cortar os sockets.
 
 A porta síncrona dá uma garantia gratuita aqui: **nenhuma transação de banco atravessa um
 `await`**, então o sistema nunca suspende o app no meio de uma escrita do núcleo. Um lote
@@ -403,7 +403,7 @@ compartilhamento do sistema, para o destino que o usuário escolher.
 O arquivo vivo **não** é exposto ao app Arquivos do iOS nem a outros apps. Outro programa
 abrindo o banco enquanto o app escreve em modo WAL arrisca corrupção, e qualquer edição
 externa contornaria a captura da sincronização
-([sync-design.md §5.4](sync-design.md#54-a-captura-acontece-na-fronteira-do-repository)).
+([sync-design.md §5.4](sync-design.md#54-a-captura-acontece-na-conexão-do-app-e-o-carimbo-na-porta-de-banco)).
 
 ### 6.3 Criptografia em repouso
 

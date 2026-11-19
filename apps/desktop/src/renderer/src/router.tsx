@@ -8,6 +8,7 @@ import { CalendarScreen } from './calendar/CalendarScreen.tsx';
 import { CardsScreen } from './cards/CardsScreen.tsx';
 import { parseCardsSearch, type CardsSearch } from './cards/cardsSearch.ts';
 import { CategoriesScreen } from './categories/CategoriesScreen.tsx';
+import { DevicesScreen } from './devices/DevicesScreen.tsx';
 import { parseCategoriesSearch, type CategoriesSearch } from './categories/categoriesSearch.ts';
 import { GoalsScreen } from './goals/GoalsScreen.tsx';
 import { OverviewScreen } from './overview/OverviewScreen.tsx';
@@ -19,7 +20,6 @@ import { ProfilesScreen } from './profiles/ProfilesScreen.tsx';
 import { ReportEditorScreen } from './reports/ReportEditorScreen.tsx';
 import { ReportsScreen } from './reports/ReportsScreen.tsx';
 import { parseReportEditorSearch, parseReportsSearch, type ReportsSearch } from './reports/reportsSearch.ts';
-import { blankScreen } from './screens/BlankScreen.tsx';
 import { ImportScreen } from './import/ImportScreen.tsx';
 import { SettingsScreen } from './settings/SettingsScreen.tsx';
 import { StatementScreen } from './statement/StatementScreen.tsx';
@@ -135,7 +135,7 @@ const routeTree = rootRoute.addChildren([
         createRoute({ getParentRoute: () => shellRoute, path: '/settings' satisfies AppPath, component: SettingsScreen }),
         createRoute({ getParentRoute: () => shellRoute, path: '/settings/import' satisfies AppPath, component: ImportScreen }),
         // Fora do MVP: tela em branco, com a rota e o mês já prontos (desktop-mvp-plan §5).
-        createRoute({ getParentRoute: () => shellRoute, path: '/devices' satisfies AppPath, component: blankScreen('Dispositivos') }),
+        createRoute({ getParentRoute: () => shellRoute, path: '/devices' satisfies AppPath, component: DevicesScreen }),
     ]),
 ]);
 

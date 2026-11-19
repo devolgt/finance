@@ -181,6 +181,39 @@
         <mxCell id="c_q2eOROvbPMDOu2QuyJ-43" parent="c_q2eOROvbPMDOu2QuyJ-30" style="align=left;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="- name: varchar" vertex="1">
           <mxGeometry height="70" width="160" y="50" as="geometry" />
         </mxCell>
+        <mxCell id="sync_box_0" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=1;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="sync_rows" vertex="1">
+          <mxGeometry height="150" width="180" x="1000" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_0_cols" parent="sync_box_0" style="align=left;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="- table_name: text&lt;br&gt;- row_id: text&lt;br&gt;- hlc: text&lt;br&gt;- origin: text&lt;br&gt;- seq: integer" vertex="1">
+          <mxGeometry height="100" width="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_1" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=1;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="sync_cells" vertex="1">
+          <mxGeometry height="168" width="180" x="1200" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_1_cols" parent="sync_box_1" style="align=left;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="- table_name: text&lt;br&gt;- row_id: text&lt;br&gt;- column_name: text&lt;br&gt;- hlc: text&lt;br&gt;- origin: text&lt;br&gt;- seq: integer" vertex="1">
+          <mxGeometry height="118" width="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_2" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=1;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="sync_members" vertex="1">
+          <mxGeometry height="150" width="180" x="1400" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_2_cols" parent="sync_box_2" style="align=left;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="- name: text&lt;br&gt;- platform: integer&lt;br&gt;- public_key: text&lt;br&gt;- added_by: text&lt;br&gt;- removed_at: timestamp" vertex="1">
+          <mxGeometry height="100" width="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_3" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=1;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="sync_vector (local)" vertex="1">
+          <mxGeometry height="96" width="180" x="1000" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_3_cols" parent="sync_box_3" style="align=left;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="- origin: text&lt;br&gt;- seq: integer" vertex="1">
+          <mxGeometry height="46" width="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_4" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=1;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="sync_state (local)" vertex="1">
+          <mxGeometry height="132" width="180" x="1200" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_box_4_cols" parent="sync_box_4" style="align=left;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="- device_id: text&lt;br&gt;- group_id: text&lt;br&gt;- hlc: text&lt;br&gt;- next_seq: integer" vertex="1">
+          <mxGeometry height="82" width="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_note" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;fontColor=#000000;" value="Tabelas da sincronização (migration 0009, sync-design §5.3): sem chave estrangeira; as de domínio não mudam. sync_vector e sync_state são locais." vertex="1">
+          <mxGeometry height="100" width="230" x="1000" y="1400" as="geometry" />
+        </mxCell>
         <mxCell id="RM2FrNabXh4gKvRu5ezO-1" parent="1" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;fontColor=#000000;" value="&quot;Partners&quot; defines a list of individuals associated with the profile if it is a business type. Each partner has a specific percentage share; this is used to display the distribution of expenses and revenue based on that partner&#39;s percentage." vertex="1">
           <mxGeometry height="100" width="230" x="-230" y="310" as="geometry" />
         </mxCell>

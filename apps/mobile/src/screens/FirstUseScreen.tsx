@@ -15,12 +15,13 @@ import {
 } from '@finance/client';
 import type { OnboardingResponse } from '@finance/core';
 import { useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Controller, useForm, type Resolver } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDevicePreferences } from '../preferences/devicePreferences.tsx';
 import { ThemeButton } from '../shell/ThemeButton.tsx';
+import { JoinGroupScreen } from '../sync/JoinGroupScreen.tsx';
 import { AppText } from '../ui/AppText.tsx';
 import { Button } from '../ui/Button.tsx';
 import { FormGroup, FormRow, FormSection, RowInput, RowSelect, Segmented, toFieldErrors } from '../ui/form.tsx';
@@ -70,8 +71,10 @@ function useStartOnboarding(): UseMutationResult<OnboardingResponse, CoreCallErr
  * aqui, fora do shell, porque toda tela do shell lê dados de um perfil. Cria o perfil e a
  * primeira conta juntos pelo `onboarding.start` — o primeiro uso não pode deixar perfil sem
  * conta. A conta nasce corrente e na moeda do perfil, como o mockup propõe (ele não pergunta o
- * tipo): investimento se escolhe depois, em Contas. "Entrar num grupo" aparece desabilitado,
- * com o porquê, até a sincronização existir (mobile-mvp-plan §5.1).
+ * tipo): investimento se escolhe depois, em Contas. "Entrar num grupo existente" abre a leitura
+ * do QR do convite no lugar do formulário (sync-plan Fase 8): o primeiro uso fica fora da
+ * navegação, então a troca é por estado, e "voltar" devolve ao formulário. É também onde o app
+ * cai depois de descartar o banco em Dispositivos para entrar num grupo.
  *
  * @return A tela.
  */
@@ -81,6 +84,7 @@ export function FirstUseScreen(): ReactNode {
     const start = useStartOnboarding();
     const { errors } = form.formState;
     const currency = form.watch('currency');
+    const [joining, setJoining] = useState(false);
 
     /** Valida e, se o formulário estiver certo, cria o perfil e a conta. */
     const submit = (): void => {
@@ -88,6 +92,16 @@ export function FirstUseScreen(): ReactNode {
             start.mutate(input);
         })();
     };
+
+    if (joining) {
+        return (
+            <JoinGroupScreen
+                onBack={() => {
+                    setJoining(false);
+                }}
+            />
+        );
+    }
 
     return (
         <View style={{ paddingTop: insets.top }} className="flex-1 bg-bg">
@@ -158,8 +172,15 @@ export function FirstUseScreen(): ReactNode {
 
                 <View className="mt-auto gap-2.5 pt-4">
                     <Button large label={start.isPending ? 'Criando…' : 'Criar e começar'} busy={start.isPending} onPress={submit} />
-                    <Button large variant="secondary" disabled label="Entrar num grupo existente" accessibilityHint="A sincronização entre aparelhos chega numa próxima versão do app." onPress={() => undefined} />
-                    <AppText className="text-center text-12 text-muted">A sincronização entre aparelhos chega numa próxima versão do app.</AppText>
+                    <Button
+                        large
+                        variant="secondary"
+                        label="Entrar num grupo existente"
+                        onPress={() => {
+                            setJoining(true);
+                        }}
+                    />
+                    <AppText className="text-center text-12 text-muted">Já usa no computador? Entre no grupo dele para receber os dados pela rede Wi-Fi.</AppText>
                 </View>
             </ScrollView>
         </View>

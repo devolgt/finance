@@ -1,3 +1,4 @@
+import { useCoreQuery } from '@finance/client';
 import { Link, useLocation } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
@@ -8,8 +9,7 @@ import { ProfileSwitcher } from './ProfileSwitcher.tsx';
 /**
  * Barra lateral do shell (mockup `Main`): marca, seletor de perfil, menu e rodapé. Os relatórios
  * não são subitens do menu, como nos mockups: ficam na lista da página de Relatórios, a pedido do
- * usuário (`ReportsLayout`). O rodapé diz só "Dados só neste aparelho" porque a sincronização está
- * fora do MVP (desktop-mvp-plan §1): o indicador verde do mockup prometeria uma cópia que não existe.
+ * usuário (`ReportsLayout`). O rodapé diz onde os dados estão (`SyncFooter`).
  * Regra de negócio (Perfis): o menu vem do perfil ativo (`menuFor`), e não de uma lista fixa,
  * porque Sócios só existe no perfil empresarial (desktop-mvp-plan, Fase 13.11).
  *
@@ -38,7 +38,30 @@ export function Sidebar(): ReactNode {
                     );
                 })}
             </ul>
-            <div className="mt-auto border-t border-line p-3 text-12 text-muted">Dados só neste aparelho</div>
+            <SyncFooter />
         </nav>
+    );
+}
+
+/**
+ * Rodapé da barra lateral. Diz "Dados só neste aparelho" fora de um grupo ou depois de sair
+ * dele; dentro, com quantos aparelhos os dados são compartilhados (sync-plan Fase 7). Não
+ * promete "sincronizado agora": a sincronização só roda com a tela de Dispositivos aberta
+ * (sync-design §7.1).
+ *
+ * @return O rodapé.
+ */
+function SyncFooter(): ReactNode {
+    const status = useCoreQuery('sync.status', {});
+    const members = status.data?.members ?? [];
+    const peers = members.filter((member) => !member.isSelf && !member.removed).length;
+    // Sair do grupo mantém o `groupId` (a identidade fica para a última sessão); o que conta é
+    // este aparelho ainda ser membro ativo, como no menu Mais do celular.
+    const inGroup = members.some((member) => member.isSelf && !member.removed) && peers > 0;
+    return (
+        <div className="mt-auto flex items-center gap-2 border-t border-line p-3 text-12 text-muted">
+            {inGroup && <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-dot" />}
+            {inGroup ? `Dados neste aparelho e em ${peers === 1 ? 'mais 1' : `mais ${String(peers)}`} do grupo` : 'Dados só neste aparelho'}
+        </div>
     );
 }

@@ -1687,6 +1687,29 @@ Consequências:
 | `idx_attachments_transaction_id` | `(transaction_id)` | simples |
 | `uq_attachments_transaction_name` | `(transaction_id, name COLLATE NOCASE)` | único, parcial |
 
+### 4.16 Tabelas da sincronização
+
+Chegam na migration [`0009`](../../db/migrations/0009_sync_tables.sql) (sync-plan Fase 1). As
+regras estão na [sync-design §5.3](sync-design.md#53-o-que-é-registrado-relógios-de-linha-e-de-célula-não-um-log)
+e na [§6.2](sync-design.md#62-o-grupo); aqui fica só o contrato físico. **Nenhuma tabela de
+domínio muda.** Os relógios são o HLC de largura fixa (`{ms 13}.{contador 5}.{device_id}`, 56
+caracteres), comparados como texto.
+
+| Tabela | Escopo | Chave | Colunas | Por quê |
+|---|---|---|---|---|
+| `sync_rows` | sincronizada | `(table_name, row_id)` | `hlc`, `origin`, `seq` | Relógio da criação de cada linha; índice `idx_sync_rows_origin_seq` em `(origin, seq)` responde "o que falta a um vetor" |
+| `sync_cells` | sincronizada | `(table_name, row_id, column_name)` | `hlc`, `origin`, `seq` | Relógio de cada célula alterada depois da criação; índice `idx_sync_cells_origin_seq` |
+| `sync_members` | sincronizada (capturada como domínio) | `id` (do aparelho) | `name` (1–60), `platform` (1 desktop, 2 Android, 3 iOS), `public_key` (X25519 em hex, 64), `added_by`, `created_at`, `updated_at`, `removed_at` | Lista replicada de aparelhos; `removed_at` é a lápide permanente (sync-design §6.5), por isso não há `deleted_at` |
+| `sync_vector` | local | `origin` | `seq` | Maior sequência de origem possuída por origem; prefixo-completo |
+| `sync_state` | local | `singleton = 1` | `device_id`, `group_id`, `hlc`, `next_seq` | Identidade deste aparelho no grupo; existe só enquanto ele pertence a um grupo |
+
+`sync_rows`, `sync_cells`, `sync_vector` e `sync_state` são `WITHOUT ROWID` onde a chave é
+composta ou textual, e nenhuma tem chave estrangeira: uma entrada de relógio pode chegar antes
+da linha que descreve dentro de um lote, e as tabelas de domínio não podem depender delas.
+
+A captura (triggers `TEMP` gerados a cada abertura) não fica gravada no arquivo
+([sync-design §5.4](sync-design.md#54-a-captura-acontece-na-conexão-do-app-e-o-carimbo-na-porta-de-banco)).
+
 ---
 
 ## 5. Notas herdadas do diagrama

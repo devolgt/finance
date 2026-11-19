@@ -1,6 +1,6 @@
 // API pública do núcleo: composição, contrato de rotas, portas e o domínio que os
 // adaptadores e testes precisam enxergar. O resto é detalhe interno do pacote.
-export { createCore, openDatabase, type Core, type CorePorts, type CoreServices, type OpenDatabaseOptions } from './composition/createCore.ts';
+export { createCore, openDatabase, type Core, type CorePorts, type CoreServices, type OpenDatabaseOptions, type SyncNetworkPorts } from './composition/createCore.ts';
 export type { CoreApi, CoreInput, CoreOutput, CoreRoute, CoreRoutes } from './controllers/routes.ts';
 export type { CoreError, CoreResult } from './controllers/CoreResult.ts';
 export type * from './dto/index.ts';
@@ -8,6 +8,7 @@ export type { BackupDirectory } from './ports/BackupDirectory.ts';
 export { parseTimestamp, type Clock, type Timestamp } from './ports/Clock.ts';
 export type { Database, SqlParams, SqlRow, SqlValue } from './ports/Database.ts';
 export type { IdGenerator } from './ports/IdGenerator.ts';
+export type { WallClock } from './ports/WallClock.ts';
 export type { BusinessRule, ErrorCode, ErrorDetails } from './domain/shared/errors.ts';
 export { MigrationFailedError, MigrationIntegrityError, SchemaNewerThanAppError, type MigrationReport } from './infrastructure/migrations/MigrationRunner.ts';
 export { MigrationBackupError, newestBackup } from './infrastructure/migrations/PreMigrationBackup.ts';
@@ -53,3 +54,13 @@ export { feedsGoal, movesToDestination, originEffect, TRANSACTION_TYPES, withdra
 export { analyzeImport, type ImportAccountUse, type ImportAnalysis, type ImportCategoryUse, type ImportCreditCardUse, type ImportIssue, type ImportIssueReason, type ImportSource, type PlannedRow, type PlannedSeries } from './domain/import/ImportAnalysis.ts';
 export { IMPORT_TRANSACTION_TYPES, type ImportOptions, type ImportRepetition, type ImportRow, type ImportTransactionType } from './domain/import/ImportRow.ts';
 export { RECURRENCE_FREQUENCIES, type RecurrenceFrequency } from './domain/recurrence/RecurrenceSchedule.ts';
+// Sincronização: as portas de rede que cada plataforma implementa, o coordenador que a tela de
+// Dispositivos abre e fecha, e os tipos que a tela mostra (sync-plan Fases 5 a 8).
+export type { Connection, DiscoveredPeer, Discovery, KeyStore, Listener, RandomSource, SnapshotPort, Transport } from './ports/SyncNetwork.ts';
+export { SyncCoordinator, deviceKeys, type CoordinatorObserver, type CoordinatorPorts, type CoordinatorStatus, type PeerStatus, type SessionEnd } from './protocol/SyncCoordinator.ts';
+export type { SessionOutcome, SessionRefusal, SessionStage } from './protocol/SyncSession.ts';
+export { decodeInvite, encodeInvite, groupHash, MAX_CLOCK_SKEW_MS, type InvitePayload } from './protocol/messages.ts';
+export { isLocalAddress } from './domain/sync/LocalAddress.ts';
+export { SYNC_PLATFORMS, SYNC_MEMBER_NAME_MAX_LENGTH, type SyncPlatform } from './domain/sync/SyncMember.ts';
+export type { SyncService } from './services/sync/SyncService.ts';
+export type { ApplyReport } from './services/sync/BatchApplier.ts';

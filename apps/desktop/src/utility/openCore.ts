@@ -1,4 +1,4 @@
-import type { Clock, Core, IdGenerator, OpenDatabaseOptions } from '@finance/core';
+import type { Clock, Core, IdGenerator, OpenDatabaseOptions, SyncNetworkPorts, WallClock } from '@finance/core';
 import { openCoreSequence, type StartupMarkers } from '@finance/client/startup';
 import { BetterSqliteDatabase, NodeBackupDirectory } from '@finance/sqlite-better';
 import type { StartupStatus } from '../shared/bridge.ts';
@@ -21,6 +21,10 @@ export interface OpenCoreOptions {
     readonly log: Log;
     /** Migrations embutidas; parametrizável só para testar a falha de migration. */
     readonly migrations?: OpenDatabaseOptions['migrations'];
+    /** Relógio de parede da sincronização; sem ele nada é capturado (testes de abertura). */
+    readonly wallClock?: WallClock;
+    /** Rede da tela de Dispositivos (sync-plan Fase 7). */
+    readonly syncNetwork?: SyncNetworkPorts;
 }
 
 /** O núcleo aberto, ou o motivo de não ter aberto. */
@@ -58,6 +62,8 @@ export async function openCore(options: OpenCoreOptions): Promise<OpenedCore> {
         ids: options.ids,
         log: options.log,
         ...(options.migrations === undefined ? {} : { migrations: options.migrations }),
+        ...(options.wallClock === undefined ? {} : { wallClock: options.wallClock }),
+        ...(options.syncNetwork === undefined ? {} : { syncNetwork: options.syncNetwork }),
     });
     const database = outcome.database;
     if (database === null) {

@@ -51,6 +51,10 @@ export const colorTokens = {
     // Fora da tabela dos mockups, que não desenham diálogos: o véu atrás de diálogo e painel
     // lateral precisa escurecer nos dois temas, e `ink` clarearia o fundo no escuro.
     'scrim': { light: '#1B1F1D', dark: '#000000', role: 'Véu atrás de diálogos e painéis (sempre com opacidade)' },
+    // O QR do convite de sincronização fica escuro sobre claro nos dois temas: leitores de QR,
+    // inclusive o da câmera do celular, nem sempre leem o código invertido do tema escuro.
+    'qr-ink': { light: '#000000', dark: '#000000', role: 'Módulos do QR code do convite' },
+    'qr-bg': { light: '#FFFFFF', dark: '#FFFFFF', role: 'Fundo e margem do QR code do convite' },
 } as const satisfies Readonly<Record<string, ColorToken>>;
 
 /**

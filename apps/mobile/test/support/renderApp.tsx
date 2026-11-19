@@ -7,6 +7,7 @@ import { DEFAULT_PREFERENCES, DevicePreferencesProvider, DevicePreferencesStore,
 import { FirstUseScreen } from '../../src/screens/FirstUseScreen.tsx';
 import { AppNavigation } from '../../src/shell/AppNavigation.tsx';
 import { AppShell } from '../../src/shell/AppShell.tsx';
+import { AppLifecycle, AppLifecycleRoot } from '../../src/startup/AppLifecycle.tsx';
 import type { DatabaseCopies } from '../../src/startup/databaseCopy.ts';
 import { StartupGate } from '../../src/startup/StartupGate.tsx';
 import { PreferredTheme } from '../../src/theme/PreferredTheme.tsx';
@@ -34,10 +35,22 @@ export const TEST_METRICS = { frame: { x: 0, y: 0, width: 390, height: 844 }, in
  * @param core Núcleo do teste.
  * @param options.preferences Preferências já gravadas no aparelho.
  * @param options.initialUrl Rota em que o app abre; o Início por padrão.
- * @param options.copies Dublê da cópia do banco, para os testes de Ajustes.
+ * @param options.copies Dublê da cópia do banco, para os testes de Ajustes e de Dispositivos.
+ * @param options.lifecycle Ciclo de vida do app, para o teste simular a saída do primeiro plano.
+ * @param options.reopen Núcleo de cada reabertura pedida pelas telas (o banco novo depois de
+ * descartar o antigo); sem ele, reabre o mesmo.
  * @return O app renderizado.
  */
-export async function renderApp(core: Core, options: { readonly preferences?: Partial<DevicePreferences>; readonly initialUrl?: string; readonly copies?: DatabaseCopies } = {}): Promise<RenderedApp> {
+export async function renderApp(
+    core: Core,
+    options: {
+        readonly preferences?: Partial<DevicePreferences>;
+        readonly initialUrl?: string;
+        readonly copies?: DatabaseCopies;
+        readonly lifecycle?: AppLifecycle;
+        readonly reopen?: () => Core;
+    } = {},
+): Promise<RenderedApp> {
     const files = new MemoryFileSystem();
     if (options.preferences !== undefined) {
         files.writeText(PREFERENCES_URI, JSON.stringify({ ...DEFAULT_PREFERENCES, ...options.preferences }));
@@ -45,6 +58,13 @@ export async function renderApp(core: Core, options: { readonly preferences?: Pa
     const store = new DevicePreferencesStore(files, PREFERENCES_URI);
     const startup = readyStartup(core, options.copies ?? null);
     const queryClient = testQueryClient();
+    const lifecycle = options.lifecycle ?? new AppLifecycle();
+    let opened = 0;
+    /** @return A primeira abertura sobre o núcleo do teste; as seguintes, sobre o de `reopen`. */
+    const open = (): Promise<ReturnType<typeof readyStartup>> => {
+        opened++;
+        return Promise.resolve(opened === 1 || options.reopen === undefined ? startup : readyStartup(options.reopen(), options.copies ?? null));
+    };
 
     /** @return A raiz do app sobre o núcleo do teste. */
     function TestRootLayout(): ReactNode {
@@ -52,11 +72,13 @@ export async function renderApp(core: Core, options: { readonly preferences?: Pa
             <SafeAreaProvider initialMetrics={TEST_METRICS}>
                 <DevicePreferencesProvider store={store}>
                     <PreferredTheme>
-                        <StartupGate open={() => Promise.resolve(startup)} queryClient={queryClient}>
-                            <AppShell whenEmpty={<FirstUseScreen />}>
-                                <AppNavigation />
-                            </AppShell>
-                        </StartupGate>
+                        <AppLifecycleRoot lifecycle={lifecycle}>
+                            <StartupGate open={open} queryClient={queryClient}>
+                                <AppShell whenEmpty={<FirstUseScreen />}>
+                                    <AppNavigation />
+                                </AppShell>
+                            </StartupGate>
+                        </AppLifecycleRoot>
                     </PreferredTheme>
                 </DevicePreferencesProvider>
             </SafeAreaProvider>

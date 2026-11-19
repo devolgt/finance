@@ -92,17 +92,21 @@ export class SqliteAccountRepository implements AccountRepository {
     }
 
     /**
+     * Grava só os saldos, sem carimbar `updated_at`: recalcular um cache não é uma revisão do
+     * usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o receptor —
+     * que recalcula com a captura desligada — ficaria com outro `updated_at`, quebrando a
+     * convergência (sync-design §5.4).
+     *
      * @param account Conta com o cache recalculado.
      * @return void
      */
     public saveBalances(account: Account): void {
         this.database.run(
-            'UPDATE accounts SET balance = :balance, projected_balance = :projected, updated_at = :now WHERE id = :id',
+            'UPDATE accounts SET balance = :balance, projected_balance = :projected WHERE id = :id',
             {
                 id: account.id,
                 balance: account.balances.consolidated.rounded().amount,
                 projected: account.balances.projected.rounded().amount,
-                now: this.clock.now(),
             },
         );
     }

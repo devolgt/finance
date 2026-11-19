@@ -1,6 +1,7 @@
 import type { StartupStatus } from '../shared/bridge.ts';
 import type { DatabaseExportOutcome } from './exportDatabase.ts';
 import type { DatabaseImportPreparation } from './importDatabase.ts';
+import type { KeyStoreReply, KeyStoreRequest } from './syncAdapters.ts';
 
 /** Mensagens do processo principal ao processo do núcleo. */
 export type MainToUtilityMessage =
@@ -17,14 +18,16 @@ export type MainToUtilityMessage =
      * Confere a cópia escolhida no diálogo de abrir e a grava em `staged`, ao lado do banco,
      * antes de o principal fechar o banco e trocá-lo por ela. `requestId` como na exportação.
      */
-    | { readonly kind: 'prepare-import'; readonly requestId: number; readonly source: string; readonly staged: string };
+    | { readonly kind: 'prepare-import'; readonly requestId: number; readonly source: string; readonly staged: string }
+    | KeyStoreReply;
 
 /** Mensagens do processo do núcleo ao processo principal. */
 export type UtilityToMainMessage =
     | { readonly kind: 'startup'; readonly status: StartupStatus }
     | { readonly kind: 'database-closed' }
     | { readonly kind: 'database-exported'; readonly requestId: number; readonly outcome: DatabaseExportOutcome }
-    | { readonly kind: 'import-prepared'; readonly requestId: number; readonly outcome: DatabaseImportPreparation };
+    | { readonly kind: 'import-prepared'; readonly requestId: number; readonly outcome: DatabaseImportPreparation }
+    | KeyStoreRequest;
 
 /** Argumento de linha de comando com a pasta de dados do app. */
 const USER_DATA_FLAG = '--user-data=';

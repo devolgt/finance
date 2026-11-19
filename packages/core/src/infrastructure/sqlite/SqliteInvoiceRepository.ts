@@ -88,13 +88,18 @@ export class SqliteInvoiceRepository implements InvoiceRepository {
     }
 
     /**
+     * Grava só os saldos, sem carimbar `updated_at`: recalcular um cache não é uma revisão do
+     * usuário. Se carimbasse, cada recálculo viraria uma mudança sincronizada, e o receptor —
+     * que recalcula com a captura desligada — ficaria com outro `updated_at`, quebrando a
+     * convergência (sync-design §5.4).
+     *
      * @param invoice Fatura com o total recalculado.
      * @return void
      */
     public saveBalance(invoice: Invoice): void {
         this.database.run(
-            'UPDATE invoices SET balance = :balance, updated_at = :now WHERE id = :id',
-            { id: invoice.id, balance: invoice.balance.rounded().amount, now: this.clock.now() },
+            'UPDATE invoices SET balance = :balance WHERE id = :id',
+            { id: invoice.id, balance: invoice.balance.rounded().amount },
         );
     }
 

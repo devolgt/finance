@@ -1,14 +1,16 @@
 import { DirectCoreClient, type CoreCallScheduler, type CoreClient } from '@finance/client';
-import { openCoreSequence, SystemClock, type RestoreResult, type StartupStatus } from '@finance/client/startup';
-import { copyDatabaseTo, inspectDatabaseCopy, type Clock, type Database } from '@finance/core';
+import { openCoreSequence, SystemClock, SystemWallClock, type RestoreResult, type StartupStatus } from '@finance/client/startup';
+import { copyDatabaseTo, inspectDatabaseCopy, isLocalAddress, type Clock, type Database, type SyncNetworkPorts } from '@finance/core';
 import { fileUriToPath } from '@finance/sqlite-expo';
 import { databaseLocation, openExpoDatabase, openExpoDatabaseFile } from '@finance/sqlite-expo/open';
 import { Paths } from 'expo-file-system';
 import { expoFileSystem, joinUri, type AppFileSystem } from '../platform/AppFileSystem.ts';
+import { expoRandom, localNetworkAccess, mobileLocalAddresses, secureStoreKeyStore, tcpTransport, zeroconfDiscovery } from '../platform/syncAdapters.ts';
 import { ExpoIdGenerator, FileAppLog } from '../platform/systemAdapters.ts';
 import { BENCHMARK_ENABLED, scheduleBenchmark } from './benchmark.ts';
 import { replaceWithCopy, type DatabaseCopies } from './databaseCopy.ts';
 import { databaseFiles, fileMarkers } from './databaseFiles.ts';
+import { setAsideDatabase } from './discardDatabase.ts';
 import { restoreBackup } from './restoreBackup.ts';
 import { markCoreOpened } from './startupTiming.ts';
 
@@ -49,7 +51,9 @@ export const afterFrame: CoreCallScheduler = (task) => {
  * sequência de abertura do `client` — a mesma do desktop — com a pasta de backups, as marcas e
  * o log no diretório do app, e entrega às telas só um `CoreClient` com agendamento pós-frame.
  * Marca o fim da abertura para a medição do tempo até a primeira tela, e, no APK de medição
- * (`EXPO_PUBLIC_BENCHMARK=1`), agenda a medição das chamadas interativas (Fase 5).
+ * (`EXPO_PUBLIC_BENCHMARK=1`), agenda a medição das chamadas interativas (Fase 5). Com o relógio
+ * de parede e as portas de rede, o núcleo monta a sincronização (sync-plan Fase 8); ela só liga
+ * quando a tela de Dispositivos abre.
  *
  * @param files Disco do aparelho; trocado nos testes.
  * @param clock Relógio; trocado nos testes.
@@ -70,6 +74,8 @@ export async function openMobileCore(files: AppFileSystem = expoFileSystem, cloc
         clock,
         ids: new ExpoIdGenerator(),
         log,
+        wallClock: new SystemWallClock(),
+        syncNetwork: syncNetwork(),
     });
     markCoreOpened();
     if (BENCHMARK_ENABLED && outcome.core !== null) {
@@ -103,10 +109,33 @@ export async function openMobileCore(files: AppFileSystem = expoFileSystem, cloc
 }
 
 /**
+ * Portas de rede da sincronização do celular (mobile-shell-design §5.2). A regra de endereços
+ * locais do núcleo entra aqui, na raiz de composição, porque os adaptadores não importam código do
+ * núcleo (lint de fronteira do `apps/mobile`). Sem snapshot (`snapshots: null`): o celular entra
+ * no grupo recebendo os lotes completos, como o desktop nesta entrega.
+ *
+ * @return As portas para o `createCore`.
+ */
+function syncNetwork(): SyncNetworkPorts {
+    const access = localNetworkAccess();
+    return {
+        platform: 'android',
+        localAddresses: mobileLocalAddresses,
+        transport: tcpTransport(access),
+        discovery: zeroconfDiscovery(isLocalAddress, access),
+        keyStore: secureStoreKeyStore,
+        random: expoRandom,
+        snapshots: null,
+    };
+}
+
+/**
  * Exportar e importar a cópia do banco (mobile-mvp-plan, Fase 18; mobile-shell-design §6.2). Fica
  * na raiz de composição porque só ela conhece o banco aberto e o núcleo: a exportação usa o
  * `copyDatabaseTo` — `VACUUM INTO`, nunca o arquivo vivo, que está em WAL — e a importação confere
- * a cópia pelo `inspectDatabaseCopy`, as mesmas regras do desktop, antes de fechar o banco.
+ * a cópia pelo `inspectDatabaseCopy`, as mesmas regras do desktop, antes de fechar o banco. Tirar
+ * o banco do lugar para entrar num grupo (sync-plan Fase 8) fica aqui pelo mesmo motivo: precisa
+ * fechar a conexão antes de mover o arquivo.
  *
  * @param deps.database Banco aberto.
  * @param deps.files Disco do aparelho.
@@ -114,7 +143,7 @@ export async function openMobileCore(files: AppFileSystem = expoFileSystem, cloc
  * @param deps.clock Relógio, para o nome dos arquivos.
  * @param deps.log Log do app, que registra cada exportação e importação.
  * @param deps.close Fecha o banco antes da troca.
- * @return As operações de Ajustes.
+ * @return As operações de Ajustes e de Dispositivos.
  */
 function databaseCopies(deps: {
     readonly database: Database;
@@ -170,6 +199,12 @@ function databaseCopies(deps: {
             return { result, closed: true };
         },
         logUri: () => (files.exists(paths.logUri) ? paths.logUri : null),
+        setAsideForJoin: () => {
+            close();
+            const result = setAsideDatabase(files, paths, backupInstant(clock));
+            log.write(result.ok ? 'info' : 'error', 'database.set-aside-for-join', { ...result });
+            return result;
+        },
     };
 }
 

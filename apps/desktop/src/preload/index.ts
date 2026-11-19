@@ -92,6 +92,9 @@ const bridge: FinanceBridge = {
     about: {
         info: (): Promise<AppInfo> => invoke(IPC_CHANNELS.aboutInfo),
     },
+    clipboard: {
+        writeText: (text: string): Promise<void> => invoke(IPC_CHANNELS.clipboardWriteText, text),
+    },
     database: {
         exportCopy: (): Promise<DatabaseExportResult> => invoke(IPC_CHANNELS.databaseExport),
         importCopy: (): Promise<DatabaseImportResult> => invoke(IPC_CHANNELS.databaseImport),

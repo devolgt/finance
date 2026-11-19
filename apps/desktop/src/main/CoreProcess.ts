@@ -1,8 +1,11 @@
+import { join } from 'node:path';
+import { DeviceKeyFile } from './DeviceKeyFile.ts';
 import { MessageChannelMain, utilityProcess, type MessagePortMain, type UtilityProcess, type WebContents } from 'electron';
 import type { StartupStatus } from '../shared/bridge.ts';
 import { IPC_CHANNELS } from '../shared/bridge.ts';
 import type { DatabaseExportOutcome } from '../utility/exportDatabase.ts';
 import type { DatabaseImportPreparation } from '../utility/importDatabase.ts';
+import type { KeyStoreReply, KeyStoreRequest } from '../utility/syncAdapters.ts';
 import { utilityArguments, type MainToUtilityMessage, type UtilityToMainMessage } from '../utility/utilityMessages.ts';
 import { CloseHandshake } from './CloseHandshake.ts';
 
@@ -154,6 +157,7 @@ class CoreChild {
     private readonly exports = new Map<number, (outcome: DatabaseExportOutcome) => void>();
     /** Preparos de importação esperando a resposta, pelo `requestId`. */
     private readonly imports = new Map<number, (outcome: DatabaseImportPreparation) => void>();
+    private readonly deviceKey: DeviceKeyFile;
     private nextRequestId = 1;
     /** Depois da saída, um pedido postado nunca teria resposta. */
     private exited = false;
@@ -166,6 +170,7 @@ class CoreChild {
      * @param onExit Avisado na saída, com o código e se ela foi pedida por `stop`.
      */
     public constructor(modulePath: string, userData: string, onExit: (code: number, requested: boolean) => void) {
+        this.deviceKey = new DeviceKeyFile(join(userData, 'sync', 'device-key.bin'));
         this.utility = utilityProcess.fork(modulePath, [...utilityArguments(userData)], { serviceName: 'Finanças — núcleo' });
         this.startup = new Promise((resolve) => {
             this.utility.on('message', (message: UtilityToMainMessage) => {
@@ -182,6 +187,11 @@ class CoreChild {
                 if (message.kind === 'import-prepared') {
                     this.imports.get(message.requestId)?.(message.outcome);
                     this.imports.delete(message.requestId);
+                }
+                // O cofre da chave do aparelho: o `safeStorage` só existe aqui no principal.
+                // Sempre responde, mesmo em erro: um pedido sem resposta travaria a tela de Dispositivos.
+                if (message.kind === 'keystore-load' || message.kind === 'keystore-save') {
+                    this.post(this.keyStoreReply(message));
                 }
             });
             // Se o processo cair antes de responder, a janela precisa sair do "abrindo".
@@ -205,6 +215,29 @@ class CoreChild {
                 resolve();
             });
         });
+    }
+
+    /**
+     * Atende o cofre da chave do aparelho a pedido do `utilityProcess`, porque o `safeStorage`
+     * só existe no processo principal. Nunca lança: toda falha vira resposta com `error`, já que
+     * um pedido sem resposta travaria a tela de Dispositivos.
+     *
+     * @param message Pedido do cofre de chave do `utilityProcess`.
+     * @return A resposta, com `error` quando o arquivo não pôde ser lido ou gravado.
+     */
+    private keyStoreReply(message: KeyStoreRequest): KeyStoreReply {
+        try {
+            if (message.kind === 'keystore-load') {
+                return { kind: 'keystore-loaded', requestId: message.requestId, key: this.deviceKey.load(), error: null };
+            }
+            this.deviceKey.save(message.key);
+            return { kind: 'keystore-saved', requestId: message.requestId, error: null };
+        } catch (error) {
+            const reason = error instanceof Error ? error.message : String(error);
+            return message.kind === 'keystore-load'
+                ? { kind: 'keystore-loaded', requestId: message.requestId, key: null, error: reason }
+                : { kind: 'keystore-saved', requestId: message.requestId, error: reason };
+        }
     }
 
     /**

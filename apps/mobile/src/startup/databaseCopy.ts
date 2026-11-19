@@ -1,6 +1,7 @@
 import type { DatabaseImportResult } from '@finance/client';
 import { joinUri, type AppFileSystem } from '../platform/AppFileSystem.ts';
 import type { DatabaseFiles } from './databaseFiles.ts';
+import type { DatabaseSetAsideResult } from './discardDatabase.ts';
 
 /** O banco e os arquivos do WAL, que andam juntos: o `-wal` guarda o que ainda não foi para o banco. */
 const DATABASE_SUFFIXES = ['', '-wal', '-shm'] as const;
@@ -9,8 +10,9 @@ const DATABASE_SUFFIXES = ['', '-wal', '-shm'] as const;
 export type DatabaseExportOutcome = { readonly ok: true; readonly uri: string; readonly fileName: string } | { readonly ok: false; readonly reason: 'write-failed' | 'unavailable' };
 
 /**
- * O que a tela de Ajustes faz com o banco do aparelho (mobile-mvp-plan, Fase 18). Vem da raiz de
- * composição, a única que conhece o banco aberto; nos testes, um dublê.
+ * O que as telas de Ajustes e de Dispositivos fazem com o arquivo do banco do aparelho
+ * (mobile-mvp-plan, Fase 18; sync-plan Fase 8). Vem da raiz de composição, a única que conhece o
+ * banco aberto; nos testes, um dublê.
  */
 export interface DatabaseCopies {
     /**
@@ -38,6 +40,14 @@ export interface DatabaseCopies {
     readonly importCopy: (uri: string, fileName: string) => { readonly result: DatabaseImportResult; readonly closed: boolean };
     /** Arquivo de log do app, para "Relatar problema"; `null` quando ainda não há log. */
     readonly logUri: () => string | null;
+    /**
+     * Fecha o banco e o tira do lugar, guardado em `backups/`, para o aparelho entrar num grupo
+     * com o banco vazio (sync-design §6.4; `setAsideDatabase`). O app precisa reabrir o núcleo
+     * depois, qualquer que seja o resultado: a conexão já foi fechada.
+     *
+     * @return Onde o banco ficou, ou a falha.
+     */
+    readonly setAsideForJoin: () => DatabaseSetAsideResult;
 }
 
 /**

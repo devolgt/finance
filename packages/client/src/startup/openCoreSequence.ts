@@ -13,6 +13,8 @@ import {
     type IdGenerator,
     type MigrationReport,
     type OpenDatabaseOptions,
+    type SyncNetworkPorts,
+    type WallClock,
 } from '@finance/core';
 
 /**
@@ -124,6 +126,13 @@ export interface StartupPorts<D extends ClosableDatabase> {
     readonly log: StartupLog;
     /** Migrations embutidas; parametrizável só para testar a falha de migration. */
     readonly migrations?: OpenDatabaseOptions['migrations'];
+    /**
+     * Relógio de parede em milissegundos: com ele o núcleo captura as escritas para a
+     * sincronização (sync-design §5.4). Os dois apps o passam; ferramentas podem omitir.
+     */
+    readonly wallClock?: WallClock;
+    /** Adaptadores de rede da tela de Dispositivos (sync-plan Fases 7 e 8). */
+    readonly syncNetwork?: SyncNetworkPorts;
 }
 
 /** O núcleo aberto, ou o motivo de não ter aberto. */
@@ -207,6 +216,8 @@ export async function openCoreSequence<D extends ClosableDatabase>(ports: Startu
             database,
             clock: ports.clock,
             ids: ports.ids,
+            ...(ports.wallClock === undefined ? {} : { wallClock: ports.wallClock }),
+            ...(ports.syncNetwork === undefined ? {} : { syncNetwork: ports.syncNetwork }),
             onUnexpectedError: (error) => {
                 log.write('error', 'core.unexpected', { error });
             },

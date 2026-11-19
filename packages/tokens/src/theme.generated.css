@@ -26,6 +26,8 @@
     --danger: #9B2C1F;
     --dot: #2E7D5B;
     --scrim: #1B1F1D;
+    --qr-ink: #000000;
+    --qr-bg: #FFFFFF;
 }
 
 .dark {
@@ -52,6 +54,8 @@
     --danger: #F08A7A;
     --dot: #5BC08F;
     --scrim: #000000;
+    --qr-ink: #000000;
+    --qr-bg: #FFFFFF;
 }
 
 @theme inline {
@@ -78,6 +82,8 @@
     --color-danger: var(--danger);
     --color-dot: var(--dot);
     --color-scrim: var(--scrim);
+    --color-qr-ink: var(--qr-ink);
+    --color-qr-bg: var(--qr-bg);
 
     --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;

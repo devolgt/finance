@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, nativeTheme, shell, webContents, type OpenDialogOptions, type SaveDialogOptions } from 'electron';
+import { app, BrowserWindow, clipboard, dialog, ipcMain, nativeTheme, shell, webContents, type OpenDialogOptions, type SaveDialogOptions } from 'electron';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { homedir, release } from 'node:os';
 import { join } from 'node:path';
@@ -166,6 +166,12 @@ function registerIpc(core: CoreProcess, preferences: DevicePreferencesStore): vo
             return result;
         });
         return restoring;
+    });
+    // Só texto e só escrita: o renderer não lê a área de transferência por aqui.
+    ipcMain.handle(IPC_CHANNELS.clipboardWriteText, async (_event, text: unknown): Promise<void> => {
+        if (typeof text === 'string' && text.length <= 4096) {
+            await clipboard.writeText(text);
+        }
     });
     ipcMain.handle(IPC_CHANNELS.aboutInfo, async (): Promise<AppInfo> => {
         const status = await core.status();
