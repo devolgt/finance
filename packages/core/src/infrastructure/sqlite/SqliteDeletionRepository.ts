@@ -130,7 +130,7 @@ export class SqliteDeletionRepository implements DeletionRepository {
     /**
      * Apaga de baixo para cima no grafo de propriedade — faturas, extratos, cartões, contas
      * — só por organização: dentro da unidade de trabalho a ordem não muda o resultado, e o
-     * soft delete não dispara cascade nenhum (database-design §3.6). As recorrências do escopo
+     * soft delete não dispara cascade nenhum (banco-de-dados §3.6). As recorrências do escopo
      * saem junto, com as tags do modelo, para que o complemento não emita para quem não existe;
      * as metas vinculadas à conta também, porque medem o saldo dela.
      *
@@ -234,7 +234,7 @@ export class SqliteDeletionRepository implements DeletionRepository {
 }
 
 /**
- * Regra de negócio (Exclusão em cadeia, desktop-mvp-plan §5.1): apagar uma fatura refaz o
+ * Regra de negócio (Exclusão em cadeia, contas §5): apagar uma fatura refaz o
  * saldo de toda conta em que ela pesa — a pagadora atual do cartão (previsto) e a dona do
  * extrato em que foi paga (realizado), que divergem se a pagadora mudou após o pagamento.
  *

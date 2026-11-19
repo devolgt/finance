@@ -4,7 +4,7 @@ import { roundHalfAwayFromZero } from '../../src/domain/shared/Money.ts';
 
 const BRL = Currency.of('BRL');
 
-describe('Money — arredondamento meio para longe do zero (backend-design §3.3)', () => {
+describe('Money — arredondamento meio para longe do zero (core §6.4)', () => {
     it.each([
         // O caso clássico: o double guarda 1,00499999…, e Math.round(x*100)/100 erraria.
         [1.005, 2, 1.01],

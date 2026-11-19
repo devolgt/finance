@@ -15,7 +15,7 @@ import {
 import { useActiveProfile } from './activeProfile.tsx';
 
 /**
- * Seletor de perfil da barra lateral (mockups, todas as telas desktop). Mostra nome, tipo e
+ * Seletor de perfil da barra lateral, presente em todas as telas (desktop §8.3). Mostra nome, tipo e
  * moeda porque é isso que muda o que a tela mostra; trocar o perfil invalida o cache inteiro
  * (`useActiveProfile`). Criar e renomear perfis fica na tela Perfis, para onde o menu leva.
  *

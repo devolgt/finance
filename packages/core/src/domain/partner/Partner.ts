@@ -3,8 +3,8 @@ import type { PartnerId, ProfileId } from '../shared/ids.ts';
 import { requireName } from '../shared/names.ts';
 
 /**
- * Tamanho máximo do nome do sócio, o `CHECK (length(name) <= 100)` do schema (database-design
- * §4.2). Maior que o dos outros cadastros porque é o nome de uma pessoa, não um rótulo curto.
+ * Tamanho máximo do nome do sócio, o `CHECK (length(name) <= 100)` do schema
+ * (banco-de-dados §4.2). Maior que o dos outros cadastros porque é o nome de uma pessoa, não um rótulo curto.
  */
 export const PARTNER_NAME_MAX_LENGTH = 100;
 
@@ -20,7 +20,7 @@ export interface PartnerProps {
     readonly id: PartnerId;
     readonly profileId: ProfileId;
     readonly name: string;
-    /** Participação societária, de 0 a 100 (database-design §4.2). */
+    /** Participação societária, de 0 a 100 (banco-de-dados §4.2). */
     readonly percentage: number;
 }
 
@@ -31,10 +31,10 @@ export interface PartnerChanges {
 }
 
 /**
- * Pessoa com participação num perfil empresarial (database-design §4.2). Guarda só os invariantes
+ * Pessoa com participação num perfil empresarial (banco-de-dados §4.2). Guarda só os invariantes
  * da própria linha — nome e faixa da participação —; as regras que relacionam os sócios entre si
  * (a soma de 100%, o perfil empresarial) ficam no `PartnerService`, que enxerga a lista inteira
- * (database-design §3.10).
+ * (banco-de-dados §3.10).
  */
 export class Partner implements PartnerProps {
     public readonly id: PartnerId;
@@ -55,7 +55,7 @@ export class Partner implements PartnerProps {
 
     /**
      * Cadastra um sócio novo. Nomes repetidos são permitidos: duas pessoas podem ter o mesmo
-     * nome (database-design §4.2).
+     * nome (banco-de-dados §4.2).
      *
      * @param props Dados do sócio, com id já gerado pela aplicação.
      * @return O sócio, com o nome aparado.
@@ -126,7 +126,7 @@ function requirePercentage(percentage: number): number {
 
 /**
  * Ordem dos sócios no cadastro e no relatório: maior participação primeiro (o sócio majoritário
- * no topo, como nos mockups `DesktopSocios` e `DesktopRelSocio`), desempate pelo nome. Fica no
+ * no topo; socios §1.4, regra 12), desempate pelo nome. Fica no
  * domínio para que as duas telas listem os sócios na mesma ordem.
  *
  * @param a Primeiro sócio.

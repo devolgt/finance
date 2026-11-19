@@ -43,7 +43,7 @@ export const mappingTemplateSchema = z.strictObject({
 });
 
 /**
- * Regra do aparelho (import-design §4): salvar com um nome que já existe substitui o modelo, e o
+ * Regra do aparelho (importacao §4): salvar com um nome que já existe substitui o modelo, e o
  * mais novo fica por último — é ele que vale quando dois modelos servem para o mesmo arquivo.
  *
  * @param templates Modelos gravados.

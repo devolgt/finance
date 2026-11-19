@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import { Icon, type IconName } from './Icon.tsx';
 
 /**
- * Botão redondo de ícone do cabeçalho (`.ib` dos mockups): 44 px, o alvo de toque mínimo.
+ * Botão redondo de ícone do cabeçalho: 44 px, o alvo de toque mínimo (desktop §7.7).
  *
  * @param props.icon Ícone.
  * @param props.label Nome acessível; o ícone é só visual.

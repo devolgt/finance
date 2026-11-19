@@ -37,7 +37,7 @@ async function openNew(): Promise<{ readonly core: ReturnType<typeof testCore>['
 
 afterEach(restoreToday);
 
-describe('lançamento (mobile-mvp-plan, Fase 10)', () => {
+describe('lançamento (transacoes §5)', () => {
     it('lança uma despesa no débito, com a conta padrão já escolhida, e volta', async () => {
         const { core, s, app } = await openNew();
 

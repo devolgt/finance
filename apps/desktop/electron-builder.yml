@@ -1,4 +1,4 @@
-# Empacotamento do desktop (desktop-mvp-plan, Fase 14). Nome e versão vêm do `package.json`;
+# Empacotamento do desktop (desktop §12). Nome e versão vêm do `package.json`;
 # aqui fica só o que é próprio do instalador. Gerar com `pnpm dist:linux` (`.deb`), `pnpm dist:win`
 # (`.exe`) ou `pnpm dist` (os dois). No Linux, o `.exe` exige o Wine (`sudo apt install wine`): o
 # NSIS monta o desinstalador executando o próprio instalador.
@@ -23,7 +23,7 @@ asarUnpack:
   # O `.node` não carrega de dentro do `asar`: o sistema precisa de um arquivo de verdade.
   - node_modules/better-sqlite3/**
 # O `better-sqlite3` 13 é N-API e traz binários prontos de todas as plataformas, que carregam no
-# Electron sem recompilar (Fase 3.3); recompilar exigiria compilador e, no `.exe` gerado no
+# Electron sem recompilar (decisoes §21); recompilar exigiria compilador e, no `.exe` gerado no
 # Linux, produziria o binário do Linux.
 npmRebuild: false
 # Ícone do pacote compartilhado `@finance/assets`, o mesmo do celular, em vez de uma cópia aqui que

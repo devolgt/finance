@@ -19,7 +19,7 @@ import { ResultChart } from './ReportResult.tsx';
 type ProjectionMode = 'chart' | 'table';
 
 /**
- * Projeção de saldo, fixada no topo dos Relatórios de todo perfil (reports-design §9): o saldo
+ * Projeção de saldo, fixada no topo dos Relatórios de todo perfil (relatorios §8): o saldo
  * consolidado de hoje e, mês a mês, o que já está lançado mais a estimativa dos avulsos, com os
  * cenários pessimista e otimista. A janela da estimativa é escolhida aqui e não é gravada: é uma
  * pergunta de agora, e o padrão é o ano inteiro. Não segue o mês de referência da barra: projeta a
@@ -120,7 +120,7 @@ function KpiCard({ kpi }: { readonly kpi: BalanceProjectionKpi }): ReactNode {
 
 /**
  * O saldo de cada mês com as duas partes do resultado e a faixa, com os números à direita e em
- * algarismos tabulares (decisão de interface 8 dos mockups); o saldo negativo leva a cor da saída
+ * algarismos tabulares (desktop §7.4); o saldo negativo leva a cor da saída
  * junto do sinal.
  *
  * @param props.rows Meses da projeção, já formatados.

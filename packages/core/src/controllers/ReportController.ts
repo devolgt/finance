@@ -11,7 +11,7 @@ import {
 import type { ReportService } from '../services/report/ReportService.ts';
 import { handle, type CoreResult, type UnexpectedErrorListener } from './CoreResult.ts';
 
-/** Rotas dos relatórios personalizados (reports-design §5). */
+/** Rotas dos relatórios personalizados (relatorios §3.2). */
 export class ReportController {
     /**
      * @param reports Cadastro e execução dos relatórios.

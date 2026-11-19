@@ -64,7 +64,7 @@ function combineTrees(results: readonly UseQueryResult<readonly CategoryBranchRe
 }
 
 /**
- * Etapa 3 — Revisar (mockup `DesktopImportRevisar`; import-design §5): perfil de cada conta,
+ * Etapa 3 — Revisar (importacao §5 e §8): perfil de cada conta,
  * contas e cartões a criar ou ligar, categorias por perfil e as opções de séries. O botão
  * Importar fica desabilitado enquanto faltar informação obrigatória.
  *
@@ -208,7 +208,7 @@ function ReviewContent({
 
     /**
      * Exporta a cópia (quando marcada) e importa. Sem a cópia pedida, não importa: o usuário
-     * marcou a cópia como caminho de volta (import-design §7).
+     * marcou a cópia como caminho de volta (importacao §7).
      */
     const submit = async (): Promise<void> => {
         setFailure(null);
@@ -655,7 +655,7 @@ function Kpi({ label, value, note }: { readonly label: string; readonly value: s
 }
 
 /**
- * Opção com título e explicação, como as do mockup.
+ * Opção com título e explicação, porque o efeito de cada opção da importação não cabe no título.
  *
  * @param props.type Rádio ou caixa de seleção.
  * @param props.name Grupo do rádio.

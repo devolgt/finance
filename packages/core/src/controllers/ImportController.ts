@@ -3,7 +3,7 @@ import { runImportRequest } from '../requests/importRequests.ts';
 import type { ImportService } from '../services/import/ImportService.ts';
 import { handle, type CoreResult, type UnexpectedErrorListener } from './CoreResult.ts';
 
-/** Rotas da importação de transações (import-design). */
+/** Rotas da importação de transações (importacao §1). */
 export class ImportController {
     /**
      * @param imports Importação.

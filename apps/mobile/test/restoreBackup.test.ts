@@ -18,7 +18,7 @@ function disk(): MemoryFileSystem {
     return files;
 }
 
-describe('restauração do backup no celular (backend-design §4.5, passo 4)', () => {
+describe('restauração do backup no celular (banco-de-dados §5.5, passo 4)', () => {
     it('troca o banco pelo backup e guarda o que falhou, com o -wal, em falha-{instante}', () => {
         const files = disk();
 

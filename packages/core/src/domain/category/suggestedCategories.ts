@@ -5,8 +5,8 @@ export interface SuggestedCategory {
 }
 
 /**
- * Categorias criadas no primeiro uso, a lista do mockup `DesktopCadastros`. Existem porque
- * toda transação precisa de uma subcategoria (database-design §4.13): um perfil recém-criado
+ * Categorias criadas no primeiro uso, a lista de categorias-e-tags §2.2. Existem porque
+ * toda transação precisa de uma subcategoria (banco-de-dados §4.13): um perfil recém-criado
  * sem nenhuma não consegue lançar nada, e o primeiro uso terminaria num formulário que não
  * salva. São só sugestões — o usuário renomeia ou exclui à vontade.
  */

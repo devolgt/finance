@@ -10,17 +10,17 @@ export interface ReportQueryScope {
     readonly window: ReportWindow;
     /**
      * Somar o efeito no saldo de cada movimento (entrada positiva, saída negativa) em vez do
-     * `value` gravado (reports-design L8); vale em toda consulta do relatório, inclusive nas de
+     * `value` gravado (relatorios §5.3, L8); vale em toda consulta do relatório, inclusive nas de
      * total, em que a dimensão de entrada e saída não está.
      */
     readonly flow: boolean;
 }
 
-/** Cadastros que o filtro de um relatório referencia por id (reports-design §2.2). */
+/** Cadastros que o filtro de um relatório referencia por id (relatorios §4.2). */
 export type ReportReferenceKind = 'category' | 'subCategory' | 'account' | 'creditCard' | 'tag' | 'partner' | 'goal';
 
 /**
- * Leitura das somas dos relatórios. Só lê: a agregação fica no SQL (backend-design §3.2), e
+ * Leitura das somas dos relatórios. Só lê: a agregação fica no SQL (core §1.2), e
  * o Repository monta a consulta a partir de listas fechadas de filtros e dimensões — nenhum
  * trecho de SQL vem da definição.
  */

@@ -7,9 +7,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/cn';
 
 /*
- * Seletor com campo de busca dos formulários (desktop-mvp-plan Fase 13.2): toda escolha de um
+ * Seletor com campo de busca dos formulários (transacoes §8.3): toda escolha de um
  * cadastro — perfil, conta, cartão, categoria, tag, meta — cresce com o uso e, num perfil real,
- * passa do que se acha rolando um menu. Nasceu da escolha da subcategoria do lançamento (Fase 9),
+ * passa do que se acha rolando um menu. Nasceu da escolha da subcategoria do lançamento (transacoes §5),
  * que já tinha busca. Listas curtas e fixas (tipo, moeda, frequência) continuam no `Select`.
  */
 

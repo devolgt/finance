@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { currentDate, currentPeriod, isValidPeriod, pickActiveProfile, shiftPeriod } from '../src/index.ts';
 
-describe('mês de referência (desktop-mvp-plan Fase 4; mobile-mvp-plan Fase 6)', () => {
+describe('mês de referência (desktop §8.2; mobile §5.2)', () => {
     it('o mês corrente e a data de hoje são os do calendário local', () => {
         expect(currentPeriod(new Date(2026, 9, 31, 23, 59))).toBe('2026-10');
         expect(currentPeriod(new Date(2027, 0, 1, 0, 0))).toBe('2027-01');

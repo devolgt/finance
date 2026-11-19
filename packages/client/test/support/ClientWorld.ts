@@ -60,7 +60,7 @@ export interface Scenario {
 
 /**
  * Núcleo de verdade sobre SQLite em memória, visto pela UI através do `DirectCoreClient` —
- * o mesmo caminho que as telas usam, sem abrir o Electron (desktop-mvp-plan §4).
+ * o mesmo caminho que as telas usam, sem abrir o Electron (desktop §1.2).
  */
 export class ClientWorld {
     public readonly client: DirectCoreClient;

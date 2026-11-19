@@ -1,5 +1,5 @@
 // Gerado a partir de packages/tokens/src/tokens.ts por `pnpm tokens:css` — não edite à mão.
-// Preset do Tailwind 3 para o NativeWind 4 do apps/mobile (mobile-mvp-plan §2, "Estilo").
+// Preset do Tailwind 3 para o NativeWind 4 do apps/mobile (mobile §2.2, "Estilo").
 module.exports = { theme: {
     "colors": {
         "bg": "var(--bg)",
@@ -23,7 +23,9 @@ module.exports = { theme: {
         "track": "var(--track)",
         "danger": "var(--danger)",
         "dot": "var(--dot)",
-        "scrim": "var(--scrim)"
+        "scrim": "var(--scrim)",
+        "qr-ink": "var(--qr-ink)",
+        "qr-bg": "var(--qr-bg)"
     },
     "fontFamily": {
         "sans": [

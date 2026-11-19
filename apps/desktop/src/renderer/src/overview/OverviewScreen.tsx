@@ -44,10 +44,10 @@ import { useActiveProfile } from '@/shell/activeProfile';
 import { useReferenceMonth } from '@/shell/useReferenceMonth';
 
 /**
- * Visão geral (mockup `DesktopVisaoGeral2`, que substituiu o `Main`): o selo de atrasados ao lado
- * do título, cinco indicadores, os gastos dos seis meses, para onde foi o dinheiro do mês e os
- * resumos de contas, cartões, metas e anotações. **Diverge do mockup** a pedido do usuário: a
- * lista "Próximos 30 dias" saiu, e o que está em aberto até o fim do mês mora no painel do selo.
+ * Visão geral (visao-do-mes §6): o selo de atrasados ao lado do título, cinco indicadores, os
+ * gastos dos seis meses, para onde foi o dinheiro do mês e os resumos de contas, cartões, metas e
+ * anotações. A pedido do usuário, não há lista "Próximos 30 dias": o que está em aberto até o
+ * fim do mês mora no painel do selo (visao-do-mes §4.3).
  * Cada bloco tem a própria consulta e o próprio estado de carregando e de erro; os números e as
  * frases vêm do `overviewView` do `client`, que o celular também usa.
  *
@@ -260,7 +260,7 @@ function PendingGroup({ title, rows, busy, onMarkPaid, onNavigate }: {
     );
 }
 
-/** Cor do valor pelo sentido; o sinal e o ⇄ já dizem o mesmo sem a cor (decisão de interface 7). */
+/** Cor do valor pelo sentido; o sinal e o ⇄ já dizem o mesmo sem a cor (desktop §7.3). */
 const TONE_TEXT: Readonly<Record<PendingRow['tone'], string>> = {
     in: 'text-in',
     out: 'text-out',
@@ -418,7 +418,7 @@ const BAR_LABEL_SPACE = '1.5rem';
 /**
  * Barras dos seis meses com a linha tracejada da média. É uma imagem para o leitor de tela, com
  * todos os valores na descrição, porque as barras sozinhas não dizem nada sem a vista. O valor da
- * média fica numa legenda embaixo, e não sobre a linha como no mockup: sobre a linha ele cobria a
+ * média fica numa legenda embaixo, e não sobre a linha: sobre a linha ele cobria a
  * barra do mês de referência sempre que a média passava por ela.
  *
  * @param props.chart Barras, média e descrição já calculadas.
@@ -481,7 +481,7 @@ function CategoryShare({ row }: { readonly row: CategoryShareRow }): ReactNode {
  * @param props.title Título do bloco, também o nome da região.
  * @param props.hint O que os valores representam.
  * @param props.action Link do cabeçalho, no lugar da dica.
- * @param props.divided Se o cabeçalho tem a linha embaixo; os gráficos ficam sem ela, como no mockup.
+ * @param props.divided Se o cabeçalho tem a linha embaixo; os gráficos ficam sem ela, porque o eixo já separa o título do desenho.
  * @param props.children O conteúdo ou o estado dele.
  * @return O bloco.
  */
@@ -654,8 +654,8 @@ function CardsList({ rows }: { readonly rows: readonly OverviewCardRow[] }): Rea
 /**
  * Resumo das metas ativas: nome, percentual, barra, "quanto de quanto · prazo", o ritmo
  * necessário e o alerta de prazo vencido; cada linha leva ao detalhe na tela Metas.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 9.3): o guardado soma as vinculadas pagas até
- * hoje, o mesmo número da tela Metas. Só as **ativas** entram (Fase 13.4) — as mesmas da
+ * Regra de negócio (Metas, metas §4.1): o guardado soma as vinculadas pagas até
+ * hoje, o mesmo número da tela Metas. Só as **ativas** entram (metas §5.2) — as mesmas da
  * visualização padrão da tela Metas (`goalInView`).
  *
  * @param props.profileId Perfil ativo.

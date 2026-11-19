@@ -1,7 +1,7 @@
 import type { CoreApi, CoreInput, CoreOutput, CoreResult, CoreRoute } from '@finance/core';
 
 /**
- * O núcleo como a UI o enxerga (desktop-shell-design §5.1). Hooks, view-models e telas só
+ * O núcleo como a UI o enxerga (desktop §3.1). Hooks, view-models e telas só
  * conhecem esta interface; trocar de plataforma é trocar a implementação injetada na raiz do
  * app — `IpcCoreClient` no desktop, `DirectCoreClient` no mobile e nos testes.
  */
@@ -10,7 +10,7 @@ export interface CoreClient {
      * @param route Rota do mapa de rotas do núcleo.
      * @param input Entrada da rota; o núcleo valida de novo do outro lado da fronteira.
      * @return O resultado da rota. Falha esperada vem como `{ ok: false }`, nunca como
-     * exceção, porque o IPC perderia a classe do erro (desktop-shell-design §5.3).
+     * exceção, porque o IPC perderia a classe do erro (desktop §3.3).
      */
     call<R extends CoreRoute>(route: R, input: CoreInput<R>): Promise<CoreResult<CoreOutput<R>>>;
 }
@@ -30,10 +30,10 @@ const runNow: CoreCallScheduler = (task) => {
 /**
  * Chamada direta ao núcleo no mesmo processo: a implementação do mobile, onde o núcleo roda
  * na thread JavaScript, e a dos testes do `client`, que exercitam hooks e view-models contra
- * SQLite em memória sem abrir o Electron (desktop-mvp-plan §4).
+ * SQLite em memória sem abrir o Electron (desktop §1.2).
  *
  * No celular, o núcleo e a tela dividem a thread JavaScript, e a chamada síncrona ao SQLite a
- * bloqueia (mobile-shell-design §4.3). O `schedule` deixa a raiz do app adiar a chamada para
+ * bloqueia (mobile §3.3). O `schedule` deixa a raiz do app adiar a chamada para
  * depois do frame corrente: o toque desenha o retorno visual (botão pressionado, folha
  * fechando) antes de a thread parar no banco, em vez de o app parecer travado.
  */

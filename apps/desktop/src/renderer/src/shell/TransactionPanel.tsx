@@ -21,7 +21,7 @@ interface TransactionPanelValue {
 const TransactionPanelContext = createContext<TransactionPanelValue | null>(null);
 
 /**
- * Dono do lançamento global (desktop-mvp-plan Fase 4). Fica no shell, e não na tela de
+ * Dono do lançamento global (desktop §8). Fica no shell, e não na tela de
  * Transações, porque "+ Lançamento" e o atalho `N` valem em toda tela: lançar não pode exigir
  * navegar antes. Abre o mesmo diálogo de lançamento da tela de Transações; lá a tela se registra
  * como *host* e abre o dela, que sugere a origem do filtro e seleciona o gravado na tabela.

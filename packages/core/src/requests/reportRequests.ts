@@ -15,13 +15,13 @@ const REPORT_LIST_MAX = 500;
 
 /**
  * @param parse Conversor do id marcado da lista.
- * @return Lista de ids validados, vazia por padrão — lista vazia não restringe (reports-design §2.2).
+ * @return Lista de ids validados, vazia por padrão — lista vazia não restringe (relatorios §4.2).
  */
 function idList<T>(parse: (raw: string) => T): z.ZodDefault<z.ZodArray<z.ZodType<T, string>>> {
     return z.array(parsedText(parse)).max(REPORT_LIST_MAX).default([]);
 }
 
-/** Intervalo de tempo (reports-design §2.1): mês final, meses anteriores e a data que decide o mês. */
+/** Intervalo de tempo (relatorios §4.1): mês final, meses anteriores e a data que decide o mês. */
 const reportPeriodSchema = z.strictObject({
     anchor: z.discriminatedUnion('kind', [
         z.strictObject({ kind: z.literal('reference') }),
@@ -32,7 +32,7 @@ const reportPeriodSchema = z.strictObject({
 });
 
 /**
- * Filtro do relatório. É também o schema que lê o JSON gravado (reports-design §4), por isso
+ * Filtro do relatório. É também o schema que lê o JSON gravado (relatorios §6), por isso
  * produz as props do domínio, e não um comando: o `ReportFilter.create` repete os invariantes que
  * relacionam campos (mínimo ≤ máximo) nos dois caminhos.
  */
@@ -69,7 +69,7 @@ export const reportFilterSchema = z
     }));
 
 /**
- * Formato do relatório (reports-design §3); também lê o JSON gravado. A análise tem padrão
+ * Formato do relatório (relatorios §5); também lê o JSON gravado. A análise tem padrão
  * desligado, para que a definição gravada antes dela continue lendo na `version: 1`.
  */
 export const reportLayoutSchema = z
@@ -107,7 +107,7 @@ export const updateReportRequest = z
     .strictObject({ id: parsedText(ReportDefinitionId), name: reportNameField, filter: reportFilterSchema, layout: reportLayoutSchema })
     .transform((data): UpdateReportCommand => ({ id: data.id, name: data.name, filter: data.filter, layout: data.layout }));
 
-/** `period` é o mês de referência da tela; a definição com mês fixo o ignora (reports-design F1). */
+/** `period` é o mês de referência da tela; a definição com mês fixo o ignora (relatorios §4.1, F1). */
 export const runReportRequest = z
     .strictObject({ id: parsedText(ReportDefinitionId), period: yearMonthField })
     .transform((data): RunReportCommand => ({ id: data.id, period: data.period }));

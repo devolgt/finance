@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { TestWorld } from '../support/TestWorld.ts';
 
-describe('anotações do perfil (mockup DesktopAnotacoes; database-design §4.3)', () => {
+describe('anotações do perfil (anotacoes §1; banco-de-dados §4.3)', () => {
     it('cria, lista da editada mais recentemente para a mais antiga e reescreve', async () => {
         const world = new TestWorld('2026-03-15');
         const profileId = world.profile();

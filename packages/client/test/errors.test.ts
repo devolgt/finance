@@ -12,7 +12,7 @@ function coreError(code: ErrorCode, details: CoreError['details'] = {}): CoreErr
     return { code, message: 'mensagem técnica que não chega ao usuário', details };
 }
 
-describe('describeError (desktop-mvp-plan Fase 3.2)', () => {
+describe('describeError (desktop §4)', () => {
     it('tem mensagem pt-BR para todo código, sem repetir o texto técnico do núcleo', () => {
         const codes: readonly ErrorCode[] = ['VALIDATION_FAILED', 'NOT_FOUND', 'BUSINESS_RULE_VIOLATION', 'CONFLICT', 'SCHEMA_NEWER_THAN_APP', 'INTERNAL'];
         for (const code of codes) {

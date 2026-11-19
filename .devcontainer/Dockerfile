@@ -15,7 +15,7 @@
 
 # ---------------------------------------------------------------------------------------
 # Toolchain Android para gerar o APK do apps/mobile aqui dentro (`expo prebuild` + Gradle),
-# mantendo a regra de nada de compiladores no host (docs/plans/mobile-mvp-plan.md, Fase 0).
+# mantendo a regra de nada de compiladores no host (mobile §13).
 # As versões seguem o Expo SDK 58 (React Native 0.88); ao trocar de SDK, confira o
 # gradle/libs.versions.toml do react-native e ajuste os pacotes abaixo.
 #
@@ -69,7 +69,7 @@ RUN android --no-metrics --sdk=${ANDROID_HOME} sdk install \
         cmake/3.22.1
 
 # Emulador para testar o app sem o celular, acelerado pelo /dev/kvm repassado no compose
-# (o aparelho físico fica para a medição e a validação final — mobile-mvp-plan §2).
+# (o aparelho físico fica para a medição e a validação final — mobile §2.2).
 # Stage separado porque a imagem de sistema tem ~4 GB descompactada: mudar os pacotes de
 # build acima não obriga a baixá-la de novo. A imagem segue o targetSdk 36, a versão em que
 # o app declara se comportar; google_apis em vez da AOSP pura porque traz o WebView e os

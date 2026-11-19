@@ -42,7 +42,7 @@ function publishedDatabase(): { readonly database: Database; readonly backups: B
     return { database, backups, folder };
 }
 
-describe('backup antes de migrar (backend-design §4.6)', () => {
+describe('backup antes de migrar (banco-de-dados §5.6)', () => {
     it('grava a cópia da versão anterior, com os dados de antes, e a informa no relatório', () => {
         const { database, backups, folder } = publishedDatabase();
 

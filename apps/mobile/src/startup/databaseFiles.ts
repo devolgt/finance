@@ -6,7 +6,7 @@ import { joinUri, type AppFileSystem } from '../platform/AppFileSystem.ts';
 export interface DatabaseFiles {
     /** `SQLite/finance.sqlite`. */
     readonly databaseUri: string;
-    /** `SQLite/backups`, ao lado do banco (backend-design §4.6). */
+    /** `SQLite/backups`, ao lado do banco (banco-de-dados §5.6). */
     readonly backupsUri: string;
     /** `SQLite/restore-pending.json`, presente só enquanto uma restauração não terminou. */
     readonly restoreMarkerUri: string;

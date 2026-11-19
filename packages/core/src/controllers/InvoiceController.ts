@@ -19,7 +19,7 @@ export class InvoiceController {
 
     /**
      * @param raw Entrada com o cartão e a data da compra.
-     * @return A fatura sugerida (brief M3).
+     * @return A fatura sugerida (cartoes-e-faturas §2.2).
      */
     public suggest(raw: unknown): Promise<CoreResult<InvoiceSuggestionResponse>> {
         return handle(

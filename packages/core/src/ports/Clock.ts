@@ -4,7 +4,7 @@ import type { LocalDate } from '../domain/shared/LocalDate.ts';
 
 /**
  * Instante UTC no formato `YYYY-MM-DD HH:MM:SS`, exatamente o do `CHECK` de timestamp do
- * schema (database-design §3.9). Marcado para que uma data de calendário não seja gravada
+ * schema (banco-de-dados §3.9). Marcado para que uma data de calendário não seja gravada
  * em `updated_at` por engano.
  */
 export type Timestamp = Brand<string, 'Timestamp'>;
@@ -29,7 +29,7 @@ export function parseTimestamp(raw: string): Timestamp {
 }
 
 /**
- * Porta do relógio. Nada no núcleo lê o relógio do sistema (backend-design §5.7): os
+ * Porta do relógio. Nada no núcleo lê o relógio do sistema (testes §2.4): os
  * testes precisam congelar e mover o tempo, e "hoje" é a data **local** do usuário,
  * enquanto `updated_at` é UTC — duas leituras que só a plataforma sabe fazer certo.
  */

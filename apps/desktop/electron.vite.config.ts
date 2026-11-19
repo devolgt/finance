@@ -5,7 +5,7 @@ import { defineConfig } from 'electron-vite';
 import type { PluginOption } from 'vite';
 
 /**
- * CSP do app empacotado (desktop-shell-design §3.6): só o próprio app, nada remoto. Estilo
+ * CSP do app empacotado (desktop §2): só o próprio app, nada remoto. Estilo
  * inline é permitido porque Radix, Recharts e o Sonner posicionam e animam por estilo
  * injetado; script inline continua proibido, que é o que importa contra injeção.
  */

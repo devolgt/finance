@@ -3,10 +3,10 @@ import type { AccountListResponse } from '@finance/core';
 import { z } from 'zod';
 
 /*
- * Conta aberta na tela Contas (mockup `DesktopContas`; desktop-mvp-plan Fase 7). Fica na URL
+ * Conta aberta na tela Contas (contas §6). Fica na URL
  * como *search param* `account`, e não num estado do React, para que voltar no histórico
  * devolva o extrato que estava aberto e para que outra tela possa levar direto a uma conta. A
- * visualização da lista (ativas ou desativadas, desktop-mvp-plan Fase 13.4) fica em `view`.
+ * visualização da lista (ativas ou desativadas, contas §6) fica em `view`.
  */
 
 /** Parâmetros de busca próprios da tela Contas. */

@@ -16,8 +16,8 @@ import type { DeletionImpact } from './DeletionImpact.ts';
  * Regra de negócio (Contas e Cartões): excluir é a ação explícita; o app mostra antes
  * **tudo o que será apagado junto** e nomeia as outras contas cujo saldo vai mudar, e só
  * depois da confirmação apaga a cadeia inteira — soft delete numa única unidade de
- * trabalho, seguido do recálculo das contas afetadas (desktop-mvp-plan §5.1). É soft, e não
- * `DELETE`, porque a sincronização propaga exclusões por `deleted_at` (database-design §3.6).
+ * trabalho, seguido do recálculo das contas afetadas (contas §5). É soft, e não
+ * `DELETE`, porque a sincronização propaga exclusões por `deleted_at` (banco-de-dados §3.6).
  *
  * Alerta e exclusão partem do mesmo `DeletionScope`, calculado pela mesma consulta: é a
  * mitigação do risco de apagar mais (ou menos) do que o alerta mostrou.
@@ -110,7 +110,7 @@ export class CascadeDeletionService {
     /**
      * Ordena as contas afetadas pelo nome com `compareNames`, e não `localeCompare`, porque o
      * aviso de exclusão precisa listar na mesma ordem no desktop e no celular
-     * (mobile-shell-design §8); o id desempata contas de mesmo nome.
+     * (mobile §8); o id desempata contas de mesmo nome.
      *
      * @param scope Escopo calculado.
      * @return O escopo e as contas sobreviventes afetadas.
@@ -125,7 +125,7 @@ export class CascadeDeletionService {
     /**
      * Apaga o escopo e recalcula as contas que sobrevivem. O recálculo é completo, e não a
      * partir de um mês, porque uma exclusão em cadeia toca meses quaisquer de cada conta; é
-     * uma ação rara, e o recálculo completo é o mesmo oráculo do reparo (database-design §3.7).
+     * uma ação rara, e o recálculo completo é o mesmo oráculo do reparo (banco-de-dados §3.7).
      *
      * @param scope Escopo calculado na mesma unidade de trabalho.
      * @return void

@@ -3,8 +3,8 @@ import type { CoreOutput } from '../../src/index.ts';
 import { TestWorld } from '../support/TestWorld.ts';
 
 /*
- * Testes de mesa das recorrências (database-design §4.12; backend-design §5.5, casos 5, 6 e 10;
- * desktop-mvp-plan Fase 9.1). "Hoje" é 05/10/2026: as séries fixas vão até 05/10/2027.
+ * Testes de mesa das recorrências (banco-de-dados §4.12; testes §2.2, casos 5, 6 e 10;
+ * recorrencias §1). "Hoje" é 05/10/2026: as séries fixas vão até 05/10/2027.
  */
 
 type Transaction = CoreOutput<'transactions.get'>;
@@ -58,7 +58,7 @@ async function drifts(world: TestWorld): Promise<readonly unknown[]> {
     return (await world.ok('integrity.verifyBalances', {})).drifts;
 }
 
-describe('parcelamento (database-design §4.12)', () => {
+describe('parcelamento (banco-de-dados §4.12)', () => {
     it('1.000,00 em 3x no cartão: resto na 1ª parcela, uma fatura por mês, série inteira gravada', async () => {
         const { world, creditCardId, base } = setup();
         const first = await world.create(base, {
@@ -106,7 +106,7 @@ describe('parcelamento (database-design §4.12)', () => {
     });
 });
 
-describe('série fixa e complemento (database-design §4.12)', () => {
+describe('série fixa e complemento (banco-de-dados §4.12)', () => {
     it('grava até 12 meses à frente; o complemento é idempotente, estende com o tempo e não recria a excluída', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, name: 'Aluguel', value: 2300, dueDate: '2026-10-05', repeat: { kind: 'fixed', frequency: 'monthly', endAt: null } });
@@ -153,7 +153,7 @@ describe('série fixa e complemento (database-design §4.12)', () => {
     });
 });
 
-describe('editar com escopo (database-design §4.12)', () => {
+describe('editar com escopo (banco-de-dados §4.12)', () => {
     it('"esta e as futuras", "todas" e "somente esta" aplicam só o que mudou; pago fica individual', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, name: 'Aluguel', value: 2300, dueDate: '2026-08-05', repeat: { kind: 'fixed', frequency: 'monthly', endAt: null } });
@@ -243,7 +243,7 @@ describe('editar com escopo (database-design §4.12)', () => {
         expect(await drifts(world)).toEqual([]);
     });
 
-    it('Regra de negócio (Transação, database-design §4.13): o tipo não muda em nenhum escopo, nem ao recomeçar a série', async () => {
+    it('Regra de negócio (Transação, banco-de-dados §4.13): o tipo não muda em nenhum escopo, nem ao recomeçar a série', async () => {
         const { world, accountId, base } = setup();
         const repeat = { kind: 'fixed', frequency: 'monthly', endAt: null } as const;
         const first = await world.create(base, { source: { kind: 'account', accountId }, type: 'income', name: 'Salário', value: 5000, dueDate: '2026-10-05', repeat });
@@ -271,7 +271,7 @@ describe('editar com escopo (database-design §4.12)', () => {
     });
 });
 
-describe('mudar a quantidade de parcelas ou o término mantém a regra (database-design §4.12)', () => {
+describe('mudar a quantidade de parcelas ou o término mantém a regra (banco-de-dados §4.12)', () => {
     it('reduzir apaga só as excedentes, mesmo pagas; aumentar só cria as novas; as outras ficam intactas', async () => {
         const { world, accountId, base } = setup();
         const repeat = { kind: 'installments', frequency: 'monthly', installments: 12, valueType: 'perInstallment' } as const;
@@ -331,7 +331,7 @@ describe('mudar a quantidade de parcelas ou o término mantém a regra (database
     });
 });
 
-describe('mudar a periodicidade ou o tipo começa uma regra nova (database-design §4.12)', () => {
+describe('mudar a periodicidade ou o tipo começa uma regra nova (banco-de-dados §4.12)', () => {
     it('a diária que vira mensal encerra a antiga e grava a nova só até o horizonte, apagando as futuras pagas', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, dueDate: '2026-10-05', repeat: { kind: 'fixed', frequency: 'daily', endAt: null } });
@@ -395,7 +395,7 @@ describe('mudar a periodicidade ou o tipo começa uma regra nova (database-desig
     });
 });
 
-describe('excluir com escopo (database-design §4.12)', () => {
+describe('excluir com escopo (banco-de-dados §4.12)', () => {
     it('"esta e as futuras" encerra a série; "todas" exclui a regra', async () => {
         const { world, accountId, base } = setup();
         const fixed = await world.create(base, { source: { kind: 'account', accountId }, dueDate: '2026-10-05', repeat: { kind: 'fixed', frequency: 'monthly', endAt: null } });
@@ -417,7 +417,7 @@ describe('excluir com escopo (database-design §4.12)', () => {
     });
 });
 
-describe('cadeias que levam a regra junto (database-design §4.12)', () => {
+describe('cadeias que levam a regra junto (banco-de-dados §4.12)', () => {
     it('excluir a conta ou o cartão exclui a regra, e o alerta conta', async () => {
         const { world, accountId, creditCardId, base } = setup();
         await world.create(base, { source: { kind: 'creditCard', creditCardId }, dueDate: '2026-10-06', repeat: { kind: 'fixed', frequency: 'monthly', endAt: null } });
@@ -446,7 +446,7 @@ describe('cadeias que levam a regra junto (database-design §4.12)', () => {
     });
 });
 
-describe('o fim da série segue o calendário, não a data gravada (database-design §4.12)', () => {
+describe('o fim da série segue o calendário, não a data gravada (banco-de-dados §4.12)', () => {
     it('"esta e as futuras" encerra na véspera da data do calendário, mesmo com a editada movida para depois', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, dueDate: '2026-10-10', repeat: { kind: 'fixed', frequency: 'monthly', endAt: null } });
@@ -475,7 +475,7 @@ describe('o fim da série segue o calendário, não a data gravada (database-des
     });
 });
 
-describe('trocar o dia âncora não muda quais ocorrências a fixa com fim tem (database-design §4.12)', () => {
+describe('trocar o dia âncora não muda quais ocorrências a fixa com fim tem (banco-de-dados §4.12)', () => {
     it('o dia mais adiante leva o fim junto, e estender o término depois só cria as novas', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, dueDate: '2026-10-10', repeat: { kind: 'fixed', frequency: 'monthly', endAt: '2026-12-15' } });
@@ -506,7 +506,7 @@ describe('trocar o dia âncora não muda quais ocorrências a fixa com fim tem (
     });
 });
 
-describe('o valor de um parcelamento que muda de tamanho (database-design §4.12)', () => {
+describe('o valor de um parcelamento que muda de tamanho (banco-de-dados §4.12)', () => {
     it('"esta e as futuras" excluída no "valor total" reduz o total às parcelas que ficam', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, value: 1200, dueDate: '2026-10-06', repeat: { kind: 'installments', frequency: 'monthly', installments: 12, valueType: 'total' } });
@@ -539,7 +539,7 @@ describe('o valor de um parcelamento que muda de tamanho (database-design §4.12
     });
 });
 
-describe('o complemento nunca impede a abertura por uma série (backend-design §4.5)', () => {
+describe('o complemento nunca impede a abertura por uma série (banco-de-dados §5.5)', () => {
     it('um número já vivo acima da marca d\'água é pulado, e a marca avança', async () => {
         const { world, accountId, base } = setup();
         const first = await world.create(base, { source: { kind: 'account', accountId }, dueDate: '2026-10-05', repeat: { kind: 'fixed', frequency: 'monthly', endAt: null } });

@@ -16,7 +16,7 @@ export class SqlitePartnerRepository implements PartnerRepository {
     /**
      * @param profileId Perfil dono.
      * @return Os sócios vivos do perfil, por nome; o id desempata dois sócios de mesmo nome, que
-     * o banco permite (database-design §4.2), para que a ordem seja estável.
+     * o banco permite (banco-de-dados §4.2), para que a ordem seja estável.
      */
     public listByProfile(profileId: ProfileId): readonly Partner[] {
         return this.database
@@ -68,7 +68,7 @@ export class SqlitePartnerRepository implements PartnerRepository {
     }
 
     /**
-     * Regra de negócio (Sócios, decisão de interface 10 dos mockups): remover um sócio deixa os
+     * Regra de negócio (Sócios, socios §2.3): remover um sócio deixa os
      * lançamentos vinculados a ele "sem sócio atribuído", para serem revistos no relatório por sócio.
      * O vínculo é apagado, e não só ignorado pelo relatório, para que editar um desses lançamentos
      * não esbarre num sócio que não existe mais; as séries perdem o sócio pelo mesmo motivo e para

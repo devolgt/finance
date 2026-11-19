@@ -74,7 +74,7 @@ function purchase(overrides: Partial<TransactionResponse> = {}): TransactionResp
     };
 }
 
-describe('formulário de lançamento (desktop-mvp-plan Fase 9)', () => {
+describe('formulário de lançamento (transacoes §5)', () => {
     it('monta a despesa na conta com o valor positivo e sem pagamento', () => {
         const result = readTransactionForm(filled(), CREATE);
         expect(result).toEqual({
@@ -217,7 +217,7 @@ describe('formulário de lançamento (desktop-mvp-plan Fase 9)', () => {
         });
     });
 
-    it('mover para outro perfil manda o perfil de destino e deixa o sócio, que é do perfil, para trás (Fase 13.2)', () => {
+    it('mover para outro perfil manda o perfil de destino e deixa o sócio, que é do perfil, para trás (transacoes §6)', () => {
         const business = '99999999-9999-4999-8999-999999999999';
         const partner = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
         const transaction = purchase({ partnerId: partner });
@@ -234,7 +234,7 @@ describe('formulário de lançamento (desktop-mvp-plan Fase 9)', () => {
         expect(moved.ok && moved.submission.route === 'transactions.update' && [moved.submission.input.profileId, moved.submission.input.partnerId]).toEqual([business, null]);
     });
 
-    it('Regra de negócio (Sócios — aportes, Fase 13.8): o sócio cabe na receita de perfil empresarial e na transferência que chega a um', () => {
+    it('Regra de negócio (Sócios — aportes, socios §2.1): o sócio cabe na receita de perfil empresarial e na transferência que chega a um', () => {
         const business = '99999999-9999-4999-8999-999999999999';
         const pj = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
         const profiles = [{ id: PROFILE, type: 'personal' }, { id: business, type: 'business' }] as const;
@@ -274,7 +274,7 @@ describe('formulário de lançamento (desktop-mvp-plan Fase 9)', () => {
         expect(retargeted.ok && retargeted.submission.input.partnerId).toBeNull();
     });
 
-    it('Regra de negócio (Metas, Fase 13.3): só a transferência com meta retira; a receita sempre guarda', () => {
+    it('Regra de negócio (Metas, metas §3.2): só a transferência com meta retira; a receita sempre guarda', () => {
         const goal = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
         const transfer = readTransactionForm(filled({ type: 'transference', destinationAccountId: TESOURO, goalId: goal, goalWithdrawal: true }), CREATE);
         expect(transfer.ok && transfer.submission.input.goalWithdrawal).toBe(true);
@@ -328,7 +328,7 @@ function series(overrides: Partial<RecurrenceResponse> = {}): RecurrenceResponse
     };
 }
 
-describe('"Repetir" no formulário (desktop-mvp-plan Fase 9.1)', () => {
+describe('"Repetir" no formulário (recorrencias §1)', () => {
     it('lançamento novo: não repetir, parcelado e fixo viram a repetição da rota', () => {
         const repeatOf = (overrides: Partial<TransactionFormValues>): unknown => {
             const result = readTransactionForm(filled(overrides), CREATE);

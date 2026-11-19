@@ -9,7 +9,7 @@ import { useGlobalShortcuts } from './useGlobalShortcuts.ts';
 import { useReferenceMonth } from './useReferenceMonth.ts';
 
 /**
- * Shell do desktop (desktop-mvp-plan Fase 4; brief D1): barra lateral fixa à esquerda e, à
+ * Shell do desktop (desktop §8.1): barra lateral fixa à esquerda e, à
  * direita, a barra superior sobre a tela da rota. Só a tela rola, abaixo da barra, para que menu e
  * mês de referência fiquem sempre à mão em tabelas longas — e para que o cabeçalho fixo das
  * listagens grude no topo da área que rola sem precisar saber a altura da barra.
@@ -55,7 +55,7 @@ function ShellLayout(): ReactNode {
             <div className="flex min-w-0 flex-1 flex-col">
                 <TopBar showMonth={showMonth} showRange={showsPeriodRange(pathname)} />
                 {/* Só a tela rola, abaixo da barra: o cabeçalho fixo das listagens gruda no topo
-                    desta área, e não por baixo da barra (desktop-mvp-plan Fase 13.3). A tela em
+                    desta área, e não por baixo da barra. A tela em
                     painéis (`PaneLayout`) não cresce com o conteúdo: ocupa a área, e cada painel
                     rola sozinho. É `relative` para que nada posicionado de forma absoluta na tela
                     escape desta rolagem e estique a janela, levando o menu junto. */}

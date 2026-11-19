@@ -4,7 +4,8 @@ import { TestWorld } from '../support/TestWorld.ts';
 
 /**
  * @return Um perfil pessoal com conta pagadora e subcategoria, num mundo em que "hoje" é
- * 15/10/2026 — o mês de referência do mockup `DesktopCartoes`.
+ * 15/10/2026, fixo para que as faturas e os vencimentos esperados não dependam do dia em que o
+ * teste roda.
  */
 function setup(): { world: TestWorld; profileId: string; accountId: string; base: { profileId: string; subCategoryId: string } } {
     const world = new TestWorld('2026-10-15');
@@ -25,7 +26,7 @@ function edit(id: string, accountId: string, overrides: Partial<CoreInput<'credi
     return { id, accountId, name: 'Cartão', limit: 10000, closingDay: 10, dueDay: 17, ...overrides };
 }
 
-describe('cadastro de cartões (desktop-mvp-plan Fase 1.3)', () => {
+describe('cadastro de cartões (cartoes-e-faturas §1)', () => {
     it('cria ativo, com ciclo e limite na moeda do perfil', async () => {
         const { world, profileId, accountId } = setup();
         const card = await world.ok('creditCards.create', { profileId, accountId, name: 'Roxinho', limit: 8000, closingDay: 3, dueDay: 10 });
@@ -42,7 +43,7 @@ describe('cadastro de cartões (desktop-mvp-plan Fase 1.3)', () => {
         expect(invalid.code).toBe('VALIDATION_FAILED');
     });
 
-    it('mudar o dia de fechamento não move lançamentos existentes (database-design §4.7)', async () => {
+    it('mudar o dia de fechamento não move lançamentos existentes (banco-de-dados §4.7)', async () => {
         const { world, profileId, accountId, base } = setup();
         const creditCardId = world.creditCard(profileId, accountId, 10, 17);
         const purchase = await world.create(base, { source: { kind: 'creditCard', creditCardId }, dueDate: '2026-03-05' });
@@ -58,7 +59,7 @@ describe('cadastro de cartões (desktop-mvp-plan Fase 1.3)', () => {
     it('a sugestão traz o fechamento e o vencimento da fatura, mesmo antes de ela existir', async () => {
         const { world, profileId, accountId } = setup();
         const creditCardId = world.creditCard(profileId, accountId, 3, 10);
-        // Compra no dia do fechamento cai na fatura seguinte (database-design §4.5).
+        // Compra no dia do fechamento cai na fatura seguinte (banco-de-dados §4.5).
         expect(await world.ok('invoices.suggest', { creditCardId, purchaseDate: '2026-10-03' })).toEqual({
             creditCardId,
             period: '2026-11',
@@ -112,7 +113,7 @@ describe('cadastro de cartões (desktop-mvp-plan Fase 1.3)', () => {
     });
 });
 
-describe('lista de cartões e próximas faturas (mockup DesktopCartoes)', () => {
+describe('lista de cartões e próximas faturas (cartoes-e-faturas §2.4 e §4)', () => {
     it('mostra a fatura do mês com datas, o limite usado e os totais do mês', async () => {
         const { world, profileId, accountId, base } = setup();
         const roxinho = await world.ok('creditCards.create', { profileId, accountId, name: 'Roxinho', limit: 8000, closingDay: 3, dueDay: 10 });
@@ -138,7 +139,7 @@ describe('lista de cartões e próximas faturas (mockup DesktopCartoes)', () => 
         expect(list.total).toEqualMoney('2600');
     });
 
-    it('Regra de negócio (Cartão, desktop-mvp-plan Fase 13.5): a série fixa só usa limite até a fatura aberta hoje; parcelas e compras adiante usam', async () => {
+    it('Regra de negócio (Cartão, cartoes-e-faturas §4): a série fixa só usa limite até a fatura aberta hoje; parcelas e compras adiante usam', async () => {
         const { world, profileId, accountId, base } = setup();
         // Hoje é 15/10 e o cartão fecha no dia 3: a fatura aberta é a de novembro.
         const card = await world.ok('creditCards.create', { profileId, accountId, name: 'Roxinho', limit: 8000, closingDay: 3, dueDay: 10 });
@@ -169,7 +170,7 @@ describe('lista de cartões e próximas faturas (mockup DesktopCartoes)', () => 
         expect(fromNovember.map((cycle) => cycle.period)).toEqual(['2026-11', '2026-12']);
     });
 
-    it('pagamento parcial já é coberto por transactions.create: transferência negativa na fatura (database-design §4.7)', async () => {
+    it('pagamento parcial já é coberto por transactions.create: transferência negativa na fatura (banco-de-dados §4.7)', async () => {
         const { world, profileId, accountId, base } = setup();
         const creditCardId = world.creditCard(profileId, accountId, 3, 10);
         await world.create(base, { source: { kind: 'creditCard', creditCardId }, value: 1000, dueDate: '2026-10-01' });

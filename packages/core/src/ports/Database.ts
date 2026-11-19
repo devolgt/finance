@@ -1,7 +1,7 @@
 /**
  * Valores que atravessam a porta. Só os três tipos que o schema usa (`TEXT`, `INTEGER`,
  * `REAL`) mais `NULL`: booleanos viram `0`/`1` e datas viram texto antes de chegar aqui,
- * para que nenhum driver precise decidir uma conversão (database-design §3.9).
+ * para que nenhum driver precise decidir uma conversão (banco-de-dados §3.9).
  */
 export type SqlValue = string | number | null;
 
@@ -16,11 +16,11 @@ export type SqlParams = Readonly<Record<string, SqlValue>>;
 export type SqlRow = Readonly<Record<string, SqlValue>>;
 
 /**
- * Porta estreita de acesso ao SQLite (database-design §3.3). O driver muda por plataforma
+ * Porta estreita de acesso ao SQLite (banco-de-dados §3.3). O driver muda por plataforma
  * — `better-sqlite3` no desktop, `expo-sqlite` no mobile —, então o núcleo só enxerga isto
  * e cada plataforma escreve um adaptador fino, sem regra.
  *
- * É **síncrona** de propósito (backend-design §3.5): as duas pontas de uma escrita e o
+ * É **síncrona** de propósito (core §4.2): as duas pontas de uma escrita e o
  * recálculo de saldos precisam estar na mesma transação de banco, e com API síncrona nada
  * consegue intercalar um `await` no meio da transação de outro trecho de código.
  */

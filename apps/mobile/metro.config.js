@@ -12,7 +12,7 @@ const projectRoot = __dirname;
  * No modo isolado do pnpm, `packages/sqlite-expo` e `packages/client` têm as próprias
  * dependências, e o mesmo `react-native` chega por duas variantes do store quando os
  * contextos de dependência par diferem; duas cópias registrariam os módulos nativos duas
- * vezes e quebrariam o contexto do React (mobile-mvp-plan, Fase 4).
+ * vezes e quebrariam o contexto do React (mobile §2.1).
  *
  * @type {ReadonlySet<string>}
  */

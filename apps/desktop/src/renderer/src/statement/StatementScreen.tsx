@@ -14,7 +14,7 @@ import { TransactionFilterFields } from '@/transactions/TransactionsScreen';
 import { filtersFromSearch, searchFromFilters, withFilters } from '@/transactions/transactionsSearch';
 import { parseStatementSearch, resolveStatementRange } from './statementSearch.ts';
 
-/** Opções do filtro "Tipo", na ordem do mockup. */
+/** Opções do filtro "Tipo", do mais amplo ("Tudo") para os recortes. */
 const KIND_OPTIONS: readonly { readonly kind: DailyStatementKind; readonly label: string }[] = [
     { kind: 'all', label: 'Tudo' },
     { kind: 'income', label: 'Receitas' },
@@ -22,7 +22,7 @@ const KIND_OPTIONS: readonly { readonly kind: DailyStatementKind; readonly label
 ];
 
 /**
- * Extrato (mockup `DesktopExtrato`): os mesmos lançamentos de Transações, com os mesmos filtros,
+ * Extrato (desktop §8.1): os mesmos lançamentos de Transações, com os mesmos filtros,
  * num período de vários meses, numa tabela com o dia do mês nas linhas e os meses nas colunas.
  * Como não cabe descrever cada lançamento, a célula mostra o resultado do dia; clicar nela abre o
  * detalhe do dia acima da tabela. Os dados são os da tabela de Transações de cada mês
@@ -207,7 +207,7 @@ function selectedCell(view: DailyStatementView, selection: { readonly period: st
 }
 
 /**
- * Painel de filtros do mockup: período (atalhos, "De" e "Até"), tipo, os campos de Transações e a
+ * Painel de filtros: período (atalhos, "De" e "Até"), tipo, os campos de Transações e a
  * busca, num cartão só acima da tabela.
  *
  * @param props.current Mês corrente, de onde os atalhos contam.
@@ -317,7 +317,7 @@ function FilterPanel({
  * como a situação em Transações.
  *
  * @param props.label Rótulo acima do campo.
- * @param props.accessibleLabel Nome do campo para o leitor de tela, o do mockup.
+ * @param props.accessibleLabel Nome do campo para o leitor de tela, mais explícito que o rótulo curto.
  * @param props.value Mês escolhido.
  * @param props.options Meses oferecidos.
  * @param props.onChange Recebe o mês escolhido.
@@ -467,7 +467,7 @@ function Sample({ className, children }: { readonly className?: string; readonly
 
 /**
  * Marca de cada situação na célula. O que vai vencer é sublinhado e mais leve; o atraso tem fundo
- * e moldura de aviso: as duas se distinguem do pago sem depender só da cor (decisão de interface 7).
+ * e moldura de aviso: as duas se distinguem do pago sem depender só da cor (desktop §7.3).
  */
 const STATE_STYLES = {
     paid: '',

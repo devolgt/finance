@@ -2,9 +2,9 @@ import type { ProfileResponse, ReportDefinitionResponse } from '@finance/core';
 import { z } from 'zod';
 
 /*
- * Relatório aberto na página de Relatórios e no editor (reports-design, Fase 15). Fica na URL
+ * Relatório aberto na página de Relatórios e no editor (relatorios §3). Fica na URL
  * como *search param* `report`, como a conta em Contas: voltar no histórico devolve o relatório
- * que estava aberto, e o relatório salvo abre pela navegação. Os relatórios fixos (§8 e §9) usam
+ * que estava aberto, e o relatório salvo abre pela navegação. Os relatórios fixos (relatorios §7 e §8) usam
  * o mesmo parâmetro, com uma chave própria no lugar do id.
  */
 
@@ -59,7 +59,7 @@ export function parseReportEditorSearch(search: Readonly<Record<string, unknown>
 }
 
 /**
- * Regra de negócio (Perfis): sócio só existe em perfil empresarial (database-design §4.2), então a
+ * Regra de negócio (Perfis): sócio só existe em perfil empresarial (banco-de-dados §4.2), então a
  * distribuição por sócio só fica fixada nele; a projeção de saldo, em todos.
  *
  * @param profileType Tipo do perfil ativo.

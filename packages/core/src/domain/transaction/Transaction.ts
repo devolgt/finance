@@ -10,7 +10,7 @@ const NAME_MAX_LENGTH = 100;
 
 /**
  * Proveniência de um valor em moeda estrangeira. Só registro: `value` já chega convertido
- * para a moeda do perfil e **nenhum cálculo multiplica pela taxa** (database-design §4.13).
+ * para a moeda do perfil e **nenhum cálculo multiplica pela taxa** (banco-de-dados §4.13).
  */
 export interface OriginCurrency {
     readonly currency: Currency;
@@ -27,7 +27,7 @@ export interface TransactionContent {
     readonly goalId: GoalId | null;
     /**
      * A transferência vinculada **retira** dinheiro da meta, que desconta do progresso; `false`
-     * guarda (database-design §4.11). Sem meta é sempre `false`.
+     * guarda (banco-de-dados §4.11). Sem meta é sempre `false`.
      */
     readonly goalWithdrawal: boolean;
     readonly name: string;
@@ -40,7 +40,7 @@ export interface TransactionContent {
     readonly dueDate: LocalDate;
     /** `null` enquanto a transação está em aberto; preenchida exatamente quando paga. */
     readonly paymentDate: LocalDate | null;
-    /** Tags do lançamento, sem repetição; vazio quando não tem nenhuma (database-design §4.14). */
+    /** Tags do lançamento, sem repetição; vazio quando não tem nenhuma (banco-de-dados §4.14). */
     readonly tagIds: readonly TagId[];
 }
 
@@ -53,16 +53,16 @@ export interface TransactionProps extends TransactionContent {
     readonly recurrenceId: RecurrenceId | null;
     /**
      * Número da ocorrência na série (a 1ª é 1), preenchido exatamente com `recurrenceId`; é a
-     * chave do id determinístico da ocorrência (database-design §4.12).
+     * chave do id determinístico da ocorrência (banco-de-dados §4.12).
      */
     readonly occurrence: number | null;
 }
 
 /**
  * Toda movimentação de dinheiro — receita, despesa, transferência ou investimento
- * (database-design §4.13). A entidade guarda os invariantes que relacionam campos da
+ * (banco-de-dados §4.13). A entidade guarda os invariantes que relacionam campos da
  * própria linha; o que depende de outras linhas (posse das referências, perfil
- * empresarial) é verificado no ponto de controle da camada Service (§3.10).
+ * empresarial) é verificado no ponto de controle da camada Service (banco-de-dados §3.10).
  */
 export class Transaction implements TransactionProps {
     public readonly id: TransactionId;
@@ -116,7 +116,7 @@ export class Transaction implements TransactionProps {
     /**
      * Cria uma transação nova, validando os invariantes da linha.
      *
-     * @param props Dados da transação, com id já gerado pela aplicação (database-design §3.5).
+     * @param props Dados da transação, com id já gerado pela aplicação (banco-de-dados §3.5).
      * @return A transação.
      * @throws {InvalidValueError} Quando um campo isolado é inválido (nome, taxa).
      * @throws {BusinessRuleViolation} Quando campos se contradizem (destino em receita, meta em despesa).
@@ -127,7 +127,7 @@ export class Transaction implements TransactionProps {
 
     /**
      * Reconstitui uma transação persistida, sem revalidar: a linha pode ter perdido o
-     * destino por `ON DELETE SET NULL` (database-design §4.13), estado que não se cria mas
+     * destino por `ON DELETE SET NULL` (banco-de-dados §4.13), estado que não se cria mas
      * que se lê.
      *
      * @param props Dados lidos do banco pelo Repository.
@@ -139,9 +139,9 @@ export class Transaction implements TransactionProps {
 
     /**
      * Edita os campos do usuário. Identidade, tipo e vínculo com a recorrência não mudam: o id
-     * de uma ocorrência é derivado da data em que foi gerada e nunca é recalculado
-     * (sync-design §5.6), e o tipo é fixo desde a criação (`assertTypeKept`). O perfil só muda
-     * quando a edição move a transação para outro perfil (database-design §4.13): é ele que diz
+     * de uma ocorrência é derivado do número dela na série e nunca é recalculado
+     * (recorrencias §4.1; sincronizacao §3.7), e o tipo é fixo desde a criação (`assertTypeKept`). O perfil só muda
+     * quando a edição move a transação para outro perfil (banco-de-dados §4.13): é ele que diz
      * de quem são as referências do conteúdo novo.
      *
      * @param content Novo conteúdo completo da transação.
@@ -159,7 +159,7 @@ export class Transaction implements TransactionProps {
      * Recusa a troca de tipo numa edição. Fica exposto, e não só dentro de `revise`, porque
      * recomeçar uma série grava a editada de novo pelo modelo da regra nova sem passar por
      * `revise`, e a regra precisa valer também ali.
-     * Regra de negócio (Transação, database-design §4.13): o tipo é fixo desde a criação — uma
+     * Regra de negócio (Transação, banco-de-dados §4.13): o tipo é fixo desde a criação — uma
      * despesa continua despesa, uma receita continua receita. Trocar o tipo inverte a direção
      * do efeito no saldo, cria ou some com a conta de destino e muda quem pode alimentar uma
      * meta; aceitar isso numa edição deixava vínculos inválidos para trás (meta numa despesa,
@@ -181,7 +181,7 @@ export class Transaction implements TransactionProps {
      * pagar em outro mês muda a transação de extrato. Não revalida o conteúdo porque nem a
      * data de pagamento nem o contêiner participam de um invariante da linha; revalidar
      * recusaria marcar como paga uma transferência antiga que perdeu o destino por
-     * `ON DELETE SET NULL` (database-design §4.13).
+     * `ON DELETE SET NULL` (banco-de-dados §4.13).
      *
      * @param paymentDate Data do pagamento, ou `null` para voltar a ficar em aberto.
      * @param container Contêiner resolvido para a nova data pelo Service; numa transação de
@@ -215,7 +215,7 @@ export class Transaction implements TransactionProps {
     /**
      * Troca só o sócio que pagou, sem a edição completa — a atribuição feita pelo relatório por
      * sócio. Não revalida o conteúdo pelo mesmo motivo de `withPaymentDate`: o sócio não participa
-     * de nenhum invariante da linha (database-design §4.13), e revalidar recusaria atribuir o
+     * de nenhum invariante da linha (banco-de-dados §4.13), e revalidar recusaria atribuir o
      * sócio a uma transferência antiga que perdeu o destino.
      *
      * @param partnerId Sócio que pagou, já conferido pelo Service, ou `null` para tirar a atribuição.
@@ -247,7 +247,7 @@ export class Transaction implements TransactionProps {
 
     /**
      * @return `true` quando a transação já foi paga. Derivado de `paymentDate` para que
-     * `paid` e `payment_date` nunca discordem — regra que o banco não garante (§3.10).
+     * `paid` e `payment_date` nunca discordem — regra que o banco não garante (banco-de-dados §3.10).
      */
     public isPaid(): boolean {
         return this.paymentDate !== null;
@@ -259,8 +259,8 @@ export class Transaction implements TransactionProps {
      * Regra de negócio (Extrato): a transação de conta cai no extrato do mês desta data — paga,
      * no mês do pagamento; em aberto, no do vencimento. Vale também para a conta de destino de
      * transferências e investimentos, porque a transferência é uma linha só, com uma data só
-     * dos dois lados (database-design §4.6 e §4.13). Transação de cartão não usa esta data
-     * para o contêiner: quem decide é a fatura escolhida (§4.7).
+     * dos dois lados (banco-de-dados §4.6 e §4.13). Transação de cartão não usa esta data
+     * para o contêiner: quem decide é a fatura escolhida (cartoes-e-faturas §2.2).
      *
      * @return A data de pagamento, ou o vencimento quando em aberto.
      */
@@ -306,7 +306,7 @@ export class Transaction implements TransactionProps {
             throw new InvalidValueError('charges', 'valor e encargos precisam estar na moeda do perfil');
         }
         // Regra de negócio (Transferência): transferência e investimento levam dinheiro a
-        // uma conta de destino, e só eles têm uma (database-design §4.13).
+        // uma conta de destino, e só eles têm uma (banco-de-dados §4.13).
         if (movesToDestination(props.type) && props.destinationAccountId === null) {
             throw new BusinessRuleViolation('destination-required', 'transferências e investimentos precisam de uma conta de destino');
         }
@@ -314,12 +314,12 @@ export class Transaction implements TransactionProps {
             throw new BusinessRuleViolation('destination-not-allowed', 'só transferências e investimentos têm conta de destino');
         }
         // Regra de negócio (Metas): a meta é um valor que se quer guardar, e só receita e
-        // transferência levam dinheiro a ela (desktop-mvp-plan Fase 9.3). Despesa é gasto e
+        // transferência levam dinheiro a ela (metas §4). Despesa é gasto e
         // investimento já tem destino próprio; nenhum dos dois junta dinheiro para a meta.
         if (props.goalId !== null && !feedsGoal(props.type)) {
             throw new BusinessRuleViolation('goal-requires-saving-type', 'só receitas e transferências podem ser vinculadas a uma meta', { field: 'goalId' });
         }
-        // Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): só a transferência retira
+        // Regra de negócio (Metas, metas §2): só a transferência retira
         // dinheiro da meta; a receita sempre guarda.
         if (props.goalId !== null && props.goalWithdrawal && !withdrawsFromGoal(props.type)) {
             throw new BusinessRuleViolation('goal-withdrawal-requires-transfer', 'só transferências podem retirar dinheiro de uma meta', { field: 'goalWithdrawal' });
@@ -330,7 +330,7 @@ export class Transaction implements TransactionProps {
             throw new BusinessRuleViolation('destination-equals-origin', 'a conta de destino precisa ser diferente da conta de origem');
         }
         // A mesma tag duas vezes seria o mesmo vínculo duas vezes, que o índice único do par
-        // recusaria com erro de SQL (database-design §4.14); a repetição é descartada.
+        // recusaria com erro de SQL (banco-de-dados §4.14); a repetição é descartada.
         // Sem meta não há de onde retirar: a marca perde o sentido e é descartada, para que tirar a
         // meta de um lançamento de retirada não exija desmarcar a retirada antes.
         return { ...props, name, description: normalizedDescription(props.description), tagIds: [...new Set(props.tagIds)], goalWithdrawal: props.goalId !== null && props.goalWithdrawal };

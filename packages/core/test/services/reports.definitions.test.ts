@@ -56,7 +56,7 @@ function report(profileId: string, overrides: Partial<CreateInput> = {}): Create
     };
 }
 
-describe('cadastro de relatórios (reports-design §4)', () => {
+describe('cadastro de relatórios (relatorios §6)', () => {
     it('cria com os padrões do filtro preenchidos, lista por nome e abre a definição salva', async () => {
         const { world, profileId, tagId } = await setup();
         const created = await world.ok('reports.create', report(profileId, { name: 'Viagens', filter: { period: { anchor: { kind: 'fixed', month: '2026-07' }, previousMonths: 2, basis: 'due' }, types: ['expense'], tagIds: [tagId] } }));
@@ -106,7 +106,7 @@ describe('cadastro de relatórios (reports-design §4)', () => {
         expect((await world.ok('reports.create', report(profileId, { name: 'x'.repeat(100) }))).name).toHaveLength(100);
     });
 
-    it('Regra de negócio (Relatórios, §2.2): cadastro de outro perfil ou excluído no filtro é NOT_FOUND', async () => {
+    it('Regra de negócio (Relatórios, relatorios §4.2): cadastro de outro perfil ou excluído no filtro é NOT_FOUND', async () => {
         const { world, profileId } = await setup();
         const other = await setup(world);
         expect(await world.failure('reports.create', report(profileId, { filter: { period: { anchor: { kind: 'reference' } }, tagIds: [other.tagId] } }))).toMatchObject({
@@ -120,7 +120,7 @@ describe('cadastro de relatórios (reports-design §4)', () => {
         expect((await world.failure('reports.create', report(profileId, { filter: { period: { anchor: { kind: 'reference' } }, tagIds: [deleted.id] } }))).code).toBe('NOT_FOUND');
     });
 
-    it('Regra de negócio (Relatórios, §2.2): o cadastro excluído depois de salvo continua na definição, e regravar o aceita; um id novo morto, não', async () => {
+    it('Regra de negócio (Relatórios, relatorios §4.2): o cadastro excluído depois de salvo continua na definição, e regravar o aceita; um id novo morto, não', async () => {
         const { world, profileId, tagId } = await setup();
         const created = await world.ok('reports.create', report(profileId, { filter: { period: { anchor: { kind: 'reference' } }, tagIds: [tagId] } }));
         await world.ok('tags.delete', { id: tagId });

@@ -5,7 +5,7 @@ import { otherProfileAccountNames, type OtherProfileAccount } from './otherProfi
 
 /**
  * De onde vem a linha do extrato. Os quatro tipos são as quatro fontes do movimento do mês
- * (database-design §4.6): a tabela mostra cada uma, para que entradas e saídas se expliquem
+ * (banco-de-dados §4.6): a tabela mostra cada uma, para que entradas e saídas se expliquem
  * linha a linha.
  */
 export type StatementRowKind = 'transaction' | 'incomingTransfer' | 'paidInvoice' | 'openInvoice';
@@ -18,7 +18,7 @@ export type StatementRowKind = 'transaction' | 'incomingTransfer' | 'paidInvoice
  */
 export type StatementSituation = 'paid' | 'pending' | 'invoicePaid' | 'invoiceOpen';
 
-/** Rótulos do mockup `DesktopContas`; os de lançamento são os mesmos da tela de Transações. */
+/** Rótulos da situação no extrato; os de lançamento são os mesmos da tela de Transações. */
 const SITUATION_LABELS: Readonly<Record<StatementSituation, string>> = {
     paid: 'Pago',
     pending: 'Pendente',
@@ -26,7 +26,7 @@ const SITUATION_LABELS: Readonly<Record<StatementSituation, string>> = {
     invoiceOpen: 'Em aberto',
 };
 
-/** Como o valor se lê sem depender só da cor (decisão de interface 7). */
+/** Como o valor se lê sem depender só da cor (desktop §7.3). */
 export type StatementDirection = 'in' | 'out' | 'transfer';
 
 /** Fatura para onde a linha leva ("ver fatura"): o cartão e a competência. */
@@ -66,7 +66,7 @@ export interface StatementRow {
     readonly name: string;
     /** Complemento do nome: `→ Tesouro`, `de Nubank`, `fatura Roxinho · out`; `null` sem complemento. */
     readonly detail: string | null;
-    /** Despesa com valor negativo, mostrada com a etiqueta "estorno" (database-design §4.13). */
+    /** Despesa com valor negativo, mostrada com a etiqueta "estorno" (banco-de-dados §4.13). */
     readonly refund: boolean;
     /** Fatura para o link "ver fatura"; `null` nas linhas que não são de fatura. */
     readonly invoice: StatementInvoiceLink | null;
@@ -98,12 +98,12 @@ interface DatedRow {
 }
 
 /**
- * Monta a tabela de movimentos do extrato de uma conta (mockup `DesktopContas`): as transações
+ * Monta a tabela de movimentos do extrato de uma conta (contas §2.4): as transações
  * do extrato, as transferências que chegam, as faturas pagas no mês e as em aberto que vencem
  * nele, na ordem em que o dinheiro se move.
  *
  * Regra de negócio (Extrato): a data de cada linha é a **data de caixa** — pagamento quando
- * pago, vencimento em aberto (database-design §4.13); a da fatura paga é o dia do pagamento e a
+ * pago, vencimento em aberto (banco-de-dados §4.13); a da fatura paga é o dia do pagamento e a
  * da fatura em aberto, o vencimento, que é quando ela pesa no previsto (§4.7). O valor é o
  * efeito no saldo desta conta, como o núcleo o calculou: na transferência que chega é o efeito
  * no destino, e o pagamento parcial de fatura aparece como saída.
@@ -164,7 +164,7 @@ function transactionRow(transaction: TransactionResponse, lookup: Lookup): Dated
 
 /**
  * Transferência ou investimento que chega a esta conta: o efeito é o do destino. Quando a
- * origem é uma fatura, é um pagamento parcial (database-design §4.7) e o complemento nomeia a
+ * origem é uma fatura, é um pagamento parcial (banco-de-dados §4.7) e o complemento nomeia a
  * fatura, com o link para ela.
  *
  * @param transaction Transação que tem esta conta como destino.
@@ -240,7 +240,7 @@ function entryRow(transaction: TransactionResponse, placement: EntryPlacement, l
 
 /**
  * Fatura no extrato da conta que a quita. O valor é o `balance`, que já tem o sinal do efeito
- * na conta (database-design §4.7): uma fatura credora aparece como entrada.
+ * na conta (banco-de-dados §4.7): uma fatura credora aparece como entrada.
  *
  * @param invoice Fatura paga neste extrato ou em aberto vencendo no mês.
  * @param cashDate Dia do pagamento ou do vencimento; `null` na paga sem dia gravado.

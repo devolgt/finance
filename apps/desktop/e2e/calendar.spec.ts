@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Calendário (mockup `DesktopCalendario`) no app empacotado: os lançamentos por dia do vencimento,
+ * Calendário (desktop §8.1) no app empacotado: os lançamentos por dia do vencimento,
  * o atraso, o painel do dia com "Marcar pago" e o modo "Saldo do dia". O cenário fica no mês
  * anterior, que já passou inteiro: o vencimento do dia 5 é atrasado em qualquer dia em que o teste
  * rode. Os cliques usam `dispatchEvent`, pelo motivo explicado em `firstUse.ts`.

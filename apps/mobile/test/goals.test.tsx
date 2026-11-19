@@ -56,7 +56,7 @@ function lastSheet(): ReturnType<typeof screen.getByTestId> {
 
 afterEach(restoreToday);
 
-describe('Metas (mobile-mvp-plan, Fase 14)', () => {
+describe('Metas (metas §7.2)', () => {
     it('lista as metas com o progresso do núcleo e troca a visualização', async () => {
         const { core, s } = await openGoals();
         const [reserve] = await ok(core, 'goals.list', { profileId: s.profileId, period: SCENARIO_PERIOD });

@@ -47,6 +47,8 @@ function fakeCopies(options: { readonly exportOk?: boolean; readonly importResul
             return options.importResult ?? { result: { ok: true, file: 'financas.sqlite', previousCopy: 'antes-da-importacao-20261015-120000.sqlite' }, closed: true };
         },
         logUri: () => (options.logUri === undefined ? 'file:///docs/logs/core.log' : options.logUri),
+        // Ajustes não tira o banco do lugar; quem testa isso é o teste de Dispositivos.
+        setAsideForJoin: () => ({ ok: false, reason: 'io-error' }),
     };
     return { copies, discarded, imported };
 }
@@ -83,7 +85,7 @@ beforeEach(() => {
     mockGetDocumentAsync.mockClear();
 });
 
-describe('Ajustes (mobile-mvp-plan, Fase 18)', () => {
+describe('Ajustes (mobile §7.2)', () => {
     it('troca o tema e mostra a versão do banco', async () => {
         const app = await openSettings(fakeCopies().copies);
 

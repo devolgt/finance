@@ -1,13 +1,13 @@
 import { Currency, Money, type MoneyResponse } from '@finance/core';
 
-/** Sinal de menos tipográfico (U+2212), o dos mockups; o hífen fica estreito e desalinha a coluna. */
+/** Sinal de menos tipográfico (U+2212) (desktop §7.4); o hífen fica estreito e desalinha a coluna. */
 export const MINUS = '−';
 
 /**
  * Como o sinal aparece:
  * - `negative`: só `−` nos negativos — saldos e totais;
  * - `always`: `+` nos positivos e `−` nos negativos — entradas e saídas, que não podem
- *   depender só da cor (decisão de interface 7 dos mockups); o zero fica sem sinal;
+ *   depender só da cor (desktop §7.3); o zero fica sem sinal;
  * - `absolute`: nunca — valor de fatura e gasto de relatório, mostrados em módulo.
  */
 export type MoneySign = 'negative' | 'always' | 'absolute';
@@ -16,15 +16,16 @@ export type MoneySign = 'negative' | 'always' | 'absolute';
 const SYMBOLS: Readonly<Record<string, string>> = { BRL: 'R$', USD: 'US$', EUR: '€', GBP: '£' };
 
 /**
- * Formata dinheiro no padrão pt-BR dos mockups: `R$ 1.234,56`, `−R$ 1.234,56`, `+R$ 9.500,00`.
+ * Formata dinheiro no padrão pt-BR (desktop §7.4): `R$ 1.234,56`, `−R$ 1.234,56`, `+R$ 9.500,00`.
  * Não usa `Intl.NumberFormat` porque o resultado difere entre o Chromium e o Hermes do
- * mobile (desktop-shell-design §4.2): o mesmo saldo nunca pode aparecer de dois jeitos. O
+ * mobile (desktop §4.6): o mesmo saldo nunca pode aparecer de dois jeitos. O
  * arredondamento é o do `Money` — meio para longe do zero, na precisão da moeda —, o mesmo
  * da persistência, para que a tela nunca mostre um centavo diferente do banco.
  *
  * @param money Valor como veio do núcleo.
  * @param sign Regra do sinal; o padrão é a dos saldos.
- * @return O texto formatado, com espaço comum entre símbolo e número (como nos mockups).
+ * @return O texto formatado, com espaço comum entre símbolo e número, e não o não separável do
+ * `Intl`, para que o texto seja o mesmo no Chromium e no Hermes.
  */
 export function formatMoney(money: MoneyResponse, sign: MoneySign = 'negative'): string {
     const { negative, digits } = splitAmount(money.amount, money.currency);
@@ -36,7 +37,7 @@ export function formatMoney(money: MoneyResponse, sign: MoneySign = 'negative'):
  * Valor compacto para células estreitas, sem símbolo e sem os centavos quando são zero: `+500`,
  * `−1.830`, `−66,50`. Existe para a tabela dia × mês do Extrato, onde doze colunas de
  * `−R$ 1.830,00` não cabem na tela; o sinal continua sempre presente, porque a entrada e a saída
- * não podem depender só da cor (decisão de interface 7 dos mockups). O arredondamento é o mesmo
+ * não podem depender só da cor (desktop §7.3). O arredondamento é o mesmo
  * do `formatMoney`, para que a célula e o rodapé nunca discordem num centavo.
  *
  * @param money Valor como veio do núcleo.

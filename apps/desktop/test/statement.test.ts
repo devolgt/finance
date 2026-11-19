@@ -4,7 +4,7 @@ import { parseStatementSearch, resolveStatementRange } from '../src/renderer/src
 /** Um instante em 28/10/2026, no fuso do aparelho, para o mês corrente dos atalhos. */
 const NOW = new Date(2026, 9, 28, 12);
 
-describe('URL do Extrato (mockup DesktopExtrato)', () => {
+describe('URL do Extrato (desktop §8.1)', () => {
     it('aceita o período inteiro, o tipo e os filtros de Transações', () => {
         const account = '0b9f2e2a-3c1d-4e5f-8a7b-6c5d4e3f2a1b';
         expect(parseStatementSearch({ from: '2026-01', to: '2026-10', kind: 'expense', account, q: 'mercado' })).toEqual({

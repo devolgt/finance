@@ -30,7 +30,7 @@ import { RowDate, RowValue } from '../ui/pickers.tsx';
 import { Sheet } from '../ui/Sheet.tsx';
 import { LoadingState } from '../ui/states.tsx';
 
-/** "Não repetir", "Parcelado" e "Fixo", na ordem do mockup `MobileParcelar`. */
+/** "Não repetir", "Parcelado" e "Fixo": o padrão primeiro, como na seção "Repetir" do desktop. */
 const REPEAT_KINDS: readonly { readonly value: RepeatKind; readonly label: string }[] = [
     { value: 'none', label: 'Não repetir' },
     { value: 'installments', label: 'Parcelado' },
@@ -57,7 +57,7 @@ function repeatSummary(values: TransactionFormValues): string {
 }
 
 /**
- * "Repetir ou parcelar" (mockup `MobileParcelar`; mobile-mvp-plan, Fase 11): a linha do formulário
+ * "Repetir ou parcelar" (recorrencias §3.3): a linha do formulário
  * com o resumo e, ao toque, uma folha com o tipo, a frequência, as parcelas ou o fim, o sentido do
  * valor e a prévia das ocorrências (`recurrences.preview`) — as mesmas peças da seção "Repetir"
  * do desktop. Na edição de uma ocorrência, "Não repetir" some: a série só muda de forma.
@@ -175,7 +175,7 @@ export function RepeatRow(props: {
 }
 
 /**
- * A quais ocorrências da série a edição ou a exclusão se aplica (mockup `MobileEscopo`): "somente
+ * A quais ocorrências da série a edição ou a exclusão se aplica (recorrencias §7): "somente
  * esta", "esta e as futuras" ou "todas", com o detalhe de cada uma do `scopeChoices` — os mesmos
  * textos do desktop. "Somente esta" confirma direto; as outras seguem para a revisão.
  *
@@ -301,7 +301,7 @@ function ReviewGroupList({ group }: { readonly group: ReviewGroup }): ReactNode 
 }
 
 /**
- * Revisão da série antes de gravar (database-design §4.12; mockup `MobileEscopo`): o resumo, os
+ * Revisão da série antes de gravar (recorrencias §7; banco-de-dados §4.12): o resumo, os
  * avisos — ocorrências já pagas e saldos de meses passados que mudam — e as ocorrências que entram,
  * saem ou mudam, pelos ensaios do núcleo (`recurrences.planCreate`, `planUpdate`, `planDelete`) e
  * pelo `describeSeriesPlan` do desktop.

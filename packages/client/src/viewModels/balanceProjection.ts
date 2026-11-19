@@ -4,7 +4,7 @@ import { formatMoney } from '../format/money.ts';
 import type { ReportChartView } from './reportView.ts';
 
 /*
- * Projeção de saldo (reports-design §9): o saldo de hoje, o que já está lançado para cada mês, a
+ * Projeção de saldo (relatorios §8): o saldo de hoje, o que já está lançado para cada mês, a
  * estimativa dos avulsos e a faixa de incerteza. Fica no `client` para que o celular mostre os
  * mesmos números e as mesmas palavras.
  */
@@ -66,7 +66,7 @@ export interface BalanceProjectionView {
 }
 
 /**
- * Regra de negócio (Relatórios, §9): a linha parte do saldo de hoje e mostra o cenário pessimista e
+ * Regra de negócio (Relatórios, relatorios §8.1): a linha parte do saldo de hoje e mostra o cenário pessimista e
  * o otimista junto do projetado, para que a projeção não pareça mais firme do que é; a tela diz
  * quantos meses formaram a estimativa e separa o que já está lançado do que é estimado.
  *
@@ -134,7 +134,7 @@ export function buildBalanceProjectionView(response: BalanceProjectionResponse):
 }
 
 /**
- * Regra de negócio (Relatórios, §9, B5): a faixa fecha por dois motivos diferentes, e o aviso
+ * Regra de negócio (Relatórios, relatorios §8.1, B5): a faixa fecha por dois motivos diferentes, e o aviso
  * precisa dizer qual — com um mês só não há variação a medir; com mais meses, os avulsos não
  * variaram (um perfil só de séries, por exemplo). Dizer "um mês" para um histórico de doze
  * contradizia a tabela do histórico ao lado.

@@ -2,7 +2,7 @@ import type { Currency } from '../shared/Currency.ts';
 import type { AccountId, CreditCardId, ProfileId } from '../shared/ids.ts';
 import { requireName } from '../shared/names.ts';
 
-/** Tipo do perfil; controla se sócios existem (database-design §4.1). */
+/** Tipo do perfil; controla se sócios existem (banco-de-dados §4.1). */
 export type ProfileType = 'personal' | 'business';
 
 export const PROFILE_TYPES: readonly ProfileType[] = ['personal', 'business'];
@@ -14,7 +14,7 @@ export interface ProfileProps {
     readonly type: ProfileType;
     readonly currency: Currency;
     /**
-     * Regra de negócio (Lançamentos, database-design §4.1): conta que o atalho "Débito" do
+     * Regra de negócio (Lançamentos, banco-de-dados §4.1): conta que o atalho "Débito" do
      * lançamento novo escolhe. Só vem preenchida quando a conta está viva e ativa; `null` sem padrão.
      */
     readonly defaultAccountId: AccountId | null;
@@ -26,7 +26,7 @@ export interface ProfileProps {
 export type NewProfileProps = Omit<ProfileProps, 'defaultAccountId' | 'defaultCreditCardId'>;
 
 /**
- * Raiz do tenant: tudo pertence a um perfil (database-design §3.8). No núcleo de saldos
+ * Raiz do tenant: tudo pertence a um perfil (banco-de-dados §3.8). No núcleo de saldos
  * ele importa por dois motivos — a moeda, que é a unidade de todo valor armazenado, e o
  * tipo, que decide se uma transação pode ter sócio pagador.
  */
@@ -57,7 +57,7 @@ export class Profile implements ProfileProps {
      * Cadastra um perfil novo. A moeda já chega como `Currency`, que só existe com código
      * ISO de três letras em maiúsculas — o mesmo domínio do `ck_profiles_currency`.
      *
-     * @param props Dados do perfil, com id já gerado pela aplicação (database-design §3.5).
+     * @param props Dados do perfil, com id já gerado pela aplicação (banco-de-dados §3.5).
      * @return O perfil, com o nome aparado e sem conta nem cartão padrão.
      * @throws {InvalidValueError} Quando o nome está vazio ou passa de 45 caracteres.
      */
@@ -86,7 +86,7 @@ export class Profile implements ProfileProps {
 
     /**
      * Troca a moeda de relatório. Só reetiqueta: nenhum valor é convertido, porque todo
-     * valor do banco **é** denominado na moeda do perfil (database-design §4.1) e não existe
+     * valor do banco **é** denominado na moeda do perfil (banco-de-dados §4.1) e não existe
      * taxa a aplicar. Quem decide se a troca ainda é segura é o Service, que enxerga os
      * lançamentos do perfil.
      *
@@ -99,7 +99,7 @@ export class Profile implements ProfileProps {
 
     /**
      * Regra de negócio (Perfil): sócios só existem em perfis empresariais
-     * (database-design §4.1), então só eles podem registrar quem pagou uma transação.
+     * (banco-de-dados §4.1), então só eles podem registrar quem pagou uma transação.
      *
      * @return `true` quando o perfil aceita sócios.
      */

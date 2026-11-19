@@ -5,7 +5,7 @@ const CoreClientContext = createContext<CoreClient | null>(null);
 
 /**
  * Injeta o `CoreClient` da plataforma na árvore: a raiz do app escolhe a implementação
- * (IPC no desktop, direta no mobile) e nenhum hook sabe qual é (desktop-shell-design §5.1).
+ * (IPC no desktop, direta no mobile) e nenhum hook sabe qual é (desktop §3.1).
  *
  * @param props.client Implementação do núcleo para esta plataforma.
  * @param props.children Árvore que usa os hooks de dados.

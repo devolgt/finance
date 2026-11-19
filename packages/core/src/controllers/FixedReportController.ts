@@ -9,7 +9,7 @@ import { balanceProjectionRequest, entriesWithoutPartnerRequest, partnerReportRe
 import type { FixedReportService } from '../services/report/FixedReportService.ts';
 import { handle, type CoreResult, type UnexpectedErrorListener } from './CoreResult.ts';
 
-/** Rotas dos relatórios fixos (reports-design §8 e §9). */
+/** Rotas dos relatórios fixos (relatorios §7 e §8). */
 export class FixedReportController {
     /**
      * @param reports Relatórios fixos.

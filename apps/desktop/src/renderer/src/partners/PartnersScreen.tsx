@@ -21,21 +21,21 @@ import { cn } from '@/lib/cn';
 import { useActiveProfile } from '@/shell/activeProfile';
 
 /**
- * Cor de cada sócio na divisão, pela posição na lista. O mockup `DesktopSocios` define `--s1` a
- * `--s4` com os mesmos valores, nos dois temas, de `accent`, `out`, `muted` e `dot`; usar esses
- * tokens evita uma paleta paralela fora do `packages/tokens`.
+ * Cor de cada sócio na divisão, pela posição na lista. Reaproveita `accent`, `out`, `muted` e
+ * `dot`, que já se distinguem nos dois temas; uma paleta própria dos sócios ficaria fora do
+ * `packages/tokens`.
  */
 const PARTNER_COLORS: readonly string[] = ['bg-accent', 'bg-out', 'bg-muted', 'bg-dot'];
 
 /**
- * Colunas da tabela: cor, nome, participação e remover. "Aportou" e "Deveria ter aportado" do
- * mockup saíram com o relatório por sócio (reports-design, relatórios personalizados).
+ * Colunas da tabela: cor, nome, participação e remover. "Aportou" e "Deveria ter aportado" ficam
+ * só no relatório por sócio (relatorios §7), que os calcula sobre os aportes.
  */
 const TABLE_COLUMNS = 'grid grid-cols-[12px_minmax(0,1.6fr)_150px_32px] items-start gap-3 px-4';
 
 /**
- * Sócios, item próprio do menu (mockup `DesktopSocios`; desktop-mvp-plan Fases 13.7 e 13.11).
- * Regra de negócio (Perfis): sócio só existe em perfil empresarial (database-design §4.2). O menu
+ * Sócios, item próprio do menu (socios §4.1 e desktop §8.1).
+ * Regra de negócio (Perfis): sócio só existe em perfil empresarial (banco-de-dados §4.2). O menu
  * já esconde o item no perfil pessoal, mas a URL continua alcançável — pelo histórico, ou trocando
  * o perfil com a tela aberta —, e então a tela explica em vez de chamar uma rota que o núcleo
  * recusa.
@@ -69,7 +69,7 @@ export function PartnersScreen(): ReactNode {
 
 /**
  * O formulário da lista inteira: a divisão, a tabela editável, a soma ao vivo e um "Salvar" para
- * tudo. Regra de negócio (Sócios, decisão de interface 10 dos mockups): a soma precisa dar 100%
+ * tudo. Regra de negócio (Sócios, socios §1.3): a soma precisa dar 100%
  * para salvar, por isso a gravação é da lista inteira, e não sócio a sócio — cada passo
  * intermediário de uma redivisão (60/40 → 50/50) seria recusado.
  *
@@ -94,7 +94,7 @@ function PartnersEditor({ saved }: { readonly saved: readonly PartnerResponse[] 
     };
 
     /**
-     * Sócio novo entra com 0%, como no mockup: a soma continua dizendo quanto falta, e o usuário
+     * Sócio novo entra com 0%: a soma continua dizendo quanto falta, e o usuário
      * redistribui as participações antes de salvar.
      *
      * @param name Nome digitado, já aparado e não vazio.
@@ -186,7 +186,7 @@ function PartnersEditor({ saved }: { readonly saved: readonly PartnerResponse[] 
 }
 
 /**
- * Quadro "Divisão" do mockup: a soma ao vivo, a barra com a parte de cada sócio e a legenda. A
+ * Quadro "Divisão": a soma ao vivo, a barra com a parte de cada sócio e a legenda. A
  * barra é uma imagem com descrição, porque a legenda ao lado já diz os mesmos números em texto.
  *
  * @param props.view Cadastro montado.
@@ -274,7 +274,7 @@ function PartnerRow({
                 <label htmlFor={percentageId} className="sr-only">
                     Participação de {row.label}
                 </label>
-                {/* O `%` fica dentro da moldura, como no mockup; a moldura repete o foco e o erro do `Input`. */}
+                {/* O `%` fica dentro da moldura, colado ao número; a moldura repete o foco e o erro do `Input`. */}
                 <div
                     className={cn(
                         'flex h-9 items-center overflow-hidden rounded-8 border border-line shadow-xs transition-[color,box-shadow] focus-within:border-accent focus-within:ring-[3px] focus-within:ring-accent/50 dark:bg-line/30',
@@ -367,7 +367,7 @@ function NewPartnerRow({ color, onAdd }: { readonly color: number; readonly onAd
 
 /**
  * Quadro da soma abaixo da tabela: verde quando fecha 100%, aviso quando falta ou passa — com o
- * texto dizendo quanto, porque a cor não pode ser o único sinal (decisão de interface 7).
+ * texto dizendo quanto, porque a cor não pode ser o único sinal (desktop §7.3).
  *
  * @param props.view Cadastro montado.
  * @return O quadro.

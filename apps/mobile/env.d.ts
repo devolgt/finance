@@ -5,7 +5,7 @@
  */
 declare namespace NodeJS {
     interface ProcessEnv {
-        /** `1` liga a medição da Fase 5 (`src/startup/benchmark.ts`). */
+        /** `1` liga a medição das chamadas interativas (`src/startup/benchmark.ts`; mobile §12.1). */
         readonly EXPO_PUBLIC_BENCHMARK?: string;
     }
 }

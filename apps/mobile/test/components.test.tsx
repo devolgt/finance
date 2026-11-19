@@ -26,7 +26,7 @@ async function renderUi(ui: ReactNode): Promise<void> {
     );
 }
 
-describe('componentes base (mobile-mvp-plan, Fase 6)', () => {
+describe('componentes base (mobile §5)', () => {
     it('o botão em andamento não aceita outro toque, para não gravar duas vezes', async () => {
         const onPress = jest.fn();
         await renderUi(<Button label="Salvar" busy onPress={onPress} />);

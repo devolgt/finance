@@ -74,7 +74,7 @@ async function savings(core: OpenedAccounts['core'], s: Scenario): Promise<Await
 
 afterEach(restoreToday);
 
-describe('Contas (mobile-mvp-plan, Fase 12)', () => {
+describe('Contas (contas §6)', () => {
     it('lista as contas com o saldo do fim do mês, o selo Padrão e os totais do núcleo', async () => {
         const { core, s } = await openAccounts();
         const list = await ok(core, 'accounts.list', { profileId: s.profileId, period: SCENARIO_PERIOD });

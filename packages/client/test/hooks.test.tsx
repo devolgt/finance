@@ -23,7 +23,7 @@ function providers(client: CoreClient): (props: { readonly children: ReactNode }
     };
 }
 
-describe('hooks de dados (desktop-mvp-plan Fase 3.2)', () => {
+describe('hooks de dados (desktop §4)', () => {
     it('a escrita invalida pelo mapa e o extrato aberto se refaz sem recarregar', async () => {
         const world = new ClientWorld();
         const s = await world.seed();

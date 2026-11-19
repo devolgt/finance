@@ -5,7 +5,7 @@ import type { MoneyInputRejection } from '../format/parseMoneyInput.ts';
 
 /*
  * Tradução dos problemas de validação para as mensagens dos formulários. Os formulários
- * validam com os schemas da camada Request do núcleo (desktop-shell-design §5.4); este módulo
+ * validam com os schemas da camada Request do núcleo (desktop §3.5); este módulo
  * só transforma o problema apontado pelo schema na frase que aparece abaixo do campo, para
  * que todo formulário do app fale do mesmo jeito sobre o mesmo erro.
  */

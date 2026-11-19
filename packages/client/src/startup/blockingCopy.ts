@@ -2,7 +2,7 @@ import type { RestoreResult, StartupStatus } from './openCoreSequence.ts';
 
 /*
  * Textos e decisões das telas de bloqueio da abertura, iguais no desktop e no celular
- * (mobile-mvp-plan, Fase 4): os dois bloqueiam pelos mesmos motivos e precisam dizer a mesma
+ * (mobile §3.1): os dois bloqueiam pelos mesmos motivos e precisam dizer a mesma
  * coisa sobre o que aconteceu com os dados.
  */
 

@@ -1,10 +1,10 @@
 import { IMPORT_FIELDS, normalizeHeader, type ColumnMapping, type ImportFieldId, type ImportFileKind } from './importFields.ts';
 
 /**
- * Mapeamento salvo como modelo ("Salvar este mapeamento como modelo", mockup
- * `DesktopImportMapear`). Guarda os campos pelo **cabeçalho**, e não pela posição, para que o mesmo
+ * Mapeamento salvo como modelo ("Salvar este mapeamento como modelo", na etapa Colunas).
+ * Guarda os campos pelo **cabeçalho**, e não pela posição, para que o mesmo
  * export com uma coluna a mais ou em outra ordem continue reconhecido. Fica nas preferências do
- * aparelho (import-design §4).
+ * aparelho (importacao §4).
  */
 export interface MappingTemplate {
     readonly name: string;
@@ -36,7 +36,7 @@ export function templateFrom(name: string, kind: ImportFileKind, headers: readon
 
 /**
  * Um modelo vale para o arquivo cujos cabeçalhos são os mesmos do arquivo de onde ele saiu, em
- * qualquer ordem — "os cabeçalhos batem" (import-design §4).
+ * qualquer ordem — "os cabeçalhos batem" (importacao §4).
  *
  * @param templates Modelos salvos.
  * @param headers Cabeçalhos do arquivo aberto.

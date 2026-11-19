@@ -50,9 +50,9 @@ const COLUMNS: readonly MovementColumn[] = ['date', 'name', 'category', 'contain
 const ALL = 'all';
 
 /**
- * Transações (mockup `DesktopTransacoes`; desktop-mvp-plan Fase 9): a tabela densa do mês com os
- * filtros e a linha-resumo. Criar e editar abrem o diálogo de lançamento, como os de contas e
- * cartões (pedido do usuário, divergindo da coluna ao lado da tabela do mockup). Os filtros ficam
+ * Transações (transacoes §5 e §8): a tabela densa do mês com os filtros e a linha-resumo. Criar
+ * e editar abrem o diálogo de lançamento, como os de contas e cartões (pedido do usuário, no lugar
+ * de um formulário numa coluna ao lado da tabela, que apertava as colunas). Os filtros ficam
  * na URL (`transactionsSearch.ts`). O "+ Lançamento" e o `N` abrem o diálogo desta tela no lugar
  * do do shell, para sugerir a origem do filtro e selecionar na tabela o lançamento gravado.
  *
@@ -152,7 +152,7 @@ export function TransactionsScreen(): ReactNode {
         <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
                 <h1 className="text-24 font-semibold">Transações</h1>
-                {/* Entrada da importação (desktop-mvp-plan Fase 13.1; mockup `DesktopTransacoes`). */}
+                {/* Entrada da importação (importacao §8). */}
                 <Button variant="outline" size="sm" className="border-line text-13 font-normal" asChild>
                     <Link to="/settings/import">Importar arquivo…</Link>
                 </Button>
@@ -227,7 +227,7 @@ function withoutFilters(filters: TransactionFilters): TransactionFilters {
 }
 
 /**
- * Barra de filtros do mockup: busca, conta ou cartão, categoria, tag e situação, com a
+ * Barra de filtros (transacoes §8.1): busca, conta ou cartão, categoria, tag e situação, com a
  * linha-resumo à direita. As listas mostram também contas e cartões desativados: o histórico
  * continua neles, e filtrá-los é como achar o que foi lançado lá.
  *
@@ -290,7 +290,7 @@ function FilterBar({
 
 /**
  * Os campos de cadastro da barra de filtros — conta ou cartão, categoria, tag e situação —, sem a
- * busca nem a linha-resumo. Exportado porque o Extrato (mockup `DesktopExtrato`) filtra os mesmos
+ * busca nem a linha-resumo. Exportado porque o Extrato (desktop §8.1) filtra os mesmos
  * lançamentos com os mesmos campos, e uma cópia deixaria as duas telas oferecendo opções
  * diferentes para o mesmo filtro.
  *
@@ -384,12 +384,12 @@ export function TransactionFilterFields({
 }
 
 /**
- * Um filtro de cadastro da barra, com busca como os campos do formulário (desktop-mvp-plan Fase
- * 13.3): contas, categorias e tags crescem com o uso, e rolar um menu para achar uma delas é o
+ * Um filtro de cadastro da barra, com busca como os campos do formulário (transacoes §8.3):
+ * contas, categorias e tags crescem com o uso, e rolar um menu para achar uma delas é o
  * mesmo problema que o `Combobox` resolveu no lançamento. "Todos/Todas" fica no topo da lista.
  *
  * @param props.label Rótulo acima do campo, que também nomeia o botão.
- * @param props.width Largura do botão, a do mockup.
+ * @param props.width Largura do botão, que cabe o nome mais comum sem cortar.
  * @param props.value Valor escolhido; vazio para "Todos".
  * @param props.onChange Recebe o valor; vazio para "Todos".
  * @param props.allLabel "Todos" ou "Todas", conforme o gênero do rótulo.
@@ -444,7 +444,7 @@ function FilterCombobox({
  * Um filtro de lista curta e fixa da barra (a situação), com "Todas" no topo.
  *
  * @param props.label Rótulo acima do campo.
- * @param props.width Largura mínima, a do mockup.
+ * @param props.width Largura mínima, que cabe a opção mais longa sem cortar.
  * @param props.value Valor escolhido; vazio para "Todos".
  * @param props.onChange Recebe o valor; vazio para "Todos".
  * @param props.allLabel "Todos" ou "Todas", conforme o gênero do rótulo.

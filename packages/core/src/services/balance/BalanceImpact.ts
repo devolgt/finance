@@ -6,7 +6,7 @@ import { YearMonth } from '../../domain/shared/YearMonth.ts';
  * partir do qual a cadeia de fechamentos precisa ser refeita. É imutável e acumulável
  * porque uma edição toca o estado **antigo e o novo** — uma transação que muda de
  * contêiner precisa recalcular os dois, e recalcular só o novo é um dos bugs previstos
- * (backend-design §5.1).
+ * (testes §1.1).
  */
 export class BalanceImpact {
     /**

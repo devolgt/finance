@@ -17,7 +17,7 @@ function dates(schedule: RecurrenceSchedule, count: number): readonly string[] {
     return Array.from({ length: count }, (_, index) => schedule.dateOf(index + 1).toString());
 }
 
-describe('aritmética de datas sem Date (backend-design §5.7)', () => {
+describe('aritmética de datas sem Date (testes §2.4)', () => {
     it('dias desde 1970 vão e voltam, atravessando anos bissextos e a virada do século', () => {
         for (const text of ['1970-01-01', '2000-02-29', '2026-12-31', '2027-01-01', '2100-03-01', '1900-01-01']) {
             const date = LocalDate.parse(text);
@@ -43,7 +43,7 @@ describe('aritmética de datas sem Date (backend-design §5.7)', () => {
     });
 });
 
-describe('calendário da série (database-design §4.12)', () => {
+describe('calendário da série (banco-de-dados §4.12)', () => {
     it('mensal no dia 31 cai no último dia dos meses curtos e volta ao 31', () => {
         const schedule = RecurrenceSchedule.startingOn('monthly', LocalDate.parse('2026-01-31'));
         expect(dates(schedule, 5)).toEqual(['2026-01-31', '2026-02-28', '2026-03-31', '2026-04-30', '2026-05-31']);
@@ -86,7 +86,7 @@ describe('calendário da série (database-design §4.12)', () => {
     });
 });
 
-describe('dia âncora de uma série reconstruída (import-design §5.5)', () => {
+describe('dia âncora de uma série reconstruída (importacao §5.5)', () => {
     /**
      * @param values Datas em `YYYY-MM-DD`, em ordem crescente.
      * @return As datas como `LocalDate`, o histórico que a função recebe.
@@ -111,7 +111,7 @@ describe('dia âncora de uma série reconstruída (import-design §5.5)', () => 
     });
 });
 
-describe('parcelas (database-design §4.12)', () => {
+describe('parcelas (banco-de-dados §4.12)', () => {
     it('o total dividido põe a diferença do arredondamento na primeira e soma exatamente o total', () => {
         expect(Money.of(1000, BRL).split(3).map((part) => part.amount)).toEqual([333.34, 333.33, 333.33]);
         expect(Money.of(-100, BRL).split(3).map((part) => part.amount)).toEqual([-33.34, -33.33, -33.33]);

@@ -31,6 +31,8 @@ import type { SeriesPlanResponse } from '../dto/recurrences/SeriesPlanResponse.t
 import type { TopUpResponse } from '../dto/recurrences/TopUpResponse.ts';
 import type { TransactionResponse } from '../dto/transactions/TransactionResponse.ts';
 import type { TransactionNameSuggestionResponse } from '../dto/transactions/TransactionNameSuggestionResponse.ts';
+import type { SyncInviteResponse, SyncJoinResponse, SyncStatusResponse } from '../dto/sync/SyncStatusResponse.ts';
+import type { connectSyncPeerRequest, createSyncGroupRequest, joinSyncGroupRequest, syncMemberIdRequest, syncStatusRequest } from '../requests/syncRequests.ts';
 import type { accountIdRequest, createAccountRequest, listAccountsRequest, transferTargetsRequest, updateAccountRequest } from '../requests/accountRequests.ts';
 import type { profileBalancesRequest, rebuildAccountRequest } from '../requests/balanceRequests.ts';
 import type { runImportRequest } from '../requests/importRequests.ts';
@@ -87,7 +89,7 @@ import type { CoreResult } from './CoreResult.ts';
 /**
  * Mapa de rotas do núcleo: para cada rota, o DTO de entrada (o que o schema da camada
  * Request aceita) e o de saída. É o contrato tipado que o pacote `client` consome nas duas
- * plataformas (desktop-shell-design §5.1) — mudar uma rota aqui quebra a compilação da UI,
+ * plataformas (desktop §3.1) — mudar uma rota aqui quebra a compilação da UI,
  * não o app em produção.
  */
 export interface CoreRoutes {
@@ -176,6 +178,16 @@ export interface CoreRoutes {
     'overview.pending': { input: z.input<typeof overviewProfileRequest>; output: OverviewPendingResponse };
     'overview.nextInvoices': { input: z.input<typeof overviewProfileRequest>; output: OverviewNextInvoicesResponse };
     'imports.run': { input: z.input<typeof runImportRequest>; output: ImportResponse };
+    'sync.status': { input: z.input<typeof syncStatusRequest>; output: SyncStatusResponse };
+    'sync.createGroup': { input: z.input<typeof createSyncGroupRequest>; output: SyncStatusResponse };
+    'sync.open': { input: z.input<typeof syncStatusRequest>; output: SyncStatusResponse };
+    'sync.close': { input: z.input<typeof syncStatusRequest>; output: SyncStatusResponse };
+    'sync.createInvite': { input: z.input<typeof syncStatusRequest>; output: SyncInviteResponse };
+    'sync.cancelInvite': { input: z.input<typeof syncStatusRequest>; output: SyncStatusResponse };
+    'sync.join': { input: z.input<typeof joinSyncGroupRequest>; output: SyncJoinResponse };
+    'sync.connect': { input: z.input<typeof connectSyncPeerRequest>; output: SyncStatusResponse };
+    'sync.removeMember': { input: z.input<typeof syncMemberIdRequest>; output: SyncStatusResponse };
+    'sync.leave': { input: z.input<typeof syncStatusRequest>; output: SyncStatusResponse };
 }
 
 export type CoreRoute = keyof CoreRoutes;

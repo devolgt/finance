@@ -1,6 +1,6 @@
 {
     "name": "@finance/core",
-    "version": "1.29.0",
+    "version": "1.30.0",
     "private": true,
     "type": "module",
     "sideEffects": false,
@@ -17,6 +17,8 @@
         "test": "vitest run"
     },
     "dependencies": {
+        "@noble/ciphers": "2.4.0",
+        "@noble/curves": "2.4.0",
         "@noble/hashes": "2.4.0",
         "zod": "4.6.5"
     },

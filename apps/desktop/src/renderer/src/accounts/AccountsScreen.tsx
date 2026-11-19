@@ -37,7 +37,7 @@ import { accountListView, openAccount, parseAccountsSearch } from './accountsSea
 
 /**
  * Colunas da listagem no extrato: sem "Conta / fatura", porque todas as linhas são desta conta; o
- * valor é o efeito nela (desktop-mvp-plan Fase 13.2).
+ * valor é o efeito nela (transacoes §8.3).
  */
 const COLUMNS: readonly MovementColumn[] = ['date', 'name', 'category', 'amount', 'situation', 'recurring'];
 
@@ -45,10 +45,10 @@ const COLUMNS: readonly MovementColumn[] = ['date', 'name', 'category', 'amount'
 type AccountDialogState = { readonly mode: 'create' } | { readonly mode: 'edit'; readonly account: AccountInPeriodResponse } | { readonly mode: 'delete'; readonly account: AccountInPeriodResponse };
 
 /**
- * Contas (mockup `DesktopContas`; desktop-mvp-plan Fase 7): à esquerda a lista com o saldo do
+ * Contas (contas §6): à esquerda a lista com o saldo do
  * mês de cada conta e os totais, à direita o extrato do mês da conta aberta. A conta aberta
  * fica na URL (`account`), e a lista mostra as ativas ou as desativadas (`view`,
- * desktop-mvp-plan Fase 13.4).
+ * contas §6).
  *
  * @return A tela de Contas.
  */
@@ -145,12 +145,12 @@ export function AccountsScreen(): ReactNode {
 /**
  * Lista lateral: cada conta com o saldo do mês e os totais do perfil no rodapé fixo, à vista
  * mesmo numa lista longa (`ListPane`).
- * Regra de negócio (Contas): a conta fora do total aparece apagada e só com o consolidado,
- * como no mockup, e o rodapé soma só as que entram no total — o `total` já vem filtrado do
- * núcleo, e a tela não refaz a soma (database-design §4.4).
+ * Regra de negócio (Contas, contas §3.3): a conta fora do total aparece apagada e só com o
+ * consolidado, e o rodapé soma só as que entram no total — o `total` já vem filtrado do
+ * núcleo, e a tela não refaz a soma (banco-de-dados §4.4).
  *
  * Os totais são do perfil, e não da visualização: a conta desativada continua no saldo
- * (desktop-mvp-plan §5.1), e esconder a linha dela não muda quanto o perfil tem.
+ * (contas §5), e esconder a linha dela não muda quanto o perfil tem.
  *
  * @param props.list Contas do perfil no mês e o total.
  * @param props.accounts Contas da visualização escolhida.
@@ -227,7 +227,7 @@ function AccountList({
 /**
  * Item da lista: nome, tipo e situação à esquerda; consolidado e previsto à direita. A conta
  * padrão do perfil leva o selo "Padrão", para que se saiba qual o atalho "Débito" do lançamento
- * escolhe (database-design §4.1).
+ * escolhe (banco-de-dados §4.1).
  *
  * @param props.account Conta com os saldos do mês.
  * @param props.current Se é a conta aberta.
@@ -327,7 +327,7 @@ function AccountStatement({
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            {/* A desativada não aceita lançamentos novos, então não pode ser a padrão (database-design §4.1). */}
+                            {/* A desativada não aceita lançamentos novos, então não pode ser a padrão (banco-de-dados §4.1). */}
                             <DropdownMenuItem
                                 disabled={account.disabled}
                                 onSelect={() => {
@@ -364,9 +364,9 @@ function AccountStatement({
 }
 
 /**
- * Os quatro números do extrato (mockup): saldo inicial, entradas, saídas e saldo final.
+ * Os quatro números do extrato (contas §2.4): saldo inicial, entradas, saídas e saldo final.
  * Regra de negócio (Extrato): todos mostram o consolidado em destaque e o previsto abaixo,
- * com peso menor (decisão de interface 6); inicial + entradas − saídas = final vale nos dois,
+ * com peso menor (desktop §7.5); inicial + entradas − saídas = final vale nos dois,
  * porque entradas e saídas somam os mesmos movimentos da tabela, pagos no consolidado e todos
  * no previsto.
  *
@@ -391,7 +391,7 @@ function StatementFigures({ statement }: { readonly statement: StatementResponse
  * @param props.pair Consolidado e previsto.
  * @param props.sign `always` nas entradas e saídas (`+`/`−`), `negative` nos saldos.
  * @param props.tone Cor de entrada ou saída; os saldos ficam na cor do texto.
- * @param props.note Explicação do que entra na soma, como no mockup.
+ * @param props.note Explicação do que entra na soma, para o número não ser lido como outro.
  * @return O cartão do número.
  */
 function Figure({
@@ -418,7 +418,7 @@ function Figure({
 }
 
 /**
- * Movimentos do mês (mockup `DesktopContas`) na listagem comum (desktop-mvp-plan Fase 13.2): data,
+ * Movimentos do mês (contas §2.4) na listagem comum (transacoes §8.3): data,
  * movimento, categoria, valor, situação e "Rec.", na ordem da data de caixa. Os lançamentos se
  * editam, pagam e excluem aqui como em Transações; a fatura leva ao cartão. A nota do rodapé
  * explica por que a fatura em aberto não mexe no consolidado.

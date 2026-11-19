@@ -58,7 +58,7 @@ const SEARCHES: readonly (readonly [string, string])[] = [
 /**
  * Calcula os vetores de ouro do `client`: as saídas dos formatadores e do leitor de valor
  * digitado, que precisam sair iguais no Chromium do desktop e no Hermes do celular — a promessa
- * de que os dois nunca mostram o mesmo saldo de dois jeitos (mobile-shell-design §8). Mesma
+ * de que os dois nunca mostram o mesmo saldo de dois jeitos (mobile §8). Mesma
  * divisão do núcleo: o Node gera o arquivo, o `apps/mobile-contract` recalcula no Hermes.
  *
  * @return Os vetores por grupo, em ordem estável.

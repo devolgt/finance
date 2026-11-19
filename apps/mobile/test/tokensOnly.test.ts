@@ -19,7 +19,7 @@ const FORBIDDEN: readonly { readonly pattern: RegExp; readonly why: string }[] =
         pattern: /\b(?:bg|text|border|ring|fill|stroke|outline)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|black|white)\b/,
         why: 'paleta padrão do Tailwind; use um token',
     },
-    { pattern: /\b(?:text|rounded(?:-[trbl]{1,2})?)-(?:xs|sm|base|md|lg|xl|[2-9]xl)\b/, why: 'escala padrão do Tailwind; os tokens nomeiam tamanho e raio pelo px do mockup (text-13, rounded-8)' },
+    { pattern: /\b(?:text|rounded(?:-[trbl]{1,2})?)-(?:xs|sm|base|md|lg|xl|[2-9]xl)\b/, why: 'escala padrão do Tailwind; os tokens nomeiam tamanho e raio pelo px (text-13, rounded-8)' },
 ];
 
 /**

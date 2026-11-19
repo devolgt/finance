@@ -48,7 +48,7 @@ function card(changes: Partial<CreditCardFormValues> = {}): CreditCardFormValues
     return { ...emptyCreditCardForm(ACCOUNT_ID), name: 'Roxinho', limit: '5.000,00', closingDay: '3', dueDay: '10', ...changes };
 }
 
-describe('formulário de cartão (desktop-mvp-plan Fase 6)', () => {
+describe('formulário de cartão (cartoes-e-faturas §1.1)', () => {
     it('monta o conteúdo de creditCards.create/update', () => {
         expect(readCreditCardForm(card(), 'BRL')).toEqual({ ok: true, content: { accountId: ACCOUNT_ID, name: 'Roxinho', limit: 5000, closingDay: 3, dueDay: 10 } });
     });
@@ -83,7 +83,7 @@ describe('formulário de cartão (desktop-mvp-plan Fase 6)', () => {
         expect(readCreditCardForm(card({ closingDay: ' 31 ', dueDay: '1' }), 'BRL').ok).toBe(true);
     });
 
-    it('Regra de negócio (Cartão, database-design §4.5): fechamento em 29–31 avisa que vira o último dia nos meses curtos', () => {
+    it('Regra de negócio (Cartão, banco-de-dados §4.5): fechamento em 29–31 avisa que vira o último dia nos meses curtos', () => {
         expect(closingDayWarning('28')).toBeNull();
         expect(closingDayWarning('29')).toBe('Nos meses sem o dia 29, a fatura fecha no último dia do mês.');
         expect(closingDayWarning('31')).toBe('Nos meses sem o dia 31, a fatura fecha no último dia do mês.');
@@ -92,7 +92,7 @@ describe('formulário de cartão (desktop-mvp-plan Fase 6)', () => {
         expect(closingDayWarning('abc')).toBeNull();
     });
 
-    it('Regra de negócio (Contas, §5.1): conta desativada não paga cartão novo, mas continua na edição do cartão que já paga', () => {
+    it('Regra de negócio (Contas, contas §5.1): conta desativada não paga cartão novo, mas continua na edição do cartão que já paga', () => {
         const active = account({ id: 'a', name: 'Ativa' });
         const disabled = account({ id: 'd', name: 'Desativada', disabled: true });
         expect(payingAccountOptions([active, disabled], null).map((option) => option.name)).toEqual(['Ativa']);

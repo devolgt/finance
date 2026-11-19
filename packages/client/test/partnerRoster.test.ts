@@ -2,7 +2,7 @@ import type { PartnerResponse } from '@finance/core';
 import { describe, expect, it } from 'vitest';
 import { buildPartnerRosterView, draftFromPartners, parsePercentageInput, toSavePartnersInput, type PartnerDraftRow } from '../src/index.ts';
 
-/** Os sócios gravados do mockup `DesktopSocios`: Gustavo (60%) e Ana (40%), ela com 3 lançamentos vinculados. */
+/** Sócios gravados de exemplo: Gustavo (60%) e Ana (40%), ela com 3 lançamentos vinculados. */
 const SAVED: readonly PartnerResponse[] = [
     { id: 'gustavo', profileId: 'estudio', name: 'Gustavo', percentage: 60, transactionCount: 5 },
     { id: 'ana', profileId: 'estudio', name: 'Ana', percentage: 40, transactionCount: 3 },
@@ -10,14 +10,14 @@ const SAVED: readonly PartnerResponse[] = [
 
 /**
  * @param draft Formulário.
- * @return A tela montada com os sócios do mockup.
+ * @return A tela montada com os sócios de exemplo.
  */
 function view(draft: readonly PartnerDraftRow[]): ReturnType<typeof buildPartnerRosterView> {
     return buildPartnerRosterView({ draft, saved: SAVED });
 }
 
-describe('cadastro de sócios (mockup DesktopSocios)', () => {
-    it('monta a tabela, a barra e a soma como no mockup, sem nada para salvar', () => {
+describe('cadastro de sócios (socios §4.3)', () => {
+    it('monta a tabela, a barra e a soma dos sócios gravados, sem nada para salvar', () => {
         const roster = view(draftFromPartners(SAVED));
 
         expect(roster.rows.map(({ label, share, color }) => ({ label, share, color }))).toEqual([

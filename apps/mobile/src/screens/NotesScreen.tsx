@@ -13,9 +13,9 @@ import { IconButton } from '../ui/IconButton.tsx';
 import { EmptyState, QueryView } from '../ui/states.tsx';
 
 /**
- * Anotações (mockup `MobileAnotacoes`; mobile-mvp-plan, Fase 16): a busca no texto inteiro
+ * Anotações (anotacoes §4): a busca no texto inteiro
  * (`filterNotes`, sem acento e sem caixa) e cada anotação como um cartão com o título e a prévia.
- * Regra de interface (mockups, decisão 9): anotação é texto livre, e a primeira linha é o título
+ * Regra de negócio (Anotações, anotacoes §1.3): anotação é texto livre, e a primeira linha é o título
  * (`summarizeNote`). Tocar abre o editor; o "+" abre o editor vazio.
  *
  * @return A tela.

@@ -6,7 +6,7 @@ import { TransactionForm } from './TransactionForm.tsx';
 
 /**
  * Diálogo de criação e edição de lançamento, como os de contas e cartões (pedido do usuário,
- * desktop-mvp-plan Fase 9: o formulário saiu da coluna ao lado da tabela). O mesmo diálogo serve
+ * transacoes §5: o formulário saiu da coluna ao lado da tabela). O mesmo diálogo serve
  * à tela de Transações e ao "+ Lançamento" das outras telas, para que lançar seja igual de
  * qualquer lugar.
  *
@@ -38,7 +38,7 @@ export function TransactionDialog({
     readonly onSaved?: ((saved: TransactionResponse) => void) | undefined;
     readonly onDelete?: ((transaction: TransactionResponse) => void) | undefined;
 }): ReactNode {
-    // Mockup: "Despesa · parcela 3 de 12 (valor total R$ 4.800,00)".
+    // Ex.: "Despesa · parcela 3 de 12 (valor total R$ 4.800,00)".
     const subtitle = transaction === null
         ? 'Despesa, receita, transferência ou investimento.'
         : [formatTransactionType(transaction.type), recurrence === null ? container : describeOccurrence(transaction, recurrence)].filter((part) => part !== null).join(' · ');

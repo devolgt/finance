@@ -11,7 +11,7 @@ function option(id: string, reached: boolean, archived: boolean): { readonly id:
     return { id, name: id, reached, archived };
 }
 
-describe('visualizações das listas laterais (desktop-mvp-plan Fase 13.4)', () => {
+describe('visualizações das listas laterais (metas §5.2)', () => {
     it('Metas: ativa é a que não foi atingida nem arquivada; a atingida e arquivada aparece nas duas', () => {
         const goals = [option('Viagem', false, false), option('Carro', true, false), option('Curso', false, true), option('Moto', true, true)];
         /**

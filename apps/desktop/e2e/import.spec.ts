@@ -8,14 +8,14 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Importação de transações (desktop-mvp-plan Fase 13.1) no app empacotado: o assistente inteiro,
+ * Importação de transações (importacao §2) no app empacotado: o assistente inteiro,
  * de Transações à confirmação, com o diálogo de abrir e o de salvar trocados no processo principal
  * — são nativos, fora do alcance do Playwright. Os cliques usam `dispatchEvent`, pelo mesmo motivo
  * do teste de fumaça: no container a janela fica fora da tela.
  */
 
 /**
- * Export no formato do app de origem (import-design §1): compra no cartão paga pela fatura, série
+ * Export no formato do app de origem (importacao §1): compra no cartão paga pela fatura, série
  * fixa encerrada e uma despesa em aberto. Datas de 2025, para não depender do dia em que o teste
  * roda.
  */

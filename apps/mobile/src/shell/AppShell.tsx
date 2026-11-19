@@ -3,7 +3,7 @@ import { reportFirstScreen } from '../startup/startupTiming.ts';
 import { ActiveProfileProvider } from './ActiveProfile.tsx';
 
 /**
- * Marca a primeira tela interativa para a medição da abertura (mobile-mvp-plan, Fase 5): monta
+ * Marca a primeira tela interativa para a medição da abertura (mobile §12.1): monta
  * quando a lista de perfis — a primeira consulta do app — respondeu e a tela da vez (primeiro
  * uso ou Início) foi desenhada.
  *

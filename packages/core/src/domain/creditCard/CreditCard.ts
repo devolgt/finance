@@ -19,13 +19,13 @@ export interface CreditCardProps extends CreditCardContent {
     readonly profileId: ProfileId;
     /**
      * Regra de negócio (Cartões): desativado, o cartão some das escolhas de lançamentos
-     * novos, mas faturas e relatórios continuam (desktop-mvp-plan §5.1).
+     * novos, mas faturas e relatórios continuam (contas §5).
      */
     readonly disabled: boolean;
 }
 
 /**
- * Cartão de crédito, quitado por uma conta do mesmo perfil (database-design §4.5). No
+ * Cartão de crédito, quitado por uma conta do mesmo perfil (banco-de-dados §4.5). No
  * núcleo de saldos ele importa pelo ciclo de faturamento — que decide a fatura de cada
  * compra e o mês do vencimento — e pela conta que paga.
  */
@@ -55,9 +55,9 @@ export class CreditCard implements CreditCardProps {
 
     /**
      * Cadastra um cartão novo, ativo. Que a conta pagadora seja do mesmo perfil e esteja
-     * ativa relaciona duas linhas, e por isso é verificado no Service (database-design §3.10).
+     * ativa relaciona duas linhas, e por isso é verificado no Service (banco-de-dados §3.10).
      *
-     * @param id Id gerado pela aplicação (database-design §3.5).
+     * @param id Id gerado pela aplicação (banco-de-dados §3.5).
      * @param profileId Perfil dono do cartão.
      * @param content Dados digitados no cadastro; o ciclo já chega validado em 1–31.
      * @return O cartão, com o nome aparado.
@@ -79,7 +79,7 @@ export class CreditCard implements CreditCardProps {
      * Edita os dados do usuário.
      * Regra de negócio (Cartão de crédito): mudar o dia de fechamento **não** move
      * lançamentos existentes — o `invoice_id` gravado é a verdade e a sugestão de fatura
-     * nunca é recalculada (database-design §4.7). Por isso editar o ciclo não toca nas
+     * nunca é recalculada (banco-de-dados §4.7). Por isso editar o ciclo não toca nas
      * faturas; só o mês do vencimento das faturas em aberto muda no previsto.
      *
      * @param content Novo conteúdo completo do cadastro.
@@ -107,7 +107,7 @@ export class CreditCard implements CreditCardProps {
     /**
      * @param other Conteúdo a comparar.
      * @return `true` quando a conta pagadora ou o ciclo mudam — os dois decidem em que conta
-     * e em que mês as faturas pesam no saldo (database-design §4.7), então a mudança obriga a
+     * e em que mês as faturas pesam no saldo (banco-de-dados §4.7), então a mudança obriga a
      * recalcular as contas envolvidas.
      */
     public affectsBalancesWhenRevisedTo(other: CreditCardContent): boolean {

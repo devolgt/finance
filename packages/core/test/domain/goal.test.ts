@@ -42,7 +42,7 @@ function measure(target: Goal, links: readonly GoalLink[], period = '2026-10', t
     return measureGoalProgress({ goal: target, links, period: YearMonth.parse(period), today: LocalDate.parse(today) });
 }
 
-describe('meta (database-design §4.11)', () => {
+describe('meta (banco-de-dados §4.11)', () => {
     it('apara o nome e recusa valor-alvo zero ou negativo, também ao editar', () => {
         const created = goal(4000, null);
         expect(Goal.create({ id: goalId, profileId, name: '  Reserva  ', funding: { kind: 'transactions' }, target: created.target, targetDate: null }).name).toBe('Reserva');
@@ -55,8 +55,8 @@ describe('meta (database-design §4.11)', () => {
     });
 });
 
-describe('progresso da meta (desktop-mvp-plan Fase 9.3)', () => {
-    it('cenário do mockup: 2 aportes de 700 → 35%, falta 2.600, ritmo contado do fim do mês de referência', () => {
+describe('progresso da meta (metas §4)', () => {
+    it('cenário de exemplo: 2 aportes de 700 → 35%, falta 2.600, ritmo contado do fim do mês de referência', () => {
         const progress = measure(goal(4000, '2027-01-15'), [link(700, '2026-09-05'), link(700, '2026-10-05')]);
         expect(progress.saved.amount).toBe(1400);
         expect(progress.remaining.amount).toBe(2600);

@@ -65,7 +65,7 @@ function lastSheet(): ReturnType<typeof screen.getByTestId> {
 
 afterEach(restoreToday);
 
-describe('Tags (mobile-mvp-plan, Fase 16)', () => {
+describe('Tags (categorias-e-tags §5.2)', () => {
     it('cria uma tag pelo campo do topo e recusa o nome repetido', async () => {
         const { core, s } = await openTags();
 
@@ -102,7 +102,7 @@ describe('Tags (mobile-mvp-plan, Fase 16)', () => {
     });
 });
 
-describe('Anotações (mobile-mvp-plan, Fase 16)', () => {
+describe('Anotações (anotacoes §4)', () => {
     it('busca no texto e escreve uma anotação nova, que volta à lista com o título da primeira linha', async () => {
         const { core, s, app } = await openNotes();
 

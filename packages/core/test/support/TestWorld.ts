@@ -7,9 +7,11 @@ import {
     type CoreInput,
     type CoreOutput,
     type CoreRoute,
+    type IdGenerator,
     type MoneyResponse,
+    type SyncNetworkPorts,
 } from '../../src/index.ts';
-import { FixedClock, SequentialIds } from './adapters.ts';
+import { FixedClock, ManualWallClock, SequentialIds } from './adapters.ts';
 
 type CreateInput = CoreInput<'transactions.create'>;
 type UpdateInput = CoreInput<'transactions.update'>;
@@ -26,7 +28,7 @@ export interface StatementRow {
  * Um banco SQLite real em memória com todas as migrations aplicadas pelo runner de
  * produção e o núcleo montado sobre ele. Os testes de Service não mockam Repository:
  * metade dos bugs previstos mora no SQL — o `deleted_at IS NULL` esquecido, o `SUM` no
- * contêiner errado — e um mock os esconderia (backend-design §5.4).
+ * contêiner errado — e um mock os esconderia (testes §2.1).
  *
  * Os cadastros (perfil, conta, cartão, categoria) são semeados por SQL direto mesmo tendo
  * Service, para que um teste de saldo não falhe por causa de um defeito no cadastro — os
@@ -35,16 +37,21 @@ export interface StatementRow {
  */
 export class TestWorld {
     public readonly clock: FixedClock;
-    public readonly ids = new SequentialIds();
+    public readonly ids: IdGenerator;
     public readonly database: BetterSqliteDatabase;
     public readonly core: Core;
     public readonly currency: string;
+    public readonly wall = new ManualWallClock();
 
     /**
      * @param today "Hoje" inicial; decide o mês corrente do saldo das contas.
      * @param currency Moeda dos perfis semeados.
+     * @param ids Gerador de ids; as réplicas de sincronização passam um por aparelho, para que
+     * dois aparelhos não gerem o mesmo UUID "aleatório".
+     * @param syncNetwork Rede da sincronização, para os testes da tela de Dispositivos.
      */
-    public constructor(today = '2026-03-15', currency = 'BRL') {
+    public constructor(today = '2026-03-15', currency = 'BRL', ids: IdGenerator = new SequentialIds(), syncNetwork?: SyncNetworkPorts) {
+        this.ids = ids;
         this.clock = new FixedClock(today);
         this.currency = currency;
         this.database = BetterSqliteDatabase.open(':memory:');
@@ -53,6 +60,8 @@ export class TestWorld {
             database: this.database,
             clock: this.clock,
             ids: this.ids,
+            wallClock: this.wall,
+            ...(syncNetwork === undefined ? {} : { syncNetwork }),
             onUnexpectedError: (error) => {
                 throw error;
             },
@@ -273,7 +282,7 @@ export class TestWorld {
 
     /**
      * Lança uma transação pela rota real (camada Request incluída), com padrões válidos para
-     * que cada teste declare só o que importa (builders, backend-design §5.4).
+     * que cada teste declare só o que importa (testes §2.1).
      *
      * @param base Perfil, subcategoria e origem.
      * @param overrides Campos do lançamento que o teste quer fixar.

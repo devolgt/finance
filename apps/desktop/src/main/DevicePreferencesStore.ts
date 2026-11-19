@@ -16,9 +16,9 @@ const fields = {
 
 /**
  * O arquivo inteiro; campo inválido ou ausente cai no padrão, campo desconhecido é descartado.
- * Além das preferências, guarda o instante da última cópia exportada (desktop-mvp-plan Fase 13),
+ * Além das preferências, guarda o instante da última cópia exportada (desktop §11),
  * que é do aparelho pelo mesmo motivo: a cópia é do arquivo deste aparelho — e os modelos de
- * mapeamento da importação (Fase 13.1), que descrevem os arquivos que este aparelho importa. Um
+ * mapeamento da importação (decisoes §90), que descrevem os arquivos que este aparelho importa. Um
  * modelo inválido derruba só a lista de modelos, não as preferências.
  */
 const fileSchema = z.object({
@@ -43,7 +43,7 @@ const DEFAULT_FILE: StoredFile = { ...DEFAULT_PREFERENCES, lastExportAt: null, i
 const patchSchema = z.strictObject(fields).partial();
 
 /**
- * Preferências do aparelho num JSON em `userData` (desktop-mvp-plan §2). Ficam fora do banco
+ * Preferências do aparelho num JSON em `userData` (desktop §9). Ficam fora do banco
  * porque são do aparelho e não do perfil: no banco seriam replicadas pela sincronização.
  *
  * O arquivo é tolerante na leitura — editado à mão ou de uma versão antiga, um campo ruim

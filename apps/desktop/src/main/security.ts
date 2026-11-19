@@ -2,7 +2,7 @@ import { app, session, type WebContents } from 'electron';
 import { isAppUrl } from './appUrl.ts';
 
 /**
- * Trava de segurança de toda janela (desktop-shell-design §3.6): o renderer é entrada não
+ * Trava de segurança de toda janela (desktop §2): o renderer é entrada não
  * confiável, então não navega para fora do app, não abre janelas novas, não embute
  * `<webview>` e não recebe permissão alguma (câmera, notificação, geolocalização) — o app
  * não usa nenhuma, e conceder por padrão só aumentaria o que um conteúdo injetado alcança.

@@ -22,7 +22,7 @@ import { parseMoneyInput } from '../format/parseMoneyInput.ts';
 import { formatTransactionType, TRANSACTION_TYPE_ORDER } from './transactionEditor.ts';
 
 /*
- * Editor dos relatórios personalizados (reports-design §2 e §3): o rascunho do formulário, os
+ * Editor dos relatórios personalizados (relatorios §4 e §5): o rascunho do formulário, os
  * rótulos de cada opção e a leitura do rascunho na entrada das rotas. Fica no `client` porque o
  * celular vai montar o mesmo relatório com as mesmas palavras e a mesma validação.
  */
@@ -55,21 +55,21 @@ export const REPORT_MEASURE_LABELS: Readonly<Record<ReportMeasure, string>> = {
     count: 'Quantidade de lançamentos',
 };
 
-/** Rótulo de cada base de data (reports-design F3). */
+/** Rótulo de cada base de data (relatorios §4.1, F3). */
 export const REPORT_BASIS_LABELS: Readonly<Record<ReportDateBasis, string>> = {
     payment: 'Data de pagamento',
     due: 'Data de vencimento',
     created: 'Data de lançamento',
 };
 
-/** Rótulo de cada situação do filtro (reports-design A7). */
+/** Rótulo de cada situação do filtro (relatorios §4.2, A7). */
 export const REPORT_STATUS_LABELS: Readonly<Record<ReportStatusFilter, string>> = {
     all: 'Pagos e em aberto',
     paid: 'Só pagos',
     open: 'Só em aberto',
 };
 
-/** Rótulo de cada combinação de tags (reports-design A4). */
+/** Rótulo de cada combinação de tags (relatorios §4.2, A4). */
 export const REPORT_TAG_MATCH_LABELS: Readonly<Record<ReportTagMatch, string>> = {
     any: 'Qualquer uma',
     all: 'Todas',
@@ -79,7 +79,7 @@ export const REPORT_TAG_MATCH_LABELS: Readonly<Record<ReportTagMatch, string>> =
 const DIMENSION_ORDER: readonly ReportDimension[] = ['month', 'category', 'subCategory', 'type', 'flow', 'recurrence', 'source', 'tag', 'partner', 'status'];
 
 /**
- * Regra de negócio (Perfis): sócio só existe em perfil empresarial (database-design §4.2), então
+ * Regra de negócio (Perfis): sócio só existe em perfil empresarial (banco-de-dados §4.2), então
  * agrupar por sócio só é oferecido nele.
  *
  * @param profileType Tipo do perfil ativo.
@@ -388,7 +388,7 @@ export function describeReportPeriod(filter: ReportFilterResponse, from: string,
 /**
  * Descreve cada filtro ativo, para o cabeçalho do relatório dizer o que entrou. Um cadastro
  * excluído depois de salvo aparece como "(excluída)": ele continua no filtro e não casa com nada
- * (reports-design §2.2), e esconder isso faria o relatório parecer errado.
+ * (relatorios §4.2), e esconder isso faria o relatório parecer errado.
  *
  * @param filter Filtro da definição.
  * @param lookups Cadastros do perfil.

@@ -14,7 +14,7 @@ import { formatRecurrenceTag } from './recurrenceView.ts';
  */
 export type TransactionSituation = 'paid' | 'pending' | 'onInvoice' | 'invoicePaid';
 
-/** Rótulos dos mockups para cada situação. */
+/** Rótulos de cada situação, os mesmos na tabela, no filtro e nos dois apps. */
 const SITUATION_LABELS: Readonly<Record<TransactionSituation, string>> = {
     paid: 'Pago',
     pending: 'Pendente',
@@ -23,7 +23,7 @@ const SITUATION_LABELS: Readonly<Record<TransactionSituation, string>> = {
 };
 
 /**
- * Como o valor da linha se lê, sem depender só da cor (decisão de interface 7). `none` é o valor
+ * Como o valor da linha se lê, sem depender só da cor (desktop §7.3). `none` é o valor
  * zero, que nem entra nem sai — a fatura zerada por um estorno não pode aparecer como entrada.
  */
 export type TransactionDirection = 'in' | 'out' | 'transfer' | 'none';
@@ -76,7 +76,7 @@ export interface TransactionRow {
     /** `08/10`. */
     readonly date: string;
     readonly name: string;
-    /** Despesa com valor negativo: aparece com a etiqueta "estorno" (database-design §4.13). */
+    /** Despesa com valor negativo: aparece com a etiqueta "estorno" (banco-de-dados §4.13). */
     readonly refund: boolean;
     readonly categoryId: string | null;
     /** `Alimentação › Mercado`. */
@@ -92,11 +92,11 @@ export interface TransactionRow {
     readonly situationText: string;
     /** Gerada por recorrência. */
     readonly recurring: boolean;
-    /** A coluna "Rec." do mockup: "3/12", "Fixa"; `null` num lançamento avulso. */
+    /** A coluna "Rec." da tabela: "3/12", "Fixa"; `null` num lançamento avulso. */
     readonly recurrenceTag: string | null;
     /**
      * Transferência recebida de outro perfil: quem edita, paga ou exclui é o perfil de
-     * origem, dono da linha (database-design §4.13, uma transferência é uma linha só).
+     * origem, dono da linha (banco-de-dados §4.13, uma transferência é uma linha só).
      */
     readonly readOnly: boolean;
     /**
@@ -145,7 +145,7 @@ export type TransactionTableRow = TransactionRow | InvoiceTableRow;
 export interface TransactionFilters {
     readonly container: { readonly kind: 'account'; readonly accountId: string } | { readonly kind: 'creditCard'; readonly creditCardId: string } | null;
     readonly category: { readonly kind: 'category'; readonly categoryId: string } | { readonly kind: 'subCategory'; readonly subCategoryId: string } | null;
-    /** Tag que o lançamento precisa ter (filtro "Tag" do mockup). */
+    /** Tag que o lançamento precisa ter (filtro "Tag" da tela). */
     readonly tagId: string | null;
     readonly situation: TransactionSituation | null;
     readonly search: string;
@@ -159,7 +159,7 @@ export const TRANSACTION_SITUATIONS: readonly TransactionSituation[] = ['pending
 
 /**
  * @param situation Situação de um lançamento.
- * @return O rótulo do mockup ("Pendente", "Na fatura"...), para a tabela e o filtro.
+ * @return O rótulo da situação ("Pendente", "Na fatura"...), para a tabela e o filtro.
  */
 export function formatTransactionSituation(situation: TransactionSituation): string {
     return SITUATION_LABELS[situation];
@@ -212,7 +212,7 @@ export interface TransactionTable {
 /**
  * Monta a tabela de Transações: junta os nomes de conta, cartão e categoria, aplica os
  * filtros e calcula a linha-resumo. Os filtros rodam aqui, e não no SQL, porque um mês tem
- * centenas de linhas e filtrar no núcleo só acrescentaria rotas (desktop-mvp-plan §2).
+ * centenas de linhas e filtrar no núcleo só acrescentaria rotas (transacoes §8.1).
  *
  * Regra de negócio (Transações): o "resultado" é o efeito no saldo das entradas e saídas
  * visíveis; transferências e investimentos dentro do perfil ficam de fora porque só movem
@@ -220,7 +220,7 @@ export interface TransactionTable {
  * transferência entre perfis entra, como nos relatórios: para este perfil, o dinheiro de fato
  * saiu ou chegou.
  *
- * Regra de negócio (Transações, desktop-mvp-plan Fase 11.1): sem nenhum filtro, as compras e os
+ * Regra de negócio (Transações, cartoes-e-faturas §5): sem nenhum filtro, as compras e os
  * estornos do cartão não aparecem um a um — poluiriam a lista do mês — e cada fatura que pesa no
  * mês vira uma linha só, no dia do pagamento ou, em aberto, no do vencimento, com o valor que
  * falta pagar, como no extrato da conta. O pagamento parcial continua como linha própria, porque
@@ -250,7 +250,7 @@ export function buildTransactionTable(source: TransactionTableSource, filters: T
 /**
  * Agrupar só sem filtro porque o filtro é a forma de achar uma compra no cartão: com a busca,
  * a tag ou a categoria escolhida, quem procura quer o item, e a fatura inteira o esconderia.
- * Regra de negócio (Transações, desktop-mvp-plan Fase 11.1): qualquer filtro desfaz o
+ * Regra de negócio (Transações, cartoes-e-faturas §5): qualquer filtro desfaz o
  * agrupamento.
  *
  * @param filters Filtros da tela.
@@ -282,7 +282,7 @@ function isGroupedCardPurchase(transaction: TransactionResponse, lookup: Lookup)
  * Mostra o pagamento parcial pelo efeito na conta pagadora. Na tabela agrupada ele conta no
  * resultado, porque a linha da fatura vem líquida dele; em módulo e neutro, como transferência
  * interna, a soma das linhas visíveis não bateria com o resumo.
- * Regra de negócio (Transações, desktop-mvp-plan Fase 11.1): na lista agrupada, o parcial conta no
+ * Regra de negócio (Transações, cartoes-e-faturas §5): na lista agrupada, o parcial conta no
  * resultado pelo efeito na conta pagadora.
  *
  * @param row Linha do pagamento parcial, montada como transferência saindo da fatura.
@@ -431,7 +431,7 @@ function crossProfileSide(transaction: TransactionResponse, lookup: Lookup): 'in
 /**
  * Valor de uma transferência que conta no resultado — a entre perfis e, na tabela agrupada, o
  * pagamento parcial de fatura: `⇄` diz que é transferência e o sinal diz se o dinheiro saiu ou
- * chegou, porque para a conta é entrada ou saída de verdade (decisão de interface 7: sem
+ * chegou, porque para a conta é entrada ou saída de verdade (desktop §7.3: sem
  * depender só da cor).
  *
  * @param effect Efeito no saldo da conta deste perfil: o da origem na saída, o do destino na
@@ -453,7 +453,7 @@ function directionOf(effect: MoneyResponse): TransactionDirection {
 
 /**
  * Valor de um lançamento como a tabela e a prévia do formulário o mostram, sem depender só da
- * cor (decisão de interface 7): transferência e investimento com `⇄` e em módulo, porque só
+ * cor (desktop §7.3): transferência e investimento com `⇄` e em módulo, porque só
  * movem dinheiro entre contas do perfil; o resto com o sinal do efeito no saldo, que já inclui
  * estorno e encargos.
  *
@@ -546,7 +546,7 @@ function matchesCategory(row: TransactionRow, filter: TransactionFilters['catego
 
 /**
  * Busca sem diferenciar maiúsculas nem acentos ("cafe" acha "Café"), no nome e na descrição,
- * como diz o placeholder do mockup ("nome, descrição…").
+ * como diz o placeholder do campo de busca ("nome, descrição…").
  *
  * @param transaction Transação da linha.
  * @param search Texto digitado.
@@ -557,7 +557,7 @@ function matchesSearch(transaction: TransactionResponse, search: string): boolea
 }
 
 /**
- * Soma com `Money` e arredonda uma vez no fim (database-design §3.7), para que o resultado
+ * Soma com `Money` e arredonda uma vez no fim (banco-de-dados §3.7), para que o resultado
  * bata com a soma dos centavos exibidos. Só as linhas neutras (`⇄` em módulo) ficam de fora: o
  * que conta no resultado é exatamente o que a tabela mostra com sinal — inclusive o pagamento
  * parcial da tabela agrupada, que `asPaymentFromAccount` já mostra como saída. Sem agrupar, o
@@ -587,7 +587,7 @@ function sumResult(rows: readonly TransactionTableRow[]): MoneyResponse | null {
  * @param transactions Lançamentos visíveis.
  * @param invoices Linhas de fatura visíveis (só na tabela agrupada).
  * @param result Resultado das linhas; `null` quando não há nenhuma.
- * @return A linha-resumo do mockup, com as faturas à parte quando houver.
+ * @return A linha-resumo da tabela, com as faturas à parte quando houver.
  */
 function summaryOf(transactions: number, invoices: number, result: MoneyResponse | null): string {
     if (result === null) {

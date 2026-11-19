@@ -1,4 +1,5 @@
-import { formatProfileSummary, useGoals, useNotes } from '@finance/client';
+import { formatProfileSummary, useCoreQuery, useGoals, useNotes } from '@finance/client';
+import type { SyncStatusResponse } from '@finance/core';
 import { useRouter } from 'expo-router';
 import { useState, type ReactNode } from 'react';
 import { useActiveProfile } from '../shell/ActiveProfile.tsx';
@@ -11,10 +12,10 @@ import { AppText } from '../ui/AppText.tsx';
 import { MenuGroup, MenuRow } from '../ui/menu.tsx';
 
 /**
- * Menu Mais (mockup `MobileMais`): perfil com "Trocar perfil", Metas, Anotações, Cadastros,
- * Dispositivos e Ajustes. As contagens são das metas ativas e das anotações do perfil. Diverge
- * do mockup no rodapé e em Dispositivos, que dizem "Dados só neste aparelho": a sincronização
- * ainda não existe (mobile-mvp-plan §5.1), e dizer "sincronizado" seria falso.
+ * Menu Mais (mobile §5.1): perfil com "Trocar perfil", Metas, Anotações, Cadastros,
+ * Dispositivos e Ajustes. As contagens são das metas ativas e das anotações do perfil. Em
+ * Dispositivos, diz onde os dados estão (`syncDetail`), e não "sincronizado": a sincronização só
+ * roda com a tela de Dispositivos aberta (sincronizacao §1.3).
  *
  * @return A tela.
  */
@@ -26,6 +27,7 @@ export function MoreScreen(): ReactNode {
     const goals = useGoals({ profileId: profile.id, period });
     const notes = useNotes({ profileId: profile.id });
     const activeGoals = goals.data?.filter((goal) => !goal.archived).length;
+    const sync = useCoreQuery('sync.status', {});
 
     /**
      * @param route Tela a abrir, empilhada na aba Mais.
@@ -54,7 +56,7 @@ export function MoreScreen(): ReactNode {
                 <MenuRow label="Cadastros" onPress={open(ROUTES.registries)} />
             </MenuGroup>
             <MenuGroup>
-                <MenuRow first label="Dispositivos e sincronização" detail="Dados só neste aparelho" onPress={open(ROUTES.devices)} />
+                <MenuRow first label="Dispositivos e sincronização" detail={syncDetail(sync.data?.members ?? [])} onPress={open(ROUTES.devices)} />
                 <MenuRow label="Ajustes" onPress={open(ROUTES.settings)} />
             </MenuGroup>
             <AppText className="text-12 text-muted">Relatórios detalhados ficam no app do computador.</AppText>
@@ -66,4 +68,20 @@ export function MoreScreen(): ReactNode {
             />
         </Screen>
     );
+}
+
+/**
+ * Detalhe da linha de Dispositivos, como o rodapé do desktop: "Dados só neste aparelho" até haver
+ * outro aparelho no grupo; depois, com quantos os dados são compartilhados.
+ *
+ * @param members Membros do grupo, como o `sync.status` devolve; vazio fora de um grupo.
+ * @return O detalhe.
+ */
+function syncDetail(members: SyncStatusResponse['members']): string {
+    const peers = members.filter((member) => !member.isSelf && !member.removed).length;
+    const inGroup = members.some((member) => member.isSelf && !member.removed);
+    if (!inGroup || peers === 0) {
+        return 'Dados só neste aparelho';
+    }
+    return peers === 1 ? 'Neste aparelho e em mais 1 do grupo' : `Neste aparelho e em mais ${String(peers)} do grupo`;
 }

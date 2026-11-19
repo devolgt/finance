@@ -2,6 +2,7 @@ import { colorTokens, spacingUnitPx, type ColorTokenName, type FontSizePx } from
 import { useEffect, useState, type ReactNode } from 'react';
 import { ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { formatReportLog, type ContractReport } from './contractReport.ts';
+import { describeCryptoBenchmark, formatCryptoBenchmarkLog, type CryptoBenchmarkReport } from './cryptoBenchmark.ts';
 
 /** Título do resultado: o texto que o Maestro procura no CI. */
 const TITLE_SIZE: FontSizePx = 22;
@@ -15,26 +16,41 @@ const BODY_SIZE: FontSizePx = 13;
  * mudar um sem o outro faz o CI esperar até o tempo limite em vez de acusar a falha.
  *
  * O contrato roda depois do primeiro frame, e não no corpo do componente, para que a tela de
- * "rodando" apareça: a suíte é síncrona e prende a thread JavaScript até terminar.
+ * "rodando" apareça: a suíte é síncrona e prende a thread JavaScript até terminar. A medição da
+ * criptografia da sincronização (sincronizacao §5.5) roda depois, num frame seguinte: o título do
+ * contrato, que o Maestro espera, aparece sem esperar os segundos da cifra no Hermes.
  *
  * @param props.run Execução do contrato; o app passa a do aparelho, os testes uma falsa.
+ * @param props.benchmark Medição da cifra e do handshake Noise; ausente, a tela não mede.
  * @return A tela com o resultado, ou o aviso de que ainda está rodando.
  */
-export function ContractScreen({ run }: { readonly run: () => ContractReport }): ReactNode {
+export function ContractScreen({ run, benchmark }: { readonly run: () => ContractReport; readonly benchmark?: () => CryptoBenchmarkReport }): ReactNode {
     const [report, setReport] = useState<ContractReport | null>(null);
+    const [crypto, setCrypto] = useState<CryptoBenchmarkReport | null>(null);
     const color = useThemeColor();
 
     useEffect(() => {
+        let measure: ReturnType<typeof setTimeout> | null = null;
         const timer = setTimeout(() => {
             const result = run();
             // O log é a saída que o CI guarda; a tela é a que o Maestro lê.
             console.log(formatReportLog(result));
             setReport(result);
+            if (benchmark !== undefined) {
+                measure = setTimeout(() => {
+                    const measured = benchmark();
+                    console.log(formatCryptoBenchmarkLog(measured));
+                    setCrypto(measured);
+                }, 0);
+            }
         }, 0);
         return () => {
             clearTimeout(timer);
+            if (measure !== null) {
+                clearTimeout(measure);
+            }
         };
-    }, [run]);
+    }, [run, benchmark]);
 
     const title = report === null ? 'Contrato: rodando…' : report.passed ? 'Contrato: passou' : 'Contrato: falhou';
     return (
@@ -45,6 +61,11 @@ export function ContractScreen({ run }: { readonly run: () => ContractReport }):
             {report !== null && (
                 <Text style={[styles.body, { color: color('muted') }]}>
                     {`SQLite ${report.sqliteVersion} · ${report.databaseCases} casos do banco · ${report.goldenCases} vetores de ouro`}
+                </Text>
+            )}
+            {benchmark !== undefined && report !== null && (
+                <Text testID="crypto-benchmark" style={[styles.body, { color: color('muted') }]}>
+                    {crypto === null ? 'Medindo a cifra da sincronização…' : describeCryptoBenchmark(crypto)}
                 </Text>
             )}
             <ScrollView contentContainerStyle={styles.failures}>

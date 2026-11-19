@@ -13,13 +13,13 @@ const SINGLE_LABELS: Readonly<Record<'edit' | 'delete', readonly [string, string
 };
 
 /**
- * Pergunta a quais ocorrências da série a edição ou a exclusão se aplica (mockup `MobileEscopo`,
- * adaptado ao desktop; desktop-mvp-plan Fase 9.1). Só a escolha: o que "esta e as futuras" e
+ * Pergunta a quais ocorrências da série a edição ou a exclusão se aplica (recorrencias §7, o
+ * mesmo diálogo do celular adaptado ao desktop). Só a escolha: o que "esta e as futuras" e
  * "todas" excluem, criam e alteram — com as pagas e os saldos que mudam — aparece em seguida, no
- * diálogo de revisão (`SeriesReviewDialog`, desktop-mvp-plan Fase 9.2). "Somente esta" grava
- * direto daqui (Fase 13.2): mexe numa linha só, a que o usuário está vendo, e a revisão repetia o
+ * diálogo de revisão (`SeriesReviewDialog`, recorrencias §7). "Somente esta" grava
+ * direto daqui (recorrencias §7): mexe numa linha só, a que o usuário está vendo, e a revisão repetia o
  * que ele acabou de escolher.
- * Regra de negócio (Recorrências, database-design §4.12): não há escopo padrão que acerte, então
+ * Regra de negócio (Recorrências, recorrencias §5.1): não há escopo padrão que acerte, então
  * o usuário escolhe; mudar a série não passa por aqui, porque vale sempre para a editada e as
  * futuras.
  *

@@ -1,7 +1,7 @@
 import { BusinessRuleViolation } from '../shared/errors.ts';
 
 /**
- * Como o resultado aparece (reports-design L1): a tabela é sempre agrupada, e a pizza mostra a
+ * Como o resultado aparece (relatorios §5.1, L1): a tabela é sempre agrupada, e a pizza mostra a
  * participação de cada grupo da dimensão principal no todo.
  */
 export type ReportFormat = 'table' | 'bar' | 'line' | 'pie';
@@ -9,7 +9,7 @@ export type ReportFormat = 'table' | 'bar' | 'line' | 'pie';
 export const REPORT_FORMATS: readonly ReportFormat[] = ['table', 'bar', 'line', 'pie'];
 
 /**
- * Por o que o relatório agrupa as transações (reports-design L3). `source` é a origem — a conta do
+ * Por o que o relatório agrupa as transações (relatorios §5.1, L3). `source` é a origem — a conta do
  * extrato ou o cartão da fatura —, `month` usa a data escolhida no filtro (F3), `recurrence`
  * separa as fixas, as parceladas e as avulsas (L6) e `flow`, o que entra e o que sai das contas (L8).
  */
@@ -18,7 +18,7 @@ export type ReportDimension = 'month' | 'type' | 'category' | 'subCategory' | 's
 export const REPORT_DIMENSIONS: readonly ReportDimension[] = ['month', 'type', 'category', 'subCategory', 'source', 'tag', 'partner', 'status', 'recurrence', 'flow'];
 
 /**
- * Grupo de um movimento na dimensão de entrada e saída (reports-design L8): se ele soma ao saldo
+ * Grupo de um movimento na dimensão de entrada e saída (relatorios §5.3, L8): se ele soma ao saldo
  * das contas do perfil ou subtrai dele, qualquer que seja o tipo.
  */
 export type ReportFlowGroup = 'in' | 'out';
@@ -27,7 +27,7 @@ export type ReportFlowGroup = 'in' | 'out';
 export const REPORT_FLOW_GROUPS: readonly ReportFlowGroup[] = ['in', 'out'];
 
 /**
- * Grupo de uma transação na dimensão de recorrência (reports-design L6). Não há grupo "sem": a
+ * Grupo de uma transação na dimensão de recorrência (relatorios §5.4, L6). Não há grupo "sem": a
  * transação que não veio de uma série é a avulsa, um grupo de verdade, que a tela rotula.
  */
 export type ReportRecurrenceGroup = 'fixed' | 'installments' | 'single';
@@ -35,7 +35,7 @@ export type ReportRecurrenceGroup = 'fixed' | 'installments' | 'single';
 /** Ordem fixa dos grupos de recorrência: o compromisso que se repete antes do pontual. */
 export const REPORT_RECURRENCE_GROUPS: readonly ReportRecurrenceGroup[] = ['fixed', 'installments', 'single'];
 
-/** O número de cada grupo (reports-design L4): a soma do `value` ou a quantidade de lançamentos. */
+/** O número de cada grupo (relatorios §5.2, L4): a soma do `value` ou a quantidade de lançamentos. */
 export type ReportMeasure = 'sum' | 'count';
 
 export const REPORT_MEASURES: readonly ReportMeasure[] = ['sum', 'count'];
@@ -49,14 +49,14 @@ export interface ReportLayoutProps {
     readonly secondary: ReportDimension | null;
     readonly measure: ReportMeasure;
     /**
-     * Mostrar a análise do resultado (reports-design L9): a informação a mais que cada
+     * Mostrar a análise do resultado (relatorios §5.7, L9): a informação a mais que cada
      * configuração ganha, como o resultado de entradas menos saídas.
      */
     readonly analysis: boolean;
 }
 
 /**
- * Formato de um relatório (reports-design §3). Tabela e gráfico têm a mesma forma — uma dimensão
+ * Formato de um relatório (relatorios §5). Tabela e gráfico têm a mesma forma — uma dimensão
  * principal e uma secundária opcional —, e por isso trocar de um para o outro não pede outra
  * configuração: só muda como a mesma grade aparece.
  */

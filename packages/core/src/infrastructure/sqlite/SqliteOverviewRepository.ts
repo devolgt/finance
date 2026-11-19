@@ -14,7 +14,7 @@ import { RowReader } from './RowReader.ts';
 
 /**
  * Receitas e despesas do perfil (`:profileId`) com o mês em que cada uma pesa na Visão geral.
- * Regra de negócio (Visão geral, regime de caixa da regra-mestra antiga — desktop-mvp-plan §3.1):
+ * Regra de negócio (Visão geral, regime de caixa da regra-mestra antiga — relatorios §2.1):
  * - lançamento de conta: o mês do **extrato** em que está, que é o do pagamento quando pago e o do
  *   vencimento em aberto — ler o extrato garante que a Visão geral e Contas concordem;
  * - compra no cartão: o mês do **vencimento da fatura**, paga ou não (pedido do usuário). Pagar a
@@ -61,7 +61,7 @@ export class SqliteOverviewRepository implements OverviewRepository {
 
     /**
      * Regra de negócio (Visão geral): gasto é a **despesa**, da conta e do cartão. A soma é do
-     * `value` como gravado, sem os encargos, como nos relatórios (reports-design §3, soma do
+     * `value` como gravado, sem os encargos, como nos relatórios (relatorios §5, soma do
      * valor): o estorno (negativo) abate o mês dele.
      *
      * @param profileId Perfil consultado.
@@ -90,7 +90,7 @@ export class SqliteOverviewRepository implements OverviewRepository {
      * chega de outro perfil**, pelo valor que chega (os encargos são da origem). A transferência
      * entre contas do próprio perfil não é entrada: o dinheiro já era do perfil, e contá-la
      * inflaria as entradas a cada movimentação entre contas. A transferência de fora conta no mês
-     * do extrato de origem, que é o da mesma data de caixa (database-design §4.6).
+     * do extrato de origem, que é o da mesma data de caixa (banco-de-dados §4.6).
      *
      * @param profileId Perfil consultado.
      * @param period Mês consultado.
@@ -119,7 +119,7 @@ export class SqliteOverviewRepository implements OverviewRepository {
 
     /**
      * A categoria é a da subcategoria do lançamento. O nome vem da linha mesmo quando a
-     * categoria foi excluída e o gasto continua vivo, como nos relatórios (reports-design §3, Nomes).
+     * categoria foi excluída e o gasto continua vivo, como nos relatórios (relatorios §5, Nomes).
      *
      * @param profileId Perfil consultado.
      * @param period Mês consultado.
@@ -149,7 +149,7 @@ export class SqliteOverviewRepository implements OverviewRepository {
      * chegam a elas. A compra no cartão fica fora — ela é paga com a fatura, e a fatura em aberto
      * vem do `InvoiceRepository`.
      * Regra de negócio (Extrato): o lançamento move o saldo pelo efeito na origem — a receita
-     * entra sem os encargos, a despesa e a transferência saem com eles (database-design §4.13). O
+     * entra sem os encargos, a despesa e a transferência saem com eles (banco-de-dados §4.13). O
      * sinal do efeito decide o sentido, para que o estorno em aberto apareça como o que é: dinheiro
      * a receber.
      *

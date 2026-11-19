@@ -34,7 +34,7 @@ export interface TransactionRepository {
     /**
      * Soft delete da transação e dos filhos que ela possui (tags e anexos). Nada é removido
      * fisicamente, e o cascade do banco não dispara num `UPDATE`, então a propagação é
-     * explícita (database-design §3.6).
+     * explícita (banco-de-dados §3.6).
      *
      * @param id Transação a excluir.
      * @return void
@@ -43,7 +43,7 @@ export interface TransactionRepository {
 
     /**
      * Carimbos das ocorrências, à parte da entidade porque só o diálogo de revisão os usa: dizer
-     * quais ocorrências foram editadas à mão depois de criadas (database-design §4.12).
+     * quais ocorrências foram editadas à mão depois de criadas (banco-de-dados §4.12).
      *
      * @param recurrenceId Série consultada.
      * @return Os carimbos de cada ocorrência viva da série, por id.
@@ -53,7 +53,7 @@ export interface TransactionRepository {
     /**
      * @param recurrenceId Série consultada.
      * @return As ocorrências vivas da série, por data de vencimento e número — os escopos
-     * "esta e as futuras" e "todas" são recortes desta lista (database-design §4.12).
+     * "esta e as futuras" e "todas" são recortes desta lista (banco-de-dados §4.12).
      */
     listOccurrences(recurrenceId: RecurrenceId): readonly Transaction[];
 

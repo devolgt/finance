@@ -5,7 +5,7 @@ import { currencyCodeField, registryNameField } from './fields.ts';
 import { profileTypeField } from './profileRequests.ts';
 
 /**
- * O formulário do primeiro uso (mockup `DesktopPrimeiroUso`). As categorias sugeridas vêm
+ * O formulário do primeiro uso (perfis §4.2). As categorias sugeridas vêm
  * ligadas por padrão porque, sem nenhuma subcategoria, o primeiro lançamento seria recusado.
  */
 export const startOnboardingRequest = z

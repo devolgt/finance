@@ -75,8 +75,8 @@ function NewSubCategory({ category }: { readonly category: CategoryBranchRespons
 }
 
 /**
- * Detalhe da categoria (mobile-mvp-plan, Fase 15; as informações do detalhe do desktop, Fase
- * 13.12, no modelo das telas mobile): quantas subcategorias e lançamentos tem, as subcategorias
+ * Detalhe da categoria (categorias-e-tags §5.2; as informações do detalhe do desktop,
+ * categorias-e-tags §5.1, no modelo das outras telas do celular): quantas subcategorias e lançamentos tem, as subcategorias
  * com a contagem de lançamentos e a criação no fim. Renomear e excluir a categoria ficam no "⋯";
  * tocar numa subcategoria abre renomear e excluir dela.
  * Regra de negócio (Categorias): nomes são únicos no perfil, sem diferenciar maiúsculas, e

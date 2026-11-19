@@ -3,10 +3,10 @@ import type { GoalProgressResponse } from '@finance/core';
 import { z } from 'zod';
 
 /*
- * Meta aberta na tela Metas (mockup `DesktopMetas`; desktop-mvp-plan Fase 9.3). Fica na URL como
+ * Meta aberta na tela Metas (metas §7.1). Fica na URL como
  * *search param* `goal`, como a conta aberta em Contas, para que voltar no histórico devolva a
  * meta que estava aberta. A visualização da lista (ativas, atingidas ou arquivadas,
- * desktop-mvp-plan Fase 13.4) fica em `view`.
+ * metas §5.2) fica em `view`.
  */
 
 /** Parâmetros de busca próprios da tela Metas. */

@@ -49,7 +49,7 @@ async function transactionSource(world: ClientWorld, s: Scenario): Promise<Trans
 }
 
 describe('tabela de Transações', () => {
-    it('junta nomes, sinais e situação como no mockup, e soma o resultado sem transferências', async () => {
+    it('junta nomes, sinais e situação, e soma o resultado sem transferências', async () => {
         const world = new ClientWorld();
         const s = await world.seed();
         await world.ok('transactions.create', {

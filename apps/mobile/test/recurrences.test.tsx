@@ -17,7 +17,7 @@ function lastSheet(): ReturnType<typeof screen.getByTestId> {
 
 afterEach(restoreToday);
 
-describe('recorrências (mobile-mvp-plan, Fase 11)', () => {
+describe('recorrências (recorrencias §7)', () => {
     it('parcela em 3x, revisa o que será lançado e grava a série', async () => {
         fixToday(2026, 10, 15);
         const { core } = testCore(SCENARIO_TODAY);

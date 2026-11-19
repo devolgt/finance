@@ -4,9 +4,10 @@ import { AndroidConfig, withAndroidManifest, withAppBuildGradle, withDangerousMo
 import type { ExpoConfig } from 'expo/config';
 import corePackageJson from '../../packages/core/package.json';
 import { addReleaseSigning, versionCodeOf } from './config/releaseSigning.ts';
+import { CAMERA_PLUGIN_OPTIONS, SYNC_ANDROID_PERMISSIONS } from './config/syncPermissions.ts';
 import packageJson from './package.json';
 
-/** Pacote Android escolhido pelo usuário (mobile-mvp-plan, Fase 4). Nunca mudar: é a identidade do app instalado. */
+/** Pacote Android escolhido pelo usuário (mobile §2). Nunca mudar: é a identidade do app instalado. */
 const ANDROID_PACKAGE = 'br.com.finance.app';
 
 /** Pasta dos ícones do pacote compartilhado `@finance/assets`, o mesmo de onde o desktop tira o dele. */
@@ -25,7 +26,7 @@ const PLEX = './node_modules/@expo-google-fonts/ibm-plex-sans';
  * Regras de extração de dados do Android 12+, que excluem tudo do backup em nuvem e da
  * transferência entre aparelhos. O `allowBackup="false"` sozinho não basta: a partir do
  * Android 12 ele desliga o backup em nuvem, mas a cópia de aparelho para aparelho continua
- * levando o diretório do app — e o banco junto (mobile-shell-design §6.1).
+ * levando o diretório do app — e o banco junto (mobile §7.1).
  */
 const DATA_EXTRACTION_RULES = [
     '<?xml version="1.0" encoding="utf-8"?>',
@@ -42,7 +43,7 @@ const DATA_EXTRACTION_RULES = [
 ].join('\n');
 
 /**
- * Tira o banco, os anexos e `backups/` de todo backup do sistema (mobile-shell-design §6.1): o
+ * Tira o banco, os anexos e `backups/` de todo backup do sistema (mobile §7.1): o
  * backup automático mandaria o histórico financeiro a um terceiro, o que a regra de produto da
  * sincronização só na rede local recusa — e em silêncio, configurado pelo sistema e não pelo
  * usuário. Grava as regras de extração e as liga no `AndroidManifest`, junto com o
@@ -68,9 +69,8 @@ const withNoDataExtraction: ConfigPlugin = (config) => {
 };
 
 /**
- * Assina o APK de release com a chave do usuário, fora do repositório (mobile-mvp-plan, Fase
- * 19). A regra da troca e o motivo de cair na chave de depuração sem ela estão no
- * `addReleaseSigning`.
+ * Assina o APK de release com a chave do usuário, fora do repositório (mobile §11). A
+ * regra da troca e o motivo de cair na chave de depuração sem ela estão no `addReleaseSigning`.
  *
  * @param config Configuração do Expo recebida da cadeia de plugins.
  * @return A configuração com o `app/build.gradle` ajustado no `prebuild`.
@@ -82,7 +82,20 @@ const withReleaseSigning: ConfigPlugin = (config) => withAppBuildGradle(config, 
 });
 
 /**
- * Configuração do app (mobile-mvp-plan, Fase 4): Expo SDK 58 — em que a Nova Arquitetura, o
+ * Permissões da sincronização na rede local (sincronizacao §6.4): o porquê de cada uma está em
+ * `SYNC_ANDROID_PERMISSIONS`. Plugin, e não a lista `android.permissions`, para que a regra fique
+ * num lugar só e testável, junto do motivo de cada permissão.
+ *
+ * @param config Configuração do Expo recebida da cadeia de plugins.
+ * @return A configuração com o `AndroidManifest` ajustado no `prebuild`.
+ */
+const withSyncPermissions: ConfigPlugin = (config) => withAndroidManifest(config, (modConfig) => {
+    AndroidConfig.Permissions.ensurePermissions(modConfig.modResults, [...SYNC_ANDROID_PERMISSIONS]);
+    return modConfig;
+});
+
+/**
+ * Configuração do app (mobile §2): Expo SDK 58 — em que a Nova Arquitetura, o
  * Hermes e o edge-to-edge são o único modo, sem chave na configuração —, development build e
  * `android/` gerado pelo `prebuild`, nunca versionado. As permissões que
  * o template do Expo traz por padrão e que o app não usa ficam bloqueadas: o app não lê
@@ -93,7 +106,7 @@ const config: ExpoConfig = {
     slug: 'finance',
     scheme: 'finance',
     version: packageJson.version,
-    // A versão do núcleo embarcado, para Ajustes mostrar junto da do app (mobile-mvp-plan, Fase 18).
+    // A versão do núcleo embarcado, para Ajustes mostrar junto da do app (mobile §7.2).
     extra: { coreVersion: corePackageJson.version },
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
@@ -107,7 +120,7 @@ const config: ExpoConfig = {
             foregroundImage: `${ICONS}/finance-icon-adaptive-foreground.png`,
             backgroundColor: ICON_BACKGROUND,
         },
-        // Sobe com a versão do app, para o Android recusar instalar um APK antigo por cima (Fase 19).
+        // Sobe com a versão do app, para o Android recusar instalar um APK antigo por cima (mobile §11).
         versionCode: versionCodeOf(packageJson.version),
         allowBackup: false,
         permissions: [],
@@ -122,8 +135,10 @@ const config: ExpoConfig = {
     plugins: [
         'expo-router',
         'expo-sqlite',
-        // Folha de compartilhamento da cópia do banco e do log (mobile-mvp-plan, Fase 18).
+        // Folha de compartilhamento da cópia do banco e do log (mobile §7.2).
         'expo-sharing',
+        // Leitura do QR do convite de sincronização (sincronizacao §6.4), sem microfone.
+        ['expo-camera', CAMERA_PLUGIN_OPTIONS],
         [
             'expo-font',
             {
@@ -144,4 +159,4 @@ const config: ExpoConfig = {
     ],
 };
 
-export default withReleaseSigning(withNoDataExtraction(config));
+export default withReleaseSigning(withSyncPermissions(withNoDataExtraction(config)));

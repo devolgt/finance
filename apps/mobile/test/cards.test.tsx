@@ -74,7 +74,7 @@ function lastSheet(): ReturnType<typeof screen.getByTestId> {
 
 afterEach(restoreToday);
 
-describe('Cartões (mobile-mvp-plan, Fase 13)', () => {
+describe('Cartões (cartoes-e-faturas §7)', () => {
     it('lista os cartões com a fatura do mês, o selo Padrão e os totais do núcleo', async () => {
         const { core, s } = await openApp(NOVEMBER, '/cards');
         const list = await ok(core, 'creditCards.list', { profileId: s.profileId, period: NOVEMBER });

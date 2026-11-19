@@ -12,7 +12,7 @@ export interface HistoryOptions {
 }
 
 /**
- * Padrão do banco da medição da Fase 5 (mobile-mvp-plan): dez anos até o mês corrente do plano.
+ * Padrão do banco da medição (mobile §12.1): dez anos até o mês corrente do plano.
  * Fica no código de produção, e não junto do gerador nos testes, porque o app do celular
  * precisa saber as competências do banco que vai medir e não pode importar código de teste.
  */

@@ -11,7 +11,7 @@ export interface MoneyResponse {
 
 /**
  * Arredonda aqui porque a fronteira de apresentação é um dos dois únicos pontos onde se
- * arredonda (database-design §3.7) — dentro do núcleo os cálculos seguem sem arredondar para
+ * arredonda (banco-de-dados §3.7) — dentro do núcleo os cálculos seguem sem arredondar para
  * não acumular erro entre somas.
  *
  * @param money Valor do domínio; é a fonte do montante e da moeda que a UI vai formatar.

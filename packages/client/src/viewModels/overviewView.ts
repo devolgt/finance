@@ -23,17 +23,16 @@ import { describeGoalListItem, type GoalListItem } from './goalView.ts';
 import { formatInvoiceAmount } from './invoiceView.ts';
 
 /*
- * Visão geral pronta para a tela (mockup `DesktopVisaoGeral2`, que substituiu o `Main`; e o
- * `MobileInicio` do celular): os indicadores, o gráfico de gastos, as maiores categorias, o selo
+ * Visão geral pronta para a tela (visao-do-mes §1 e §6; o Início do celular): os indicadores, o gráfico de gastos, as maiores categorias, o selo
  * de atrasados e os resumos de contas, cartões, metas e anotações. Fica no `client`, e não na
- * tela, porque o celular mostra os mesmos números com as mesmas frases (desktop-shell-design §4.2).
+ * tela, porque o celular mostra os mesmos números com as mesmas frases (desktop §4).
  */
 
 /**
  * Tom do valor de um indicador, que a tela converte em token:
  * - `strong`: o número principal, sem sentido de entrada ou saída;
  * - `in` e `out`: entradas e gastos, sempre junto da seta do rótulo — a cor não é o único sinal
- *   (decisão de interface 7 dos mockups).
+ *   (desktop §7.3).
  */
 export type OverviewKpiTone = 'strong' | 'in' | 'out';
 
@@ -77,9 +76,9 @@ function sum(values: readonly MoneyResponse[], currency: string): MoneyResponse 
 /**
  * Indicadores de saldo e de patrimônio. O consolidado e o previsto vêm do total da lista de
  * contas porque é o mesmo número do rodapé da tela Contas: as duas telas nunca podem discordar
- * sobre o saldo do mês. O previsto fica na mesma caixa, com peso menor (decisão de interface 6).
+ * sobre o saldo do mês. O previsto fica na mesma caixa, com peso menor (desktop §7.5).
  * Regra de negócio (Contas): o total soma só as contas com "considerar no saldo", e a contagem
- * conta as mesmas (database-design §4.4). O patrimônio soma **todas** as contas, inclusive as
+ * conta as mesmas (banco-de-dados §4.4). O patrimônio soma **todas** as contas, inclusive as
  * fora do total — os investimentos que o usuário não quer ver no saldo do dia a dia continuam
  * sendo dele.
  *
@@ -311,7 +310,7 @@ export interface OverviewAccountRow {
     readonly consolidated: string;
     /** O previsto embaixo do consolidado; `null` na conta fora do total e na zerada, que mostram um valor só. */
     readonly projected: string | null;
-    /** Conta com consolidado e previsto zerados: aparece esmaecida, para que as que têm dinheiro se destaquem (mockup). */
+    /** Conta com consolidado e previsto zerados: aparece esmaecida, para que as que têm dinheiro se destaquem. */
     readonly empty: boolean;
     readonly disabled: boolean;
 }
@@ -328,8 +327,8 @@ export interface OverviewAccounts {
 /**
  * Resumo de contas, na ordem da tela Contas.
  * Regra de negócio (Contas): a conta com "considerar no saldo" desligado não entra no total e
- * fica num grupo à parte, só com o consolidado (database-design §4.4). A desativada continua,
- * porque o histórico e os saldos não mudam (desktop-mvp-plan §5.1).
+ * fica num grupo à parte, só com o consolidado (banco-de-dados §4.4). A desativada continua,
+ * porque o histórico e os saldos não mudam (contas §5).
  *
  * @param accounts Contas do perfil no mês de referência, com o total.
  * @return As contas separadas pelo total e o total formatado.
@@ -364,7 +363,7 @@ function accountRow(account: AccountInPeriodResponse, inTotal: boolean): Overvie
 /** Situação de uma fatura na etiqueta do resumo de cartões. */
 export interface OverviewInvoiceStatus {
     readonly text: 'Em aberto' | 'Paga';
-    /** `warn` em aberto e `ok` paga, como as etiquetas do mockup. */
+    /** `warn` em aberto e `ok` paga, os tokens de aviso e de situação concluída. */
     readonly tone: 'warn' | 'ok';
 }
 
@@ -396,7 +395,7 @@ export interface OverviewCardRow {
 /**
  * Resumo de cartões: a fatura do mês de referência, a mesma da lista de Cartões, e a próxima em
  * aberto quando não é ela — para que o resumo diga o que vem a pagar mesmo num mês já fechado.
- * Regra de negócio (Fatura): a fatura está paga ou em aberto (database-design §4.7); a
+ * Regra de negócio (Fatura): a fatura está paga ou em aberto (banco-de-dados §4.7); a
  * competência sem lançamentos não tem fatura, e a linha mostra só o vencimento.
  *
  * @param creditCards Cartões do perfil no mês de referência.
@@ -447,7 +446,7 @@ export interface OverviewGoalRow extends GoalListItem {
 
 /**
  * A meta no resumo, com o alerta de prazo e o ritmo — o que pede ação, sem abrir a tela Metas.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 9.3): o prazo e o ritmo contam a partir do fim
+ * Regra de negócio (Metas, metas §4.2): o prazo e o ritmo contam a partir do fim
  * do mês de referência; o prazo encerrado (`monthsLeft` zero) sem a meta atingida é vencido, e
  * sem prazo, atingida ou vencida não há ritmo a seguir.
  *
@@ -490,7 +489,7 @@ function describeTotals(totals: OverviewPendingResponse['overdueTotals']): strin
 }
 
 /**
- * O selo de atrasados (mockup `DesktopVisaoGeral2`): a contagem e os valores dos lançamentos e
+ * O selo de atrasados (visao-do-mes §4.3): a contagem e os valores dos lançamentos e
  * faturas que venceram antes de hoje sem pagamento. Sem atraso, o selo verde ainda abre o painel
  * quando há algo em aberto até o fim do mês (pedido do usuário: o que está em aberto mora no
  * painel, no lugar da lista "Próximos 30 dias").
@@ -533,7 +532,7 @@ export interface PendingRow {
     readonly overdue: boolean;
     /** Conta, "origem → destino" ou a conta que paga a fatura. */
     readonly where: string;
-    /** Com o sinal ou o ⇄ (decisão de interface 7). */
+    /** Com o sinal ou o ⇄ (desktop §7.3). */
     readonly value: string;
     readonly tone: 'in' | 'out' | 'transfer';
     readonly action: PendingAction;
@@ -579,7 +578,7 @@ function pendingRow(item: PendingItemResponse, today: LocalDate): PendingRow {
 
 /**
  * Regra de negócio (Visão geral): a transferência que chega de outro perfil só aparece — quem a
- * marca como paga é o perfil de origem, dono da linha (database-design §4.13). A fatura não se
+ * marca como paga é o perfil de origem, dono da linha (banco-de-dados §4.13). A fatura não se
  * paga daqui: o pagamento pede conta, valor e data, e a linha leva à fatura na tela Cartões.
  *
  * @param item Item em aberto.
@@ -627,7 +626,7 @@ export function markedPaidMessage(row: PendingRow, today: string): string {
 /** Uma anotação no bloco da Visão geral: só o título, que leva a ela na tela Anotações. */
 export interface OverviewNoteRow {
     readonly noteId: string;
-    /** A primeira linha da anotação (decisão de interface 9 dos mockups). */
+    /** A primeira linha da anotação (anotacoes §1.3). */
     readonly title: string;
 }
 
@@ -639,13 +638,13 @@ export interface OverviewNotes {
 }
 
 /**
- * Quantas anotações o bloco mostra: as mais recentes. O bloco é pequeno no mockup
- * `DesktopVisaoGeral2`, embaixo das metas; as outras estão a um clique, na tela Anotações.
+ * Quantas anotações o bloco mostra: as mais recentes. O bloco é pequeno, embaixo das metas na
+ * Visão geral; as outras estão a um clique, na tela Anotações.
  */
 export const OVERVIEW_NOTES_LIMIT = 4;
 
 /**
- * Anotações da Visão geral (desktop-mvp-plan Fase 13.2): só os títulos, das mais recentes para as
+ * Anotações da Visão geral (visao-do-mes §1; anotacoes §2): só os títulos, das mais recentes para as
  * mais antigas — a ordem em que o núcleo as lista —, para que se ache a anotação sem abrir
  * Anotações; o texto inteiro fica no editor, para onde cada título leva.
  *

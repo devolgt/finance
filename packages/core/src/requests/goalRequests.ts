@@ -6,7 +6,7 @@ import { localDateField, moneyField, parsedText, registryNameField, yearMonthFie
 /**
  * Campos do cadastro da meta, exportados para o formulário validar com o mesmo schema.
  * Regra de negócio (Metas): o valor-alvo é maior que zero; a data-alvo é opcional — `null` é a
- * meta sem prazo, como a reserva de emergência (database-design §4.11).
+ * meta sem prazo, como a reserva de emergência (banco-de-dados §4.11).
  */
 export const goalContentShape = {
     name: registryNameField,
@@ -15,7 +15,7 @@ export const goalContentShape = {
 };
 
 /**
- * De onde vem o progresso (database-design §4.11): os lançamentos vinculados ou o saldo de uma
+ * De onde vem o progresso (banco-de-dados §4.11): os lançamentos vinculados ou o saldo de uma
  * conta de investimento. Na criação o padrão é por lançamentos, o caso de sempre; na edição o
  * tipo vem explícito, porque trocá-lo desfaz os vínculos e não pode acontecer por omissão.
  */

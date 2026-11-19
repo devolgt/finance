@@ -1,7 +1,7 @@
 import type { Recurrence } from '../domain/recurrence/Recurrence.ts';
 import type { ProfileId, RecurrenceId } from '../domain/shared/ids.ts';
 
-/** Acesso às regras de recorrência (database-design §4.12). Toda leitura considera só regras vivas de perfis vivos. */
+/** Acesso às regras de recorrência (banco-de-dados §4.12). Toda leitura considera só regras vivas de perfis vivos. */
 export interface RecurrenceRepository {
     /**
      * @param id Regra procurada.

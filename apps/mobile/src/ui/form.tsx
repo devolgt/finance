@@ -7,9 +7,8 @@ import { OptionList, type SelectOption } from './Select.tsx';
 import { Sheet } from './Sheet.tsx';
 
 /*
- * Formulários no padrão dos mockups do celular (`MobilePrimeiroUso`, `MobileLancamento`): grupos
- * com borda (`.list`) e linhas com o rótulo à esquerda e o valor à direita (`.it`), o erro logo
- * abaixo da linha. Um padrão só para todo formulário do app, para que um campo novo não invente
+ * Formulários do celular (o primeiro uso, o lançamento e as folhas de cadastro): grupos com borda e
+ * linhas com o rótulo à esquerda e o valor à direita, o erro logo abaixo da linha. Um padrão só para todo formulário do app, para que um campo novo não invente
  * outro desenho.
  */
 
@@ -30,7 +29,7 @@ export function toFieldErrors<V extends FieldValues>(fields: readonly Path<V>[],
 }
 
 /**
- * Título de um grupo de campos (`.sec` dos mockups).
+ * Título de um grupo de campos, para separar visualmente os assuntos de um formulário longo.
  *
  * @param props.children Texto do título.
  * @return O título, anunciado como cabeçalho.
@@ -44,7 +43,7 @@ export function FormSection({ children }: { readonly children: string }): ReactN
 }
 
 /**
- * Grupo de linhas com a borda e o raio dos mockups (`.list`).
+ * Grupo de linhas com borda e raio, que junta os campos de um mesmo assunto.
  *
  * @param props.children As linhas.
  * @return O grupo.
@@ -54,7 +53,7 @@ export function FormGroup({ children }: { readonly children: ReactNode }): React
 }
 
 /**
- * Linha de formulário (`.it`): rótulo à esquerda, valor à direita, 50 px de altura mínima, e o
+ * Linha de formulário: rótulo à esquerda, valor à direita, 50 px de altura mínima, e o
  * erro do campo embaixo, na cor `danger`, com o texto — a cor sozinha não diz o que corrigir.
  *
  * @param props.label Rótulo da linha.
@@ -77,7 +76,7 @@ export function FormRow(props: { readonly label: string; readonly error?: string
 }
 
 /**
- * Campo de texto de uma linha, alinhado à direita como no mockup, sem borda própria (a borda é a
+ * Campo de texto de uma linha, alinhado à direita como o valor das outras linhas, sem borda própria (a borda é a
  * do grupo). O nome acessível junta o rótulo e o erro.
  *
  * @param props.label Rótulo da linha, que vira o nome acessível.
@@ -100,11 +99,11 @@ export function RowInput({ label, error, ...inputProps }: TextInputProps & { rea
 }
 
 /**
- * Controle segmentado (`.seg` dos mockups) para duas ou três escolhas que cabem na linha. Cada
+ * Controle segmentado para duas ou três escolhas que cabem na linha. Cada
  * segmento é um botão de opção com o estado "selecionado", porque o destaque é só visual.
  *
  * @param props.label Nome do grupo, para o leitor de tela.
- * @param props.options Escolhas, na ordem do mockup.
+ * @param props.options Escolhas, na ordem em que aparecem.
  * @param props.value Escolha atual.
  * @param props.onChange Ao escolher.
  * @return O controle.
@@ -135,7 +134,7 @@ export function Segmented<T extends string>(props: { readonly label: string; rea
 }
 
 /**
- * Valor de uma linha que abre uma folha de escolhas (`BRL ›` no mockup), com a escolha atual.
+ * Valor de uma linha que abre uma folha de escolhas (como `BRL ›`), com a escolha atual.
  *
  * @param props.label Rótulo da linha e título da folha.
  * @param props.options Escolhas.

@@ -1,8 +1,7 @@
 import { normalizeForSearch } from '../format/searchText.ts';
 
 /*
- * Campos do app que uma coluna do arquivo pode alimentar (mockup `DesktopImportMapear`;
- * import-design §4).
+ * Campos do app que uma coluna do arquivo pode alimentar (importacao §4).
  */
 
 /** O que o arquivo contém: um tipo de lançamento, ou vários com uma coluna de tipo. */
@@ -34,7 +33,7 @@ export type ImportFieldId =
     | 'installment'
     | 'installments';
 
-/** Grupo em que o campo aparece na paleta, na ordem do mockup. */
+/** Grupo em que o campo aparece na paleta, na ordem em que a tela os mostra. */
 export type ImportFieldGroup = 'essentials' | 'accounts' | 'classification' | 'dates' | 'repetition';
 
 export const IMPORT_FIELD_GROUPS: readonly ImportFieldGroup[] = ['essentials', 'accounts', 'classification', 'dates', 'repetition'];
@@ -62,8 +61,8 @@ const WITH_CARD: readonly ImportFileKind[] = ['expenses', 'mixed'];
 
 /**
  * Catálogo dos campos. "Efetivação" e "Lançamento" ficam como dica, e não como ligação automática,
- * porque cada app usa os nomes para coisas diferentes — a decisão do mockup é mostrar a dica e
- * deixar o usuário ligar.
+ * porque cada app usa os nomes para coisas diferentes — a tela mostra a dica e deixa o usuário
+ * ligar (importacao §4).
  */
 export const IMPORT_FIELDS: readonly ImportField[] = [
     { id: 'name', label: 'Nome', group: 'essentials', kinds: ALL, requiredIn: ALL, hint: 'Texto do lançamento', names: ['descricao', 'nome', 'historico', 'titulo', 'lancamento descricao'], hintNames: [] },
@@ -123,7 +122,7 @@ export function normalizeHeader(header: string): string {
 }
 
 /**
- * Sugere a ligação pelo cabeçalho (o "Sugerir pelo cabeçalho" do mockup). Um campo liga à primeira
+ * Sugere a ligação pelo cabeçalho (o botão "Sugerir pelo cabeçalho"). Um campo liga à primeira
  * coluna cujo cabeçalho está na lista dele; a coluna já ligada não recebe outro campo.
  *
  * @param headers Cabeçalhos do arquivo.
@@ -160,7 +159,7 @@ export function columnHint(header: string, kind: ImportFileKind, mapping: Column
 
 /**
  * Liga um campo a uma coluna. Um campo liga a uma coluna só, e a coluna a um campo só: o campo sai
- * da coluna anterior, e o campo que ocupava a coluna é solto (mockup `DesktopImportMapear`).
+ * da coluna anterior, e o campo que ocupava a coluna é solto (importacao §4).
  *
  * @param mapping Ligação atual.
  * @param field Campo arrastado ou escolhido.

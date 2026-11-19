@@ -2,10 +2,10 @@ import { TRANSACTION_SITUATIONS, type TransactionFilters, type TransactionSituat
 import { z } from 'zod';
 
 /*
- * Filtros da tela de Transações na URL (mockup `DesktopTransacoes`; desktop-mvp-plan Fase 9).
+ * Filtros da tela de Transações na URL (transacoes §8.1).
  * Ficam na URL, e não num estado do React, pelo mesmo motivo do mês de referência: voltar no
  * histórico devolve a tabela filtrada, e outra tela pode abrir Transações já filtrada — o painel
- * de Tags hoje e o relatório por categoria na Fase 11 ("Abrir em Transações" levando os filtros).
+ * de Tags, por exemplo, leva aos lançamentos da tag.
  */
 
 /** Parâmetros de busca próprios da tela de Transações. */
@@ -114,8 +114,8 @@ export function withFilters(current: Readonly<Record<string, unknown>>, filters:
 }
 
 /**
- * Valor do campo "Conta ou cartão": um `Select` só, com as contas e os cartões juntos, como no
- * mockup.
+ * Valor do campo "Conta ou cartão": um campo só (`Combobox`), com as contas e os cartões juntos,
+ * porque o usuário procura pelo nome sem pensar se é conta ou cartão.
  *
  * @param filter Filtro de conta ou cartão.
  * @return `account:<id>`, `creditCard:<id>` ou vazio para "Todos".

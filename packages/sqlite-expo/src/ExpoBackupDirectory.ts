@@ -21,7 +21,7 @@ export interface ExpoBackupFolder {
 /**
  * Adaptador da porta `BackupDirectory` do núcleo sobre o `expo-file-system`, com a pasta
  * `backups/` ao lado do banco. Fino e sem regra, como o `NodeBackupDirectory` do desktop:
- * quando copiar, como nomear e quantas cópias guardar é decisão do núcleo (backend-design §4.6).
+ * quando copiar, como nomear e quantas cópias guardar é decisão do núcleo (banco-de-dados §5.6).
  */
 export class ExpoBackupDirectory implements BackupDirectory {
     /**

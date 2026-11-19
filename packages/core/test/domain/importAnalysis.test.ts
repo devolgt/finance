@@ -64,7 +64,7 @@ function installment(line: number, installment: number, overrides: Partial<Impor
     });
 }
 
-describe('BillingCycle.invoicePeriodDueIn — fatura pelo mês do vencimento (import-design §5.4)', () => {
+describe('BillingCycle.invoicePeriodDueIn — fatura pelo mês do vencimento (importacao §5.4)', () => {
     it.each([
         // Fecha no 8 e vence no 15: a fatura vence no próprio mês.
         [8, 15, '2026-11', '2026-11'],
@@ -109,7 +109,7 @@ describe('analyzeImport — linhas recusadas', () => {
 });
 
 describe('analyzeImport — pagamento, tags e cartão', () => {
-    it('paga no vencimento as linhas vencidas só com "pagas até hoje" (import-design §5.3)', () => {
+    it('paga no vencimento as linhas vencidas só com "pagas até hoje" (importacao §5.3)', () => {
         const rows = [row(1, { dueDate: LocalDate.parse('2026-10-15') }), row(2, { dueDate: LocalDate.parse('2026-10-16') })];
         const off = analyzeImport(rows, OPTIONS, TODAY);
         expect(off.standalone.map((item) => item.paymentDate)).toEqual([null, null]);
@@ -118,7 +118,7 @@ describe('analyzeImport — pagamento, tags e cartão', () => {
         expect([on.paid, on.pending]).toEqual([1, 1]);
     });
 
-    it('junta as tags da coluna e as #palavras da observação, sem repetir (import-design §5.2)', () => {
+    it('junta as tags da coluna e as #palavras da observação, sem repetir (importacao §5.2)', () => {
         const input = row(1, { tags: ['Viagem'], description: '#viagem #TiaDarci  #Madrinha' });
         expect(analyzeImport([input], OPTIONS, TODAY).standalone[0]?.tags).toEqual(['Viagem', 'TiaDarci', 'Madrinha']);
         const off = analyzeImport([input], { ...OPTIONS, hashtagsAsTags: false }, TODAY);
@@ -137,7 +137,7 @@ describe('analyzeImport — pagamento, tags e cartão', () => {
         ]);
     });
 
-    it('sugere vencimento, pagadora e fechamento do cartão pelas linhas (import-design §5.1)', () => {
+    it('sugere vencimento, pagadora e fechamento do cartão pelas linhas (importacao §5.1)', () => {
         const purchases = [1, 3, 5, 7, 8, 12, 20, 28].map((day, index) => row(index + 1, {
             creditCard: 'Inter',
             account: index === 0 ? 'Outra' : 'Banco',
@@ -155,7 +155,7 @@ describe('analyzeImport — pagamento, tags e cartão', () => {
     });
 });
 
-describe('analyzeImport — séries (import-design §5.5)', () => {
+describe('analyzeImport — séries (importacao §5.5)', () => {
     it('numera a fixa pelo mês: o mês que falta é um número pulado', () => {
         const analysis = analyzeImport([fixed(1, '2026-03-11'), fixed(2, '2026-01-11'), fixed(3, '2026-04-11')], OPTIONS, TODAY);
         expect(analysis.series).toHaveLength(1);

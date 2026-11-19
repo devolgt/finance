@@ -15,7 +15,7 @@ const IMPORT_MAX_ROWS = 50_000;
 /** Texto livre de uma linha; o tamanho é conferido pela análise, que aponta a linha. */
 const rowText = z.string().max(10_000);
 
-/** Repetição declarada na linha (import-design §4). */
+/** Repetição declarada na linha (importacao §4). */
 const repetitionSchema = z.discriminatedUnion('kind', [
     z.strictObject({ kind: z.literal('none') }),
     z.strictObject({ kind: z.literal('fixed'), frequency: z.enum(RECURRENCE_FREQUENCIES) }),
@@ -28,7 +28,7 @@ const repetitionSchema = z.discriminatedUnion('kind', [
 ]);
 
 /**
- * Uma linha do arquivo já lida pelo client (import-design §2). É exportada para o client
+ * Uma linha do arquivo já lida pelo client (importacao §2). É exportada para o client
  * converter as linhas no mesmo formato de domínio que o núcleo recebe e chamar a mesma análise
  * na tela de revisão.
  */
@@ -53,7 +53,7 @@ export const importRowSchema = z
     })
     .transform((data): ImportRow => ({ ...data, repetition: repetitionOf(data.repetition) }));
 
-/** Escolhas da revisão (mockup `DesktopImportRevisar`). */
+/** Escolhas da revisão (importacao §6). */
 export const importOptionsSchema = z.strictObject({
     groupSeries: z.boolean(),
     keepFutureOccurrences: z.boolean(),

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/cn';
 
-/** Opções de "Repetir", na ordem do mockup `MobileParcelar`. */
+/** Opções de "Repetir", do caso mais comum (não repetir) para o menos comum. */
 const REPEAT_KINDS: readonly { readonly kind: RepeatKind; readonly label: string }[] = [
     { kind: 'none', label: 'Não repetir' },
     { kind: 'installments', label: 'Parcelado' },
@@ -14,12 +14,12 @@ const REPEAT_KINDS: readonly { readonly kind: RepeatKind; readonly label: string
 ];
 
 /**
- * "Repetir" do formulário de lançamento (mockup `MobileParcelar`, adaptado ao diálogo do desktop;
- * desktop-mvp-plan Fase 9.1): não repetir, parcelado ou fixo, a frequência, as parcelas e se o
+ * "Repetir" do formulário de lançamento (recorrencias §3.3, o mesmo campo do celular adaptado ao
+ * diálogo do desktop): não repetir, parcelado ou fixo, a frequência, as parcelas e se o
  * valor digitado é o total ou o de cada parcela, o fim da série fixa e a prévia do que será
  * gravado. Na edição de uma ocorrência, a série pode virar parcelada ou fixa, mas não deixar de
  * repetir; o valor é o da ocorrência, e só a fixa que vira parcelada pergunta se ele é o total ou
- * o de cada parcela, como na criação (desktop-mvp-plan Fase 9.2). A prévia não aparece na
+ * o de cada parcela, como na criação (recorrencias §7). A prévia não aparece na
  * edição: o diálogo de revisão mostra o que será excluído e criado.
  *
  * @param props.form O formulário.

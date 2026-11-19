@@ -1,8 +1,8 @@
 /*
  * Schemas da camada Request, exportados pelo subcaminho `@finance/core/requests` para os
- * formulários da UI (desktop-mvp-plan §2, Formulários). O formulário valida com o mesmo
+ * formulários da UI (desktop §4.5). O formulário valida com o mesmo
  * schema que o núcleo aplica na fronteira, para que a mensagem de conforto e a recusa do
- * núcleo nunca discordem (desktop-shell-design §5.4). São só schemas e o domínio puro que
+ * núcleo nunca discordem (desktop §3.5). São só schemas e o domínio puro que
  * eles usam: nada de Repository, Service ou plataforma entra por aqui.
  */
 export * from './fields.ts';

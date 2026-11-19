@@ -11,7 +11,7 @@ export interface CoreError {
 /**
  * Resultado de toda rota. Uma união discriminada, e não exceção, porque o IPC do Electron
  * serializa por structured clone e uma exceção chegaria ao renderer sem classe nem campos
- * próprios (desktop-shell-design §5.3).
+ * próprios (desktop §3.3).
  */
 export type CoreResult<T> =
     | { readonly ok: true; readonly data: T }
@@ -33,7 +33,7 @@ export type UnexpectedErrorListener = (error: unknown) => void;
  * @param action Caso de uso a executar com a entrada validada; devolve o DTO de saída.
  * @param onUnexpected Destino do log de falhas inesperadas.
  * @return A promessa do resultado; a assincronia existe só na fronteira de transporte
- * (backend-design §3.5).
+ * (core §4.2).
  */
 export function handle<S extends z.ZodType, T>(
     schema: S,
@@ -43,21 +43,39 @@ export function handle<S extends z.ZodType, T>(
 ): Promise<CoreResult<T>> {
     const parsed = schema.safeParse(raw);
     if (!parsed.success) {
-        const issue = parsed.error.issues[0];
-        return Promise.resolve(failure({
-            code: 'VALIDATION_FAILED',
-            message: 'Entrada inválida',
-            details: {
-                field: issue?.path.map(String).join('.') ?? '',
-                reason: issue?.message ?? '',
-                issues: parsed.error.issues.length,
-            },
-        }));
+        return Promise.resolve(failure(validationError(parsed.error)));
     }
     try {
         return Promise.resolve({ ok: true, data: action(parsed.data) });
     } catch (error) {
         return Promise.resolve(failure(toCoreError(error, onUnexpected)));
+    }
+}
+
+/**
+ * Como `handle`, para as rotas cujo trabalho é assíncrono — as da sincronização, que esperam
+ * a rede (abrir o listener, discar, receber o convite).
+ *
+ * @param schema Schema da camada Request.
+ * @param raw Entrada crua do transporte.
+ * @param action Trabalho com a entrada validada.
+ * @param onUnexpected Log de falha inesperada.
+ * @return O resultado, sucesso ou erro de fronteira.
+ */
+export async function handleAsync<S extends z.ZodType, T>(
+    schema: S,
+    raw: unknown,
+    action: (input: z.output<S>) => Promise<T>,
+    onUnexpected: UnexpectedErrorListener,
+): Promise<CoreResult<T>> {
+    const parsed = schema.safeParse(raw);
+    if (!parsed.success) {
+        return failure(validationError(parsed.error));
+    }
+    try {
+        return { ok: true, data: await action(parsed.data) };
+    } catch (error) {
+        return failure(toCoreError(error, onUnexpected));
     }
 }
 
@@ -76,6 +94,26 @@ export function toCoreError(error: unknown, onUnexpected: UnexpectedErrorListene
     }
     onUnexpected(error);
     return { code: 'INTERNAL', message: 'Erro inesperado', details: {} };
+}
+
+/**
+ * Uma entrada recusada pelo schema, na forma que a UI conhece: o campo e o motivo do primeiro
+ * problema, para apontar o campo do formulário.
+ *
+ * @param error Erro do zod.
+ * @return O erro de fronteira.
+ */
+function validationError(error: z.ZodError): CoreError {
+    const issue = error.issues[0];
+    return {
+        code: 'VALIDATION_FAILED',
+        message: 'Entrada inválida',
+        details: {
+            field: issue?.path.map(String).join('.') ?? '',
+            reason: issue?.message ?? '',
+            issues: error.issues.length,
+        },
+    };
 }
 
 /**

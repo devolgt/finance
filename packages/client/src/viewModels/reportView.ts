@@ -6,14 +6,14 @@ import { REPORT_DIMENSION_LABELS, REPORT_MEASURE_LABELS } from './reportEditor.t
 import { formatTransactionType } from './transactionEditor.ts';
 
 /*
- * Resultado de um relatório personalizado pronto para a tela (reports-design §3): a tabela
+ * Resultado de um relatório personalizado pronto para a tela (relatorios §5): a tabela
  * agrupada e o gráfico saem da mesma grade do núcleo, para que nunca mostrem números diferentes —
  * a tabela acompanha todo gráfico porque o gráfico sozinho não é acessível.
  */
 
 /**
  * Rótulo do grupo "sem" de cada dimensão que o tem. A categoria e a subcategoria só ficam sem na
- * transferência recebida de outro perfil, cuja classificação é de lá (reports-design §2.2).
+ * transferência recebida de outro perfil, cuja classificação é de lá (relatorios §4.2).
  */
 const MISSING_LABELS: Readonly<Partial<Record<ReportDimension, string>>> = {
     tag: 'Sem tag',
@@ -109,7 +109,7 @@ export interface ReportTableColumn {
     readonly label: string;
 }
 
-/** Variação de um valor em relação ao mês anterior (reports-design L9). */
+/** Variação de um valor em relação ao mês anterior (relatorios §5.7, L9). */
 export interface ReportChange {
     /** `+12,3%`, `−4,0%` ou `0%`. */
     readonly text: string;
@@ -267,7 +267,7 @@ function changeFrom(measure: ReportMeasure, current: ReportFigureResponse, previ
 
 /**
  * Monta a tabela e o gráfico do resultado.
- * Regra de negócio (Relatórios, §3 "Tag como dimensão"): com a tag numa das divisões, a transação
+ * Regra de negócio (Relatórios, relatorios §5.5): com a tag numa das divisões, a transação
  * com várias tags aparece em várias linhas, e o total geral a conta uma vez só; o aviso explica a
  * diferença.
  * Regra de negócio (Relatórios, L9): com a análise, a tabela com o mês numa das divisões mostra a

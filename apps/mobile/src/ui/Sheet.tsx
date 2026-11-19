@@ -42,13 +42,13 @@ function useSlideIn(open: boolean, distance: number): Animated.Value {
 }
 
 /**
- * Folha inferior do app (decisão de interface 12 dos mockups: "escolhas em folhas inferiores").
+ * Folha inferior do app (desktop §7.7: "escolhas em folhas inferiores").
  * Controlada por `open`, como um diálogo do desktop: a tela decide quando abre, e a folha avisa
  * por `onClose` quando o usuário a fecha — no véu, no "Fechar" ou no "voltar" do Android, que
  * fecha a folha antes de sair da tela.
  *
- * Usa o `Modal` do React Native, e não o `@gorhom/bottom-sheet` previsto no plano: no aparelho, a
- * folha da biblioteca não aparecia, sem erro (mobile-mvp-plan, Fase 6). O `Modal` abre numa
+ * Usa o `Modal` do React Native, e não o `@gorhom/bottom-sheet` previsto de início: no aparelho,
+ * a folha da biblioteca não aparecia, sem erro (mobile §5.3; decisoes §25). O `Modal` abre numa
  * janela própria, por cima de tudo, e mantém os contextos de quem abriu (núcleo, perfil, tema),
  * porque é renderizado no lugar e não num portal. Perde só o arrastar para fechar.
  *

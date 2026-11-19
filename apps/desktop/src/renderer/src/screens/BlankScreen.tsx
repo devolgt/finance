@@ -2,10 +2,9 @@ import type { ReactNode } from 'react';
 import { EmptyState } from '@/components/states';
 
 /**
- * Tela em branco dentro do shell, com título, para os itens do menu sem tela no MVP
- * (Dispositivos — desktop-mvp-plan §5), que existem para que a navegação já esteja
- * pronta quando as telas chegarem. As telas do MVP também começaram assim, cada uma substituída
- * na sua fase; Ajustes foi a última do MVP (Fase 13), e Por sócio veio depois (Fase 13.6).
+ * Tela em branco dentro do shell, com título, para um item do menu cuja tela ainda não existe:
+ * a rota e a navegação ficam prontas antes da tela. Hoje todo item do menu tem tela própria
+ * (desktop §8.1), e nenhuma rota a usa.
  *
  * @param props.title Título da tela, o mesmo do item do menu.
  * @param props.description Por que a tela está vazia.

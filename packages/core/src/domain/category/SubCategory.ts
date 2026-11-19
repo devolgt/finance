@@ -7,7 +7,7 @@ export interface SubCategoryProps {
     readonly categoryId: CategoryId;
     /**
      * Perfil dono, derivado da categoria. Carregado junto porque toda referência de uma
-     * transação precisa ser conferida contra o perfil dela (database-design §3.8).
+     * transação precisa ser conferida contra o perfil dela (banco-de-dados §3.8).
      */
     readonly profileId: ProfileId;
     readonly name: string;
@@ -15,7 +15,7 @@ export interface SubCategoryProps {
 
 /**
  * Nível inferior da classificação: toda transação aponta para uma subcategoria
- * (database-design §4.9). O nome é único dentro da categoria, não no perfil — "Outros"
+ * (banco-de-dados §4.9). O nome é único dentro da categoria, não no perfil — "Outros"
  * pode existir em Moradia e em Transporte.
  */
 export class SubCategory implements SubCategoryProps {

@@ -9,7 +9,7 @@ export interface TopUpFailureResponse {
 
 /**
  * Resultado do complemento das recorrências. As falhas vêm dentro do sucesso, e não como falha
- * da rota, porque cada série é complementada à parte (backend-design §4.5): a abertura registra
+ * da rota, porque cada série é complementada à parte (banco-de-dados §5.5): a abertura registra
  * as que falharam e segue, em vez de bloquear o app por uma série.
  */
 export interface TopUpResponse {

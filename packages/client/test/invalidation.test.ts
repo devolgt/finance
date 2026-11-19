@@ -38,6 +38,7 @@ function probes(s: SeriesScenario): readonly Probe[] {
             { route: 'statements.get', input: { accountId: s.savingsId, period } },
             { route: 'statements.profileInvoices', input: { profileId: s.profileId, period } },
         ]),
+        { route: 'sync.status', input: {} },
         { route: 'reports.list', input: { profileId: s.profileId } },
         { route: 'reports.get', input: { id: s.reportId } },
         ...['2026-09', PERIOD].map((period): Probe => ({ route: 'reports.run', input: { id: s.reportId, period } })),
@@ -333,10 +334,20 @@ function withoutFreshIds(plan: SeriesPlanResponse): SeriesPlanResponse {
     };
 }
 
-describe('mapa de invalidação (desktop-mvp-plan Fase 3.2 e §8)', () => {
+/**
+ * Escritas da tela de Dispositivos: precisam dos adaptadores de rede, que o núcleo deste teste
+ * não tem, e são cobertas pelos testes de rota do núcleo (`packages/core/test/sync/routes.test.ts`).
+ * Só mexem no estado da sincronização — o mapa as manda invalidar `sync.status` —, exceto
+ * `sync.join`, que troca os dados e invalida tudo.
+ */
+const NETWORK_WRITES: readonly WriteRoute[] = [
+    'sync.createGroup', 'sync.open', 'sync.close', 'sync.createInvite', 'sync.cancelInvite', 'sync.join', 'sync.connect', 'sync.removeMember', 'sync.leave',
+];
+
+describe('mapa de invalidação (desktop §4 e §8)', () => {
     it('toda rota de escrita do núcleo tem uma escrita neste teste, e toda leitura tem sonda', async () => {
         const world = new ClientWorld();
-        const covered = new Set([...WRITES.map((write) => write.route), ...probes(await seedWithSeries(world)).map((probe) => probe.route)]);
+        const covered = new Set([...WRITES.map((write) => write.route), ...NETWORK_WRITES, ...probes(await seedWithSeries(world)).map((probe) => probe.route)]);
         expect(allRoutes().filter((route) => !covered.has(route))).toEqual([]);
     });
 

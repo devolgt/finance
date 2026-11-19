@@ -4,7 +4,7 @@ import { currentPeriod } from '../shell/referenceMonth.ts';
 import { parseTransactionsSearch, type TransactionsSearch } from '../transactions/transactionsSearch.ts';
 
 /*
- * Estado do Extrato na URL (mockup `DesktopExtrato`). Os filtros são os de Transações, com os
+ * Estado do Extrato na URL (desktop §8.1). Os filtros são os de Transações, com os
  * mesmos parâmetros, para que "Lista" e "Tabela por dia" troquem de tela sem perder o filtro; o
  * período e o tipo são deste relatório. Ficam na URL pelo mesmo motivo dos filtros de Transações:
  * voltar no histórico devolve a tabela como estava.
@@ -45,7 +45,7 @@ export interface StatementRange {
 }
 
 /**
- * Regra de interface (mockup `DesktopExtrato`): o mês de referência vira o período neste relatório,
+ * Regra de interface (desktop §7.2): o mês de referência vira o período neste relatório,
  * e os atalhos contam do mês corrente. Sem período na URL, valem os últimos 12 meses.
  *
  * @param search Busca validada.

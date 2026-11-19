@@ -24,9 +24,9 @@ import type { GoalContributionView, GoalOptionView, GoalWithProgress } from './G
 const FIRST_STATEMENT_PERIOD = YearMonth.of(1900, 1);
 
 /**
- * Cadastro de metas e o progresso delas (database-design §4.11; mockup `DesktopMetas`). O
+ * Cadastro de metas e o progresso delas (banco-de-dados §4.11; metas §1). O
  * progresso nunca é gravado: cada leitura soma as transações vinculadas — ou, na meta vinculada a
- * conta, lê os extratos da conta —, que são a única fonte da verdade (§4.11). Meta não afeta
+ * conta, lê os extratos da conta —, que são a única fonte da verdade (metas §1.2). Meta não afeta
  * saldo, então nada aqui recalcula.
  */
 export class GoalService {
@@ -74,7 +74,7 @@ export class GoalService {
 
     /**
      * Progresso da meta vinculada a uma conta de investimento.
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): o guardado é o **saldo consolidado
+     * Regra de negócio (Metas, metas §2): o guardado é o **saldo consolidado
      * de hoje** da conta. Cada mês do extrato entra como a variação do consolidado, no último dia
      * do mês (ou hoje, no mês corrente), e o saldo inicial da conta como o que já estava guardado
      * — assim o ritmo, a média e a projeção seguem a mesma regra da meta por lançamentos, e um
@@ -108,10 +108,10 @@ export class GoalService {
 
     /**
      * Metas do perfil para o campo "Meta" do lançamento, com o que o formulário precisa para
-     * agrupá-las: se já foram atingidas e se estão arquivadas (desktop-mvp-plan Fase 13.4). Mede só
+     * agrupá-las: se já foram atingidas e se estão arquivadas (metas §5). Mede só
      * o guardado de hoje, com os vínculos do perfil numa consulta — sem o ritmo do mês de
      * referência nem a conta das vinculadas da lista de Metas (revisão de 2026-10-08, item 5).
-     * Regra de negócio (Metas, database-design §4.11): a meta vinculada a uma conta não recebe
+     * Regra de negócio (Metas, banco-de-dados §4.11): a meta vinculada a uma conta não recebe
      * lançamentos, então não é opção. A arquivada vem marcada, e não filtrada, porque a edição de
      * um lançamento já vinculado a ela precisa mostrá-la.
      *
@@ -132,7 +132,7 @@ export class GoalService {
     }
 
     /**
-     * Transações que contam no progresso, para a tabela "Transações vinculadas" do mockup, cuja
+     * Transações que contam no progresso, para a tabela "Transações vinculadas" do detalhe da meta, cuja
      * soma é o progresso. As vinculadas ainda em aberto ficam fora pela mesma regra
      * (`measureGoalProgress`); a tela as cita pelo `pending` da lista. Lê só os vínculos desta
      * meta e as transações dela numa consulta, em vez dos vínculos do perfil inteiro e de um
@@ -185,7 +185,7 @@ export class GoalService {
     }
 
     /**
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): trocar para a meta vinculada a uma
+     * Regra de negócio (Metas, metas §2): trocar para a meta vinculada a uma
      * conta desfaz os vínculos dos lançamentos e das séries, que continuam existindo — a meta
      * deixa de receber lançamentos, e um vínculo guardado sem efeito confundiria quem o visse no
      * lançamento. O formulário avisa quantos perdem o vínculo antes de salvar.
@@ -211,7 +211,7 @@ export class GoalService {
     }
 
     /**
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): a conta vinculada é do perfil da meta
+     * Regra de negócio (Metas, metas §2): a conta vinculada é do perfil da meta
      * e é de **investimento** — é onde o dinheiro fica guardado; a conta corrente movimenta o dia
      * a dia, e o saldo dela não diz quanto foi juntado. Uma conta pode servir a várias metas.
      *
@@ -239,7 +239,7 @@ export class GoalService {
     }
 
     /**
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.4): arquivar não mexe nos vínculos nem no
+     * Regra de negócio (Metas, metas §5): arquivar não mexe nos vínculos nem no
      * progresso — só tira a meta da lista padrão e das escolhas de lançamentos novos.
      *
      * @param id Meta a arquivar; já arquivada continua arquivada.
@@ -268,7 +268,7 @@ export class GoalService {
     /**
      * Regra de negócio (Metas): excluir a meta tira o vínculo das transações e das séries, que
      * continuam existindo — a meta é opcional no lançamento, como a tag, e o dinheiro guardado
-     * não deixa de ter sido guardado (database-design §4.13, `goal_id` com `SET NULL`).
+     * não deixa de ter sido guardado (banco-de-dados §4.13, `goal_id` com `SET NULL`).
      *
      * @param id Meta a excluir.
      * @return void

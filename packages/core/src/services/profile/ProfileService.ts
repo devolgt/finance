@@ -13,7 +13,7 @@ import type { CreateProfileCommand, SetDefaultAccountCommand, SetDefaultCreditCa
 export class ProfileService {
     /**
      * @param unitOfWork Leitura e escrita numa transação só.
-     * @param ids Gera o UUID v4 do perfil novo (database-design §3.5).
+     * @param ids Gera o UUID v4 do perfil novo (banco-de-dados §3.5).
      * @param profiles Perfis.
      * @param accounts Contas, para conferir a conta padrão escolhida.
      * @param creditCards Cartões, para conferir o cartão padrão escolhido.
@@ -54,7 +54,7 @@ export class ProfileService {
     /**
      * Renomeia e, se pedido, troca a moeda.
      * Regra de negócio (Perfil): a moeda do perfil é a unidade de todo valor gravado
-     * (database-design §4.1). Trocar a moeda não converte nada, então só é permitido
+     * (banco-de-dados §4.1). Trocar a moeda não converte nada, então só é permitido
      * enquanto o perfil não tem lançamentos — é o caso de quem escolheu a moeda errada no
      * primeiro uso. Com lançamentos, cada valor passaria a significar outra quantia de
      * dinheiro, e uma moeda de outra precisão (iene, dinar) arredondaria o histórico.
@@ -83,7 +83,7 @@ export class ProfileService {
 
     /**
      * Escolhe a conta que o atalho "Débito" do lançamento novo seleciona.
-     * Regra de negócio (Lançamentos, database-design §4.1): no máximo uma conta padrão por perfil
+     * Regra de negócio (Lançamentos, banco-de-dados §4.1): no máximo uma conta padrão por perfil
      * — escolher outra substitui a anterior —, do próprio perfil e ativa, porque a conta
      * desativada não aceita lançamentos novos e o atalho só trocaria a escolha por um erro ao salvar.
      *

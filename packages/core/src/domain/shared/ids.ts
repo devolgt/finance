@@ -5,7 +5,7 @@ declare const brand: unique symbol;
 /**
  * Tipo marcado: uma `string` que o compilador distingue de outras `string`. Existe para
  * que passar o id de uma conta onde se espera o de uma fatura seja erro de compilação,
- * não um saldo errado descoberto meses depois (backend-design §3.9).
+ * não um saldo errado descoberto meses depois (core §6.1).
  *
  * A marca é um objeto com uma chave por marca, e não um literal, para que marcas se
  * acumulem: `AccountId` é `Uuid` e mais alguma coisa. Com um literal, `Brand<Uuid, 'AccountId'>`
@@ -30,13 +30,24 @@ export type TransactionTagId = Brand<Uuid, 'TransactionTagId'>;
 export type RecurrenceTagId = Brand<Uuid, 'RecurrenceTagId'>;
 export type NoteId = Brand<Uuid, 'NoteId'>;
 export type ReportDefinitionId = Brand<Uuid, 'ReportDefinitionId'>;
+/**
+ * Id de um aparelho do grupo de sincronização (UUID v4 gerado no primeiro uso —
+ * sincronizacao §4.1). Marcado porque ele entra no HLC como desempate final e em `sync_rows` como origem:
+ * trocá-lo pelo id de uma linha de domínio atribuiria a escrita a um aparelho inexistente.
+ */
+export type DeviceId = Brand<Uuid, 'DeviceId'>;
+/**
+ * Id do grupo de sincronização (sincronizacao §4.2). Marcado para não ser confundido com o
+ * id de um aparelho: os dois aparecem juntos no convite e no anúncio mDNS.
+ */
+export type GroupId = Brand<Uuid, 'GroupId'>;
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 /**
  * Normaliza e valida um UUID na forma canônica minúscula de 36 caracteres. A caixa é
  * normalizada aqui porque o SQLite compara chaves byte a byte: um id em maiúsculas vindo
- * de uma importação apontaria para "outra" linha (database-design §3.5).
+ * de uma importação apontaria para "outra" linha (banco-de-dados §3.5).
  *
  * @param raw Texto recebido da UI, do banco ou de uma importação; pode vir em qualquer caixa.
  * @param field Nome do campo, para que o erro aponte qual entrada estava malformada.
@@ -78,3 +89,5 @@ export const RecurrenceId = idParser<RecurrenceId>('recurrenceId');
 export const TagId = idParser<TagId>('tagId');
 export const NoteId = idParser<NoteId>('noteId');
 export const ReportDefinitionId = idParser<ReportDefinitionId>('reportId');
+export const DeviceId = idParser<DeviceId>('deviceId');
+export const GroupId = idParser<GroupId>('groupId');

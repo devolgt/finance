@@ -8,12 +8,12 @@ import { ScopeDialog } from './ScopeDialog.tsx';
 import { SeriesReviewDialog } from './SeriesReviewDialog.tsx';
 
 /**
- * Confirmação de excluir um lançamento (desktop-mvp-plan Fase 9: "Excluir com confirmação"). Diz
+ * Confirmação de excluir um lançamento (transacoes §5: "Excluir com confirmação"). Diz
  * de onde o valor sai e quais saldos mudam (`describeTransactionDeletion`), em vez de um aviso
- * genérico (brief §4, regra 9). Abre pelo botão do diálogo de edição, pela tecla `Del` e pelo menu de
- * contexto da tabela. Numa ocorrência de série, pergunta o escopo (Fase 9.1) e, em "esta e as
+ * genérico (perfis §5.3). Abre pelo botão do diálogo de edição, pela tecla `Del` e pelo menu de
+ * contexto da tabela. Numa ocorrência de série, pergunta o escopo (recorrencias §6) e, em "esta e as
  * futuras" e "todas", mostra o que será excluído antes de excluir (diálogo de revisão,
- * database-design §4.12); "somente esta" exclui direto do escopo (Fase 13.2).
+ * recorrencias §7); "somente esta" exclui direto do escopo.
  *
  * @param props.transaction Lançamento a excluir.
  * @param props.accounts Contas do perfil, desativadas incluídas, para os nomes.
@@ -58,8 +58,8 @@ export function DeleteTransactionDialog({
     const failure = remove.error === null ? null : describeError(remove.error.error).message;
     if (transaction.recurrenceId !== null) {
         // Ocorrência de série: primeiro o escopo; em "esta e as futuras" e "todas", depois a
-        // revisão do que sai — com as pagas e os saldos que mudam (database-design §4.12; mockup
-        // `MobileEscopo`). "Somente esta" exclui direto do escopo, que já diz o que sai.
+        // revisão do que sai — com as pagas e os saldos que mudam (recorrencias §6 e §7).
+        // "Somente esta" exclui direto do escopo, que já diz o que sai.
         if (reviewScope === null) {
             return (
                 <ScopeDialog

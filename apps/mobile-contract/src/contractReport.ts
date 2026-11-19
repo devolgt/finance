@@ -32,7 +32,7 @@ export interface ContractFailure {
     readonly description: string;
 }
 
-/** Resultado único da execução (mobile-mvp-plan, Fase 3): passou, ou a lista do que divergiu. */
+/** Resultado único da execução (mobile §8.2): passou, ou a lista do que divergiu. */
 export interface ContractReport {
     readonly passed: boolean;
     readonly sqliteVersion: string;
@@ -44,7 +44,7 @@ export interface ContractReport {
 
 /**
  * Roda a suíte de contrato do `Database` e compara os vetores de ouro, e junta tudo num
- * resultado só (mobile-shell-design §8). Nada aqui lança: um vetor que nem calcula no Hermes
+ * resultado só (mobile §8). Nada aqui lança: um vetor que nem calcula no Hermes
  * (uma regex sem suporte, por exemplo) vira falha da lista, e não um app que fecha sem dizer o
  * que faltou — o Maestro só consegue ler o que aparece na tela.
  *

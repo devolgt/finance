@@ -3,7 +3,7 @@ import type { Core } from '@finance/core';
 import { DEFAULT_HISTORY_OPTIONS, formatBenchmarkLog, historyPeriods, runInteractiveBenchmark } from '@finance/core/benchmark';
 
 /**
- * Liga a medição das chamadas interativas (mobile-mvp-plan, Fase 5). Lido na hora do bundle: o
+ * Liga a medição das chamadas interativas (mobile §12.1). Lido na hora do bundle: o
  * Expo troca `process.env.EXPO_PUBLIC_*` pelo valor, então só o APK gerado com
  * `EXPO_PUBLIC_BENCHMARK=1` (`pnpm --filter @finance/mobile build:benchmark`, conduzido por
  * `pnpm bench:android`) mede; no APK

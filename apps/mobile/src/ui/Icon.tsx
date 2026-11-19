@@ -3,16 +3,16 @@ import type { ReactNode } from 'react';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { useThemeColor } from '../theme/ThemeRoot.tsx';
 
-/** Os ícones dos mockups do celular, pelo papel que têm na tela. */
+/** Os ícones do celular, pelo papel que têm na tela. */
 export type IconName = 'home' | 'transactions' | 'accounts' | 'cards' | 'more' | 'search' | 'filter' | 'theme' | 'close' | 'check' | 'plus';
 
 /**
- * Desenho de cada ícone, copiado dos SVGs dos mockups (traço de 1.8 numa grade de 24), para que
- * o celular mostre o mesmo desenho aprovado; o retângulo do cartão vira caminho porque o `x`/`y`
+ * Desenho de cada ícone (traço de 1.8 numa grade de 24), como SVG para escalar sem perda e
+ * pintar com a cor do token; o retângulo do cartão vira caminho porque o `x`/`y`
  * do `Rect` está obsoleto no `react-native-svg`. `Record` sobre a união: um nome novo sem desenho
  * quebra a compilação em vez de aparecer vazio.
  *
- * @param stroke Cor do traço (e do preenchimento, onde o mockup usa `currentColor`).
+ * @param stroke Cor do traço (e do preenchimento, nos ícones preenchidos).
  * @return Os elementos SVG do ícone.
  */
 const SHAPES: Readonly<Record<IconName, (stroke: string) => ReactNode>> = {
@@ -42,16 +42,16 @@ const SHAPES: Readonly<Record<IconName, (stroke: string) => ReactNode>> = {
     ),
     close: () => <Path d="M6 6l12 12M18 6L6 18" />,
     check: () => <Path d="M5 12l5 5 9-10" />,
-    // O "+" dos mockups é texto; como ícone, fica do mesmo tamanho e traço dos outros botões redondos.
+    // O "+" é ícone, e não texto, para ficar do mesmo tamanho e traço dos outros botões redondos.
     plus: () => <Path d="M12 5v14M5 12h14" />,
 };
 
 /**
- * Ícone dos mockups. Sempre decorativo (escondido do leitor de tela): quem o usa dá o nome
- * acessível ao botão, como os mockups fazem com `aria-label` e `aria-hidden` no SVG.
+ * Ícone do app. Sempre decorativo (escondido do leitor de tela): quem o usa dá o nome acessível
+ * ao botão, para que o leitor anuncie a ação, e não o desenho.
  *
  * @param props.name Qual ícone.
- * @param props.size Lado em px; 22 na barra inferior e 18 nos botões do cabeçalho, como nos mockups.
+ * @param props.size Lado em px; 22 na barra inferior e 18 nos botões do cabeçalho.
  * @param props.tone Token da cor do traço; `ink` por padrão.
  * @return O SVG.
  */

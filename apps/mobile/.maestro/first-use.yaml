@@ -1,4 +1,4 @@
-# Primeiro uso (mobile-mvp-plan, Fase 7): do banco vazio ao Início, pelo formulário, com o APK
+# Primeiro uso (perfis §4.2): do banco vazio ao Início, pelo formulário, com o APK
 # de release. Prova no aparelho o que o Jest prova no Node: o `onboarding.start` grava pelo
 # `expo-sqlite` e o shell abre no perfil criado.
 appId: br.com.finance.app

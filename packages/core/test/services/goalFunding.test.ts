@@ -41,7 +41,7 @@ async function goalNamed(world: TestWorld, profileId: string, period: string, na
     return found;
 }
 
-describe('Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): retirada da meta por lançamentos', () => {
+describe('Regra de negócio (Metas, metas §2): retirada da meta por lançamentos', () => {
     it('a transferência de retirada desconta do guardado; a de depósito soma', async () => {
         const { world, profileId, checking, savingsId, base, goalId } = await setup();
         await world.create(base, { source: checking, type: 'transference', destinationAccountId: savingsId, value: 1000, dueDate: '2026-09-05', paymentDate: '2026-09-05', goalId });
@@ -99,7 +99,7 @@ describe('Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): retirada da met
     });
 });
 
-describe('Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): meta vinculada a uma conta de investimento', () => {
+describe('Regra de negócio (Metas, metas §2): meta vinculada a uma conta de investimento', () => {
     it('o guardado é o saldo consolidado de hoje; um mês passado mostra o saldo com que fechou', async () => {
         const { world, profileId, checking, savingsId, base } = await setup();
         await world.create(base, { source: checking, type: 'transference', destinationAccountId: savingsId, value: 1000, dueDate: '2026-09-05', paymentDate: '2026-09-05' });
@@ -153,7 +153,7 @@ describe('Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): meta vinculada 
         expect((await world.ok('goals.list', { profileId, period: '2026-10' })).map((goal) => goal.name)).toEqual(['Reserva']);
     });
 
-    it('a conta de investimento que é o saldo de uma meta não vira conta corrente (database-design §4.11)', async () => {
+    it('a conta de investimento que é o saldo de uma meta não vira conta corrente (banco-de-dados §4.11)', async () => {
         const { world, profileId, savingsId } = await setup();
         await world.ok('goals.create', { profileId, name: 'Casa', value: 20000, funding: { kind: 'account', accountId: savingsId } });
 

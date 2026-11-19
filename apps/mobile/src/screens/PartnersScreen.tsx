@@ -37,7 +37,7 @@ const STATUS_TONE: Readonly<Record<PartnerRosterView['status']['kind'], string>>
 };
 
 /**
- * Divisão (mockup `MobileSocios`): a soma ao vivo e a barra com um segmento por sócio, que o
+ * Divisão (socios §1.3): a soma ao vivo e a barra com um segmento por sócio, que o
  * leitor de tela lê como uma frase (`barLabel`).
  *
  * @param props.view Estado montado pelo `buildPartnerRosterView`.
@@ -63,7 +63,7 @@ function Division({ view }: { readonly view: PartnerRosterView }): ReactNode {
  * Editor dos sócios: as linhas com nome e participação, a de novo sócio, a soma e salvar. O
  * rascunho é local e só vai ao núcleo inteiro, em `partners.save`, porque a soma só fecha em 100%
  * com todas as linhas juntas.
- * Regra de negócio (Sócios, decisão de interface 10): nome até 100 caracteres, participação
+ * Regra de negócio (Sócios, socios §1.2 e §1.3): nome até 100 caracteres, participação
  * com soma ao vivo e barra, e salvar só com 100% (`canSave`); remover um sócio com lançamentos
  * deixa esses lançamentos sem sócio, e o aviso diz quantos (`removedWarning`). As regras e as
  * frases são as do desktop, todas do `client`.
@@ -199,7 +199,7 @@ function PartnersEditor({ saved }: { readonly saved: readonly PartnerResponse[] 
 }
 
 /**
- * Sócios (mockup `MobileSocios`; mobile-mvp-plan, Fase 17), só no perfil empresarial. Aberta pela
+ * Sócios (socios §4.2), só no perfil empresarial. Aberta pela
  * URL no perfil pessoal — depois de trocar de perfil com a tela na pilha —, explica em vez de
  * chamar a rota que o núcleo recusa, como o desktop.
  *

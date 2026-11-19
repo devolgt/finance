@@ -29,11 +29,11 @@ import { Sheet } from '../ui/Sheet.tsx';
 const FUNDING_OPTIONS = GOAL_FUNDING_KINDS.map((item) => ({ value: item.kind, label: item.label }));
 
 /**
- * Criar ou editar meta numa folha (mobile-mvp-plan, Fase 14, tela aprovada pelo usuário): nome,
+ * Criar ou editar meta numa folha (metas §7.3): nome,
  * tipo, conta de investimento na meta vinculada a conta, valor-alvo e data-alvo opcional — os
  * campos e a validação do diálogo do desktop (`readGoalForm` do `client`). Quem abre monta a folha
  * só enquanto ela está aberta.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): só conta de investimento guarda o dinheiro
+ * Regra de negócio (Metas, metas §2.2): só conta de investimento guarda o dinheiro
  * da meta — a desativada continua oferecida, porque o saldo dela ainda existe —, e trocar a meta
  * por lançamentos para a vinculada a conta desfaz os vínculos: a folha avisa quantos antes de
  * salvar.

@@ -11,7 +11,7 @@ export const sourceSchema = z.discriminatedUnion('kind', [
     z.strictObject({
         kind: z.literal('creditCard'),
         creditCardId: parsedText(CreditCardId),
-        // Ausente ou nulo aceita a fatura sugerida pela data da compra (database-design §4.7).
+        // Ausente ou nulo aceita a fatura sugerida pela data da compra (banco-de-dados §4.7).
         invoicePeriod: yearMonthField.nullable().default(null),
     }),
 ]);
@@ -27,7 +27,7 @@ const explicitSourceSchema = z.discriminatedUnion('kind', [
 ]);
 
 /**
- * Repetição do lançamento (mockup `MobileParcelar`; database-design §4.12). Parcelas de 2 a
+ * Repetição do lançamento (recorrencias §3.3; banco-de-dados §4.12). Parcelas de 2 a
  * 360: uma "parcela" só não é parcelamento, e 360 (30 anos de um financiamento mensal) limita
  * o trabalho de gravar a série inteira na criação.
  */
@@ -51,8 +51,8 @@ export const editScopeField = z.enum(['single', 'future', 'all']);
 
 /**
  * Campos do lançamento novo. Opcionais têm o default do domínio — `charges = 0`,
- * `conversion_rate = 1` (database-design §3.9) — para que o formulário rápido do celular
- * envie só o essencial (brief M2).
+ * `conversion_rate = 1` (banco-de-dados §3.9) — para que o formulário rápido do celular
+ * envie só o essencial (transacoes §5.1).
  */
 const contentShape = {
     type: z.enum(['income', 'expense', 'transference', 'investment']),
@@ -61,7 +61,7 @@ const contentShape = {
     destinationAccountId: parsedText(AccountId).nullable().default(null),
     partnerId: parsedText(PartnerId).nullable().default(null),
     goalId: parsedText(GoalId).nullable().default(null),
-    // Guardar é o caso comum; só a transferência retira (database-design §4.11).
+    // Guardar é o caso comum; só a transferência retira (banco-de-dados §4.11).
     goalWithdrawal: z.boolean().default(false),
     name: z.string().trim().min(1).max(100),
     description: z.string().nullable().default(null),
@@ -70,10 +70,10 @@ const contentShape = {
     originCurrency: currencyCodeField.nullable().default(null),
     conversionRate: z.number().positive().default(1),
     dueDate: localDateField,
-    // Pago e data de pagamento andam juntos (brief §3, Transação): a transação está paga
+    // Pago e data de pagamento andam juntos (transacoes §2.1): a transação está paga
     // exatamente quando a data de pagamento vem preenchida.
     paymentDate: localDateField.nullable().default(null),
-    // Tags são opcionais no lançamento rápido (brief M2, "Mais detalhes").
+    // Tags são opcionais no lançamento rápido (transacoes §5.1, "Mais detalhes").
     tagIds: z.array(parsedText(TagId)).default([]),
 };
 

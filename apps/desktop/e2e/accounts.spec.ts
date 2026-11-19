@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Contas (desktop-mvp-plan Fase 7) no app empacotado: a lista com o saldo do mês e os totais,
+ * Contas (contas §2) no app empacotado: a lista com o saldo do mês e os totais,
  * o extrato com os quatro números, as quatro fontes de movimento e as ações da conta. Os
  * cliques usam `dispatchEvent` e o menu do Radix é operado pelo teclado, pelo motivo
  * explicado em `firstUse.ts`.
@@ -102,7 +102,8 @@ test('extrato: lista com totais, quatro números, as quatro fontes de movimento 
         const listRegion = page.getByRole('region', { name: 'Lista de contas' });
         await expect(listRegion).toContainText('Total consolidadoR$ 5.720,00');
         // Lista e extrato rolam cada um no seu painel, na altura da janela, com os totais fixos
-        // embaixo da lista (`PaneLayout`, desktop-mvp-plan Fase 13.3).
+        // embaixo da lista (`PaneLayout`), para que uma lista longa não empurre os totais para fora
+        // da tela.
         /**
          * Roda dentro da página (`evaluate`), por isso não usa nada do escopo do teste. A folga
          * de 1px absorve o arredondamento subpixel do layout, que daria falha sem a página ter
@@ -185,7 +186,7 @@ test('conta: transferência recebida, editar, desativar pelo menu, mês sem movi
         await expect(page.getByRole('region', { name: 'Resumo do extrato' })).toContainText('Saldo finalR$ 200,00');
 
         // A conta desativada aberta pelo link fica na lista das desativadas; as ativas não a
-        // mostram (desktop-mvp-plan Fase 13.4).
+        // mostram (contas §6).
         const views = page.getByRole('group', { name: 'Visualização' });
         await expect(views.getByRole('button', { name: 'Desativadas' })).toHaveAttribute('aria-pressed', 'true');
         await expect(list.getByRole('link')).toHaveText([/^Tesouro/]);

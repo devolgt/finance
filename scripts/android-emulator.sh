@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Abre o emulador Android do desenvolvimento, criando o AVD na primeira vez.
 #
-# Existe para testar o app mobile sem o celular (mobile-mvp-plan §2, "Onde roda"): o SDK,
+# Existe para testar o app mobile sem o celular (mobile §2.2, "Onde roda"): o SDK,
 # o emulador e a imagem de sistema vêm na imagem do devcontainer, mas o AVD guarda o
 # estado do aparelho virtual (apps instalados, dados, snapshot de boot rápido) e por isso
 # mora no volume do ~/.android, que sobrevive ao rebuild. Criá-lo aqui, sob demanda, evita
@@ -16,7 +16,7 @@ avd_name="finance"
 # A mesma imagem instalada no Dockerfile; trocar uma exige trocar a outra.
 system_image="system-images;android-36;google_apis;x86_64"
 # Pixel 7: tela de 1080 x 2400 em 6,3", a mais próxima do Galaxy S23 FE (aparelho de
-# referência, mobile-mvp-plan §5.1) entre os perfis que o avdmanager conhece.
+# referência, mobile §2.2) entre os perfis que o avdmanager conhece.
 device_profile="pixel_7"
 
 if [[ ! -r /dev/kvm || ! -w /dev/kvm ]]; then

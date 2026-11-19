@@ -7,7 +7,7 @@ import type { MigrationBackup } from './PreMigrationBackup.ts';
 /**
  * O banco foi gravado por uma versão mais nova do app. Recusar é a única resposta que não
  * produz número errado: um app antigo escreveria linhas que violam regras que ele nunca
- * viu (backend-design §4.8).
+ * viu (banco-de-dados §5.8).
  */
 export class SchemaNewerThanAppError extends DomainError {
     public readonly code = 'SCHEMA_NEWER_THAN_APP';
@@ -37,7 +37,7 @@ export class MigrationIntegrityError extends Error {
  * Uma migration falhou por erro de SQL e foi desfeita. Existe separado do erro cru do driver
  * porque a abertura precisa distinguir "a migration quebrou" de "o arquivo não abre": num
  * banco novo não há backup, e sem este tipo um erro de SQL da primeira migration seria
- * mostrado como arquivo corrompido (backend-design §4.5, passo 4).
+ * mostrado como arquivo corrompido (banco-de-dados §5.5, passo 4).
  */
 export class MigrationFailedError extends Error {
     /**
@@ -60,18 +60,18 @@ export interface MigrationReport {
 }
 
 /**
- * Runner próprio de migrations sobre a porta `Database` (backend-design §4.10): as
+ * Runner próprio de migrations sobre a porta `Database` (banco-de-dados §5.10): as
  * alternativas prontas pressupõem API assíncrona ou leitura de diretório com `fs`, e não
  * cobrem a recusa de versão mais nova, que é a parte que importa.
  *
  * Ainda não coberto aqui: o desligamento de `foreign_keys` para migrations que reconstroem
- * tabelas (§4.7), necessário antes da primeira migration desse tipo.
+ * tabelas (banco-de-dados §5.7), necessário antes da primeira migration desse tipo.
  */
 export class MigrationRunner {
     /**
      * @param database Conexão já configurada (`configureConnection`).
      * @param migrations Migrations embutidas, em ordem de versão.
-     * @param backup Cópia de segurança antes de migrar (§4.6); `null` só para banco em
+     * @param backup Cópia de segurança antes de migrar (banco-de-dados §5.6); `null` só para banco em
      * memória, que não tem arquivo a preservar.
      */
     public constructor(
@@ -83,7 +83,7 @@ export class MigrationRunner {
     /**
      * Aplica as migrations pendentes, cada uma **na sua própria transação**: um aparelho
      * que pula da versão 3 para a 9 e falha na 7 fica na 6, utilizável, em vez de voltar à
-     * 3 (backend-design §4.5).
+     * 3 (banco-de-dados §5.5).
      *
      * A cópia de segurança vem antes da primeira migration e só quando há o que preservar:
      * banco em dia não muda, e banco novo (versão 0) não tem dado algum — copiá-lo só

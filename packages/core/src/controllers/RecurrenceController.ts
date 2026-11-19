@@ -77,7 +77,7 @@ export class RecurrenceController {
     }
 
     /**
-     * A série que falha não falha a rota (backend-design §4.5): ela volta na lista, e o bug, se
+     * A série que falha não falha a rota (banco-de-dados §5.5): ela volta na lista, e o bug, se
      * for um, vai para o log de falhas inesperadas como em qualquer rota.
      *
      * @param raw Entrada vazia.

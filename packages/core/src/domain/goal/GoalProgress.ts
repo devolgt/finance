@@ -7,7 +7,7 @@ import type { Goal } from './Goal.ts';
 
 /**
  * Duração média de um mês em dias (365,2425 ÷ 12, o ano gregoriano). O prazo de uma meta vira
- * "meses" com fração — "cerca de 2,5 meses" no mockup —, e contar pelos dias corridos com o
+ * "meses" com fração — "cerca de 2,5 meses" na tela —, e contar pelos dias corridos com o
  * mês médio dá a mesma resposta qualquer que seja o tamanho dos meses no caminho; contar mês a
  * mês pelo calendário faria 31/01 → 28/02 valer um mês inteiro e 01/02 → 28/02 quase um.
  */
@@ -15,8 +15,8 @@ const AVERAGE_MONTH_DAYS = 365.2425 / 12;
 
 /**
  * O que move o progresso de uma meta: uma transação vinculada (meta por lançamentos) ou a
- * variação do saldo consolidado de um mês da conta (meta vinculada a conta, desktop-mvp-plan
- * Fase 13.3). As duas entram no mesmo cálculo, para que ritmo, média e projeção sigam uma regra só.
+ * variação do saldo consolidado de um mês da conta (meta vinculada a conta,
+ * metas §2). As duas entram no mesmo cálculo, para que ritmo, média e projeção sigam uma regra só.
  */
 export interface GoalLink {
     /** Identidade estável do vínculo, para ordenar e separar os que contam. */
@@ -62,7 +62,7 @@ export interface GoalPaceBase {
     readonly kind: 'current' | 'past' | 'estimated';
 }
 
-/** Progresso de uma meta e o ritmo até a data-alvo (mockup `DesktopMetas`). */
+/** Progresso de uma meta e o ritmo até a data-alvo (metas §4). */
 export interface GoalProgress {
     /** Soma das contribuições; pode passar do alvo, e fica negativa se os estornos superarem os aportes. */
     readonly saved: Money;
@@ -116,9 +116,9 @@ export interface GoalProgressInput {
 
 /**
  * Mede o progresso de uma meta a partir das transações vinculadas.
- * Regra de negócio (Metas — decisões perguntadas, desktop-mvp-plan Fase 9.3):
+ * Regra de negócio (Metas — decisões perguntadas, metas §4):
  * - o progresso soma só as vinculadas **pagas até hoje**, independente do mês de referência:
- *   uma série fixa é gerada 12 meses à frente (database-design §4.12), e somar o que ainda não
+ *   uma série fixa é gerada 12 meses à frente (banco-de-dados §4.12), e somar o que ainda não
  *   saiu da conta daria a meta por cumprida antes da hora;
  * - o valor entra com sinal (o estorno desconta) e sem encargos, que são custo do meio de
  *   pagamento, não dinheiro guardado — o mesmo critério do total das tags;
@@ -131,7 +131,7 @@ export interface GoalProgressInput {
  *   referência for futuro, porque nada depois de hoje conta), com mês sem aporte valendo zero.
  *
  * Contribuições do mesmo dia desempatam pela chave do vínculo com `compareCodeUnits`, sem
- * localidade, para a lista sair igual no desktop e no celular (mobile-shell-design §8).
+ * localidade, para a lista sair igual no desktop e no celular (mobile §8).
  *
  * @param input Meta, transações vinculadas, mês de referência e hoje.
  * @return O progresso e o ritmo.
@@ -173,7 +173,7 @@ export function measureGoalProgress(input: GoalProgressInput): GoalProgress {
 
 /**
  * Guardado no fim do mês de referência, para o ritmo partir do mesmo ponto que o prazo.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 9.3): num mês encerrado vale o que já estava
+ * Regra de negócio (Metas, metas §4): num mês encerrado vale o que já estava
  * pago no fim dele; no mês atual, o de hoje — o resto do mês não é projetado, porque o aporte
  * do mês pode já ter entrado e a média o contaria de novo; num mês futuro, o de hoje mais a
  * média por mês inteiro depois do atual, que é a mesma média da projeção.
@@ -208,7 +208,7 @@ function paceBaseOf(
 /**
  * @param values Valores a somar, todos na moeda do perfil.
  * @param currency Moeda do zero, para a lista vazia.
- * @return A soma, sem arredondar (database-design §3.7).
+ * @return A soma, sem arredondar (banco-de-dados §3.7).
  */
 function sum(values: readonly Money[], currency: Money['currency']): Money {
     return values.reduce((total, value) => total.add(value), Money.zero(currency));

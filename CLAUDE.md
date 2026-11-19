@@ -4,10 +4,18 @@
 
 Monorepo pnpm em TypeScript estrito (Node 24) de finanças pessoais: núcleo compartilhado + app desktop (Electron) + app mobile (React Native), com sincronização entre dispositivos.
 
-- `packages/core` — núcleo em camadas Request → Controller → Service → Repository → Model, com domínio puro (`Money`, `LocalDate`, `Invoice`...) e portas (`Database`, `Clock`, `IdGenerator`) implementadas em `infrastructure/`. As fronteiras entre camadas são verificadas pelo `eslint.config.js`.
-- `packages/sqlite-better` — adaptador `better-sqlite3` da porta `Database`.
-- `packages/assets` — arquivos de marca compartilhados pelos apps (o ícone do Finanças em todos os formatos).
-- `docs/plans/` — designs e planos aprovados (banco, backend, sync, shells, MVP desktop). Consulte o documento do módulo antes de alterá-lo; as regras de negócio estão lá.
+- `packages/core` — núcleo em camadas Request → Controller → Service → Repository → Model, com domínio puro (`Money`, `LocalDate`, `Invoice`...) e portas (`Database`, `Clock`, `IdGenerator`) implementadas em `infrastructure/`. O que cada pacote pode importar é verificado pelo `eslint.config.js`.
+- `packages/client` — camada headless compartilhada pelos dois apps (hooks, queries, view-models, formulários).
+- `packages/sqlite-better` / `packages/sqlite-expo` — adaptadores `better-sqlite3` (desktop e testes) e `expo-sqlite` (celular) da porta `Database`.
+- `packages/tokens` — tokens de design; `packages/assets` — arquivos de marca (o ícone do Finanças em todos os formatos).
+- `apps/desktop`, `apps/mobile`, `apps/mobile-contract` — app Electron, app Expo e app de contrato que prova a paridade do núcleo no Hermes.
+- `docs/wiki/` — wiki técnica: arquitetura, tecnologias, mapa do sistema, regras de negócio e decisões (ADRs). **Consulte a página do módulo antes de alterá-lo**; as regras de negócio estão lá.
+
+## Wiki — atualizada na mesma entrega
+
+Toda alteração que muda uma regra de negócio, a arquitetura, uma dependência ou uma decisão atualiza a página correspondente de `docs/wiki/` no mesmo commit. Decisão nova ou revista ganha um ADR em `docs/wiki/decisoes.md`, e a antiga recebe o status "substituída por §N" em vez de ser apagada. As seções da wiki são numeradas e citadas pelo código: ao renumerar, atualize as citações (`grep -rn "<página> §" packages apps`).
+
+**Por quê:** a wiki substituiu os planos e designs antigos como fonte da verdade documental; se ela ficar para trás do código, as citações nos docblocks passam a apontar para regras que não valem mais.
 
 Comandos (na raiz):
 
@@ -36,7 +44,7 @@ Todo código implementado, corrigido ou refatorado deve seguir este padrão, nã
 Toda função, método, classe e tipo criado ou editado (inclusive privados, closures nomeadas, helpers de teste e migrations) tem docblock JSDoc. Ao editar, atualize o docblock se a motivação mudou.
 
 - **Explique o porquê, não o quê:** o problema que resolve, a invariante que protege, a falha que evita ou por que a alternativa óbvia foi descartada. O que o código faz se lê no próprio código.
-- **Regra de negócio é citada explicitamente**, com domínio e regra (ex.: `// Regra de negócio (Relatórios): todo valor conta no mês do pagamento`), referenciando a seção do design em `docs/plans/` quando houver.
+- **Regra de negócio é citada explicitamente**, com domínio e regra (ex.: `// Regra de negócio (Relatórios, relatorios §2.1): todo valor conta no mês do pagamento`), referenciando a seção da wiki no formato `<página> §N` (nome do arquivo de `docs/wiki/` sem `.md`). Regra nova entra na wiki antes de ser citada.
 - **`@param nome Descrição`** para todo parâmetro: o que é e por que a função precisa dele. Não repita o tipo — a assinatura TS já o declara.
 - **`@return`** sempre que a função retornar algo: o que vem e em que situação (ex.: quando pode ser `null` ou vazio). Funções `void` dispensam.
 - **`@throws`** quando a função lançar erro de forma intencional.
@@ -70,15 +78,14 @@ const companyId = request.companyId;
 const workareaId = request.workareaId;
 ```
 
-## Telas — mockups como referência
+## Telas — convenções de UI
 
-**Antes de criar ou alterar qualquer tela** (desktop ou mobile), leia `docs/design/mockups/README.md` e o mockup correspondente em `docs/design/mockups/screens/`.
+**Antes de criar ou alterar qualquer tela** (desktop ou mobile), leia as convenções de UI vigentes em `docs/wiki/arquitetura/desktop.md` §7 (valem também para o celular) e a seção de telas da página de regras de negócio do módulo.
 
-- Os mockups são a referência de layout, conteúdo e navegação — não código para copiar.
 - Desktop: Tailwind + shadcn/ui. Mobile: NativeWind. Cores, tipografia e espaçamentos só a partir de `packages/tokens` (nunca valor literal).
-- Siga as "Decisões de interface" do README dos mockups; se a implementação precisar divergir de um mockup, pergunte antes.
+- Mudança de layout ou navegação que contrarie uma convenção da §7 é combinada antes de implementar e, aprovada, atualiza a wiki.
 
-**Por quê:** as telas já foram aprovadas e as decisões de interface (tema claro/escuro, mês de referência fixo, entrada/saída sem depender só da cor) valem para todas; ignorá-las gera retrabalho e inconsistência entre desktop e celular.
+**Por quê:** as convenções (tema claro/escuro, mês de referência fixo, entrada/saída sem depender só da cor) valem para todas as telas; ignorá-las gera retrabalho e inconsistência entre desktop e celular.
 
 ## Versionamento — obrigatório em toda alteração
 

@@ -4,10 +4,10 @@ import { z } from 'zod';
 import { parseShellSearch } from '../shell/referenceMonth.ts';
 
 /*
- * Fatura aberta na tela Cartões (mockup `DesktopCartoes`; desktop-mvp-plan Fase 8). Os
- * parâmetros nasceram na Fase 7, porque o extrato da conta leva a uma fatura ("ver fatura").
+ * Fatura aberta na tela Cartões (cartoes-e-faturas §7). Os parâmetros existem também porque o
+ * extrato da conta leva a uma fatura ("ver fatura").
  * Ficam na URL pelo mesmo motivo do mês de referência: voltar no histórico devolve a fatura que
- * estava aberta. A visualização da lista (ativos ou desativados, desktop-mvp-plan Fase 13.4) fica
+ * estava aberta. A visualização da lista (ativos ou desativados, cartoes-e-faturas §7) fica
  * em `view`.
  */
 

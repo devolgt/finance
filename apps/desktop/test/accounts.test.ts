@@ -45,7 +45,7 @@ describe('conta aberta na tela Contas', () => {
         expect(openAccount(listOf([]), {})).toBeNull();
     });
 
-    it('a lista mostra as ativas ou as desativadas; a conta pedida sem visualização abre a lista dela (desktop-mvp-plan Fase 13.4)', () => {
+    it('a lista mostra as ativas ou as desativadas; a conta pedida sem visualização abre a lista dela (contas §6)', () => {
         const list = listOf([NUBANK, ITAU], [ITAU]);
         expect(parseAccountsSearch({ view: 'disabled' })).toEqual({ view: 'disabled' });
         expect(parseAccountsSearch({ view: 'arquivadas' })).toEqual({});

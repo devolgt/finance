@@ -3,7 +3,7 @@ import { MemoryFileSystem } from './support/MemoryFileSystem.ts';
 
 const URI = 'file:///docs/preferences.json';
 
-describe('preferências do aparelho (mobile-mvp-plan §2)', () => {
+describe('preferências do aparelho (mobile §2.2)', () => {
     it('sem arquivo, volta aos padrões', () => {
         expect(new DevicePreferencesStore(new MemoryFileSystem(), URI).read()).toEqual(DEFAULT_PREFERENCES);
     });

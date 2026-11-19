@@ -78,7 +78,7 @@ function line(item: CoreOutput<'overview.pending'>['overdue'][number]): readonly
     return [item.name, item.dueDate, item.direction, item.amount.amount, item.kind === 'transaction' ? item.canMarkPaid : 'fatura'];
 }
 
-describe('Visão geral (mockup DesktopVisaoGeral2)', () => {
+describe('Visão geral (visao-do-mes §1)', () => {
     it('Regra de negócio (Visão geral): gastos pelo regime de caixa, com a compra no cartão no mês do vencimento da fatura', async () => {
         const s = await scene();
         const spending = await s.world.ok('overview.spending', { profileId: s.profileId, period: '2026-10' });

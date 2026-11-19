@@ -24,7 +24,7 @@ async function setup(): Promise<{
     return { world, profileId, checking: { kind: 'account', accountId }, savingsId, creditCardId, base, goalId: goal.id };
 }
 
-describe('cadastro de metas (mockup DesktopMetas)', () => {
+describe('cadastro de metas (metas §1)', () => {
     it('cria, lista por nome com o progresso zerado e edita sem perder o vínculo', async () => {
         const { world, profileId, checking, savingsId, base, goalId } = await setup();
         await world.ok('goals.create', { profileId, name: 'Reserva de emergência', value: 30000 });

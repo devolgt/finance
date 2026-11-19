@@ -5,10 +5,10 @@ import { parseMoneyInput } from '../format/parseMoneyInput.ts';
 import { collectIssues, type FieldTarget, type FormErrors, moneyInputMessage } from './formIssues.ts';
 
 /*
- * Formulários de pagamento da fatura (desktop-mvp-plan Fase 8): pagar a fatura inteira e o
+ * Formulários de pagamento da fatura (cartoes-e-faturas §3): pagar a fatura inteira e o
  * pagamento parcial. Validam com os schemas das rotas que vão chamar — `invoices.pay` e
  * `transactions.create` —, para que a mensagem da tela e a recusa do núcleo nunca discordem
- * (desktop-shell-design §5.4).
+ * (desktop §3.5).
  */
 
 /** Mensagem da data em branco, a mesma nos dois formulários. */
@@ -58,7 +58,7 @@ const PAY_FIELD_BY_PATH: Readonly<Record<string, FieldTarget<PayInvoiceField>>> 
 /**
  * Lê o formulário de pagar a fatura inteira.
  * Regra de negócio (Fatura): a data do pagamento decide o extrato da conta pagadora que
- * absorve a fatura (database-design §4.7), então é obrigatória.
+ * absorve a fatura (banco-de-dados §4.7), então é obrigatória.
  *
  * @param values Valores dos campos.
  * @param invoiceId Fatura a pagar.
@@ -86,7 +86,7 @@ export interface PartialPaymentFormValues {
     readonly paymentDate: string;
     /** Conta de onde o dinheiro saiu; vazio enquanto nada foi escolhido. */
     readonly accountId: string;
-    /** Subcategoria do lançamento, que toda transação exige (database-design §4.13). */
+    /** Subcategoria do lançamento, que toda transação exige (banco-de-dados §4.13). */
     readonly subCategoryId: string;
 }
 
@@ -121,8 +121,8 @@ const PARTIAL_FIELD_BY_PATH: Readonly<Record<string, FieldTarget<PartialPaymentF
 };
 
 /**
- * Contas que podem ter feito o pagamento parcial. Regra de negócio (Contas, desktop-mvp-plan
- * §5.1): conta desativada some das escolhas de novos lançamentos, e o pagamento parcial é um
+ * Contas que podem ter feito o pagamento parcial. Regra de negócio (Contas, transacoes §4.1):
+ * conta desativada some das escolhas de novos lançamentos, e o pagamento parcial é um
  * lançamento novo — o núcleo recusaria a conta desativada como destino.
  *
  * @param accounts Contas do perfil.
@@ -144,11 +144,11 @@ export function defaultPartialPaymentAccount(options: readonly AccountResponse[]
 
 /**
  * Lê o pagamento parcial e monta o lançamento que o registra.
- * Regra de negócio (Fatura, database-design §4.7): pagar só uma parte é lançar uma
+ * Regra de negócio (Fatura, banco-de-dados §4.7): pagar só uma parte é lançar uma
  * transferência na fatura, com a conta que pagou como destino e valor **negativo** — a regra de
  * sinal inverte a direção, o dinheiro sai da conta e abate a fatura —, e ela nasce paga, porque
  * registra um pagamento já feito. Por isso o valor digitado é positivo e o sinal é posto aqui.
- * Regra da tela (desktop-mvp-plan Fase 8): o parcial é menor que o valor a pagar. Igual ou
+ * Regra da tela (cartoes-e-faturas §3): o parcial é menor que o valor a pagar. Igual ou
  * maior deixaria a fatura zerada ou credora e ainda "em aberto"; quitar o total é "Pagar
  * fatura", que a vincula ao extrato.
  *

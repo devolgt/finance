@@ -25,7 +25,7 @@ describe('vetores de ouro do client', () => {
         expect(diffGoldenVectors(parsed, vectors)).toEqual([]);
     });
 
-    it('formata com o sinal tipográfico e o agrupamento pt-BR dos mockups', () => {
+    it('formata com o sinal tipográfico e o agrupamento pt-BR', () => {
         const money = computeClientGoldenVectors()['format.money'] ?? [];
 
         expect(money).toContainEqual({ input: { amount: -1234.565, currency: 'BRL', sign: 'negative' }, output: '−R$ 1.234,57' });

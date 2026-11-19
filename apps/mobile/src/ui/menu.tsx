@@ -3,9 +3,9 @@ import { Pressable, View } from 'react-native';
 import { AppText } from './AppText.tsx';
 
 /**
- * Linha de menu (`.it` dos mockups): 52 px de altura, rótulo e linha de apoio à esquerda,
- * contagem e "›" à direita. Compartilhada pelo menu Mais e pelo índice de Cadastros, que têm o
- * mesmo desenho nos mockups.
+ * Linha de menu: 52 px de altura, rótulo e linha de apoio à esquerda, contagem e "›" à direita.
+ * Compartilhada pelo menu Mais e pelo índice de Cadastros, que têm o mesmo desenho, para que os
+ * dois não divirjam.
  *
  * @param props.label Rótulo.
  * @param props.detail Linha de apoio sob o rótulo.
@@ -36,7 +36,7 @@ export function MenuRow(props: { readonly label: string; readonly detail?: strin
 }
 
 /**
- * Grupo de linhas de menu com a borda e o raio dos mockups (`.list`).
+ * Grupo de linhas de menu com a borda e o raio dos grupos de formulário (`FormGroup`).
  *
  * @param props.children As linhas.
  * @return O grupo.

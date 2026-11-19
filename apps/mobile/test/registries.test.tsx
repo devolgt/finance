@@ -58,7 +58,7 @@ function lastSheet(): ReturnType<typeof screen.getByTestId> {
 
 afterEach(restoreToday);
 
-describe('Cadastros (mobile-mvp-plan, Fase 15)', () => {
+describe('Cadastros (categorias-e-tags §5.2)', () => {
     it('o índice conta cada cadastro e leva Contas à aba dela', async () => {
         const { app } = await openRegistries();
 

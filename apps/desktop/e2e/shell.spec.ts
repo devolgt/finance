@@ -4,7 +4,7 @@ import { currentPeriod, shiftPeriod } from '../src/renderer/src/shell/referenceM
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Shell e navegação (desktop-mvp-plan Fase 4) no app empacotado: menu, mês de referência,
+ * Shell e navegação (desktop §8) no app empacotado: menu, mês de referência,
  * tema, seletor de perfil e atalhos. Os cliques usam `dispatchEvent`, e os menus do Radix são
  * abertos pelo teclado, pelo mesmo motivo do teste de fumaça: no container a janela fica fora
  * da tela, e a espera do Playwright por elemento "estável" nunca termina.
@@ -69,7 +69,7 @@ test('o menu leva a todas as telas e o mês de referência acompanha a navegaç�
         await page.getByRole('button', { name: 'Voltar ao mês atual' }).dispatchEvent('click');
         await expect(month).toHaveText(formatMonthLong(today));
 
-        // Telas de configuração não mostram o mês (decisão da Fase 4), mas a barra continua.
+        // Telas de configuração não mostram o mês (desktop §7.2), mas a barra continua.
         await openMenuItem(page, 'Categorias');
         await expect(page.getByRole('heading', { level: 1 })).toHaveText('Categorias');
         await expect(month).toHaveCount(0);

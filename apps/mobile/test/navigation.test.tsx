@@ -3,6 +3,7 @@ import { act, fireEvent, screen, waitFor, within } from 'expo-router/testing-lib
 import { fixToday, restoreToday } from './support/fixedToday.ts';
 import { renderApp } from './support/renderApp.tsx';
 import { testCore } from './support/renderWithCore.tsx';
+import { MemoryNetwork, syncTestCore } from './support/syncCore.ts';
 
 jest.mock('expo-file-system', () => ({ Paths: {} }));
 
@@ -20,8 +21,8 @@ async function createProfile(core: Core, name: string, type: 'personal' | 'busin
     return result.data.profile.id;
 }
 
-describe('shell e navegação (mobile-mvp-plan, Fase 6)', () => {
-    it('abre no Início, com a barra inferior na ordem dos mockups e a aba aberta anunciada', async () => {
+describe('shell e navegação (mobile §5)', () => {
+    it('abre no Início, com a barra inferior na ordem definida (Início, Transações, Contas, Cartões, Mais) e a aba aberta anunciada', async () => {
         const { core } = testCore();
         await createProfile(core, 'Gustavo');
 
@@ -139,13 +140,13 @@ describe('shell e navegação (mobile-mvp-plan, Fase 6)', () => {
         expect(app.storedPreferences().theme).toBe('dark');
     });
 
-    it('Dispositivos diz que os dados ficam só neste aparelho, e o "voltar" volta ao Mais', async () => {
-        const { core } = testCore();
+    it('Dispositivos diz que os dados ficam só neste aparelho fora de um grupo, e o "voltar" volta ao Mais', async () => {
+        const core = syncTestCore({ device: 1, network: new MemoryNetwork(), address: '192.168.0.20', platform: 'android' });
         await createProfile(core, 'Gustavo');
         const app = await renderApp(core, { initialUrl: '/more' });
 
         await fireEvent.press(await screen.findByRole('button', { name: 'Dispositivos e sincronização, Dados só neste aparelho' }));
-        expect(await screen.findByText('Dados só neste aparelho')).toBeOnTheScreen();
+        expect(await screen.findByText(/crie o grupo nele/)).toBeOnTheScreen();
 
         await act(async () => {
             await fireEvent.press(screen.getByRole('button', { name: 'Voltar' }));

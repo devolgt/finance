@@ -6,9 +6,9 @@ const FULL_SHARE_HUNDREDTHS = 100 * 100;
 
 /**
  * Confere que as participações de um perfil fecham 100%.
- * Regra de negócio (Sócios, database-design §4.2; decisão de interface 10 dos mockups): a soma
- * das participações precisa dar 100% para salvar — com menos, parte das despesas não teria dono
- * na divisão do relatório; com mais, alguém pagaria a parte de outro. Sem nenhum sócio não há o
+ * Regra de negócio (Sócios, banco-de-dados §4.2; socios §1.3): a soma
+ * das participações precisa dar 100% para salvar — com menos, parte dos aportes não teria dono
+ * na divisão do relatório; com mais, alguém deveria aportar a parte de outro. Sem nenhum sócio não há o
  * que dividir, e a lista vazia é aceita: é o estado de todo perfil empresarial recém-criado, e
  * remover todos os sócios precisa ter volta.
  *

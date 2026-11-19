@@ -4,7 +4,7 @@ export interface CurrencyOption {
     readonly label: string;
 }
 
-/** Moedas oferecidas nos formulários, as do mockup do primeiro uso. */
+/** Moedas oferecidas nos formulários, as mesmas no primeiro uso e nos cadastros. */
 export const CURRENCY_OPTIONS: readonly CurrencyOption[] = [
     { code: 'BRL', label: 'BRL — Real' },
     { code: 'USD', label: 'USD — Dólar' },

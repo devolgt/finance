@@ -2,4 +2,4 @@
 // desktop importa este subcaminho sem carregar hooks nem telas.
 export * from './blockingCopy.ts';
 export * from './openCoreSequence.ts';
-export { SystemClock } from './SystemClock.ts';
+export { SystemClock, SystemWallClock } from './SystemClock.ts';

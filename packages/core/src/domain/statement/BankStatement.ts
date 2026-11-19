@@ -16,7 +16,7 @@ export interface BankStatementProps {
 
 /**
  * Extrato mensal de uma conta — o contêiner das transações da conta naquele mês, uma
- * linha por mês (database-design §4.6). Guarda os quatro saldos (inicial e final,
+ * linha por mês (banco-de-dados §4.6). Guarda os quatro saldos (inicial e final,
  * consolidado e previsto) para que navegar entre meses e gerar relatórios não precise
  * reconstruir a cadeia inteira de fechamentos; todos são cache da rotina de recálculo.
  */
@@ -43,7 +43,7 @@ export class BankStatement implements BankStatementProps {
     /**
      * Abre o extrato de um mês ainda sem linha. O id é o UUID v5 da chave natural
      * (conta, competência), para que dois aparelhos offline abrindo "o extrato de março"
-     * derivem o mesmo id (sync-design §5.6). Os saldos nascem iguais ao inicial, sem
+     * derivem o mesmo id (sincronizacao §3.7). Os saldos nascem iguais ao inicial, sem
      * movimento, e são corrigidos pela rotina de recálculo na mesma unidade de trabalho.
      *
      * @param accountId Conta dona do extrato.
@@ -79,8 +79,8 @@ export class BankStatement implements BankStatementProps {
     /**
      * Devolve o extrato com os saldos reconstruídos. O fechamento é arredondado aqui, na
      * fronteira de persistência, e não antes: o movimento chega sem arredondamento
-     * intermediário (database-design §3.7), e arredondar cada fechamento zera o erro de
-     * float acumulado a cada mês (backend-design §3.3).
+     * intermediário (banco-de-dados §3.7), e arredondar cada fechamento zera o erro de
+     * float acumulado a cada mês (core §6.4).
      *
      * @param opening Saldo inicial: o fechamento já arredondado do extrato anterior.
      * @param movement Movimento do mês, sem arredondamento.

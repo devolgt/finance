@@ -5,19 +5,21 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Primeiro uso (desktop-mvp-plan Fase 5) no app empacotado: o banco sem perfil abre o
+ * Primeiro uso (perfis §4.2) no app empacotado: o banco sem perfil abre o
  * formulário fora do shell, e concluí-lo cria perfil, conta e categorias e entra na Visão
  * geral do mês atual. Os cliques usam `dispatchEvent` pelo motivo explicado em `firstUse.ts`.
  */
 
-test('banco vazio abre o primeiro uso fora do shell, com "entrar num grupo" desabilitado e explicado', async () => {
+test('banco vazio abre o primeiro uso fora do shell, com "entrar num grupo" pedindo o convite', async () => {
     const { app, window: page, userData } = await launchApp();
     try {
         await expect(page.getByRole('heading', { name: 'Vamos começar' })).toBeVisible();
         await expect(page.getByRole('navigation', { name: 'Navegação principal' })).toHaveCount(0);
         const join = page.getByRole('button', { name: 'Entrar num grupo existente' });
         await expect(join).toBeDisabled();
-        await expect(join).toHaveAccessibleDescription(/A sincronização entre aparelhos chega numa próxima versão/);
+        await page.getByLabel('Convite').fill('não é um convite');
+        await join.dispatchEvent('click');
+        await expect(page.getByRole('alert')).toContainText('O convite expirou ou já foi usado');
     } finally {
         await app.close();
         removeUserData(userData);

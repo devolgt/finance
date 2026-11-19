@@ -13,9 +13,9 @@ export const THEME_OPTIONS: readonly SelectOption<ThemePreference>[] = [
 ];
 
 /**
- * Botão de tema do cabeçalho (todos os mockups do celular o têm). Abre uma folha com as três
- * escolhas, e não alterna entre claro e escuro como o mockup, porque "seguir o sistema" é a
- * terceira opção e o padrão — a mesma decisão do desktop (desktop-mvp-plan Fase 4).
+ * Botão de tema do cabeçalho, presente em toda tela para trocar o tema sem ir a Ajustes. Abre uma
+ * folha com as três escolhas, e não alterna entre claro e escuro, porque "seguir o sistema" é a
+ * terceira opção e o padrão — a mesma decisão do desktop (desktop §7.1).
  *
  * @return O botão e a folha.
  */

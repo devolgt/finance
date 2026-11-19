@@ -18,7 +18,7 @@ export const BEGINNING_OF_TIME = YearMonth.of(1900, 1);
 
 /**
  * A rotina de recálculo de saldos — **uma** rotina, chamada pelo lançamento, pelo
- * pagamento de fatura e pelo reparo (backend-design §3.3). Saldos em cache nunca são
+ * pagamento de fatura e pelo reparo (core §6.4). Saldos em cache nunca são
  * incrementados: são sempre reconstruídos a partir das transações, porque incrementar
  * acumula erro de float a cada escrita e transforma qualquer bug pontual em desvio
  * permanente. O custo é uma consulta agregada por conta afetada.
@@ -64,7 +64,7 @@ export class BalanceRecalculationService {
     /**
      * Reconstrói todos os saldos de uma conta desde o primeiro extrato — faturas dos cartões
      * que ela quita, cadeia inteira e cache. É a ferramenta de reparo e o oráculo dos testes
-     * (database-design §3.7).
+     * (banco-de-dados §3.7).
      *
      * @param accountId Conta a reconstruir.
      * @return void
@@ -117,7 +117,7 @@ export class BalanceRecalculationService {
     /**
      * Refaz a cadeia de fechamentos de `from` em diante.
      * Regra de negócio (Extrato): o inicial do trecho é o fechamento do extrato vivo
-     * anterior, ou o `opening_balance` da conta quando não há anterior (database-design §4.6);
+     * anterior, ou o `opening_balance` da conta quando não há anterior (banco-de-dados §4.6);
      * meses com movimento e sem extrato ganham um, para que nada fique fora da cadeia.
      *
      * @param accountId Conta a recalcular; ignorada se tiver sido excluída.

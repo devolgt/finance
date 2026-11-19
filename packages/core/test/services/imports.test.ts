@@ -179,7 +179,7 @@ describe('imports.run — cadastros, saldos e faturas', () => {
     });
 });
 
-describe('imports.run — séries (import-design §5.5)', () => {
+describe('imports.run — séries (importacao §5.5)', () => {
     it('grava a fixa com os números do arquivo e termina na última linha antes do horizonte', async () => {
         const { world, profileId } = setup();
         const months = ['2026-01-11', '2026-02-11', '2026-03-11', '2026-05-11'];

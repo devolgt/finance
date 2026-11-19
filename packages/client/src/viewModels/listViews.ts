@@ -1,5 +1,5 @@
 /*
- * Modos de visualização das listas laterais (desktop-mvp-plan Fase 13.4): Metas mostra por padrão
+ * Modos de visualização das listas laterais (metas §5.2): Metas mostra por padrão
  * só as ativas, e as atingidas e as arquivadas ficam a um clique; Contas e Cartões mostram as
  * ativas ou as desativadas. Mora no `client` para que o celular filtre igual.
  */
@@ -38,7 +38,7 @@ export function formatRegistryListView(view: RegistryListView, gender: 'feminine
 }
 
 /**
- * Regra de negócio (Metas, desktop-mvp-plan Fase 13.4): ativa é a que ainda se persegue — nem
+ * Regra de negócio (Metas, metas §5.2): ativa é a que ainda se persegue — nem
  * atingida nem arquivada. A meta atingida e arquivada aparece nas duas visualizações (decisão do
  * usuário): quem procura o que já alcançou não precisa lembrar se a arquivou.
  *
@@ -96,7 +96,7 @@ export interface GoalChoice {
 }
 
 /**
- * Escolhas do campo "Meta" do lançamento (desktop-mvp-plan Fase 13.4): as atingidas num grupo à
+ * Escolhas do campo "Meta" do lançamento (metas §3.3): as atingidas num grupo à
  * parte, depois das ativas, porque raramente se guarda mais numa meta já alcançada.
  * Regra de negócio (Metas): a arquivada não é escolha de lançamento novo; só aparece na edição do
  * lançamento que já está vinculado a ela, marcada, para que o campo não fique em branco.
@@ -111,7 +111,7 @@ export function goalChoices(
 ): readonly GoalChoice[] {
     const offered = options.filter((goal) => !goal.archived || goal.id === currentGoalId);
     /**
-     * Regra de negócio (Metas, desktop-mvp-plan Fase 13.4): a arquivada só aparece na edição do
+     * Regra de negócio (Metas, metas §3.3): a arquivada só aparece na edição do
      * lançamento já vinculado a ela, e o sufixo "(arquivada)" explica por que ela está ali; as
      * atingidas vão para um grupo à parte.
      *

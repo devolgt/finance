@@ -1,7 +1,7 @@
 import { LocalDate } from '@finance/core';
 
 /*
- * Interpretação das células de número e de data da importação (import-design §3). É formato,
+ * Interpretação das células de número e de data da importação (importacao §3). É formato,
  * não regra de negócio: decide só como o texto do arquivo vira número e data `YYYY-MM-DD`.
  */
 

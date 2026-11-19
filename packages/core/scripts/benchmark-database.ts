@@ -11,8 +11,8 @@ const ROUNDS = 40;
 
 /**
  * Mede as chamadas interativas no Node sobre o banco de dez anos (`pnpm db:history`): é a linha
- * de base do desktop, com o mesmo roteiro que o aparelho roda no Hermes (mobile-mvp-plan, Fase
- * 5), para que a diferença entre os dois seja do runtime e do aparelho, e não da medição.
+ * de base do desktop, com o mesmo roteiro que o aparelho roda no Hermes (mobile §12.1;
+ * testes §5.2), para que a diferença entre os dois seja do runtime e do aparelho, e não da medição.
  * Os ids novos são aleatórios porque o banco já tem os sequenciais do gerador. O relógio fica
  * no "hoje" do gerador, para os lançamentos caírem no último mês do histórico.
  *

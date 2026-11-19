@@ -6,7 +6,7 @@ import type { DatabaseFiles } from './databaseFiles.ts';
 const DATABASE_SUFFIXES = ['', '-wal', '-shm'] as const;
 
 /**
- * Restaura a cópia de antes da migration que falhou (backend-design §4.5, passo 4), com os
+ * Restaura a cópia de antes da migration que falhou (banco-de-dados §5.5, passo 4), com os
  * mesmos passos e proteções do desktop (`replaceDatabase`): o banco que falhou não é apagado,
  * vai com o `-wal` e o `-shm` para `backups/falha-{instante}.sqlite`, fora do padrão da
  * rotação, para que nada se perca se o problema estiver no backup e não na migration.

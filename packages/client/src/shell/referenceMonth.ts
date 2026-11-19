@@ -1,8 +1,7 @@
 import { LocalDate, YearMonth, type ProfileResponse } from '@finance/core';
 
 /*
- * Regras do shell que o desktop e o celular aplicam igual (mobile-mvp-plan §5.1, "Nenhuma regra
- * nova no mobile"): o mês corrente pelo relógio de parede, o mês vizinho na faixa do mês de
+ * Regras do shell que o desktop e o celular aplicam igual (desktop §4.7): o mês corrente pelo relógio de parede, o mês vizinho na faixa do mês de
  * referência e o perfil que o app reabre. Onde cada app guarda o mês (URL no desktop,
  * preferências no celular) é do shell; o cálculo é este.
  */
@@ -57,7 +56,7 @@ export function isValidPeriod(period: string): boolean {
 
 /**
  * Escolhe o perfil aberto. Fica no aparelho (`lastProfileId`), e não no banco, porque dois
- * aparelhos sincronizados podem estar em perfis diferentes (desktop-mvp-plan §2).
+ * aparelhos sincronizados podem estar em perfis diferentes (desktop §9).
  *
  * @param profiles Perfis do banco, na ordem do núcleo.
  * @param lastProfileId Último perfil aberto neste aparelho.

@@ -5,11 +5,10 @@ import { AppText } from '../ui/AppText.tsx';
 import { useReferenceMonth } from './useReferenceMonth.ts';
 
 /**
- * Faixa do mês de referência, abaixo do cabeçalho (decisão de interface 2 dos mockups), nas telas
+ * Faixa do mês de referência, abaixo do cabeçalho (desktop §7.2; mobile §5.2), nas telas
  * que dependem de período; nunca no lançamento nem nos fluxos de configuração. O centro mostra o
  * mês; fora do mês corrente, o rótulo de cima vira "Voltar ao mês atual" e o toque no centro
- * volta a ele — o mockup deixa o centro como botão sem dizer o que faz, e o celular não tem
- * espaço para um terceiro botão ao lado das setas.
+ * volta a ele, porque o celular não tem espaço para um terceiro botão ao lado das setas.
  *
  * @return A faixa.
  */

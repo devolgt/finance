@@ -64,7 +64,7 @@ import { RowDate, RowMultiSelect, RowSearchSelect } from '../ui/pickers.tsx';
 import { RepeatRow, ScopeSheet, SeriesReviewSheet } from './series.tsx';
 import type { SelectOption } from '../ui/Select.tsx';
 
-/** Tipos na ordem do mockup `MobileLancamento`, com os rótulos curtos que cabem na linha. */
+/** Tipos de lançamento, com os rótulos curtos que cabem na linha. */
 const TYPES: readonly SelectOption<TransactionFormValues['type']>[] = [
     { value: 'income', label: 'Receita' },
     { value: 'expense', label: 'Despesa' },
@@ -72,13 +72,13 @@ const TYPES: readonly SelectOption<TransactionFormValues['type']>[] = [
     { value: 'investment', label: 'Invest.' },
 ];
 
-/** Atalho "Débito / Crédito" da despesa nova (desktop-mvp-plan Fase 15.2). */
+/** Atalho "Débito / Crédito" da despesa nova (transacoes §4.2). */
 const METHODS: readonly SelectOption<PaymentMethod>[] = [
     { value: 'debit', label: 'Débito' },
     { value: 'credit', label: 'Crédito' },
 ];
 
-/** "Guardar" ou "Retirar" numa transferência com meta (desktop-mvp-plan Fase 13.3). */
+/** "Guardar" ou "Retirar" numa transferência com meta (metas §3.2). */
 const GOAL_DIRECTIONS: readonly SelectOption<'save' | 'withdraw'>[] = [
     { value: 'save', label: 'Guardar' },
     { value: 'withdraw', label: 'Retirar' },
@@ -91,7 +91,7 @@ const NONE = 'none';
 const PREVIEW_TONE = { in: 'text-in', out: 'text-out', transfer: 'text-ink', none: 'text-ink' } as const;
 
 /**
- * Passo da gravação de uma série (database-design §4.12): a escolha do escopo, na edição de uma
+ * Passo da gravação de uma série (recorrencias §7): a escolha do escopo, na edição de uma
  * ocorrência, e a revisão do que entra, sai ou muda, de onde "Voltar" retorna ao escopo quando ele
  * veio antes.
  */
@@ -146,7 +146,7 @@ function debitSource(profile: ProfileResponse, registries: Registries): string {
 }
 
 /**
- * Lançamento novo ou edição (mockup `MobileLancamento`; mobile-mvp-plan, Fase 10): espera os
+ * Lançamento novo ou edição (transacoes §5): espera os
  * cadastros do perfil para abrir o formulário já com a conta padrão no débito.
  *
  * @param props.transaction Lançamento editado; `null` no novo.
@@ -173,10 +173,10 @@ export function TransactionFormScreen({ transaction }: { readonly transaction: T
 /**
  * O formulário com os cadastros carregados. Valida pelo `readTransactionForm` do `client` — o
  * mesmo do desktop, que aplica o schema da rota — e reproduz as regras de tela do desktop: o
- * atalho débito/crédito e o nome sugerido só no lançamento novo (Fase 15.2), a fatura sugerida pela
+ * atalho débito/crédito e o nome sugerido só no lançamento novo (transacoes §4.2 e §4.3), a fatura sugerida pela
  * data da compra, o destino só em transferência e investimento, a meta só onde ela é alimentada e
  * o sócio só num aporte em perfil empresarial. Criar uma série e editar uma ocorrência passam pela
- * revisão e, na edição, pela escolha do escopo, como no desktop (Fase 11).
+ * revisão e, na edição, pela escolha do escopo, como no desktop (recorrencias §7).
  *
  * @param props.transaction Lançamento editado; `null` no novo.
  * @param props.recurrence Série da ocorrência editada; `null` no lançamento avulso.
@@ -304,7 +304,7 @@ function LoadedForm(props: { readonly transaction: TransactionResponse | null; r
     };
 
     /**
-     * Troca o perfil do lançamento: o que é do perfil volta a ser escolhido (database-design §3.8).
+     * Troca o perfil do lançamento: o que é do perfil volta a ser escolhido (banco-de-dados §3.8).
      *
      * @param next Perfil escolhido.
      */
@@ -357,7 +357,7 @@ function LoadedForm(props: { readonly transaction: TransactionResponse | null; r
         }
     };
 
-    // Regra de negócio (Recorrências, database-design §4.12): criar uma série passa pela revisão;
+    // Regra de negócio (Recorrências, recorrencias §5 e §7): criar uma série passa pela revisão;
     // editar uma ocorrência pergunta antes o escopo — menos quando a série muda, o que vale para a
     // editada e as futuras, e quando o perfil muda, o que leva a série inteira: os dois vão direto
     // para a revisão, e juntos não cabem numa edição só.

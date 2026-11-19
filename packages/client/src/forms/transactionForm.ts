@@ -19,9 +19,9 @@ import { collectIssues, type FieldTarget, type FormErrors, moneyInputMessage } f
 import { periodOfDate } from './invoiceForms.ts';
 
 /*
- * Formulário de lançamento (desktop-mvp-plan Fase 9; mockup `DesktopTransacoes`). Valida com os
+ * Formulário de lançamento (transacoes §5). Valida com os
  * schemas de `transactions.create` e `transactions.update`, para que a mensagem da tela e a
- * recusa do núcleo nunca discordem (desktop-shell-design §5.4). Fica fora do componente para que
+ * recusa do núcleo nunca discordem (desktop §3.5). Fica fora do componente para que
  * as regras de leitura tenham teste sem DOM.
  */
 
@@ -29,7 +29,7 @@ import { periodOfDate } from './invoiceForms.ts';
 export interface TransactionFormValues {
     /**
      * Perfil do lançamento: o ativo num novo, o dele na edição. Trocá-lo na edição move o
-     * lançamento para o outro perfil (database-design §4.13, "Mover para outro perfil").
+     * lançamento para o outro perfil (banco-de-dados §4.13, "Mover para outro perfil").
      */
     readonly profileId: string;
     readonly type: TransactionType;
@@ -57,7 +57,7 @@ export interface TransactionFormValues {
     readonly goalId: string;
     /**
      * "Retirar" no lugar de "Guardar": a transferência tira dinheiro da meta, que desconta do
-     * progresso (desktop-mvp-plan Fase 13.3). Só vale numa transferência com meta (`withdrawsFromGoal`).
+     * progresso (metas §3.2). Só vale numa transferência com meta (`withdrawsFromGoal`).
      */
     readonly goalWithdrawal: boolean;
     /**
@@ -65,7 +65,7 @@ export interface TransactionFormValues {
      * empresarial (`contributionProfileId`).
      */
     readonly partnerId: string;
-    /** "Repetir" (mockup `MobileParcelar`): não repetir, parcelado ou fixo. */
+    /** "Repetir" (recorrencias §3.3): não repetir, parcelado ou fixo. */
     readonly repeatKind: RepeatKind;
     readonly frequency: RecurrenceFrequency;
     /** Quantidade de parcelas, digitada; só no parcelado. */
@@ -123,7 +123,8 @@ export type TransactionFormTarget =
     | { readonly mode: 'update'; readonly transaction: TransactionResponse; readonly recurrence: RecurrenceResponse | null };
 
 /**
- * Chave da origem no campo "Conta ou cartão": um `Select` só com os dois grupos, como no mockup.
+ * Chave da origem no campo "Conta ou cartão": um `Select` só com os dois grupos, porque o
+ * lançamento sai de uma conta **ou** de um cartão, nunca dos dois (transacoes §5.1).
  *
  * @param option Conta ou cartão.
  * @return `account:<id>` ou `creditCard:<id>`.
@@ -204,7 +205,7 @@ export function newTransactionForm(today: string, source: string, profileId: str
  * estorno se leia pelo botão e não por um hífen fácil de perder. Numa ocorrência de série, a
  * repetição vem da série, e o valor é o da ocorrência — por isso "por parcela". Numa fixa, as
  * parcelas começam vazias: se ela virar parcelada, a quantidade é o usuário quem informa, sem
- * sugestão (desktop-mvp-plan Fase 9.2).
+ * sugestão (recorrencias §7).
  *
  * @param transaction Lançamento editado.
  * @param today Hoje, sugerido como data de pagamento se o usuário marcar "Pago".
@@ -247,7 +248,7 @@ export type RepeatSubmission = NonNullable<CoreInput<'transactions.create'>['rep
  * @param recurrence Série atual.
  * @param repeat Repetição do formulário.
  * @return `true` quando o formulário muda a série — tipo, frequência, parcelas ou fim. Regra de
- * negócio (Recorrências, database-design §4.12): mudar a série vale sempre para a editada e as
+ * negócio (Recorrências, banco-de-dados §4.12): mudar a série vale sempre para a editada e as
  * futuras, então o salvar pula a escolha do escopo e vai direto para a revisão.
  */
 export function changesSeries(recurrence: RecurrenceResponse, repeat: RepeatSubmission | null): boolean {
@@ -318,7 +319,7 @@ export const NO_PARTNER_CONTEXT: PartnerContext = { profileId: null, partnerIds:
 /**
  * Perfil em que o lançamento é um aporte de sócio, pela mesma regra do núcleo
  * (`TransactionComposer.assertPartner`), para que o campo só apareça onde a gravação o aceita.
- * Regra de negócio (Sócios — aportes, database-design §4.13, `partner_id`): toda despesa do perfil empresarial é paga
+ * Regra de negócio (Sócios — aportes, banco-de-dados §4.13, `partner_id`): toda despesa do perfil empresarial é paga
  * pela empresa; o sócio aparece no dinheiro que entra — a receita de um perfil empresarial e a
  * transferência que chega a um perfil empresarial vinda de outro perfil. Na transferência, os
  * sócios são os do perfil de destino.
@@ -376,15 +377,15 @@ const INSTALLMENTS_RANGE = { min: 2, max: 360 } as const;
 
 /**
  * Lê o formulário e monta a chamada de criação ou de edição.
- * Regra de negócio (Transações, database-design §4.13): o valor é lançado positivo e o tipo dá a
+ * Regra de negócio (Transações, banco-de-dados §4.13): o valor é lançado positivo e o tipo dá a
  * direção; o "±" o grava negativo, invertendo o efeito (estorno, devolução). Encargos são sempre
- * custo da origem, então não têm sinal. Pago e data de pagamento andam juntos (brief §3).
+ * custo da origem, então não têm sinal. Pago e data de pagamento andam juntos (transacoes §2.1).
  * Regra de negócio (Transferência): transferência e investimento exigem a conta de destino, e só
  * eles têm uma — o destino escolhido antes de trocar o tipo não vai junto.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 9.3): só receita e transferência alimentam uma
+ * Regra de negócio (Metas, metas §3.1): só receita e transferência alimentam uma
  * meta — a meta escolhida antes de trocar para outro tipo também não vai junto. Só a
- * transferência pode retirar dinheiro dela (Fase 13.3).
- * Regra de negócio (Cartão, database-design §4.7): sem fatura escolhida vale a sugerida pela data
+ * transferência pode retirar dinheiro dela (metas §3.2).
+ * Regra de negócio (Cartão, banco-de-dados §4.7): sem fatura escolhida vale a sugerida pela data
  * da compra; na edição no mesmo cartão a fatura atual vai explícita, porque a sugestão nunca é
  * recalculada depois.
  * Regra da tela: o valor é maior que zero — um lançamento de zero não move dinheiro nenhum.
@@ -453,7 +454,7 @@ export function readTransactionForm(values: TransactionFormValues, target: Trans
         paymentDate: paid ? (values.paymentDate.trim() === '' ? PLACEHOLDER_DATE : values.paymentDate) : null,
         tagIds: [...values.tagIds],
         goalId: feedsGoal(values.type) && values.goalId !== '' ? values.goalId : null,
-        // Regra de negócio (Metas, Fase 13.3): só a transferência com meta retira; trocar para
+        // Regra de negócio (Metas, metas §3.2): só a transferência com meta retira; trocar para
         // receita, ou tirar a meta, descarta a retirada, como o destino de um tipo sem destino.
         goalWithdrawal: withdrawsFromGoal(values.type) && values.goalId !== '' && values.goalWithdrawal,
         partnerId: partnerOf(values, target, partner),
@@ -523,7 +524,7 @@ function withTagPath(issue: z.core.$ZodIssue): z.core.$ZodIssue {
 /**
  * Mês em que o lançamento vai pesar com o que está no formulário, para o aviso de recálculo.
  * Regra de negócio (Extrato): numa conta, o mês da data de pagamento, ou do vencimento em aberto
- * (`Transaction.cashDate`); num cartão, o da fatura escolhida ou sugerida (database-design §4.7).
+ * (`Transaction.cashDate`); num cartão, o da fatura escolhida ou sugerida (banco-de-dados §4.7).
  *
  * @param values Valores dos campos.
  * @param suggestedInvoice Competência sugerida para a compra no cartão; `null` enquanto carrega.
@@ -538,7 +539,7 @@ export function cashPeriodOf(values: TransactionFormValues, suggestedInvoice: st
 
 /**
  * Se o formulário leva o lançamento editado para outro perfil.
- * Regra de negócio (Recorrências, database-design §4.12): numa ocorrência, mudar de perfil leva a
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): numa ocorrência, mudar de perfil leva a
  * série inteira — o salvar pula a escolha do escopo e revisa "todas".
  *
  * @param values Valores dos campos.

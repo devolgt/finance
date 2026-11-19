@@ -35,7 +35,7 @@ export const yearMonthField = parsedText((raw) => YearMonth.parse(raw));
 
 /**
  * Valor monetário digitado. Exige número finito dentro do teto do `MONEY_MAX_AMOUNT`, nos dois
- * sentidos: o sinal é livre porque o negativo é estorno ou devolução (database-design §4.13),
+ * sentidos: o sinal é livre porque o negativo é estorno ou devolução (banco-de-dados §4.13),
  * e o arredondamento acontece na persistência, na precisão da moeda do perfil, que a Request
  * não conhece.
  * Regra de negócio (Dinheiro): todo valor informado fica entre −1 trilhão e 1 trilhão.

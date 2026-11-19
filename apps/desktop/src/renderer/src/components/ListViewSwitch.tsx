@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { ViewToggle } from './ViewToggle.tsx';
 
 /**
- * Seletor da visualização de uma lista lateral (desktop-mvp-plan Fase 13.4): Metas alterna entre
+ * Seletor da visualização de uma lista lateral (metas §5.2): Metas alterna entre
  * ativas, atingidas e arquivadas; Contas e Cartões, entre ativos e desativados. Botões de
  * alternância visíveis, e não um menu, porque são poucas opções e o que se está vendo precisa
  * ficar à vista — uma lista que esconde as desativadas sem dizer confunde quem procura uma.

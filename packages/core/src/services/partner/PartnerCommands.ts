@@ -11,7 +11,7 @@ export interface PartnerEntry {
 /**
  * A lista completa de sócios de um perfil, como o cadastro a deixou. É a lista inteira, e não
  * uma alteração por sócio, porque a soma de 100% só se confere com todas as participações juntas
- * (mockup `DesktopSocios`: um "Salvar" para a tela toda).
+ * (socios §1.4: um "Salvar" para a tela toda).
  */
 export interface ReplacePartnersCommand {
     readonly profileId: ProfileId;

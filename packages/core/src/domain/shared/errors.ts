@@ -1,7 +1,7 @@
 /**
  * Conjunto fechado de códigos de erro que atravessam a fronteira UI ↔ núcleo. É fechado
  * porque a UI trata cada código de forma exaustiva, verificada pelo compilador
- * (desktop-shell-design §5.3); um código novo precisa quebrar o build da UI, não cair num
+ * (desktop §3.3); um código novo precisa quebrar o build da UI, não cair num
  * `default` silencioso.
  */
 export type ErrorCode =
@@ -21,7 +21,7 @@ export type ErrorDetails = Readonly<Record<string, string | number | boolean | n
 /**
  * Raiz dos erros esperados do domínio. Existe para separar o que é falha prevista — e vira
  * um `CoreResult` com código — do que é bug, que vira erro genérico com log
- * (desktop-shell-design §5.3).
+ * (desktop §3.3).
  */
 export abstract class DomainError extends Error {
     public abstract readonly code: ErrorCode;
@@ -110,12 +110,21 @@ export type BusinessRule =
     | 'report-dimensions-repeated'
     | 'report-pie-secondary'
     | 'sub-category-in-use'
+    | 'sync-address-not-local'
+    | 'sync-already-in-group'
+    | 'sync-device-has-data'
+    | 'sync-invite-invalid'
+    | 'sync-member-removed'
+    | 'sync-not-a-member'
+    | 'sync-not-in-group'
+    | 'sync-peer-unreachable'
+    | 'sync-unavailable'
     | 'transaction-move-currency-mismatch'
     | 'transaction-type-locked';
 
 /**
  * Uma regra de negócio que relaciona colunas ou linhas foi violada — o tipo de regra que
- * o banco deliberadamente não garante (database-design §3.10) e que, por isso, precisa de
+ * o banco deliberadamente não garante (banco-de-dados §3.10) e que, por isso, precisa de
  * um único ponto de controle na camada Service.
  */
 export class BusinessRuleViolation extends DomainError {
@@ -137,7 +146,7 @@ export class BusinessRuleViolation extends DomainError {
  * perfil, subcategoria na categoria). Tem código próprio, e não `BUSINESS_RULE_VIOLATION`,
  * porque a UI trata de um jeito específico — aponta o campo do nome e sugere outro —, e
  * porque sem esta checagem o usuário receberia o `SQLITE_CONSTRAINT` do índice único como
- * erro genérico (database-design §3.11).
+ * erro genérico (banco-de-dados §3.11).
  */
 export class NameConflictError extends DomainError {
     public readonly code = 'CONFLICT';

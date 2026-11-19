@@ -58,8 +58,7 @@ function Tag({ text, warn = false }: { readonly text: string; readonly warn?: bo
 
 /**
  * Transações vinculadas, com o total, que é o próprio progresso. Tocar abre o detalhe do
- * lançamento, onde se edita ou desvincula — é aqui que se nota a vinculada errada (desktop-mvp-plan
- * Fase 13.3). Contas, cartões e categorias só dão nome às linhas.
+ * lançamento, onde se edita ou desvincula — é aqui que se nota a vinculada errada (metas §4.5). Contas, cartões e categorias só dão nome às linhas.
  *
  * @param props.goal Meta aberta, por lançamentos.
  * @return A seção.
@@ -161,10 +160,9 @@ function GoalActionsSheet(props: {
 }
 
 /**
- * Detalhe da meta (mobile-mvp-plan, Fase 14, tela aprovada pelo usuário; o mockup `MobileMetas`
- * só desenha a lista): o progresso, os três números do desktop (falta, data-alvo, ritmo
+ * Detalhe da meta (metas §7.2): o progresso, os três números do desktop (falta, data-alvo, ritmo
  * necessário), a projeção e as transações vinculadas — ou, na meta vinculada a conta, o link para
- * o extrato da conta, de onde vem o saldo (desktop-mvp-plan Fase 13.3). As ações ficam no "⋯".
+ * o extrato da conta, de onde vem o saldo (metas §2.2). As ações ficam no "⋯".
  * A meta vem da mesma consulta da lista, já em cache.
  *
  * @return A tela.

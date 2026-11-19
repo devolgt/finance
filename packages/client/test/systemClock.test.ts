@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { SystemClock } from '../src/startup/SystemClock.ts';
 
-describe('SystemClock (backend-design §5.7)', () => {
+describe('SystemClock (testes §2.4)', () => {
     it('hoje é o dia do calendário local, mesmo quando o UTC já virou o mês', () => {
         // 22h do dia 31 no fuso do aparelho: em São Paulo, o UTC já está no dia 1º.
         const instant = new Date(2026, 9, 31, 22, 0, 0);

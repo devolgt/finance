@@ -2,7 +2,7 @@ import { InvalidValueError } from './errors.ts';
 
 /**
  * Tamanho máximo dos nomes de cadastro — perfil, conta, cartão, categoria e subcategoria —,
- * o mesmo `CHECK (length(name) <= 45)` do schema (database-design §4.1 a §4.9). Fica num
+ * o mesmo `CHECK (length(name) <= 45)` do schema (banco-de-dados §4.1 a §4.9). Fica num
  * lugar só para que o domínio recuse antes de o banco recusar com erro de SQL.
  */
 export const REGISTRY_NAME_MAX_LENGTH = 45;
@@ -28,7 +28,7 @@ export function requireName(raw: string, field = 'name', maxLength = REGISTRY_NA
 
 /**
  * Compara nomes sem diferenciar maiúsculas, como os índices únicos `name COLLATE NOCASE`
- * (database-design §3.11). Não delega ao `NOCASE` do SQLite porque ele só dobra a caixa de
+ * (banco-de-dados §3.11). Não delega ao `NOCASE` do SQLite porque ele só dobra a caixa de
  * ASCII: "Saúde" e "SAÚDE" passariam pelo índice como nomes distintos, e o usuário veria
  * duas categorias iguais. A normalização NFC evita que um "é" composto e um decomposto
  * sejam tratados como letras diferentes.

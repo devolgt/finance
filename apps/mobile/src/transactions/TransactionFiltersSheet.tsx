@@ -84,7 +84,7 @@ function parseSituation(value: string): TransactionSituation | null {
 }
 
 /**
- * Filtros de Transações numa folha inferior (mobile-mvp-plan, Fase 9): conta ou cartão,
+ * Filtros de Transações numa folha inferior (transacoes §8.3): conta ou cartão,
  * categoria ou subcategoria, tag e situação — os mesmos do desktop, aplicados pelo mesmo
  * `buildTransactionTable`. Cada escolha muda a lista na hora; "Limpar filtros" volta a tudo, e a
  * busca, que tem campo próprio na tela, fica como está.

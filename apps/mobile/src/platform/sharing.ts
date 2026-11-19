@@ -2,7 +2,7 @@ import { getDocumentAsync } from 'expo-document-picker';
 import { isAvailableAsync, shareAsync } from 'expo-sharing';
 
 /*
- * Folha de compartilhamento e seletor de documentos do sistema (mobile-mvp-plan, Fase 18), num
+ * Folha de compartilhamento e seletor de documentos do sistema (mobile §7.2), num
  * lugar só: as telas pedem "compartilhe este arquivo" e "escolha um arquivo", sem conhecer os
  * módulos nativos, e os testes trocam este módulo inteiro.
  */
@@ -12,7 +12,7 @@ export type ShareOutcome = 'shared' | 'unavailable';
 
 /**
  * Abre a folha de compartilhamento do sistema com um arquivo do app, para o usuário mandar a cópia
- * do banco ou o log para onde quiser (mobile-shell-design §6.2: o destino é escolha dele).
+ * do banco ou o log para onde quiser (mobile §7.2: o destino é escolha dele).
  *
  * @param uri Arquivo `file://` do app.
  * @param mimeType Tipo do arquivo, que decide os apps oferecidos.

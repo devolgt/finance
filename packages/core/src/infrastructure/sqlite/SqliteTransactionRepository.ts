@@ -76,8 +76,8 @@ export class SqliteTransactionRepository implements TransactionRepository {
      * Grava uma transação nova. Uma ocorrência de recorrência tem id derivado do número
      * (`occurrenceIdFor`), então gerar de novo um número que já existiu e foi excluído encontra
      * a linha antiga: ela é **revivida** com o conteúdo novo, em vez de esbarrar na chave
-     * primária (sync-design §5.6). A revivida ganha `created_at` novo, pelo relógio do motor
-     * como no insert (database-design §3.6): para o usuário é uma ocorrência nova, e o
+     * primária (sincronizacao §3.7). A revivida ganha `created_at` novo, pelo relógio do motor
+     * como no insert (banco-de-dados §3.6): para o usuário é uma ocorrência nova, e o
      * `created_at` antigo a faria parecer editada à mão no diálogo de revisão.
      *
      * @param transaction Transação nova.
@@ -280,7 +280,7 @@ export class SqliteTransactionRepository implements TransactionRepository {
 
     /**
      * Parâmetros dos campos editáveis, comuns ao insert e ao update. Dinheiro é arredondado
-     * aqui, na fronteira de persistência (database-design §3.7).
+     * aqui, na fronteira de persistência (banco-de-dados §3.7).
      *
      * @param transaction Transação de origem.
      * @return Os parâmetros nomeados.
@@ -410,7 +410,7 @@ export class SqliteTransactionRepository implements TransactionRepository {
      * @param reader Leitor da linha da transação.
      * @return O contêiner da transação.
      * @throws {CorruptRowError} Quando a linha não está em exatamente um contêiner vivo —
-     * a "ausência silenciosa" que a verificação de integridade procura (database-design §4.13).
+     * a "ausência silenciosa" que a verificação de integridade procura (banco-de-dados §4.13).
      */
     private toContainer(reader: RowReader): TransactionContainer {
         const statementId = reader.nullableText('bank_statement_id');
@@ -439,7 +439,7 @@ export class SqliteTransactionRepository implements TransactionRepository {
  * @param reader Leitor de uma linha de `listNameSuggestions`.
  * @return A conta ou o cartão do lançamento.
  * @throws {CorruptRowError} Quando a linha não tem conta nem cartão — o arco exclusivo quebrado
- * que a verificação de integridade procura (database-design §4.13).
+ * que a verificação de integridade procura (banco-de-dados §4.13).
  */
 function suggestedSourceOf(reader: RowReader): SuggestedSource {
     const accountId = reader.nullableText('account_id');
@@ -457,7 +457,7 @@ function suggestedSourceOf(reader: RowReader): SuggestedSource {
  * Junta os lançamentos do mesmo nome (pela `nameSuggestionKey`) e tipo numa sugestão só. A
  * primeira linha de cada grupo é a cadastrada mais recentemente, porque a consulta já vem
  * ordenada, e é ela que fornece grafia, categoria e origem.
- * Regra de negócio (Lançamentos, desktop-mvp-plan Fase 15.2): vale o lançamento cadastrado mais
+ * Regra de negócio (Lançamentos, transacoes §4.3): vale o lançamento cadastrado mais
  * recente com esse nome, qualquer que seja a grafia.
  *
  * @param readers Linhas dos lançamentos vivos do perfil, do cadastro mais recente para o mais antigo.

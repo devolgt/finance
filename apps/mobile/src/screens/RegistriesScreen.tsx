@@ -19,14 +19,14 @@ function counted(count: number | undefined): { readonly trailing?: string } {
 }
 
 /**
- * Cadastros (mockup `MobileCadastros`; mobile-mvp-plan, Fase 15): o índice dos cadastros com a
+ * Cadastros (categorias-e-tags §5.2): o índice dos cadastros com a
  * contagem de cada um. Contas e Cartões levam às próprias abas, onde o cadastro deles já mora
- * (Fases 12 e 13), como o desktop desde a Fase 13.11; Categorias, Tags, Perfis e Anotações
- * empilham na aba Mais. Fora do mês de referência (decisão de interface 2): nenhum número daqui
+ * (contas §6; cartoes-e-faturas §7), como o desktop (desktop §8.1); Categorias, Tags, Perfis e Anotações
+ * empilham na aba Mais. Fora do mês de referência (desktop §7.2): nenhum número daqui
  * depende do mês — as contagens de contas e cartões usam a consulta do mês só porque é a que já
  * está em cache.
  * Regra de negócio (Perfis): sócios só existem no perfil empresarial — a linha Sócios aparece só
- * nele (mobile-mvp-plan, Fase 17), e a frase do mockup diz isso no perfil pessoal.
+ * nele (socios §1.1), e no perfil pessoal uma frase diz isso.
  *
  * @return A tela.
  */

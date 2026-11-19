@@ -27,7 +27,7 @@ const RAW_PREVIEW_ROWS = 4;
 const DROP_MAX_BYTES = 20 * 1024 * 1024;
 
 /**
- * Etapa 1 — Arquivo (mockup `DesktopImportArquivo`): escolher o arquivo, confirmar o tipo e
+ * Etapa 1 — Arquivo (importacao §3 e §8): escolher o arquivo, confirmar o tipo e
  * ajustar como lê-lo, vendo as linhas brutas.
  *
  * @param props.reading Leitura atual; `null` antes de escolher o arquivo.

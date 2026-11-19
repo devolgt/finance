@@ -3,7 +3,7 @@ import { currentPeriod } from '../src/renderer/src/shell/referenceMonth.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Distribuição por sócio (reports-design §8; desktop-mvp-plan Fases 13.6 e 13.8), fixada no topo
+ * Distribuição por sócio (relatorios §7 e socios §2), fixada no topo
  * dos Relatórios do perfil empresarial, no app empacotado: o exemplo dos
  * aportes — Matheus (60%) e Gustavo (40%) aportam R$ 1.000,00 cada, e Matheus deveria ter aportado
  * R$ 1.200,00 —, a lista de entradas sem sócio com a receita de serviço e o Pix vindo do perfil

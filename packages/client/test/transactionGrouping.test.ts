@@ -43,7 +43,7 @@ async function withOctoberInvoice(world: ClientWorld, s: Scenario): Promise<void
     });
 }
 
-describe('Transações agrupadas por fatura (desktop-mvp-plan Fase 11.1)', () => {
+describe('Transações agrupadas por fatura (cartoes-e-faturas §5)', () => {
     it('Regra de negócio (Transações): sem filtro, a compra no cartão some e a fatura entra no dia do pagamento', async () => {
         const world = new ClientWorld();
         const s = await world.seed();

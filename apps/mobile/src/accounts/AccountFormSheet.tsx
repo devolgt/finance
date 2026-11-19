@@ -26,7 +26,7 @@ import { Sheet } from '../ui/Sheet.tsx';
 const ACCOUNT_TYPES = (['checking', 'investment'] as const).map((type) => ({ value: type, label: formatAccountType(type) }));
 
 /**
- * Criar ou editar conta numa folha (mobile-mvp-plan, Fase 12): nome, tipo, moeda, saldo inicial
+ * Criar ou editar conta numa folha (contas §6): nome, tipo, moeda, saldo inicial
  * e se entra no total — os campos e a validação do diálogo do desktop (`readAccountForm` do
  * `client`, que aplica o schema das rotas de conta), para que o celular nunca aceite o que o
  * desktop recusa. Quem abre monta a folha só enquanto ela está aberta, para que cada abertura

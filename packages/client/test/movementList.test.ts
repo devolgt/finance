@@ -38,7 +38,7 @@ async function statementMovements(world: ClientWorld, s: Scenario): Promise<read
     return movementsFromStatement(table, statement, { profileId: s.profileId, recurrences: [] });
 }
 
-describe('listagem única de movimentos (desktop-mvp-plan Fase 13.2)', () => {
+describe('listagem única de movimentos (transacoes §8.3)', () => {
     it('o extrato vira linhas editáveis: lançamentos pagam pelo clique, a fatura abre a fatura', async () => {
         const world = new ClientWorld();
         const s = await world.seed();
@@ -136,7 +136,7 @@ describe('listagem única de movimentos (desktop-mvp-plan Fase 13.2)', () => {
     });
 });
 
-describe('anotações da Visão geral (desktop-mvp-plan Fase 13.2)', () => {
+describe('anotações da Visão geral (visao-do-mes §1; anotacoes §2)', () => {
     it('mostra só o título das mais recentes e conta as que ficaram de fora', () => {
         const notes = ['IPTU 2027\nparcelar em 10x', 'Senha do wi-fi', 'Lista de compras'].map((text, index) => ({ id: `n${String(index)}`, profileId: 'p', text }));
 

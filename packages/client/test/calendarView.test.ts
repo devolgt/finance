@@ -44,7 +44,7 @@ function dayOf(view: CalendarView, day: number): CalendarDay {
     return found;
 }
 
-describe('calendário do mês (mockup DesktopCalendario)', () => {
+describe('calendário do mês', () => {
     it('monta a grade começando no domingo, com hoje marcado', async () => {
         const world = new ClientWorld();
         const { view } = await calendarOf(world, await world.seed(), '2026-10');

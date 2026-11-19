@@ -15,10 +15,10 @@ import { IconButton } from '../ui/IconButton.tsx';
 import { EmptyState, QueryView } from '../ui/states.tsx';
 
 /**
- * Linha do cartão (mockup `MobileCartoes`): nome, selo "Padrão" e a situação da fatura do mês à
+ * Linha do cartão: nome, selo "Padrão" e a situação da fatura do mês à
  * esquerda; o valor a pagar à direita. A fatura em aberto leva a situação na cor de aviso, com o
- * texto — a cor sozinha não diz nada (decisão de interface 7). O selo diz qual cartão o atalho
- * "Crédito" do lançamento escolhe (database-design §4.1).
+ * texto — a cor sozinha não diz nada (desktop §7.3). O selo diz qual cartão o atalho
+ * "Crédito" do lançamento escolhe (banco-de-dados §4.1).
  *
  * @param props.creditCard Cartão com a fatura do mês.
  * @param props.isDefault Se é o cartão padrão do perfil.
@@ -58,7 +58,7 @@ function CardItem(props: { readonly creditCard: CreditCardInPeriodResponse; read
 }
 
 /**
- * Cartões (mockup `MobileCartoes`; mobile-mvp-plan, Fase 13): os totais do mês, os cartões ativos
+ * Cartões (cartoes-e-faturas §7): os totais do mês, os cartões ativos
  * com a fatura do mês e, à parte, os desativados. Tocar num cartão abre a fatura do mês; o "+"
  * cria um cartão e abre a fatura do novo.
  * Regra de negócio (Cartões): os totais vêm prontos do núcleo, em módulo — "Em aberto no mês"

@@ -30,7 +30,7 @@ export interface ExpoConnection {
 
 /**
  * Adaptador da porta `Database` do núcleo sobre a API síncrona do `expo-sqlite`, que chama o
- * SQLite pela JSI, sem ponte assíncrona (mobile-shell-design §4.2). Fino e sem regra, como o
+ * SQLite pela JSI, sem ponte assíncrona (mobile §3.1). Fino e sem regra, como o
  * `BetterSqliteDatabase` do desktop: as diferenças entre os dois drivers ficam resolvidas
  * aqui, e a suíte `DATABASE_CONTRACT` do núcleo prova que o resultado é o mesmo.
  */
@@ -151,7 +151,7 @@ export class ExpoSqliteDatabase implements Database {
      * Uma instrução cuja execução falhou sai do cache e é finalizada na hora: o SQLite guarda o
      * erro na instrução, e o `finalizeSync` do `expo-sqlite` o lança de novo. Em cache, a
      * restrição violada horas antes reaparecia no `close` — no aparelho, como exceção fatal
-     * fora de qualquer `try` (achado do `apps/mobile-contract`, mobile-mvp-plan Fase 3).
+     * fora de qualquer `try` (achado do `apps/mobile-contract`, mobile §8.2).
      *
      * @param sql Instrução SQL.
      * @param params Parâmetros nomeados, sem o prefixo.

@@ -10,7 +10,7 @@ import type { RecurrenceSchedule } from './RecurrenceSchedule.ts';
 export type InstallmentValueType = 'total' | 'perInstallment';
 
 /**
- * Forma da série (database-design §4.12): parcelada termina por quantidade, fixa termina por
+ * Forma da série (banco-de-dados §4.12): parcelada termina por quantidade, fixa termina por
  * data ou nunca. União discriminada porque cada forma só tem os seus campos — `installments` e
  * `end_at` são exclusivos por tipo.
  */
@@ -34,7 +34,7 @@ export interface RecurrenceTemplate {
     readonly subCategoryId: SubCategoryId;
     readonly partnerId: PartnerId | null;
     readonly goalId: GoalId | null;
-    /** A série retira dinheiro da meta, como a transferência de retirada (database-design §4.11). */
+    /** A série retira dinheiro da meta, como a transferência de retirada (banco-de-dados §4.11). */
     readonly goalWithdrawal: boolean;
     readonly name: string;
     readonly description: string | null;
@@ -58,7 +58,7 @@ export interface RecurrenceProps {
 }
 
 /**
- * A regra que produz transações repetidas (database-design §4.12). Guarda o modelo e o
+ * A regra que produz transações repetidas (banco-de-dados §4.12). Guarda o modelo e o
  * calendário; cada ocorrência emitida é uma transação real, e a regra só decide quais números
  * existem, quando vencem e quanto vale cada um.
  */
@@ -135,7 +135,7 @@ export class Recurrence implements RecurrenceProps {
 
     /**
      * O perfil está entre as partes trocáveis porque mover uma ocorrência para outro perfil leva
-     * a série inteira (database-design §4.12): a regra pertence ao perfil e continua emitindo lá.
+     * a série inteira (banco-de-dados §4.12): a regra pertence ao perfil e continua emitindo lá.
      *
      * @param changes Partes a trocar.
      * @return Uma nova regra com as partes trocadas e revalidada.
@@ -147,7 +147,7 @@ export class Recurrence implements RecurrenceProps {
     /**
      * Encerra a série antes de uma ocorrência — "excluir esta e as futuras" —, para que o
      * complemento não emita mais nada a partir dela.
-     * Regra de negócio (Recorrências, database-design §4.12): a fixa termina na véspera da data
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): a fixa termina na véspera da data
      * que o **calendário** dá à ocorrência, e não da data gravada nela. A gravada pode ter sido
      * movida em "somente esta": movida para depois, o fim deixava a série com a ocorrência que o
      * usuário excluiu, e o complemento a emitia de novo; movida para antes da 1ª, o fim ficava
@@ -174,7 +174,7 @@ export class Recurrence implements RecurrenceProps {
     /**
      * Troca o dia âncora a partir da data nova de uma ocorrência ("esta e as futuras" com a data
      * trocada) sem mudar quais ocorrências a série tem.
-     * Regra de negócio (Recorrências, database-design §4.12): trocar a data muda o dia, nunca o
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): trocar a data muda o dia, nunca o
      * mês de cada ocorrência — então a última ocorrência de uma fixa com fim continua sendo a
      * última, e o fim acompanha o dia novo. Mantido o fim digitado, o dia novo podia levar a
      * última para depois dele (ela continuava gravada, mas fora da série) ou trazer a seguinte
@@ -222,7 +222,7 @@ export class Recurrence implements RecurrenceProps {
     /**
      * Valor de uma ocorrência que não carrega o resto do arredondamento — o que as parcelas que
      * uma nova quantidade cria recebem quando o usuário não mexeu no valor.
-     * Regra de negócio (Parcelamento, database-design §4.12): no "valor total" o resto vai só
+     * Regra de negócio (Parcelamento, banco-de-dados §4.12): no "valor total" o resto vai só
      * para a 1ª parcela; copiá-lo para as novas faria a série somar mais que a compra.
      *
      * @return No "valor total", o valor da última parcela (o total, numa parcela única); nas
@@ -281,7 +281,7 @@ export function seriesHasOccurrence(terms: RecurrenceTerms, schedule: Recurrence
 
 /**
  * Valor da ocorrência de um número.
- * Regra de negócio (Parcelamento, database-design §4.12): no "valor total", cada parcela é o
+ * Regra de negócio (Parcelamento, banco-de-dados §4.12): no "valor total", cada parcela é o
  * total dividido pelo número de parcelas, e a diferença do arredondamento vai para a 1ª.
  *
  * @param terms Forma da série.

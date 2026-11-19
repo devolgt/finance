@@ -17,7 +17,7 @@ function errorsOf(result: OnboardingFormResult): Readonly<Record<string, string>
     return result.ok ? {} : result.errors;
 }
 
-describe('formulário do primeiro uso (desktop-mvp-plan Fase 5)', () => {
+describe('formulário do primeiro uso (perfis §4.2)', () => {
     it('monta a entrada do onboarding.start com o perfil e a primeira conta', () => {
         const result = readOnboardingForm(filled({ profileType: 'business', currency: 'USD', accountType: 'investment', openingBalance: '1.234,56' }));
         expect(result).toEqual({
@@ -29,7 +29,7 @@ describe('formulário do primeiro uso (desktop-mvp-plan Fase 5)', () => {
         });
     });
 
-    it('saldo inicial em branco é zero, o padrão do cadastro (database-design §4.4)', () => {
+    it('saldo inicial em branco é zero, o padrão do cadastro (banco-de-dados §4.4)', () => {
         const result = readOnboardingForm(filled({ openingBalance: '  ' }));
         expect(result.ok && result.input.account.openingBalance).toBe(0);
     });

@@ -21,9 +21,9 @@ export interface ReferenceMonth {
 }
 
 /**
- * Mês de referência global (decisão de interface 2 dos mockups). No celular é estado do shell,
+ * Mês de referência global (desktop §7.2). No celular é estado do shell,
  * guardado nas preferências do aparelho (`lastPeriod`), e não parâmetro de rota como no desktop
- * (mobile-mvp-plan §2): não há URL a preservar, e as pilhas por aba perderiam o parâmetro ao
+ * (mobile §5.2): não há URL a preservar, e as pilhas por aba perderiam o parâmetro ao
  * trocar de aba. Assim, o mês escolhido numa aba vale em todas, e o app reabre nele.
  *
  * @param now Relógio do aparelho; trocado nos testes.

@@ -15,7 +15,7 @@ import { RowReader } from './RowReader.ts';
 const PAID_SQL = '(t.paid = 1 AND t.payment_date IS NOT NULL)';
 
 /**
- * Data que decide o mês de cada transação, por base (reports-design F3). Na base de pagamento a
+ * Data que decide o mês de cada transação, por base (relatorios §4.1, F3). Na base de pagamento a
  * transação em aberto dá `NULL` e cai fora do `BETWEEN`; na de lançamento vale o dia UTC do
  * `created_at`, porque o núcleo não conhece o fuso do usuário.
  */
@@ -48,18 +48,18 @@ const FROM_SQL = `
 const OWN_SQL = '((a.id IS NOT NULL AND t.invoice_id IS NULL) OR (c.id IS NOT NULL AND t.bank_statement_id IS NULL))';
 
 /**
- * Regra de negócio (Relatórios, §2.2 "Perfil"): a transferência que chega de outro perfil é uma
- * linha do perfil de origem (database-design §4.13), mas o dinheiro entra numa conta deste — sem
+ * Regra de negócio (Relatórios, relatorios §4.2, "Perfil"): a transferência que chega de outro perfil é uma
+ * linha do perfil de origem (banco-de-dados §4.13), mas o dinheiro entra numa conta deste — sem
  * ela, o relatório de transferências do destino não via o que recebeu. A origem precisa ser um
  * extrato vivo de outro perfil: a entre perfis sempre sai de uma conta.
  */
 const INCOMING_SQL = `(t.type = ${String(TRANSACTION_TYPE_CODE.transference)} AND da.id IS NOT NULL AND bs.id IS NOT NULL AND t.invoice_id IS NULL AND a.id IS NULL)`;
 
 /**
- * Efeito de um movimento no saldo (database-design §4.13, sinal de `value`): na origem a receita
+ * Efeito de um movimento no saldo (banco-de-dados §4.13, sinal de `value`): na origem a receita
  * soma e os demais tipos subtraem, e o sinal do `value` (estorno) inverte o tipo; no destino da
  * transferência ou do investimento o `value` entra. Os encargos ficam fora, como na soma de
- * sempre (reports-design §3).
+ * sempre (relatorios §5).
  */
 const FLOW_AMOUNT_SQL = `(CASE WHEN fl.leg = 'destination' THEN t.value WHEN t.type = ${String(TRANSACTION_TYPE_CODE.income)} THEN t.value ELSE -t.value END)`;
 
@@ -91,10 +91,10 @@ interface DimensionSql {
 }
 
 /**
- * Strategy por dimensão (reports-design L3): cada uma sabe a própria expressão de chave e de
+ * Strategy por dimensão (relatorios §5.1, L3): cada uma sabe a própria expressão de chave e de
  * rótulo. A tag e o sócio entram por `LEFT JOIN`, para que a transação sem eles caia no grupo
  * "sem" (chave `NULL`) em vez de sumir do relatório. O sócio precisa ser do perfil: na
- * transferência para outro perfil ele é do destino (database-design §4.13), e no relatório da
+ * transferência para outro perfil ele é do destino (banco-de-dados §4.13), e no relatório da
  * origem a linha fica sem sócio. A recorrência também entra por `LEFT JOIN`: a avulsa não tem
  * regra e precisa continuar no relatório. Na transferência recebida de outro perfil, a categoria e
  * a subcategoria são de lá: ela cai no grupo "sem", e a origem é a conta de destino, a deste perfil.
@@ -220,7 +220,7 @@ export class SqliteReportQueryRepository implements ReportQueryRepository {
 }
 
 /**
- * Regra de negócio (Relatórios, §2.2): lista vazia não restringe; dentro de um filtro as
+ * Regra de negócio (Relatórios, relatorios §4.2): lista vazia não restringe; dentro de um filtro as
  * escolhas se somam (OU) e entre filtros todos valem (E). Categoria e subcategoria são um filtro
  * só, como conta e cartão (a origem): escolher "Moradia" e "Mercado" quer dizer qualquer um dos
  * dois. A transferência recebida de outro perfil tem a conta de destino como origem, e a

@@ -91,6 +91,16 @@ const ROUTE_KINDS = {
     'reports.update': 'write',
     'reports.delete': 'write',
     'imports.run': 'write',
+    'sync.status': 'read',
+    'sync.createGroup': 'write',
+    'sync.open': 'write',
+    'sync.close': 'write',
+    'sync.createInvite': 'write',
+    'sync.cancelInvite': 'write',
+    'sync.join': 'write',
+    'sync.connect': 'write',
+    'sync.removeMember': 'write',
+    'sync.leave': 'write',
 } as const satisfies Record<CoreRoute, 'read' | 'write'>;
 
 /** Rotas que só leem: viram `useQuery`. */

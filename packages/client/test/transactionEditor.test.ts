@@ -22,7 +22,7 @@ const TESOURO = { id: 'tesouro', name: 'Tesouro', disabled: false };
 const ROXINHO = { id: 'roxinho', name: 'Roxinho', disabled: false };
 const RETIRED = { id: 'retired', name: 'Cartão antigo', disabled: true };
 
-describe('origem e destino do lançamento (desktop-mvp-plan §5.1)', () => {
+describe('origem e destino do lançamento (transacoes §4.1)', () => {
     it('lançamento novo só oferece contas e cartões ativos', () => {
         const options = transactionSourceOptions({ accounts: [NUBANK, OLD], creditCards: [ROXINHO, RETIRED], current: null });
         expect(options.accounts.map((option) => option.name)).toEqual(['Nubank']);
@@ -91,7 +91,7 @@ describe('subcategoria com busca', () => {
     });
 });
 
-describe('troca de fatura (database-design §4.7)', () => {
+describe('troca de fatura (banco-de-dados §4.7)', () => {
     it('oferece a anterior, a sugerida e as duas seguintes, com a situação de cada uma', () => {
         const choices = invoiceChoices({
             suggestedPeriod: '2026-11',
@@ -154,7 +154,7 @@ describe('prévia do valor pela regra de sinal do núcleo', () => {
     });
 });
 
-describe('confirmação de exclusão (brief §4, regra 9)', () => {
+describe('confirmação de exclusão (perfis §5.3)', () => {
     it('diz de onde o valor sai e quais saldos mudam', async () => {
         const world = new ClientWorld();
         const s = await world.seed();
@@ -189,7 +189,7 @@ describe('confirmação de exclusão (brief §4, regra 9)', () => {
     });
 });
 
-describe('atalho "Débito / Crédito" do lançamento novo (database-design §4.1)', () => {
+describe('atalho "Débito / Crédito" do lançamento novo (banco-de-dados §4.1)', () => {
     const options = transactionSourceOptions({ accounts: [NUBANK, TESOURO, OLD], creditCards: [ROXINHO, RETIRED], current: null });
 
     it('escolhe a conta ou o cartão padrão do perfil', () => {

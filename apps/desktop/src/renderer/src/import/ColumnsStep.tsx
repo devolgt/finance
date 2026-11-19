@@ -24,7 +24,7 @@ import type { FileReading, ReadRows, TemplateChoice } from './ImportScreen.tsx';
 import { Pill, StepFooter } from './importParts.tsx';
 import { formatCount, KIND_OPTIONS, kindLabel, previewRows, readProblemText, readSummary } from './importView.ts';
 
-/** Nome de cada grupo da paleta de campos, como no mockup. */
+/** Nome de cada grupo da paleta de campos, para achar o campo pelo assunto numa lista longa. */
 const GROUP_LABELS: Readonly<Record<ImportFieldGroup, string>> = {
     essentials: 'Essenciais',
     accounts: 'Conta e cartão',
@@ -40,7 +40,7 @@ const DRAG_TYPE = 'application/x-finance-import-field';
 const LISTED_PROBLEMS = 5;
 
 /**
- * Etapa 2 — Ligar colunas (mockup `DesktopImportMapear`): cada campo do app vai para uma coluna,
+ * Etapa 2 — Ligar colunas (importacao §4): cada campo do app vai para uma coluna,
  * arrastando até ela ou clicando no campo e depois na coluna — a alternativa pelo teclado.
  *
  * @param props.reading Leitura do arquivo.

@@ -21,7 +21,7 @@ import type { CategoryTree } from './CategoryTree.ts';
  * Cadastro de categorias e subcategorias. Concentra as duas regras que o banco não
  * consegue expressar de forma legível: o nome único sem diferenciar maiúsculas (o índice
  * `NOCASE` só cobre ASCII e falharia com erro de SQL) e a exclusão de subcategoria em uso,
- * que precisa mover os lançamentos antes (mockup `DesktopCadastros`).
+ * que precisa mover os lançamentos antes (categorias-e-tags §2.3).
  *
  * Categoria não afeta saldo, então nada aqui chama a rotina de recálculo — mas mover e
  * excluir acontecem numa unidade de trabalho só, para que nenhum lançamento fique apontando
@@ -63,7 +63,7 @@ export class CategoryService {
 
     /**
      * Regra de negócio (Categorias): nomes únicos no perfil, sem diferenciar maiúsculas
-     * (database-design §4.8).
+     * (banco-de-dados §4.8).
      *
      * @param command Perfil e nome.
      * @return A categoria gravada.
@@ -97,7 +97,7 @@ export class CategoryService {
 
     /**
      * Regra de negócio (Categorias): nomes de subcategoria são únicos dentro da categoria,
-     * sem diferenciar maiúsculas (database-design §4.9).
+     * sem diferenciar maiúsculas (banco-de-dados §4.9).
      *
      * @param command Categoria e nome.
      * @return A subcategoria gravada.
@@ -137,8 +137,8 @@ export class CategoryService {
     /**
      * Exclui uma subcategoria.
      * Regra de negócio (Categorias): excluir uma subcategoria em uso pede para mover os
-     * lançamentos antes (mockup `DesktopCadastros`) — toda transação precisa de uma
-     * subcategoria viva (database-design §4.13), e apagar os lançamentos junto mudaria
+     * lançamentos antes (categorias-e-tags §2.3) — toda transação precisa de uma
+     * subcategoria viva (banco-de-dados §4.13), e apagar os lançamentos junto mudaria
      * saldos por uma ação de cadastro.
      *
      * @param command Subcategoria e, se ela estiver em uso, a que recebe os lançamentos.

@@ -7,7 +7,7 @@ import type { YearMonth } from '../shared/YearMonth.ts';
 
 /**
  * Quantos meses o gráfico "Gastos por mês" da Visão geral mostra, terminando no mês de referência
- * (mockup `DesktopVisaoGeral2`). Também é a janela da média com que o indicador de gastos compara o mês.
+ * (visao-do-mes §3.3). Também é a janela da média com que o indicador de gastos compara o mês.
  */
 export const SPENDING_MONTHS = 6;
 
@@ -72,12 +72,12 @@ export function spendingWindow(period: YearMonth): readonly YearMonth[] {
 /**
  * Monta o resumo de gastos da Visão geral: a série de seis meses, a média e as maiores categorias.
  * Regra de negócio (Visão geral): a média é a dos meses do gráfico, como a linha tracejada do
- * mockup, mas começa no primeiro mês com gasto da janela — num perfil que começou a usar o app há
+ * gráfico, mas começa no primeiro mês com gasto da janela — num perfil que começou a usar o app há
  * dois meses, os meses vazios de antes puxariam a média para baixo e todo mês pareceria "acima da
  * média". A categoria zerada ou negativa (estornos maiores que as compras) fica fora: não tem
  * tamanho de barra nem participação nos gastos. Categorias com o mesmo valor seguem o nome por
  * `compareNames` e, por fim, o id, para o ranking não mudar entre o desktop e o celular
- * (mobile-shell-design §8).
+ * (mobile §8).
  *
  * @param input Somas lidas do banco.
  * @return O resumo pronto.

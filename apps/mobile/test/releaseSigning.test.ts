@@ -32,7 +32,7 @@ const EXPO_TEMPLATE = `android {
 }
 `;
 
-describe('assinatura de release (mobile-mvp-plan, Fase 19)', () => {
+describe('assinatura de release (mobile §11)', () => {
     it('o release usa a chave das variáveis de ambiente e só cai na de depuração sem ela', () => {
         const gradle = addReleaseSigning(EXPO_TEMPLATE);
 

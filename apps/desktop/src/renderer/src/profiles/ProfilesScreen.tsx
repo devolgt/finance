@@ -31,13 +31,13 @@ type ProfileDialogState = { readonly mode: 'create' } | { readonly mode: 'edit';
 
 /**
  * Aviso do perfil empresarial: é o tipo que tem sócios, cadastrados na tela Sócios
- * (desktop-mvp-plan Fases 13.7 e 13.11), e o relatório por sócio. O tipo não muda depois de
+ * (socios §1 e desktop §8.1), e o relatório por sócio. O tipo não muda depois de
  * criado, por isso o aviso aparece ao escolhê-lo.
  */
 const BUSINESS_WITH_PARTNERS = 'Perfil empresarial: tem sócios com participação, cadastrados em Sócios, e o relatório por sócio.';
 
 /**
- * Perfis, item próprio do menu (desktop-mvp-plan Fases 6 e 13.11): lista, criar e editar. Não há
+ * Perfis, item próprio do menu (perfis §1.2 e desktop §8.1): lista, criar e editar. Não há
  * exclusão no MVP — o núcleo não tem rota para ela, e apagar um perfil apagaria todo o histórico
  * dele.
  *
@@ -106,7 +106,7 @@ export function ProfilesScreen(): ReactNode {
 /**
  * Criar perfil (nome, tipo, moeda) ou editar (nome e moeda). O tipo não muda depois de criado:
  * `profiles.update` não o recebe, e trocar pessoal por empresarial mudaria o que o perfil pode
- * ter (sócios). Regra de negócio (Perfis, desktop-mvp-plan §5): a moeda só muda sem
+ * ter (sócios). Regra de negócio (Perfis, perfis §2.2): a moeda só muda sem
  * lançamentos; a recusa do núcleo aparece abaixo do campo da moeda.
  *
  * @param props.profile Perfil a editar, ou `null` para criar um.

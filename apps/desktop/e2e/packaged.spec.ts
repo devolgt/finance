@@ -11,7 +11,7 @@ import { SystemClock } from '../src/utility/systemAdapters.ts';
 import { freshUserData, launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Instalador de Linux (desktop-mvp-plan Fase 14): o `.deb` gerado pelo `pnpm dist:linux`,
+ * Instalador de Linux (desktop §12): o `.deb` gerado pelo `pnpm dist:linux`,
  * extraído numa pasta temporária fora do repositório — assim nenhum `node_modules` do monorepo
  * socorre um módulo que tenha ficado fora do pacote —, abre um banco de uma versão anterior,
  * migra com backup e segue funcionando. Roda pelo `pnpm test:packaged`, fora do `pnpm check`.
@@ -113,7 +113,7 @@ test('o .deb abre o banco da versão anterior, migra com backup e funciona fora 
         await expect(about).toContainText(`Versão do app${PACKAGE_VERSION}`);
         await first.app.close();
 
-        // Regra de negócio (Banco, backend-design §4.6): antes de migrar, a cópia da versão de partida.
+        // Regra de negócio (Banco, banco-de-dados §5.6): antes de migrar, a cópia da versão de partida.
         expect(readdirSync(join(userData, 'backups')).some((file) => file.startsWith(`pre-v${String(latest - 1)}-`))).toBe(true);
         expect(schemaVersion(userData)).toBe(latest);
 

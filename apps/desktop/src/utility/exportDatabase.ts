@@ -11,7 +11,7 @@ export type DatabaseExportOutcome = { readonly ok: true } | { readonly ok: false
 const DATABASE_COMPANIONS = ['', '-wal', '-shm'] as const;
 
 /**
- * Grava a cópia exportada no destino escolhido no diálogo de salvar (desktop-mvp-plan Fase 13).
+ * Grava a cópia exportada no destino escolhido no diálogo de salvar (desktop §11).
  *
  * O `VACUUM INTO` recusa arquivo existente, mas o diálogo deixa o usuário confirmar que quer
  * substituir uma cópia anterior. Por isso a cópia vai para um temporário na mesma pasta e só

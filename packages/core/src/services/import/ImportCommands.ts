@@ -3,7 +3,7 @@ import type { ImportOptions, ImportRow } from '../../domain/import/ImportRow.ts'
 import type { AccountId, CreditCardId, ProfileId } from '../../domain/shared/ids.ts';
 
 /**
- * O que fazer com uma conta do arquivo (import-design §5.1): criar no perfil escolhido ou ligar a
+ * O que fazer com uma conta do arquivo (importacao §5.1): criar no perfil escolhido ou ligar a
  * uma conta existente desse perfil.
  */
 export type ImportAccountTarget =

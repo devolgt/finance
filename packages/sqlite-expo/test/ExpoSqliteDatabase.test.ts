@@ -14,7 +14,7 @@ function freshDatabase(): Database {
     return database;
 }
 
-describe('contrato da porta Database sobre o ExpoSqliteDatabase (backend-design §5.10)', () => {
+describe('contrato da porta Database sobre o ExpoSqliteDatabase (testes §3.2)', () => {
     for (const contractCase of DATABASE_CONTRACT) {
         it(contractCase.name, () => {
             contractCase.run(freshDatabase);

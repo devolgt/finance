@@ -61,7 +61,7 @@ export function accountTransactionRoute(transactionId: string): `/accounts/trans
 }
 
 /**
- * Fatura de um cartão, empilhada na aba Cartões (mockup `MobileFatura`). Sem competência, a tela
+ * Fatura de um cartão, empilhada na aba Cartões (cartoes-e-faturas §7). Sem competência, a tela
  * mostra a fatura do mês de referência; com ela, a pedida — a "ver fatura" de um extrato ou de
  * Transações abre a fatura daquela linha, que pode ser de outro mês.
  *

@@ -18,7 +18,7 @@ async function octoberTable(world: ClientWorld, profileId: string): Promise<Retu
     return buildTransactionTable({ profileId, transactions, accounts: accounts.accounts, creditCards: creditCards.creditCards, categories, invoices: [], monthInvoices }, NO_TRANSACTION_FILTERS);
 }
 
-describe('lista de Transações do celular (mobile-mvp-plan, Fase 9)', () => {
+describe('lista de Transações do celular (transacoes §8.3)', () => {
     it('o título do dia traz o dia da semana', () => {
         expect(formatWeekdayDayMonth('2026-10-12')).toBe('Seg, 12/10');
         expect(formatWeekdayDayMonth('2026-10-18')).toBe('Dom, 18/10');

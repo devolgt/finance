@@ -4,7 +4,7 @@ import { DEFAULT_HISTORY_OPTIONS, seedHistory } from '../test/support/HistorySee
 import { openHistoryCore } from '../test/support/historyCore.ts';
 
 /**
- * Gera o banco de dez anos da medição (mobile-mvp-plan, Fases 1 e 5) num arquivo SQLite que
+ * Gera o banco de dez anos da medição (testes §5.1; mobile §12.1) num arquivo SQLite que
  * o desktop abre e que vai para o celular por uma ação de build de desenvolvimento. Recusa
  * sobrescrever um arquivo existente porque o caminho pode ser, por engano, o banco real do
  * usuário. Termina com `integrity.verifyBalances`, para não entregar à medição um banco com

@@ -58,7 +58,7 @@ export interface TopUpOutcome {
 }
 
 /**
- * Série vinda de uma importação (import-design §5.5): a forma e o calendário já decididos pela
+ * Série vinda de uma importação (importacao §5.5): a forma e o calendário já decididos pela
  * análise, o modelo (a última ocorrência do arquivo) e cada ocorrência com o seu número.
  */
 export interface ImportedSeries {
@@ -79,8 +79,8 @@ interface EmittedRange {
 }
 
 /**
- * Recorrências: parcelamentos e lançamentos fixos (database-design §4.12; desktop-mvp-plan
- * Fase 9.1). Cada ocorrência é uma transação real, gravada pelas mesmas regras de qualquer
+ * Recorrências: parcelamentos e lançamentos fixos (banco-de-dados §4.12;
+ * recorrencias §1). Cada ocorrência é uma transação real, gravada pelas mesmas regras de qualquer
  * lançamento (`TransactionComposer`), com id derivado do número dela. Toda operação grava as
  * ocorrências, a regra e o recálculo de todos os meses afetados numa única unidade de trabalho:
  * uma série nunca fica visível pela metade.
@@ -141,12 +141,12 @@ export class RecurrenceService {
 
     /**
      * Grava uma série que já existia em outro app, com as ocorrências do arquivo: cada uma com o
-     * próprio número, conteúdo, pagamento e fatura (import-design §5.5). Não recalcula: devolve o
+     * próprio número, conteúdo, pagamento e fatura (importacao §5.5). Não recalcula: devolve o
      * impacto para a importação recalcular tudo uma vez só, no fim.
      * Regra de negócio (Recorrências): a marca d'água é o maior número importado — um número que
      * falta no arquivo é uma ocorrência excluída, e o complemento não a recria. Depois dele a
      * série emite pelas regras de sempre: o resto de um parcelamento, e uma fixa sem fim até o
-     * horizonte (database-design §4.12).
+     * horizonte (banco-de-dados §4.12).
      *
      * @param profile Perfil dono das ocorrências.
      * @param series Forma, calendário, modelo e ocorrências da série.
@@ -195,10 +195,10 @@ export class RecurrenceService {
 
     /**
      * Complemento (top-up): estende cada série fixa até o horizonte de 12 meses a partir de
-     * hoje. Roda na abertura do app, depois da verificação de integridade (backend-design
-     * §4.5). Idempotente pela marca d'água: na segunda vez não grava nada, e uma ocorrência
+     * hoje. Roda na abertura do app, depois da verificação de integridade (banco-de-dados
+     * §5.5). Idempotente pela marca d'água: na segunda vez não grava nada, e uma ocorrência
      * excluída nunca volta, porque o número dela já passou.
-     * Cada série é complementada na sua própria transação (backend-design §4.5): a falha de uma
+     * Cada série é complementada na sua própria transação (banco-de-dados §5.5): a falha de uma
      * desfaz só ela e entra no resultado, e as outras seguem. Numa transação só, uma série
      * inconsistente desfazia o complemento de todas e, como a abertura roda o mesmo complemento
      * sobre os mesmos dados, falhava em toda abertura — sem que o usuário chegasse à tela para
@@ -246,7 +246,7 @@ export class RecurrenceService {
 
     /**
      * Edita uma ocorrência em "esta e as futuras" ou "todas", ou muda a série
-     * (database-design §4.12, "Editar uma transação recorrente pergunta o escopo").
+     * (banco-de-dados §4.12, "Editar uma transação recorrente pergunta o escopo").
      * Regra de negócio (Recorrências): aplica às outras ocorrências do escopo e ao modelo só o
      * que **mudou** na editada; trocar a data muda o dia âncora, e cada ocorrência vai para o
      * dia novo dentro do próprio mês (ou da própria semana). Pago e data de pagamento continuam
@@ -254,7 +254,7 @@ export class RecurrenceService {
      * parcelas e o término de uma fixa só criam ou apagam o que a mudança exige
      * (`reshapeSeries`); a periodicidade e a forma (parcelada ou fixa) encerram a regra e
      * começam outra na editada (`restartSeries`). O tipo do lançamento não muda em nenhum
-     * escopo (database-design §4.13).
+     * escopo (banco-de-dados §4.13).
      *
      * @param command Conteúdo completo da editada, com o escopo e a série pedida.
      * @return A ocorrência editada, relida do banco — numa série recomeçada, a 1ª da regra nova.
@@ -272,14 +272,14 @@ export class RecurrenceService {
             if (command.scope === 'single') {
                 throw new BusinessRuleViolation('recurrence-change-requires-scope', 'o escopo "somente esta" é do TransactionService', { field: 'scope' });
             }
-            // Regra de negócio (Recorrências, database-design §4.12): a regra pertence ao perfil,
+            // Regra de negócio (Recorrências, banco-de-dados §4.12): a regra pertence ao perfil,
             // então mover para outro perfil leva a série inteira — "todas", sem escolha.
             const moved = profile.id !== current.profileId;
             if (moved && command.scope !== 'all') {
                 throw new BusinessRuleViolation('recurrence-move-requires-all', 'mover uma série para outro perfil vale para todas as ocorrências', { field: 'scope' });
             }
             const change = seriesChangeOf(recurrence, command.repeat);
-            // Regra de negócio (Recorrências, database-design §4.12): mudar a série não tem escolha
+            // Regra de negócio (Recorrências, banco-de-dados §4.12): mudar a série não tem escolha
             // de escopo — vale para a editada e as futuras.
             if (change.kind !== 'none' && command.scope !== 'future') {
                 throw new BusinessRuleViolation('recurrence-change-requires-scope', 'mudar a série vale para esta e as futuras', { field: 'scope' });
@@ -296,7 +296,7 @@ export class RecurrenceService {
     }
 
     /**
-     * Regra de negócio (Recorrências, database-design §4.12): mudar a série (frequência,
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): mudar a série (frequência,
      * tipo, parcelas, fim) vale para a editada e as futuras, então não cabe em "somente esta".
      *
      * @param current Ocorrência editada em "somente esta".
@@ -316,7 +316,7 @@ export class RecurrenceService {
 
     /**
      * Exclui ocorrências de uma série em "esta e as futuras" ou "todas".
-     * Regra de negócio (Recorrências, database-design §4.12): "esta e as futuras" exclui a
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): "esta e as futuras" exclui a
      * editada e as de número maior e encerra a série antes dela, para que o complemento não
      * emita mais nada; "todas" exclui a série inteira e a regra. Ocorrências pagas também
      * saem — o diálogo de revisão mostra antes —, e os saldos de todos os meses afetados são
@@ -351,7 +351,7 @@ export class RecurrenceService {
     /**
      * Edição em "esta e as futuras" ou "todas" que mantém a regra: aplica o que mudou e, quando
      * a quantidade de parcelas ou o término mudou, só cria ou apaga o que a mudança exige.
-     * Regra de negócio (Recorrências, database-design §4.12): o calendário não muda, então as
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): o calendário não muda, então as
      * ocorrências que continuam na série ficam como estão, com as edições feitas nelas; as que
      * saem da série saem mesmo pagas. Recriar todas as futuras, como antes, apagava pagamentos
      * e edições sem necessidade. Na mudança de perfil (escopo "todas"), a regra e todas as
@@ -394,7 +394,7 @@ export class RecurrenceService {
 
         let revised = reanchored.revise({ profileId: profile.id, template: applyChanges(recurrence.template, changes, offset) });
         if (revised.terms.kind === 'installments' && (changes.value !== undefined || reshape !== null)) {
-            // Regra de negócio (Parcelamento, database-design §4.12): daqui em diante a série vale
+            // Regra de negócio (Parcelamento, banco-de-dados §4.12): daqui em diante a série vale
             // por parcela. O valor alterado na tela vale para as parcelas novas; sem alteração,
             // elas recebem o valor regular da série — o da editada podia ser o da 1ª, com o resto
             // do arredondamento, ou um valor próprio dela, dado em "somente esta".
@@ -412,7 +412,7 @@ export class RecurrenceService {
 
     /**
      * Muda a quantidade de parcelas ou o término de uma fixa sem trocar o calendário.
-     * Regra de negócio (Recorrências, database-design §4.12): apaga as ocorrências que deixam de
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): apaga as ocorrências que deixam de
      * existir na série — mesmo pagas — e cria as que passam a existir, até o horizonte numa
      * fixa; as demais ficam intactas. A nova quantidade não pode ficar abaixo da editada, nem o
      * término antes dela. A marca d'água não recua: um número apagado só volta se a série
@@ -463,7 +463,7 @@ export class RecurrenceService {
 
     /**
      * Muda a periodicidade ou o tipo da série: encerra a regra e começa outra na editada.
-     * Regra de negócio (Recorrências, database-design §4.12): a editada e as de número maior
+     * Regra de negócio (Recorrências, banco-de-dados §4.12): a editada e as de número maior
      * são excluídas, mesmo pagas; a regra antiga termina na anterior à editada (ou é excluída,
      * quando a editada é a 1ª) e as passadas ficam nela, sem vínculo com a regra nova. A regra
      * nova nasce do formulário, com a editada como 1ª ocorrência e o pagamento dela. Uma
@@ -554,8 +554,8 @@ export class RecurrenceService {
     }
 
     /**
-     * Prévia das ocorrências que a criação vai gravar, sem gravar nada — a lista de parcelas
-     * com a fatura de cada uma do mockup `MobileParcelar`. Usa o mesmo calendário, a mesma
+     * Prévia das ocorrências que a criação vai gravar, sem gravar nada — a lista de parcelas,
+     * com a fatura de cada uma, que o formulário mostra antes de salvar (recorrencias §3.3). Usa o mesmo calendário, a mesma
      * divisão e a mesma sugestão de fatura da criação, para que a prévia nunca discorde do que
      * é gravado.
      *
@@ -591,7 +591,7 @@ export class RecurrenceService {
      * Emite as ocorrências a partir de um número enquanto a série as tiver e elas estiverem ao
      * alcance (`withinReach`). Um número que já está vivo é pulado, e não regravado: o mesmo
      * número pode chegar de outro aparelho pela sincronização antes da marca d'água dele
-     * (sync-design §5.6), e regravá-lo esbarraria na linha viva — no complemento, a cada abertura.
+     * (sincronizacao §3.7), e regravá-lo esbarraria na linha viva — no complemento, a cada abertura.
      * As ocorrências vivas só são lidas quando há algo a emitir, porque o complemento passa por
      * toda série a cada abertura e quase nunca emite.
      *
@@ -630,7 +630,7 @@ export class RecurrenceService {
 
     /**
      * Grava uma ocorrência pelo modelo. O id vem do número, então um número que já existiu e
-     * foi excluído é revivido (sync-design §5.6).
+     * foi excluído é revivido (sincronizacao §3.7).
      *
      * @param profile Perfil dono.
      * @param recurrence Regra que emite.
@@ -832,7 +832,7 @@ type TemplateChanges = Partial<{
 }>;
 
 /**
- * Regra de negócio (Recorrências, database-design §4.12): nos escopos de série, só o que mudou
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): nos escopos de série, só o que mudou
  * na editada vai para as outras — o resto de cada ocorrência é dela.
  *
  * @param before Ocorrência como estava.
@@ -844,7 +844,7 @@ function changesBetween(before: Transaction, after: Transaction): TemplateChange
     const beforeSource = sourceKey(before);
     const afterSource = sourceKey(after);
     // Trocar de conta ou de cartão, ou de fatura no mesmo cartão: o deslocamento da editada passa
-    // a valer para as outras. Só a data mudar não conta — a fatura gravada é a verdade (§4.7).
+    // a valer para as outras. Só a data mudar não conta — a fatura gravada é a verdade (cartoes-e-faturas §2.2).
     if (beforeSource !== afterSource || (before.container.kind === 'invoice' && after.container.kind === 'invoice' && !before.container.period.equals(after.container.period))) {
         changes.source = after.container.kind === 'statement'
             ? { kind: 'account', accountId: after.container.accountId }
@@ -890,7 +890,7 @@ function changesBetween(before: Transaction, after: Transaction): TemplateChange
  * Referências da ocorrência que pertencem ao perfil: origem, destino, subcategoria, sócio, meta e
  * tags. Na mudança de perfil todas vão para as outras ocorrências e para o modelo, e não só as que
  * mudaram na editada — senão uma ocorrência com subcategoria ou tags próprias, dadas em "somente
- * esta", ficaria apontando para o perfil antigo e seria recusada (database-design §3.8).
+ * esta", ficaria apontando para o perfil antigo e seria recusada (banco-de-dados §3.8).
  *
  * @param transaction Ocorrência editada, já no perfil de destino.
  * @return As referências dela no formato das mudanças da série.
@@ -942,8 +942,8 @@ function applyChanges(template: RecurrenceTemplate, changes: TemplateChanges, of
  * @param member Ocorrência.
  * @param current Ocorrência editada.
  * @param scope Escopo pedido.
- * @return Se a ocorrência está no escopo. Regra de negócio (Recorrências, database-design
- * §4.12): "futuras" é a editada e as de número maior, nunca pela data — uma ocorrência movida
+ * @return Se a ocorrência está no escopo. Regra de negócio (Recorrências,
+ * recorrencias §5.1): "futuras" é a editada e as de número maior, nunca pela data — uma ocorrência movida
  * para depois da editada continua anterior a ela na série.
  */
 function inScope(member: Transaction, current: Transaction, scope: EditScope): boolean {
@@ -959,7 +959,7 @@ function inScope(member: Transaction, current: Transaction, scope: EditScope): b
 
 /**
  * @param transaction Ocorrência de uma série.
- * @return O número dela na série. Toda ocorrência tem número (database-design §4.12); o 1 só
+ * @return O número dela na série. Toda ocorrência tem número (banco-de-dados §4.12); o 1 só
  * cobre o tipo anulável de `occurrence`, que também serve aos lançamentos avulsos.
  */
 function numberOf(transaction: Transaction): number {
@@ -967,7 +967,7 @@ function numberOf(transaction: Transaction): number {
 }
 
 /**
- * O que a edição faz com a série (database-design §4.12, "Mudar a série").
+ * O que a edição faz com a série (banco-de-dados §4.12, "Mudar a série").
  * Regra de negócio (Recorrências): outra periodicidade ou outro tipo recomeça a série numa regra
  * nova (`restart`); outra quantidade de parcelas ou outro término mantém a regra e só cria ou
  * apaga o que a mudança exige (`reshape`).
@@ -997,7 +997,7 @@ function seriesChangeOf(recurrence: Recurrence, repeat: RepeatInput | null): Ser
 }
 
 /**
- * Regra de negócio (Recorrências, database-design §4.12): parceladas são gravadas inteiras;
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): parceladas são gravadas inteiras;
  * fixas, até 12 meses depois de hoje — também quando a série muda, para que trocar a
  * periodicidade nunca grave além do horizonte.
  *

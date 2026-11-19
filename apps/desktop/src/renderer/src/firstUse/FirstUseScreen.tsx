@@ -1,7 +1,7 @@
-import { callOrThrow, type CoreCallError, CURRENCY_OPTIONS, describeError, EMPTY_ONBOARDING_FORM, formatAccountType, formatMoney, formatProfileType, invalidateAfter, ONBOARDING_FIELDS, type OnboardingFormValues, type OnboardingInput, readOnboardingForm, useCoreClient } from '@finance/client';
+import { callOrThrow, type CoreCallError, CURRENCY_OPTIONS, describeError, describeSyncRefusal, useCoreMutation, EMPTY_ONBOARDING_FORM, formatAccountType, formatMoney, formatProfileType, invalidateAfter, ONBOARDING_FIELDS, type OnboardingFormValues, type OnboardingInput, readOnboardingForm, useCoreClient } from '@finance/client';
 import type { OnboardingResponse } from '@finance/core';
 import { useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Controller, useForm, type Resolver } from 'react-hook-form';
 import { Field, fieldAria, SectionTitle, toFieldErrors } from '@/components/form';
 import { Button } from '@/components/ui/button';
@@ -10,14 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useDevicePreferences } from '@/lib/devicePreferences';
 import { ThemeMenu } from '@/shell/ThemeMenu';
 
-/** Tipos de perfil, na ordem do mockup. */
+/** Tipos de perfil, com o pessoal primeiro por ser o caso mais comum. */
 const PROFILE_TYPES: readonly OnboardingFormValues['profileType'][] = ['personal', 'business'];
 
-/** Tipos de conta, na ordem do mockup. */
+/** Tipos de conta, com a corrente primeiro por ser a primeira conta mais comum. */
 const ACCOUNT_TYPES: readonly OnboardingFormValues['accountType'][] = ['checking', 'investment'];
 
 /**
- * Primeiro uso (mockup `DesktopPrimeiroUso`; desktop-mvp-plan Fase 5): o banco sem perfil
+ * Primeiro uso (perfis §4.2): o banco sem perfil
  * abre aqui, fora do shell, porque toda tela do shell lê dados de um perfil. Cria o perfil e a
  * primeira conta juntos pelo `onboarding.start` — o primeiro uso não pode deixar perfil sem
  * conta — e, ao concluir, o app entra na Visão geral do mês atual.
@@ -208,29 +208,48 @@ function StartFromScratch(): ReactNode {
 }
 
 /**
- * "Já usa em outro aparelho?". Regra de produto (desktop-mvp-plan §1): a sincronização fica
- * fora do MVP, mas o cartão aparece, com o botão desabilitado e o porquê, para que quem já
- * tem os dados no celular não comece do zero achando que não existe outro caminho.
+ * "Já usa em outro aparelho?" (sincronizacao §7.2). O aparelho do primeiro uso ainda não tem
+ * dados, então pode entrar num grupo e receber tudo do outro (sincronizacao §4.4). No
+ * computador não há câmera: o convite chega pelo "Copiar convite" do outro aparelho, colado
+ * aqui — o mesmo texto que vai no QR.
  *
- * @return O cartão de entrar num grupo, sem ação.
+ * @return O cartão de entrar num grupo.
  */
 function JoinGroup(): ReactNode {
+    const [invite, setInvite] = useState('');
+    const [name, setName] = useState('Computador');
+    const join = useCoreMutation('sync.join');
+    const refusal = join.data?.refusal ?? null;
     return (
         <section aria-labelledby="join-title" className="col-span-2 flex flex-col gap-4 rounded-12 border border-line bg-surface p-7">
             <h2 id="join-title" className="text-18 font-semibold">
                 Já usa em outro aparelho?
             </h2>
-            <p className="text-13 text-muted">Entre no grupo do seu celular ou de outro computador para receber os dados.</p>
-            <p className="rounded-8 bg-warn-bg px-3 py-2.5 text-13 text-warn-ink">Os dados deste aparelho serão substituídos pelos do grupo.</p>
-            <div>
-                <Button variant="outline" disabled aria-describedby="join-unavailable" className="border-line text-13 font-normal">
-                    Entrar num grupo existente
-                </Button>
-            </div>
-            <p id="join-unavailable" className="text-13 text-ink2">
-                A sincronização entre aparelhos chega numa próxima versão do app. Por enquanto, comece do zero aqui.
-            </p>
-            <p className="text-13 text-muted">Você vai precisar do QR code ou do código de 8 caracteres mostrado no outro aparelho.</p>
+            <p className="text-13 text-muted">Entre no grupo do outro computador para receber os dados. Abra Dispositivos › Adicionar dispositivo nele e copie o convite.</p>
+            <form
+                className="flex flex-col gap-3"
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    join.mutate({ invite: invite.trim(), deviceName: name });
+                }}
+            >
+                <label className="flex flex-col gap-1.5 text-13">
+                    Convite
+                    <Input value={invite} placeholder="FINANCAS1:…" onChange={(event) => { setInvite(event.target.value); }} />
+                </label>
+                <label className="flex flex-col gap-1.5 text-13">
+                    Nome deste aparelho
+                    <Input value={name} maxLength={60} onChange={(event) => { setName(event.target.value); }} className="w-64" />
+                </label>
+                <div>
+                    <Button type="submit" variant="outline" disabled={join.isPending || invite.trim() === '' || name.trim() === ''} className="border-line text-13 font-normal">
+                        {join.isPending ? 'Recebendo dados…' : 'Entrar num grupo existente'}
+                    </Button>
+                </div>
+            </form>
+            {join.isError && <p role="alert" className="text-13 text-danger">{describeError(join.error.error).message}</p>}
+            {refusal !== null && <p role="alert" className="text-13 text-danger">{describeSyncRefusal(refusal, null)}</p>}
+            <p className="text-13 text-muted">Mantenha a tela de Dispositivos aberta no outro aparelho, na mesma rede Wi-Fi, até terminar.</p>
         </section>
     );
 }

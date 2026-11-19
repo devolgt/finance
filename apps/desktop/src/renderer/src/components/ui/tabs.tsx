@@ -4,8 +4,8 @@ import { cn } from '@/lib/cn';
 import { Tabs as TabsPrimitive } from 'radix-ui';
 
 /**
- * Raiz das abas (alternância Gráfico/Tabela dos relatórios). Os mockups usam listas, e não
- * abas, para escolher entidades; abas ficam só para vistas do mesmo dado. Envolve o primitivo
+ * Raiz das abas (alternância Gráfico/Tabela dos relatórios). O app usa listas, e não
+ * abas, para escolher entidades (desktop §7.6); abas ficam só para vistas do mesmo dado. Envolve o primitivo
  * do Radix só para marcar `data-slot`, que as regras de estilo e os testes usam para achar a
  * peça sem depender de classe.
  *

@@ -2,8 +2,8 @@ import type { ReadRoute, WriteRoute } from './routes.ts';
 
 /**
  * Resultados dos relatórios: os personalizados somam transações e mostram os nomes de categoria,
- * conta, cartão, tag, sócio e meta de cada grupo (reports-design §3); os fixos somam os aportes
- * por sócio e os saldos das contas (§8 e §9). Todos mudam com o dinheiro e com os cadastros.
+ * conta, cartão, tag, sócio e meta de cada grupo (relatorios §5); os fixos somam os aportes
+ * por sócio e os saldos das contas (relatorios §7 e §8). Todos mudam com o dinheiro e com os cadastros.
  */
 const REPORT_RESULTS: readonly ReadRoute[] = ['reports.run', 'reports.preview', 'reports.byPartner', 'reports.entriesWithoutPartner', 'reports.balanceProjection'];
 
@@ -37,7 +37,7 @@ const TRANSACTION_CONTENT: readonly ReadRoute[] = [
 ];
 
 /**
- * Ensaios do diálogo de revisão (database-design §4.12): cada um executa uma escrita
+ * Ensaios do diálogo de revisão (banco-de-dados §4.12): cada um executa uma escrita
  * numa transação desfeita para mostrar o que ela faria. Ficam fora do mapa de propósito — não
  * são uma visão do estado a manter atualizada, e sim a prévia de uma intenção. Invalidados, a
  * própria escrita confirmada no diálogo fazia o plano ainda aberto ser ensaiado de novo sobre o
@@ -66,7 +66,7 @@ export function isRehearsalRoute(route: ReadRoute): route is RehearsalRoute {
  * em outubro muda o extrato de outubro **e** o saldo de abertura de todos os meses
  * seguintes (a cadeia de fechamentos), a comparação "mês anterior" de novembro, a média dos
  * 3 meses de janeiro e a grade do impacto do cartão de quem olha para trás. Escopo exato é
- * onde o saldo velho na tela se esconde (desktop-mvp-plan §8); refazer as poucas consultas
+ * onde o saldo velho na tela se esconde (desktop §4.3); refazer as poucas consultas
  * ativas de uma tela custa milissegundos num SQLite local.
  */
 const MONEY: readonly ReadRoute[] = [
@@ -95,7 +95,7 @@ const MONEY: readonly ReadRoute[] = [
     'tags.list',
     // Quantos lançamentos cada sócio pagou, o número do aviso de remoção do cadastro.
     'partners.list',
-    // O progresso de cada meta é a soma das transações vinculadas pagas (database-design §4.11):
+    // O progresso de cada meta é a soma das transações vinculadas pagas (banco-de-dados §4.11):
     // lançar, pagar, excluir ou reabrir a fatura muda o que já conta.
     'goals.list',
     'goals.contributions',
@@ -108,7 +108,7 @@ const MONEY: readonly ReadRoute[] = [
 
 /**
  * O cadastro de contas e cartões, mais a lista de perfis: a conta e o cartão padrão do perfil só
- * valem ativos e vivos (database-design §4.1), então desativar, reativar e excluir mudam o padrão
+ * valem ativos e vivos (banco-de-dados §4.1), então desativar, reativar e excluir mudam o padrão
  * que o perfil devolve.
  */
 const SOURCE_REGISTRY: readonly ReadRoute[] = ['profiles.list', ...MONEY];
@@ -118,9 +118,9 @@ const EVERYTHING: readonly ReadRoute[] = ['profiles.list', 'notes.list', ...MONE
 
 /**
  * Mapa de invalidação: para cada escrita, as leituras que ela pode tornar velhas
- * (desktop-mvp-plan Fase 3.2). Centralizado, e não `invalidateQueries` espalhado pelas
+ * (desktop §4). Centralizado, e não `invalidateQueries` espalhado pelas
  * telas, porque é o único jeito de testar que nenhuma escrita deixa saldo velho na tela
- * (desktop-mvp-plan §8): o teste executa cada escrita contra o núcleo de verdade e confere
+ * (desktop §4.3): o teste executa cada escrita contra o núcleo de verdade e confere
  * que toda leitura cujo resultado mudou está na lista. `Record` sobre `WriteRoute` obriga a
  * mapear toda escrita nova.
  */
@@ -164,10 +164,10 @@ const INVALIDATIONS: Readonly<Record<WriteRoute, readonly ReadRoute[]>> = {
     // do campo "Meta" só mudam aqui, e não com o dinheiro: por isso ficam fora do `MONEY`.
     'goals.create': ['goals.list', 'goals.options'],
     // Trocar para a meta vinculada a conta tira a meta dos lançamentos e das séries, como excluir;
-    // e ela deixa de ser opção do campo "Meta" (desktop-mvp-plan Fase 13.3).
+    // e ela deixa de ser opção do campo "Meta" (metas §1.3 e §2.3).
     'goals.update': ['goals.list', 'goals.options', 'recurrences.list', ...REPORT_RESULTS, ...TRANSACTION_CONTENT],
     // Arquivar só muda a lista de Metas e as escolhas do campo "Meta": os vínculos ficam
-    // (desktop-mvp-plan Fase 13.4).
+    // (metas §1.3 e §5.1).
     'goals.archive': ['goals.list', 'goals.options'],
     'goals.unarchive': ['goals.list', 'goals.options'],
     // Excluir tira a meta dos lançamentos e das séries, que continuam existindo.
@@ -187,6 +187,19 @@ const INVALIDATIONS: Readonly<Record<WriteRoute, readonly ReadRoute[]>> = {
     'recurrences.topUp': MONEY,
     // A importação cria cadastros, lançamentos, séries e pagamentos de fatura em qualquer perfil.
     'imports.run': EVERYTHING,
+    // A tela de Dispositivos: abrir, convidar, remover e sair mudam só o estado da sincronização.
+    // Os lotes que chegam com a tela aberta invalidam tudo pelo hook da tela (`useSyncScreen`),
+    // porque não passam por mutação nenhuma deste lado.
+    'sync.createGroup': ['sync.status'],
+    'sync.open': ['sync.status'],
+    'sync.close': ['sync.status'],
+    'sync.createInvite': ['sync.status'],
+    'sync.cancelInvite': ['sync.status'],
+    'sync.connect': ['sync.status'],
+    'sync.removeMember': ['sync.status'],
+    'sync.leave': ['sync.status'],
+    // Entrar num grupo troca os dados do aparelho pelos do grupo.
+    'sync.join': [...EVERYTHING, 'sync.status'],
     'balances.rebuildAccount': MONEY,
     'invoices.pay': MONEY,
     'invoices.reopen': MONEY,

@@ -39,7 +39,7 @@ function populatedDatabase(): Database {
     return database;
 }
 
-describe('cópia exportada do banco (desktop-mvp-plan Fase 13)', () => {
+describe('cópia exportada do banco (desktop §11)', () => {
     it('grava uma cópia que abre como banco do app, com a versão do schema e os dados', () => {
         const database = populatedDatabase();
         const path = join(temporaryFolder(), "cópia d'água.sqlite");

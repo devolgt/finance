@@ -23,7 +23,7 @@ describe('LocalDate e YearMonth', () => {
     });
 });
 
-describe('BillingCycle — regras do cartão (database-design §4.5 e §4.7)', () => {
+describe('BillingCycle — regras do cartão (banco-de-dados §4.5 e §4.7)', () => {
     const cycle = BillingCycle.of(10, 17);
 
     it.each([

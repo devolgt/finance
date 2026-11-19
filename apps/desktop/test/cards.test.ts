@@ -53,7 +53,7 @@ describe('cartão e fatura abertos na tela Cartões', () => {
         expect(openCreditCard(listOf([]), {})).toBeNull();
     });
 
-    it('a lista mostra os ativos ou os desativados; o cartão pedido sem visualização abre a lista dele (desktop-mvp-plan Fase 13.4)', () => {
+    it('a lista mostra os ativos ou os desativados; o cartão pedido sem visualização abre a lista dele (cartoes-e-faturas §7)', () => {
         const list = listOf([ROXINHO, CLICK], [CLICK]);
         expect(parseCardsSearch({ view: 'disabled', card: CLICK })).toEqual({ view: 'disabled', card: CLICK });
         expect(creditCardListView(list, {}).creditCards.map((creditCard) => creditCard.name)).toEqual(['Roxinho']);

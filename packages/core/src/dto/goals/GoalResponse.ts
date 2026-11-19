@@ -10,14 +10,14 @@ export interface GoalResponse {
     readonly name: string;
     /**
      * De onde vem o progresso: os lançamentos vinculados, ou o saldo consolidado de hoje de uma
-     * conta de investimento (database-design §4.11).
+     * conta de investimento (banco-de-dados §4.11).
      */
     readonly funding: { readonly kind: 'transactions' } | { readonly kind: 'account'; readonly accountId: string };
     /** Valor-alvo. */
     readonly value: MoneyResponse;
     /** Data-alvo `YYYY-MM-DD`; `null` numa meta sem prazo. */
     readonly targetDate: string | null;
-    /** Arquivada: fora da lista padrão de Metas e das escolhas de lançamentos novos (desktop-mvp-plan Fase 13.4). */
+    /** Arquivada: fora da lista padrão de Metas e das escolhas de lançamentos novos (metas §5). */
     readonly archived: boolean;
 }
 
@@ -29,13 +29,13 @@ export interface GoalResponse {
 export interface GoalOptionResponse {
     readonly id: string;
     readonly name: string;
-    /** Atingida: vai para o grupo à parte (desktop-mvp-plan Fase 13.4). */
+    /** Atingida: vai para o grupo à parte (metas §5). */
     readonly reached: boolean;
     /** Arquivada: só aparece na edição do lançamento que já está vinculado a ela. */
     readonly archived: boolean;
 }
 
-/** Meta na lista de Metas, com o progresso e o ritmo no mês de referência (mockup `DesktopMetas`). */
+/** Meta na lista de Metas, com o progresso e o ritmo no mês de referência (metas §4). */
 export interface GoalProgressResponse extends GoalResponse {
     /** Soma das transações vinculadas pagas até hoje, ou o saldo consolidado de hoje da conta vinculada. */
     readonly saved: MoneyResponse;
@@ -72,7 +72,7 @@ export interface GoalContributionResponse {
 
 /**
  * Converte a entidade em dado puro, porque `Money` e `LocalDate` não sobrevivem ao
- * `structuredClone` do IPC entre o núcleo e a tela (mobile-shell-design §4.4): o valor-alvo vira
+ * `structuredClone` do IPC entre o núcleo e a tela (mobile §4): o valor-alvo vira
  * `{ amount, currency }` e a data-alvo, texto `YYYY-MM-DD`. É a base comum das respostas de meta.
  *
  * @param goal Meta do domínio.
@@ -99,7 +99,7 @@ export function toGoalOptionResponses(options: readonly GoalOptionView[]): reado
 }
 
 /**
- * O progresso vai pronto porque é regra de negócio (database-design §4.11): a UI só formata, e
+ * O progresso vai pronto porque é regra de negócio (banco-de-dados §4.11): a UI só formata, e
  * desktop e celular mostram o mesmo número.
  *
  * @param list Metas com progresso, montadas pelo Service.

@@ -4,7 +4,7 @@ import { testCore } from './support/renderWithCore.tsx';
 
 jest.mock('expo-file-system', () => ({ Paths: {} }));
 
-describe('primeiro uso (mobile-mvp-plan, Fase 7)', () => {
+describe('primeiro uso (perfis §4.2)', () => {
     it('cria o perfil e a primeira conta e entra no Início, no perfil criado', async () => {
         const { core } = testCore();
         const app = await renderApp(core, { preferences: { lastPeriod: '2020-01' } });
@@ -38,14 +38,17 @@ describe('primeiro uso (mobile-mvp-plan, Fase 7)', () => {
         expect(profiles.ok && profiles.data).toEqual([]);
     });
 
-    it('a moeda abre numa folha e "Entrar num grupo" fica desabilitado até a sincronização', async () => {
+    it('a moeda abre numa folha, e "Entrar num grupo existente" abre a leitura do QR e volta ao formulário', async () => {
         const { core } = testCore();
         await renderApp(core);
 
         await fireEvent.press(await screen.findByRole('button', { name: 'Moeda: BRL — Real' }));
         await fireEvent.press(within(screen.getByTestId('bottom-sheet')).getByRole('radio', { name: 'USD — Dólar' }));
-
         expect(screen.getByRole('button', { name: 'Moeda: USD — Dólar' })).toBeOnTheScreen();
-        expect(screen.getByRole('button', { name: 'Entrar num grupo existente' })).toBeDisabled();
+
+        await fireEvent.press(screen.getByRole('button', { name: 'Entrar num grupo existente' }));
+        expect(await screen.findByLabelText('Câmera lendo o QR code')).toBeOnTheScreen();
+        await fireEvent.press(screen.getByRole('button', { name: 'Voltar' }));
+        expect(await screen.findByRole('button', { name: 'Criar e começar' })).toBeOnTheScreen();
     });
 });

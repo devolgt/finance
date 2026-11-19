@@ -26,7 +26,7 @@ export interface PartnerRepository {
 
     /**
      * Soft delete do sócio e dos vínculos dele como pagador. A propagação é explícita porque o
-     * `SET NULL` do banco só dispara num `DELETE` (database-design §3.6); os lançamentos e as
+     * `SET NULL` do banco só dispara num `DELETE` (banco-de-dados §3.6); os lançamentos e as
      * séries em si continuam existindo, agora sem sócio.
      *
      * @param id Sócio a excluir.

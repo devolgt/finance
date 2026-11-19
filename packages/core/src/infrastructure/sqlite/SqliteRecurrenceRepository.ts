@@ -13,7 +13,7 @@ import { decodeEnum, INSTALLMENT_VALUE_TYPE_CODE, RECURRENCE_FREQUENCY_CODE, REC
 import { RowReader } from './RowReader.ts';
 
 // As tags do modelo vêm numa coluna só, como nas transações; a moeda do dinheiro é a do
-// perfil, que é a de todo valor gravado (database-design §4.13). Regra de perfil excluído não
+// perfil, que é a de todo valor gravado (banco-de-dados §4.13). Regra de perfil excluído não
 // existe mais para ninguém, inclusive para o complemento.
 const SELECT_RECURRENCE = `
     SELECT r.*, p.currency AS profile_currency,
@@ -84,7 +84,7 @@ export class SqliteRecurrenceRepository implements RecurrenceRepository {
 
     /**
      * Grava também o perfil, porque mover uma série para outro perfil é uma revisão da regra
-     * (database-design §4.12), e não uma regra nova: o id e a marca d'água continuam.
+     * (banco-de-dados §4.12), e não uma regra nova: o id e a marca d'água continuam.
      *
      * @param recurrence Regra revisada.
      * @return void
@@ -153,7 +153,7 @@ export class SqliteRecurrenceRepository implements RecurrenceRepository {
 
     /**
      * Parâmetros comuns ao insert e ao update. Dinheiro é arredondado aqui, na fronteira de
-     * persistência (database-design §3.7).
+     * persistência (banco-de-dados §3.7).
      *
      * @param recurrence Regra de origem.
      * @return Os parâmetros nomeados.

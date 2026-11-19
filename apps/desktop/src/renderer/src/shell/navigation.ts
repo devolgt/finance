@@ -1,7 +1,7 @@
 import type { ProfileResponse } from '@finance/core';
 
 /*
- * Mapa da navegação do shell (desktop-mvp-plan Fase 4), separado dos componentes: o menu, a
+ * Mapa da navegação do shell (desktop §8), separado dos componentes: o menu, a
  * barra do mês e o roteador leem a mesma lista, e as regras de "o que aparece onde" podem ser
  * testadas sem montar a janela.
  */
@@ -40,17 +40,17 @@ export interface MenuItem {
 }
 
 /**
- * Menu completo, na ordem da barra lateral. Os cadastros que o mockup (brief D1) reunia em
- * "Cadastros" têm cada um o seu item, a pedido do usuário (desktop-mvp-plan Fase 13.11): contas e
+ * Menu completo, na ordem da barra lateral. Os cadastros, que antes ficavam reunidos numa tela
+ * "Cadastros", têm cada um o seu item, a pedido do usuário (desktop §8.1): contas e
  * cartões já se cadastram nas próprias telas, e os demais ficam a um clique, sem a lista de tipos
  * no meio.
  */
 export const MENU: readonly MenuItem[] = [
     { label: 'Visão geral', to: '/', section: '/', businessOnly: false },
     { label: 'Transações', to: '/transactions', section: '/transactions', businessOnly: false },
-    // Entre Transações e Calendário, como no mockup `DesktopExtrato`: os mesmos lançamentos em vários meses.
+    // Entre Transações e Calendário: os mesmos lançamentos em vários meses.
     { label: 'Extrato', to: '/statement', section: '/statement', businessOnly: false },
-    // Logo abaixo de Transações, como no mockup `DesktopCalendario`: são os mesmos lançamentos por dia.
+    // Junto de Transações e do Extrato: são os mesmos lançamentos, por dia.
     { label: 'Calendário', to: '/calendar', section: '/calendar', businessOnly: false },
     { label: 'Contas', to: '/accounts', section: '/accounts', businessOnly: false },
     { label: 'Cartões', to: '/cards', section: '/cards', businessOnly: false },
@@ -66,7 +66,7 @@ export const MENU: readonly MenuItem[] = [
 ];
 
 /**
- * Regra de negócio (Perfis): sócio só existe em perfil empresarial (database-design §4.2), então
+ * Regra de negócio (Perfis): sócio só existe em perfil empresarial (banco-de-dados §4.2), então
  * o item Sócios some do menu no perfil pessoal.
  *
  * @param profileType Tipo do perfil ativo.
@@ -77,10 +77,10 @@ export function menuFor(profileType: ProfileResponse['type']): readonly MenuItem
 }
 
 /**
- * Telas de configuração, que não dependem de período. Regra de interface (mockups, decisão 2):
- * o mês de referência não aparece em fluxos de configuração. Os mockups dessas telas ainda
- * desenham a barra do mês; a regra do README prevaleceu, por decisão registrada na Fase 4 do
- * plano. Metas continua com a barra, como no mockup. Os cadastros (Categorias, Sócios, Tags,
+ * Telas de configuração, que não dependem de período. Regra de interface (desktop §7.2): o mês
+ * de referência não aparece em fluxos de configuração, porque nenhum número deles muda com o
+ * mês e a barra sugeriria o contrário. Metas continua com a barra: o ritmo e o prazo contam a
+ * partir do mês de referência (metas §4.2). Os cadastros (Categorias, Sócios, Tags,
  * Anotações e Perfis) seguem sem a barra, como na antiga tela Cadastros: nenhum número deles
  * depende do mês.
  */
@@ -88,7 +88,7 @@ const PATHS_WITHOUT_REFERENCE_MONTH: ReadonlySet<string> = new Set<AppPath>(['/c
 
 /**
  * Telas que mostram um período de vários meses no lugar do mês de referência. Regra de interface
- * (mockup `DesktopExtrato`): no Extrato o mês de referência vira o período, escolhido nos filtros
+ * (desktop §7.2): no Extrato o mês de referência vira o período, escolhido nos filtros
  * da própria tela, e a barra superior só o mostra — um ‹ › de um mês só não diria nada ali.
  */
 const PATHS_WITH_PERIOD_RANGE: ReadonlySet<string> = new Set<AppPath>(['/statement']);
@@ -100,8 +100,8 @@ export interface TrailStep {
 }
 
 /**
- * Caminho mostrado na barra superior das telas que ficam dentro de outra (mockup
- * `DesktopImportArquivo`: "Ajustes › Importar dados"), no lugar do mês de referência.
+ * Caminho mostrado na barra superior das telas que ficam dentro de outra ("Ajustes › Importar
+ * dados", importacao §8), no lugar do mês de referência.
  */
 const TRAILS: ReadonlyMap<string, readonly TrailStep[]> = new Map<AppPath, readonly TrailStep[]>([
     ['/settings/import', [{ label: 'Ajustes', to: '/settings' }, { label: 'Importar dados', to: null }]],

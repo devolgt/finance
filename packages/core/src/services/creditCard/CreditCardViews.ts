@@ -8,7 +8,10 @@ import type { InvoiceCycle } from '../invoice/InvoiceCycle.ts';
 export interface CreditCardInPeriod {
     readonly creditCard: CreditCard;
     readonly invoiceOfMonth: InvoiceCycle;
-    /** Valor a pagar somado de todas as faturas em aberto do cartão. */
+    /**
+     * Valor a pagar das faturas em aberto até a fatura aberta hoje e, depois dela, só o já
+     * comprometido: as ocorrências futuras de séries fixas ficam fora (cartoes-e-faturas §4).
+     */
     readonly limitUsed: Money;
 }
 

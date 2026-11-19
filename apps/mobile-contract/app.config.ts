@@ -2,7 +2,7 @@ import type { ExpoConfig } from 'expo/config';
 import packageJson from './package.json';
 
 /**
- * App de contrato (mobile-mvp-plan, Fase 3; mobile-shell-design §8): roda no Hermes, com o
+ * App de contrato (mobile §8.2; mobile §8): roda no Hermes, com o
  * `expo-sqlite` real, o que o Vitest só alcança no Node. Tem pacote Android próprio para
  * conviver no aparelho com o app de verdade sem tocar no banco dele. Não guarda nada: o banco
  * de cada caso é em memória, e o backup fica desligado mesmo assim, por coerência com o app.

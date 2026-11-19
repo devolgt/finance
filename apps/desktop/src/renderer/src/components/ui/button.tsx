@@ -34,7 +34,7 @@ const buttonVariants = cva(
 );
 
 /**
- * Botão único do app, com as variantes dos mockups (ação principal em `accent`, destrutiva em
+ * Botão único do app, com as variantes que as telas usam (ação principal em `accent`, destrutiva em
  * `danger`, contorno, discreta e link). Centralizar as variantes evita que cada tela reinvente
  * cor e altura de botão; `asChild` deixa um link com a aparência de botão sem aninhar
  * elementos interativos.

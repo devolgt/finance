@@ -1,6 +1,6 @@
 
 /*
- * Lista de atalhos da tela de Ajustes (desktop-mvp-plan Fase 13), separada do componente para que a
+ * Lista de atalhos da tela de Ajustes (desktop §11), separada do componente para que a
  * conferência contra o teclado do shell tenha teste sem montar a janela. Os textos da cópia do
  * banco moram no `client`, comuns ao celular.
  */
@@ -19,11 +19,11 @@ export interface ShortcutGuideGroup {
 }
 
 /**
- * Atalhos de teclado que o app tem hoje, agrupados por onde valem. A lista do mockup tem só os
- * globais, mas os das listas de lançamentos são os que mais poupam cliques, e sem a lista ninguém
- * os descobre. Desde a Fase 13.2 as listas de Transações, do extrato de Contas e da fatura de
- * Cartões são a mesma, com os mesmos atalhos, então são um grupo só. O `Ctrl K` do mockup fica de
- * fora enquanto a busca está pendente (Fase 4): listar um atalho que não faz nada seria pior que
+ * Atalhos de teclado que o app tem hoje, agrupados por onde valem (desktop §8.4). Além dos
+ * globais, entram os das listas de lançamentos, que são os que mais poupam cliques, e sem a lista
+ * ninguém os descobre. As listas de Transações, do extrato de Contas e da fatura de Cartões são a
+ * mesma (transacoes §8.3), com os mesmos atalhos, então são um grupo só. O `Ctrl K` fica de fora
+ * enquanto a busca está pendente (desktop §15): listar um atalho que não faz nada seria pior que
  * não listar. O teste confere os globais contra o `shortcutFor`, para a lista não se descolar do
  * teclado.
  */

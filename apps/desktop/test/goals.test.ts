@@ -46,7 +46,7 @@ describe('meta aberta na URL', () => {
         expect(openGoal([], {})).toBeNull();
     });
 
-    it('a lista mostra por padrão só as ativas; a meta pedida sem visualização abre a lista dela (desktop-mvp-plan Fase 13.4)', () => {
+    it('a lista mostra por padrão só as ativas; a meta pedida sem visualização abre a lista dela (metas §5.2)', () => {
         const list = [goal(ACCOUNT, 'Carro', { reached: true, archived: true }), goal(RESERVE, 'Reserva', { reached: true }), goal(TRIP, 'Viagem')];
         /**
          * Compara só os nomes, porque o teste confere quais metas cada visualização mostra, e não

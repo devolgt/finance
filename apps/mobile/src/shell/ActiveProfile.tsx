@@ -20,7 +20,7 @@ const ActiveProfileContext = createContext<ActiveProfileValue | null>(null);
 
 /**
  * Carrega os perfis e decide o perfil ativo para tudo o que está abaixo, como o shell do
- * desktop (desktop-mvp-plan Fase 4). Sem perfil o shell não abre — toda rota do núcleo pede um
+ * desktop (desktop §8.3). Sem perfil o shell não abre — toda rota do núcleo pede um
  * `profileId` —, então `whenEmpty` ocupa a tela (o primeiro uso), e sai sozinho ao criar o
  * perfil, porque a criação invalida a lista. A tela de erro só substitui o app quando ainda não
  * há perfis carregados: uma falha ao recarregar mantém o shell com os perfis em cache.
@@ -36,7 +36,7 @@ export function ActiveProfileProvider({ whenEmpty, children }: { readonly whenEm
     const profiles = query.data;
     const profile = profiles === undefined ? null : pickActiveProfile(profiles, preferences.lastProfileId);
 
-    // Regra de interface (desktop-mvp-plan Fase 4): trocar o perfil invalida todo o cache, para
+    // Regra de interface (desktop §8.3): trocar o perfil invalida todo o cache, para
     // nada do perfil anterior ficar na tela. O celular não tem a guarda de alteração não salva
     // do desktop: o seletor só existe em telas sem formulário (Início e Mais), e o lançamento
     // abre por cima delas.

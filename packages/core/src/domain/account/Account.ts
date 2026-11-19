@@ -4,7 +4,7 @@ import type { AccountId, ProfileId } from '../shared/ids.ts';
 import type { Money } from '../shared/Money.ts';
 import { requireName } from '../shared/names.ts';
 
-/** Tipo da conta (database-design §4.4). */
+/** Tipo da conta (banco-de-dados §4.4). */
 export type AccountType = 'checking' | 'investment';
 
 export const ACCOUNT_TYPES: readonly AccountType[] = ['checking', 'investment'];
@@ -13,12 +13,12 @@ export const ACCOUNT_TYPES: readonly AccountType[] = ['checking', 'investment'];
 export interface AccountContent {
     readonly name: string;
     readonly type: AccountType;
-    /** Moeda da conta no mundo real: só rótulo, nunca unidade (database-design §4.4). */
+    /** Moeda da conta no mundo real: só rótulo, nunca unidade (banco-de-dados §4.4). */
     readonly currencyLabel: string;
     /**
      * Regra de negócio (Contas): desligado tira a conta do total consolidado do perfil,
      * mantendo o próprio histórico — válvula de escape para contas no exterior
-     * (database-design §4.4).
+     * (banco-de-dados §4.4).
      */
     readonly considerBalance: boolean;
     /** Saldo anterior ao primeiro extrato: dado do usuário, não cache. */
@@ -31,7 +31,7 @@ export interface AccountProps extends AccountContent {
     readonly profileId: ProfileId;
     /**
      * Regra de negócio (Contas): desativada, a conta some das escolhas de lançamentos novos
-     * mas continua em extratos, saldos e relatórios (desktop-mvp-plan §5.1).
+     * mas continua em extratos, saldos e relatórios (contas §5).
      */
     readonly disabled: boolean;
     /** Cache: consolidado e previsto do fechamento do mês corrente. */
@@ -40,7 +40,7 @@ export interface AccountProps extends AccountContent {
 
 /**
  * Conta corrente ou de investimentos. Os saldos que ela carrega são um cache derivado
- * (database-design §4.4): existem para a tela inicial abrir sem consultar extrato, e só a
+ * (banco-de-dados §4.4): existem para a tela inicial abrir sem consultar extrato, e só a
  * rotina de recálculo os escreve.
  */
 export class Account implements AccountProps {
@@ -74,9 +74,9 @@ export class Account implements AccountProps {
 
     /**
      * Cadastra uma conta nova, ativa. O cache nasce igual ao saldo inicial porque uma conta
-     * sem extrato mostra o próprio saldo inicial (database-design §4.4).
+     * sem extrato mostra o próprio saldo inicial (banco-de-dados §4.4).
      *
-     * @param id Id gerado pela aplicação (database-design §3.5).
+     * @param id Id gerado pela aplicação (banco-de-dados §3.5).
      * @param profileId Perfil dono da conta.
      * @param content Dados digitados no cadastro.
      * @return A conta, com nome e rótulo de moeda normalizados.
@@ -104,7 +104,7 @@ export class Account implements AccountProps {
     /**
      * Edita os dados do usuário. O cache de saldo é mantido como está: se o saldo inicial
      * mudou, quem edita precisa pedir o recálculo da cadeia inteira, que é a única rotina
-     * que escreve saldos (backend-design §3.3).
+     * que escreve saldos (core §6.4).
      *
      * @param content Novo conteúdo completo do cadastro.
      * @return Uma nova conta com os dados trocados.
@@ -116,7 +116,7 @@ export class Account implements AccountProps {
 
     /**
      * Regra de negócio (Contas): desativar não apaga nada nem muda saldo nenhum
-     * (desktop-mvp-plan §5.1) — por isso é a ação padrão no lugar de excluir.
+     * (contas §5) — por isso é a ação padrão no lugar de excluir.
      *
      * @return Uma nova conta desativada.
      */
@@ -134,7 +134,7 @@ export class Account implements AccountProps {
     /**
      * Devolve a conta com o cache de saldo substituído. Existe só para a rotina de
      * recálculo: saldos nunca são incrementados, sempre reconstruídos a partir das
-     * transações (backend-design §3.3).
+     * transações (core §6.4).
      *
      * @param balances Consolidado e previsto do fechamento do mês corrente, já arredondados.
      * @return Uma nova conta com o cache atualizado.
@@ -146,7 +146,7 @@ export class Account implements AccountProps {
     /**
      * @param other Conteúdo a comparar.
      * @return `true` quando o saldo inicial difere do desta conta — o que obriga a recalcular
-     * todos os extratos, já que todos dependem dele (database-design §4.4).
+     * todos os extratos, já que todos dependem dele (banco-de-dados §4.4).
      */
     public openingBalanceDiffersFrom(other: AccountContent): boolean {
         return !this.openingBalance.equals(other.openingBalance);

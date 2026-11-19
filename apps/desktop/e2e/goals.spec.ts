@@ -4,7 +4,7 @@ import { completeFirstUse } from './firstUse.ts';
 import { launchApp, removeUserData } from './launchApp.ts';
 
 /*
- * Metas (desktop-mvp-plan Fase 9.3) no app empacotado: criar a meta, vincular uma receita pelo
+ * Metas (metas §4) no app empacotado: criar a meta, vincular uma receita pelo
  * campo "Meta" do lançamento, ver o progresso e a tabela, editar e excluir. Os cliques usam
  * `dispatchEvent` e os menus e `Select` do Radix são operados pelo teclado, pelo motivo explicado
  * em `firstUse.ts`.
@@ -22,7 +22,7 @@ async function openGoals(page: Page): Promise<void> {
 
 /**
  * Escolhe a opção já visível da lista aberta. No seletor com busca dos cadastros (`Combobox`,
- * desktop-mvp-plan Fase 13.2) o foco fica no campo de busca e a opção não recebe foco, então o
+ * transacoes §8.3) o foco fica no campo de busca e a opção não recebe foco, então o
  * clique (por `dispatchEvent`, como os outros cliques destes testes) é o caminho; no `Select` do Radix, que ficou nas listas curtas, o foco vai direto à
  * opção e o Enter confirma, sem a busca por digitação do Radix, que pode parar numa opção de nome
  * parecido.
@@ -105,7 +105,7 @@ test('meta: criar, vincular uma receita pelo lançamento, progresso, editar e ex
         await expect(rows.nth(1)).toContainText('Alimentação › Mercado');
         await expect(rows.nth(1)).toContainText('R$ 700,00');
         await expect(rows.last()).toContainText('TotalR$ 700,00');
-        // A vinculada se edita ali mesmo, na listagem comum de movimentos (desktop-mvp-plan Fase 13.3).
+        // A vinculada se edita ali mesmo, na listagem comum de movimentos (metas §4.5).
         await rows.nth(1).dispatchEvent('click');
         const edit = page.getByRole('dialog', { name: 'Editar Freela' });
         await edit.getByLabel('Nome').fill('Freela do site');

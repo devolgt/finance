@@ -24,7 +24,7 @@ function launches(count: number): string {
 }
 
 /**
- * "Nova tag" no topo, como no mockup: a tag é só um nome, e criá-la sem folha deixa cadastrar
+ * "Nova tag" no topo da lista: a tag é só um nome, e criá-la sem folha deixa cadastrar
  * várias seguidas. O nome repetido volta do núcleo como `CONFLICT` e aparece abaixo do campo.
  *
  * @return O campo e o botão.
@@ -71,7 +71,7 @@ function NewTag(): ReactNode {
 /**
  * "Editar tag" numa folha, com o conteúdo do painel do desktop: o nome, o uso em números, salvar e
  * excluir. Sem o atalho "Ver lançamentos em Transações": os filtros de Transações do celular não
- * se abrem por link (mobile-mvp-plan, Fase 16).
+ * se abrem por link (categorias-e-tags §6).
  * Regra de negócio (Tags): excluir tira a tag dos lançamentos, que continuam existindo — o aviso
  * diz quantos, e por isso a exclusão não pede outra confirmação: nada além da etiqueta se perde.
  *
@@ -141,7 +141,7 @@ function TagSheet({ tag, onClose }: { readonly tag: TagUsageResponse; readonly o
 }
 
 /**
- * Tags (mockup `MobileTags`; mobile-mvp-plan, Fase 16): "Nova tag" no topo, a lista com quantos
+ * Tags (categorias-e-tags §5.2): "Nova tag" no topo, a lista com quantos
  * lançamentos usam cada uma e "Editar tag" numa folha ao tocar. As tags se aplicam no lançamento.
  *
  * @return A tela.

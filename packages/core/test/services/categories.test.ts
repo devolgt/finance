@@ -22,7 +22,7 @@ async function setup(): Promise<{
     return { world, profileId, accountId, categoryId: category.id, market: market.id, restaurants: restaurants.id };
 }
 
-describe('cadastro de categorias (desktop-mvp-plan Fase 1.4)', () => {
+describe('cadastro de categorias (categorias-e-tags §2)', () => {
     it('a árvore traz as subcategorias por nome e quantos lançamentos cada uma tem', async () => {
         const { world, profileId, accountId, market } = await setup();
         await world.create({ profileId, subCategoryId: market }, { source: { kind: 'account', accountId } });
@@ -61,7 +61,7 @@ describe('cadastro de categorias (desktop-mvp-plan Fase 1.4)', () => {
     });
 });
 
-describe('excluir subcategoria em uso (mockup DesktopCadastros)', () => {
+describe('excluir subcategoria em uso (categorias-e-tags §2.3)', () => {
     it('sem destino, recusa e diz quantos lançamentos há; com destino, move e exclui', async () => {
         const { world, profileId, accountId, market, restaurants } = await setup();
         const transaction = await world.create({ profileId, subCategoryId: restaurants }, { source: { kind: 'account', accountId }, paymentDate: '2026-03-10' });

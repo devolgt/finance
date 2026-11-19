@@ -3,7 +3,7 @@ import { PARTNER_NAME_MAX_LENGTH, type CoreInput, type PartnerResponse } from '@
 /** 100% em centésimos de ponto percentual, a unidade em que a soma é conferida (como no núcleo). */
 const FULL_SHARE = 100 * 100;
 
-/** Quantas cores a divisão alterna (as quatro do mockup `DesktopSocios`). */
+/** Quantas cores a divisão alterna (as quatro dos tokens; socios §4.3). */
 export const PARTNER_COLOR_COUNT = 4;
 
 /** Um sócio como está no formulário do cadastro, ainda sem validar. */
@@ -96,8 +96,8 @@ export function parsePercentageInput(text: string): number | null {
 }
 
 /**
- * Monta o cadastro de sócios (mockup `DesktopSocios`) a partir do formulário.
- * Regra de negócio (Sócios, decisão de interface 10 dos mockups): a soma das participações
+ * Monta o cadastro de sócios (socios §4.3) a partir do formulário.
+ * Regra de negócio (Sócios, socios §1.3): a soma das participações
  * precisa dar 100% para salvar, e a tela mostra a soma ao vivo com a barra de divisão. Remover
  * um sócio com lançamentos deixa esses lançamentos sem sócio atribuído, e o aviso diz quantos
  * antes de salvar.

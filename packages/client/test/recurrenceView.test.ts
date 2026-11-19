@@ -15,7 +15,7 @@ import {
 } from '../src/index.ts';
 import { ClientWorld } from './support/ClientWorld.ts';
 
-describe('séries na tabela e no painel (desktop-mvp-plan Fase 9.1)', () => {
+describe('séries na tabela e no painel (recorrencias §1)', () => {
     it('coluna "Rec." com "n/N" na parcelada e "Fixa" na fixa; subtítulo com o valor total', async () => {
         const world = new ClientWorld();
         const s = await world.seed();
@@ -54,7 +54,7 @@ describe('séries na tabela e no painel (desktop-mvp-plan Fase 9.1)', () => {
     });
 });
 
-describe('diálogo de escopo (mockup `MobileEscopo`; database-design §4.12)', () => {
+describe('diálogo de escopo (recorrencias §7; banco-de-dados §4.12)', () => {
     it('conta as ocorrências de cada escopo; "futuras" é pelo número', async () => {
         const world = new ClientWorld();
         const { fresh } = await seedRent(world);
@@ -74,7 +74,7 @@ describe('diálogo de escopo (mockup `MobileEscopo`; database-design §4.12)', (
     });
 });
 
-describe('diálogo de revisão (database-design §4.12)', () => {
+describe('diálogo de revisão (banco-de-dados §4.12)', () => {
     it('excluir todas: a série some, e o aviso diz quantas pagas e os saldos de quais meses e contas mudam', async () => {
         const world = new ClientWorld();
         const { first, accounts } = await seedRent(world);
@@ -181,7 +181,7 @@ function withoutHandEdits(plan: CoreOutput<'recurrences.planUpdate'>): CoreOutpu
     return { ...plan, deleted: clear(plan.deleted), created: clear(plan.created), updated: clear(plan.updated) };
 }
 
-describe('prévia das parcelas (mockup `MobileParcelar`)', () => {
+describe('prévia das parcelas (recorrencias §3.3)', () => {
     it('parcelado no cartão: total, parcelas, fatura de cada uma, o resto e a nota do arredondamento', async () => {
         const world = new ClientWorld();
         const s = await world.seed();

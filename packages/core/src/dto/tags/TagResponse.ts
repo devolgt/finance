@@ -9,7 +9,7 @@ export interface TagResponse {
     readonly name: string;
 }
 
-/** Tag na lista de Tags, com o uso em todo o período (mockup `DesktopTags`). */
+/** Tag na lista de Tags, com o uso em todo o período (categorias-e-tags §3.2). */
 export interface TagUsageResponse extends TagResponse {
     readonly transactionCount: number;
     /** Soma dos valores em módulo dos lançamentos marcados. */

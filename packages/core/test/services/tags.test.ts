@@ -22,7 +22,7 @@ async function setup(): Promise<{
     return { world, profileId, accountId, base, trip: trip.id, refundable: refundable.id };
 }
 
-describe('cadastro de tags (mockup DesktopTags)', () => {
+describe('cadastro de tags (categorias-e-tags §3)', () => {
     it('lista por nome com o uso de cada tag; tag sem lançamento vem zerada', async () => {
         const { world, profileId } = await setup();
         const list = await world.ok('tags.list', { profileId });
@@ -82,7 +82,7 @@ describe('cadastro de tags (mockup DesktopTags)', () => {
     });
 });
 
-describe('tags nos lançamentos (database-design §4.14)', () => {
+describe('tags nos lançamentos (banco-de-dados §4.14)', () => {
     it('o lançamento guarda as tags, por nome e sem repetição; sem tags é lista vazia', async () => {
         const { world, accountId, base, trip, refundable } = await setup();
         const tagged = await world.create(base, { source: { kind: 'account', accountId }, tagIds: [trip, refundable, trip] });

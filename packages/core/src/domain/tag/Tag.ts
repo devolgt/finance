@@ -10,9 +10,9 @@ export interface TagProps {
 
 /**
  * Etiqueta livre de um perfil, aplicada a vários lançamentos — e um lançamento pode ter
- * várias (database-design §4.10). Diferente da categoria, não classifica: cruza categorias
+ * várias (banco-de-dados §4.10). Diferente da categoria, não classifica: cruza categorias
  * ("viagem-floripa" junta hotel, restaurante e combustível). Pertence ao perfil para que
- * pessoal e empresarial mantenham vocabulários separados (§3.8).
+ * pessoal e empresarial mantenham vocabulários separados (banco-de-dados §3.8).
  */
 export class Tag implements TagProps {
     public readonly id: TagId;
@@ -31,7 +31,7 @@ export class Tag implements TagProps {
 
     /**
      * A unicidade do nome no perfil relaciona linhas e por isso é verificada no Service
-     * (database-design §3.10); aqui só o invariante da própria linha.
+     * (banco-de-dados §3.10); aqui só o invariante da própria linha.
      *
      * @param props Dados da tag, com id já gerado pela aplicação.
      * @return A tag, com o nome aparado.

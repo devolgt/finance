@@ -43,7 +43,7 @@ import { PartialPaymentDialog, PayInvoiceDialog, ReopenInvoiceDialog, type Invoi
 /** Diálogo aberto na tela: cadastro do cartão ou ação sobre a fatura. */
 /**
  * Colunas da listagem na fatura: sem "Conta / fatura", porque todas as linhas são desta fatura, e
- * sem a situação, que é a da fatura (desktop-mvp-plan Fase 13.2).
+ * sem a situação, que é a da fatura (transacoes §8.3).
  */
 const COLUMNS: readonly MovementColumn[] = ['date', 'name', 'category', 'amount', 'recurring'];
 
@@ -59,11 +59,11 @@ type CardsDialogState =
 type InvoiceAction = 'pay' | 'partial' | 'reopen';
 
 /**
- * Cartões (mockup `DesktopCartoes`; desktop-mvp-plan Fase 8): à esquerda a lista com a fatura
+ * Cartões (cartoes-e-faturas §7): à esquerda a lista com a fatura
  * do mês de cada cartão e os totais, à direita o detalhe da fatura aberta — números, lançamentos
  * e próximas faturas — com pagar, pagamento parcial e reabrir. O cartão e a fatura abertos ficam
  * na URL (`card`, `invoice`), como a conta aberta em Contas, e a lista mostra os ativos ou os
- * desativados (`view`, desktop-mvp-plan Fase 13.4).
+ * desativados (`view`, cartoes-e-faturas §7).
  *
  * @return A tela de Cartões.
  */
@@ -275,7 +275,7 @@ function CardList({
 /**
  * Item da lista: nome e situação da fatura do mês à esquerda, valor a pagar à direita. O cartão
  * padrão do perfil leva o selo "Padrão", para que se saiba qual o atalho "Crédito" do lançamento
- * escolhe (database-design §4.1).
+ * escolhe (banco-de-dados §4.1).
  *
  * @param props.creditCard Cartão com a fatura do mês.
  * @param props.current Se é o cartão aberto.
@@ -375,7 +375,7 @@ function CardInvoice({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem onSelect={onEdit}>Editar cartão</DropdownMenuItem>
-                            {/* O desativado não aceita lançamentos novos, então não pode ser o padrão (database-design §4.1). */}
+                            {/* O desativado não aceita lançamentos novos, então não pode ser o padrão (banco-de-dados §4.1). */}
                             <DropdownMenuItem
                                 disabled={creditCard.disabled}
                                 onSelect={() => {
@@ -419,7 +419,7 @@ function CardInvoice({
 
 /**
  * Botões da fatura no cabeçalho, pela situação dela.
- * Regra de negócio (Fatura, database-design §4.7): em aberto, paga-se inteira ou em parte;
+ * Regra de negócio (Fatura, banco-de-dados §4.7): em aberto, paga-se inteira ou em parte;
  * paga, só se reabre — pagar de novo exige reabrir antes. Sem fatura no mês (nada caiu nela),
  * não há o que pagar. O pagamento parcial precisa de valor a pagar: numa fatura zerada ou
  * credora ele só criaria crédito.
@@ -479,9 +479,9 @@ function InvoiceActions({ target, onAction }: { readonly target: InvoiceActionTa
 }
 
 /**
- * Os quatro números da fatura (mockup): total a pagar com a situação, fechamento, vencimento e
+ * Os quatro números da fatura (cartoes-e-faturas §2.3 e §4): total a pagar com a situação, fechamento, vencimento e
  * limite usado.
- * Regra de negócio (Fatura, database-design §4.7): o total aparece em módulo, e a nota do
+ * Regra de negócio (Fatura, banco-de-dados §4.7): o total aparece em módulo, e a nota do
  * vencimento diz onde a fatura pesa — em aberto, no previsto da conta pagadora no vencimento;
  * paga, no extrato do mês do pagamento.
  *
@@ -553,11 +553,11 @@ function FigureCard({ label, children }: { readonly label: string; readonly chil
 }
 
 /**
- * Lançamentos da fatura (mockup `DesktopCartoes`) na listagem comum (desktop-mvp-plan Fase 13.2):
+ * Lançamentos da fatura (cartoes-e-faturas §7) na listagem comum (transacoes §8.3):
  * data, lançamento, categoria, valor e "Rec." — as parcelas aparecem como "3/12" —, com o total.
  * Sem fatura no mês não há o que consultar, e a tabela diz isso. É aqui que se editam e excluem
  * as compras do cartão: em Transações, sem filtro, elas ficam agrupadas na linha da fatura
- * (Fase 11.1). Sem a coluna de situação, porque a situação de uma compra é a da fatura, mostrada
+ * (cartoes-e-faturas §5). Sem a coluna de situação, porque a situação de uma compra é a da fatura, mostrada
  * acima; o `P` só vale no pagamento parcial, que sai da conta no dia dele.
  *
  * @param props.cycle Competência aberta.
@@ -606,7 +606,7 @@ function InvoiceLines({ cycle, accounts }: { readonly cycle: InvoiceCycleRespons
 }
 
 /**
- * "Próximas faturas deste cartão" (mockup): as faturas depois da aberta, cada uma levando ao
+ * "Próximas faturas deste cartão" (cartoes-e-faturas §2.4): as faturas depois da aberta, cada uma levando ao
  * seu detalhe.
  *
  * @param props.creditCard Cartão, pelo dia de fechamento que decide a fase de cada fatura.

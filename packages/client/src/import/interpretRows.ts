@@ -41,7 +41,7 @@ const KIND_TYPE: Readonly<Record<Exclude<ImportFileKind, 'mixed'>, ImportTransac
 };
 
 /**
- * Lê as linhas do arquivo pelos campos ligados (import-design §3 e §4). A linha com campo
+ * Lê as linhas do arquivo pelos campos ligados (importacao §3 e §4). A linha com campo
  * obrigatório vazio ou com data ou número ilegível sai com o motivo e não chega ao núcleo.
  *
  * @param table Tabela do arquivo.
@@ -169,7 +169,7 @@ function descriptionOf(mapping: ColumnMapping, cells: readonly string[]): string
 }
 
 /**
- * Regra de formato (import-design §4): o tipo da linha num arquivo de vários tipos.
+ * Regra de formato (importacao §4): o tipo da linha num arquivo de vários tipos.
  *
  * @param text Célula da coluna de tipo.
  * @return O tipo, ou `null` quando a célula está vazia ou não é reconhecida.
@@ -204,7 +204,7 @@ function integerOf(text: string | null): number | null {
 }
 
 /**
- * Regra de formato (import-design §4): "fix…" é fixa, "parcel…" é parcelada, o resto é avulsa;
+ * Regra de formato (importacao §4): "fix…" é fixa, "parcel…" é parcelada, o resto é avulsa;
  * "diária", "semanal" e "anual" dão a frequência, e mensal é o padrão. Sem coluna de recorrência,
  * parcela e total válidos bastam para o parcelamento.
  *

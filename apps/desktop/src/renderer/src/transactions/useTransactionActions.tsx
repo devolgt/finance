@@ -29,7 +29,7 @@ export interface TransactionActions {
 
 /**
  * Ações sobre as linhas da listagem de movimentos, as mesmas em Transações, no extrato de Contas e
- * na fatura de Cartões (desktop-mvp-plan Fase 13.2): antes cada tela tinha a sua — em Contas não
+ * na fatura de Cartões (transacoes §8.3): antes cada tela tinha a sua — em Contas não
  * se editava nada, e em Cartões não se marcava pago —, e as regras de quem pode o quê ficavam
  * repetidas. Cada tela só monta as linhas; o que abrir, pagar e excluir fazem vem daqui.
  *
@@ -55,7 +55,7 @@ export function useTransactionActions(options: { readonly onSaved?: (saved: Tran
     );
 
     /**
-     * Regra de negócio (Transferência entre perfis, database-design §4.13): a transferência
+     * Regra de negócio (Transferência entre perfis, banco-de-dados §4.13): a transferência
      * recebida de outro perfil é uma linha só, do perfil de origem; editar, pagar ou excluir daqui
      * mexeria no extrato de um perfil que não está aberto. Avisa onde fazer a alteração em vez de
      * abrir um formulário com a subcategoria e as tags do outro perfil.
@@ -72,7 +72,7 @@ export function useTransactionActions(options: { readonly onSaved?: (saved: Tran
 
     /**
      * @param target Linha aberta: a fatura leva a Cartões, onde estão as compras, o pagamento e a
-     * reabertura (desktop-mvp-plan Fase 11.1); o lançamento abre a edição.
+     * reabertura (cartoes-e-faturas §5); o lançamento abre a edição.
      */
     const open = (target: MovementTarget): void => {
         if (target.kind === 'invoice') {
@@ -84,7 +84,7 @@ export function useTransactionActions(options: { readonly onSaved?: (saved: Tran
 
     /**
      * Marca ou desmarca o pagamento com a data de hoje.
-     * Regra de negócio (Cartão, database-design §4.7): numa compra no cartão quem decide se o
+     * Regra de negócio (Cartão, banco-de-dados §4.7): numa compra no cartão quem decide se o
      * dinheiro saiu é a fatura, não a compra; marcar a compra não mudaria a situação mostrada, e a
      * tela diz onde pagar. O pagamento parcial é a exceção: é dinheiro que sai da conta no dia
      * dele, com a situação própria. A linha da fatura também leva a Cartões, onde se paga.

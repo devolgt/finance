@@ -6,7 +6,7 @@ import type { StartOnboardingCommand } from './OnboardingCommands.ts';
 import type { OnboardingResult } from './OnboardingResult.ts';
 
 /**
- * O primeiro uso: perfil e primeira conta de uma vez (mockup `DesktopPrimeiroUso`).
+ * O primeiro uso: perfil e primeira conta de uma vez (perfis §4.1).
  * Regra de negócio (Primeiro uso): o primeiro uso não pode deixar perfil sem conta — um
  * perfil sem conta não tem onde lançar nada e reabriria o app num estado que nenhuma tela
  * trata. Por isso as duas gravações acontecem numa única unidade de trabalho: se a conta
@@ -28,7 +28,7 @@ export class OnboardingService {
 
     /**
      * As categorias sugeridas entram na mesma unidade porque, sem nenhuma subcategoria, o
-     * primeiro lançamento seria recusado (toda transação aponta para uma — database-design
+     * primeiro lançamento seria recusado (toda transação aponta para uma — banco-de-dados
      * §4.13).
      *
      * @param command Perfil, primeira conta e a escolha das categorias sugeridas.

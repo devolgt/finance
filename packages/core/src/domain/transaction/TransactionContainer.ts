@@ -20,8 +20,8 @@ export interface InvoiceContainer {
 /**
  * Contêiner mensal de uma transação.
  * Regra de negócio (Transações): toda transação pertence a **exatamente um** contêiner —
- * extrato **ou** fatura (database-design §4.13). O banco aceita as duas chaves nulas ou
- * as duas preenchidas, porque o arco exclusivo é regra da aplicação (§3.10); aqui a união
+ * extrato **ou** fatura (banco-de-dados §4.13). O banco aceita as duas chaves nulas ou
+ * as duas preenchidas, porque o arco exclusivo é regra da aplicação (banco-de-dados §3.10); aqui a união
  * discriminada torna esses dois estados inválidos irrepresentáveis no núcleo.
  */
 export type TransactionContainer = StatementContainer | InvoiceContainer;

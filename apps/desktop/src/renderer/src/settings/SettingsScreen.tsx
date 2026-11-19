@@ -18,10 +18,10 @@ import { SHORTCUT_GUIDE } from './settingsView.ts';
 const APP_INFO_KEY = ['device', 'appInfo'] as const;
 
 /**
- * Ajustes (desktop-mvp-plan Fase 13; mockup `DesktopAjustes`): tema, cópia dos dados, atalhos e
- * versões. **Decisões:** sem a seção "Perfil atual" do mockup — o perfil se edita só em
- * Perfis, num lugar só —, e sem o "Lembrete de exportação". O mês de referência
- * fica escondido, como em toda tela de configuração (Fase 4).
+ * Ajustes (desktop §11): tema, cópia dos dados, atalhos e versões. **Decisões:** sem uma seção
+ * "Perfil atual" — o perfil se edita só em Perfis, num lugar só —, e sem o "Lembrete de
+ * exportação" (desktop §15). O mês de referência fica escondido, como em toda tela de
+ * configuração (desktop §7.2).
  *
  * @return A tela de Ajustes.
  */
@@ -80,9 +80,8 @@ function AppearanceSection(): ReactNode {
 }
 
 /**
- * Importar transações, exportar e importar a cópia do banco e onde está o arquivo (mockup
- * `DesktopAjustes`, cartão "Dados"; a importação da cópia entrou depois do mockup, a pedido, logo
- * após a exportação). A falha da exportação fica escrita na linha, e não num aviso que some: ela
+ * Importar transações, exportar e importar a cópia do banco e onde está o arquivo (desktop §11.2;
+ * a importação da cópia fica logo após a exportação, porque uma desfaz a outra). A falha da exportação fica escrita na linha, e não num aviso que some: ela
  * diz o que fazer, e o usuário precisa dela enquanto escolhe outra pasta.
  *
  * @param props.info Informações do app; `undefined` enquanto carregam.
@@ -289,10 +288,10 @@ function ShortcutsSection(): ReactNode {
 }
 
 /**
- * Cartão de uma seção, como os do mockup.
+ * Cartão de uma seção, para que todas as seções de Ajustes tenham a mesma moldura.
  *
  * @param props.title Título da seção; com `titleHidden`, só nomeia a região para leitores de tela.
- * @param props.titleHidden Esconde o cabeçalho visível, como no cartão de versão do mockup.
+ * @param props.titleHidden Esconde o cabeçalho visível, como no cartão "Sobre", cujo conteúdo já se apresenta sozinho.
  * @param props.children Linhas da seção.
  * @return A seção.
  */

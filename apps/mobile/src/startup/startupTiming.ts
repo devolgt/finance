@@ -20,7 +20,7 @@ export function markCoreOpened(): void {
 
 /**
  * Registra no log do aparelho o instante em que a primeira tela interativa apareceu
- * (mobile-mvp-plan, Fase 5: "tempo da abertura até a primeira tela interativa"). Vai o instante
+ * (mobile §12.1: "tempo da abertura até a primeira tela interativa"). Vai o instante
  * de parede (`Date.now`), que o script de medição compara com o instante do `am start` pelo
  * relógio do próprio aparelho — o JavaScript não sabe quando o processo nasceu —, e as parcelas
  * dentro do JavaScript, para mostrar onde o tempo foi. É uma linha por abertura, sempre

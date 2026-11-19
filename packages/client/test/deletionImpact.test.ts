@@ -20,8 +20,8 @@ const NOTHING_FROM_ACCOUNT: AccountDeletionImpactResponse = {
 /** Alerta de cartão sem faturas, pelo mesmo motivo. */
 const NOTHING_FROM_CARD: CreditCardDeletionImpactResponse = { creditCardId: 'c', invoices: 0, transactions: 0, partialPayments: 0, recurrences: 0, affectedAccounts: [] };
 
-describe('alerta de exclusão em cadeia (desktop-mvp-plan §5.1)', () => {
-    it('conta: a meta vinculada ao saldo dela sai junto (Fase 13.3)', () => {
+describe('alerta de exclusão em cadeia (contas §5)', () => {
+    it('conta: a meta vinculada ao saldo dela sai junto (metas §2.3)', () => {
         expect(describeAccountDeletion({ ...NOTHING_FROM_ACCOUNT, goals: 2 }).items).toEqual(['2 metas vinculadas ao saldo dela']);
     });
 

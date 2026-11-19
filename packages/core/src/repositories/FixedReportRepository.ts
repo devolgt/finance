@@ -4,9 +4,9 @@ import type { ProfileId } from '../domain/shared/ids.ts';
 import type { YearMonth } from '../domain/shared/YearMonth.ts';
 
 /**
- * Consultas agregadas dos relatórios fixos (reports-design §8 e §9), só leitura. Separadas do
+ * Consultas agregadas dos relatórios fixos (relatorios §7 e §8), só leitura. Separadas do
  * `ReportQueryRepository` porque não saem de uma definição: cada relatório fixo tem a própria
- * pergunta, e a agregação roda no SQL (backend-design §3.2) — o núcleo só aplica as regras.
+ * pergunta, e a agregação roda no SQL (core §1.2) — o núcleo só aplica as regras.
  */
 export interface FixedReportRepository {
     /**
@@ -33,7 +33,7 @@ export interface FixedReportRepository {
      * @param currency Moeda do perfil.
      * @return O efeito no saldo das contas do total dos lançamentos **avulsos** (sem série) pagos,
      * por mês de caixa — a parte do resultado que não fica lançada com antecedência
-     * (reports-design §9, B3); mês sem avulso não tem linha.
+     * (relatorios §8, B3); mês sem avulso não tem linha.
      */
     nonRecurringResults(profileId: ProfileId, from: YearMonth, to: YearMonth, currency: Currency): readonly MonthAmount[];
 

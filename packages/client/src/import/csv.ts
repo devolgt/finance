@@ -1,5 +1,5 @@
 /*
- * Leitura de CSV para a importação (import-design §3). Escrita à mão, sem biblioteca: o formato
+ * Leitura de CSV para a importação (importacao §3). Escrita à mão, sem biblioteca: o formato
  * que importa é pequeno — separador, aspas, aspas dobradas e quebra de linha dentro de aspas (as
  * observações do arquivo real têm várias linhas) — e o `client` não carrega dependência de
  * plataforma.

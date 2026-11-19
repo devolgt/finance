@@ -1,15 +1,15 @@
 /*
- * Tokens de design como dados (desktop-shell-design §4.5): a única fonte de cor, tipografia,
- * raio e espaçamento dos dois apps. Os valores vêm dos mockups aprovados
- * (docs/design/mockups/README.md, "Tokens de cor"); nenhuma tela usa valor literal fora
- * daqui. São dados, e não CSS, para que o mesmo conjunto alimente o Tailwind do desktop,
- * o NativeWind do mobile e, se ele falhar, um `StyleSheet` gerado (mobile-shell-design §9).
+ * Tokens de design como dados (desktop §6): a única fonte de cor, tipografia,
+ * raio e espaçamento dos dois apps, para que desktop e celular tenham a mesma cara
+ * (desktop §7). Nenhuma tela usa valor literal fora daqui. São dados, e não CSS, para que o
+ * mesmo conjunto alimente o Tailwind do desktop, o NativeWind do mobile e, se ele falhar, um
+ * `StyleSheet` gerado (mobile §6).
  */
 
 /** Cor hexadecimal `#RRGGBB`; o tipo impede que um nome de token seja passado no lugar do valor. */
 export type HexColor = `#${string}`;
 
-/** Os dois temas que toda tela suporta desde o início (decisão de interface 1 dos mockups). */
+/** Os dois temas que toda tela suporta desde o início (desktop §7.1). */
 export type ThemeName = 'light' | 'dark';
 
 /** Um token de cor: o valor em cada tema e para que ele serve. */
@@ -21,8 +21,8 @@ export interface ColorToken {
 }
 
 /**
- * Paleta dos mockups. Os nomes são os mesmos das variáveis dos mockups (`--bg`, `--ink`…),
- * para que mockup, CSS e classe (`bg-surface text-ink`) falem o mesmo vocabulário.
+ * Paleta dos dois apps. Os nomes são os mesmos das variáveis CSS (`--bg`, `--ink`…), para que
+ * token, CSS e classe (`bg-surface text-ink`) falem o mesmo vocabulário.
  * `satisfies` em vez de anotação para que o nome de cada token continue literal no tipo
  * `ColorTokenName` e um token novo exija valor nos dois temas.
  */
@@ -48,9 +48,13 @@ export const colorTokens = {
     'track': { light: '#EEF0EC', dark: '#2A302D', role: 'Trilho de barras e etiquetas neutras' },
     'danger': { light: '#9B2C1F', dark: '#F08A7A', role: 'Ação destrutiva e erro' },
     'dot': { light: '#2E7D5B', dark: '#5BC08F', role: 'Indicador de sincronização' },
-    // Fora da tabela dos mockups, que não desenham diálogos: o véu atrás de diálogo e painel
-    // lateral precisa escurecer nos dois temas, e `ink` clarearia o fundo no escuro.
+    // Token próprio, e não `ink` com opacidade: o véu atrás de diálogo e painel lateral precisa
+    // escurecer nos dois temas, e `ink` clarearia o fundo no escuro.
     'scrim': { light: '#1B1F1D', dark: '#000000', role: 'Véu atrás de diálogos e painéis (sempre com opacidade)' },
+    // O QR do convite de sincronização fica escuro sobre claro nos dois temas: leitores de QR,
+    // inclusive o da câmera do celular, nem sempre leem o código invertido do tema escuro.
+    'qr-ink': { light: '#000000', dark: '#000000', role: 'Módulos do QR code do convite' },
+    'qr-bg': { light: '#FFFFFF', dark: '#FFFFFF', role: 'Fundo e margem do QR code do convite' },
 } as const satisfies Readonly<Record<string, ColorToken>>;
 
 /**
@@ -60,8 +64,8 @@ export const colorTokens = {
 export type ColorTokenName = keyof typeof colorTokens;
 
 /**
- * Famílias de fonte. IBM Plex Sans é a fonte dos mockups; a Mono aparece só nos códigos de
- * pareamento. A pilha de fallback é a dos mockups, para o primeiro quadro antes da fonte carregar.
+ * Famílias de fonte. IBM Plex Sans é a fonte dos dois apps; a Mono aparece só nos códigos de
+ * pareamento. A pilha de fallback cobre o primeiro quadro, antes da fonte carregar.
  */
 export const fontFamilies = {
     sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
@@ -69,36 +73,36 @@ export const fontFamilies = {
 } as const satisfies Readonly<Record<string, readonly string[]>>;
 
 /**
- * Escala fechada de tamanhos de fonte, em px, com o nome igual ao valor (`text-13`). Os
- * mockups especificam tamanhos em px que não cabem nos nomes do Tailwind (13, 17, 22): com
- * o número no nome, quem lê o mockup acha a classe sem tabela de conversão, e um tamanho
- * fora da lista simplesmente não existe como classe.
+ * Escala fechada de tamanhos de fonte, em px, com o nome igual ao valor (`text-13`). As
+ * telas usam tamanhos em px que não cabem nos nomes do Tailwind (13, 17, 22): com o número no
+ * nome, quem pensa em px acha a classe sem tabela de conversão, e um tamanho fora da lista
+ * simplesmente não existe como classe.
  */
 export const fontSizesPx = [11, 12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28, 30] as const;
 
 /**
- * Tamanho de fonte permitido. Fecha o tipo na escala para que um tamanho fora dos mockups
- * falhe na compilação, e não só por não gerar classe.
+ * Tamanho de fonte permitido. Fecha o tipo na escala para que um tamanho fora dela falhe na
+ * compilação, e não só por não gerar classe.
  */
 export type FontSizePx = (typeof fontSizesPx)[number];
 
-/** Pesos usados nos mockups: texto, ênfase e títulos/valores. */
+/** Pesos usados nas telas: texto, ênfase e títulos/valores. */
 export const fontWeights = { normal: 400, medium: 500, semibold: 600 } as const;
 
 /**
  * Escala fechada de raios, em px, com o nome igual ao valor (`rounded-8`), pelo mesmo motivo
- * dos tamanhos de fonte. `full` é o círculo e a pílula (`50%` e `999px` nos mockups).
+ * dos tamanhos de fonte. `full` é o círculo e a pílula (`50%` e `999px` no CSS).
  */
 export const radiiPx = [2, 3, 4, 6, 8, 10, 12, 14, 18] as const;
 
 /**
- * Raio permitido. Fecha o tipo na escala pelo mesmo motivo do `FontSizePx`: um raio fora dos
- * mockups falha na compilação.
+ * Raio permitido. Fecha o tipo na escala pelo mesmo motivo do `FontSizePx`: um raio fora dela
+ * falha na compilação.
  */
 export type RadiusPx = (typeof radiiPx)[number];
 
 /**
- * Unidade da escala de espaçamento, em px. Todo espaçamento dos mockups é múltiplo de 1px e
+ * Unidade da escala de espaçamento, em px. Todo espaçamento das telas é múltiplo de 1px e
  * quase todo de 2px; com a unidade de 4px do Tailwind, `p-3` é 12px e `py-2.25` é 9px, e o
  * vocabulário continua o mesmo que o shadcn/ui e o NativeWind já usam.
  */

@@ -113,10 +113,10 @@ export function isSqliteVersionAtLeast(version: string, minimum: string): boolea
 }
 
 /**
- * Contrato da porta `Database` (backend-design §5.10): o que todo adaptador precisa cumprir
+ * Contrato da porta `Database` (testes §3.2): o que todo adaptador precisa cumprir
  * para o núcleo rodar sobre ele. Escrito sem Vitest para rodar igual no Node, contra o
  * `better-sqlite3`, e no Hermes do `apps/mobile-contract`, contra o `expo-sqlite`
- * (mobile-shell-design §8). Cada caso recebe um banco vazio novo, para um caso não depender
+ * (mobile §8). Cada caso recebe um banco vazio novo, para um caso não depender
  * do que o anterior deixou.
  */
 export const DATABASE_CONTRACT: readonly DatabaseContractCase[] = [
@@ -221,7 +221,7 @@ export const DATABASE_CONTRACT: readonly DatabaseContractCase[] = [
         },
     },
     {
-        name: 'liga foreign_keys na abertura: o hard delete de perfil cascateia (database-design §3.2)',
+        name: 'liga foreign_keys na abertura: o hard delete de perfil cascateia (banco-de-dados §3.2)',
         run: (open) => {
             const database = open();
             openDatabase(database, { backups: null, clock: CONTRACT_CLOCK });
@@ -250,7 +250,7 @@ export const DATABASE_CONTRACT: readonly DatabaseContractCase[] = [
         },
     },
     {
-        name: 'recusa abrir um banco mais novo que o app (backend-design §4.8)',
+        name: 'recusa abrir um banco mais novo que o app (banco-de-dados §5.8)',
         run: (open) => {
             const database = open();
             openDatabase(database, { backups: null, clock: CONTRACT_CLOCK });

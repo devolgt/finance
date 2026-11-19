@@ -1,8 +1,8 @@
 /*
- * Atalhos globais do shell (desktop-mvp-plan Fase 4; lista do mockup `DesktopAjustes`). A
+ * Atalhos globais do shell (desktop §8.4). A
  * decisão "esta tecla é um atalho?" fica numa função pura sobre o evento já resumido, para que
  * as regras de quando *não* disparar — que são a parte delicada — tenham teste sem DOM.
- * O `Ctrl K` (busca) ficou pendente no plano: não há mockup do que ele abre.
+ * O `Ctrl K` (busca) ficou pendente: falta decidir o que ele abre (desktop §15).
  */
 
 /** Ação disparada por um atalho global. */

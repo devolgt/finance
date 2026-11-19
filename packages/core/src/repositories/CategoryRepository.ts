@@ -57,7 +57,7 @@ export interface CategoryRepository {
 
     /**
      * Soft delete da categoria e das subcategorias dela. A propagação é explícita porque o
-     * cascade do banco não dispara num `UPDATE` (database-design §3.6).
+     * cascade do banco não dispara num `UPDATE` (banco-de-dados §3.6).
      *
      * @param id Categoria a excluir.
      * @return void

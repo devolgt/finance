@@ -35,7 +35,7 @@ function projection(overrides: Partial<BalanceProjectionResponse> = {}): Balance
     };
 }
 
-describe('projeção de saldo (reports-design §9)', () => {
+describe('projeção de saldo (relatorios §8)', () => {
     it('monta os indicadores, as três linhas a partir de hoje e as tabelas com o lançado e o estimado', () => {
         const view = buildBalanceProjectionView(projection());
         expect(view.kpis.map((kpi) => [kpi.label, kpi.value, kpi.sub, kpi.tone])).toEqual([
@@ -64,7 +64,7 @@ describe('projeção de saldo (reports-design §9)', () => {
         expect(view.rangeNote).toBeNull();
     });
 
-    it('Regra de negócio (Relatórios, §9): avisa do histórico curto e da falta de faixa', () => {
+    it('Regra de negócio (Relatórios, relatorios §8.1): avisa do histórico curto e da falta de faixa', () => {
         expect(buildBalanceProjectionView(projection()).historyNote).toBe('O histórico tem só 3 meses fechados; a estimativa usa esses, e não 12 meses.');
         expect(buildBalanceProjectionView(projection({ basis: 3 })).historyNote).toBeNull();
         const single = buildBalanceProjectionView(projection({ basis: 6, deviation: brl(0), history: [{ period: '2026-09', result: brl(1), nonRecurring: brl(1), recurring: brl(0) }] }));
@@ -78,7 +78,7 @@ describe('projeção de saldo (reports-design §9)', () => {
         expect(empty.kpis[1]).toMatchObject({ tone: 'neutral', sub: 'Sem mês fechado no histórico' });
     });
 
-    it('Regra de negócio (Relatórios, §9, B5): com vários meses de avulsos iguais, o aviso diz que não variaram, e não que há um mês', () => {
+    it('Regra de negócio (Relatórios, relatorios §8.1, B5): com vários meses de avulsos iguais, o aviso diz que não variaram, e não que há um mês', () => {
         const flat = [
             { period: '2026-07', result: brl(-200), nonRecurring: brl(0), recurring: brl(-200) },
             { period: '2026-08', result: brl(-200), nonRecurring: brl(0), recurring: brl(-200) },

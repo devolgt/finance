@@ -3,7 +3,7 @@ import { detectDelimiter, parseCsv, stripBom, type CsvDelimiter } from './csv.ts
 import { normalizeHeader, type ImportFileKind } from './importFields.ts';
 import { normalizeForSearch } from '../format/searchText.ts';
 
-/** Como ler o arquivo — o cartão "Como ler o arquivo" do mockup `DesktopImportArquivo`. */
+/** Como ler o arquivo — o cartão "Como ler o arquivo" da etapa Arquivo (importacao §3). */
 export interface ReadSettings {
     readonly delimiter: CsvDelimiter;
     readonly decimal: DecimalSeparator;
@@ -28,7 +28,7 @@ export interface KindDetection {
 const DETECTION_ROWS = 200;
 
 /**
- * Detecta como ler o arquivo (import-design §3): o separador pela consistência das colunas, o
+ * Detecta como ler o arquivo (importacao §3): o separador pela consistência das colunas, o
  * decimal e as datas pelas células, e o cabeçalho pela primeira linha sem número nem data.
  *
  * @param text Conteúdo decodificado.
@@ -81,7 +81,7 @@ export function columnLetter(index: number): string {
 }
 
 /**
- * Detecta o tipo pelo nome do arquivo e, sem nome que decida, pelas colunas (import-design §3).
+ * Detecta o tipo pelo nome do arquivo e, sem nome que decida, pelas colunas (importacao §3).
  *
  * @param fileName Nome do arquivo escolhido.
  * @param headers Cabeçalhos lidos.

@@ -24,9 +24,9 @@ interface PendingLeave {
 }
 
 /**
- * Anotações, item próprio do menu (mockup `DesktopAnotacoes`; desktop-mvp-plan Fase 13.11): à
+ * Anotações, item próprio do menu (anotacoes §4 e desktop §8.1): à
  * esquerda a lista com busca, à direita o editor da anotação aberta. Regra de interface
- * (mockups, decisão 9): anotação é texto livre, e a primeira linha é o título na lista.
+ * (anotacoes §1.3): anotação é texto livre, e a primeira linha é o título na lista.
  *
  * Sair da anotação com alterações não salvas — abrir outra, criar uma nova, trocar de tela,
  * trocar de perfil — passa antes por um diálogo que pede salvar ou descartar: o
@@ -260,7 +260,7 @@ export function NotesScreen(): ReactNode {
 }
 
 /**
- * Lista com a busca no topo: título em negrito e duas linhas de prévia, como no mockup.
+ * Lista com a busca no topo: título em negrito e duas linhas de prévia, para reconhecer a anotação sem abri-la.
  *
  * @param props.notes Anotações do perfil.
  * @param props.openId Anotação aberta no editor.

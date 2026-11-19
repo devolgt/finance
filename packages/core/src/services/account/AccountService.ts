@@ -45,10 +45,10 @@ export class AccountService {
      * Lista as contas com o saldo de um mês.
      * Regra de negócio (Contas): o saldo de um mês é o fechamento do extrato dele; um mês
      * sem extrato herda o fechamento do último anterior, e uma conta sem extrato até ali
-     * mostra o saldo inicial (database-design §4.6) — a mesma regra do saldo exibido, só
+     * mostra o saldo inicial (banco-de-dados §4.6) — a mesma regra do saldo exibido, só
      * que no mês pedido em vez do corrente. O total soma só as contas com "considerar no
-     * saldo" (§4.4); desativada continua somando, porque o dinheiro dela existe
-     * (desktop-mvp-plan §5.1).
+     * saldo" (banco-de-dados §4.4); desativada continua somando, porque o dinheiro dela existe
+     * (contas §5).
      *
      * @param profileId Perfil consultado.
      * @param period Mês de referência da tela.
@@ -115,9 +115,9 @@ export class AccountService {
     /**
      * Edita o cadastro.
      * Regra de negócio (Contas): editar o `opening_balance` recalcula **todos** os extratos
-     * da conta, já que todos dependem dele (database-design §4.4). Mudar "considerar no
+     * da conta, já que todos dependem dele (banco-de-dados §4.4). Mudar "considerar no
      * saldo" não recalcula nada: o total do perfil é somado na leitura.
-     * Regra de negócio (Metas, database-design §4.11): a conta de investimento que é o saldo de
+     * Regra de negócio (Metas, banco-de-dados §4.11): a conta de investimento que é o saldo de
      * uma meta não muda de tipo, porque a meta passaria a medir o dinheiro do dia a dia como
      * guardado e a edição dela seria recusada por `goal-account-not-investment` mesmo sem trocar
      * a conta. Recusar, e não desfazer o vínculo, evita apagar a escolha do usuário em silêncio.
@@ -145,7 +145,7 @@ export class AccountService {
 
     /**
      * Regra de negócio (Contas): desativar é a ação padrão no lugar de excluir — não apaga
-     * nada nem muda saldo nenhum, e por isso não recalcula (desktop-mvp-plan §5.1).
+     * nada nem muda saldo nenhum, e por isso não recalcula (contas §5).
      *
      * @param id Conta a desativar; já desativada continua desativada.
      * @return A conta desativada.
@@ -185,7 +185,7 @@ export class AccountService {
 
     /**
      * Protege a invariante da meta vinculada, que só aponta para conta de investimento
-     * (database-design §4.11). A arquivada também conta, porque continua medindo a conta e pode
+     * (banco-de-dados §4.11). A arquivada também conta, porque continua medindo a conta e pode
      * ser reativada.
      *
      * @param account Conta cujo tipo vai mudar.

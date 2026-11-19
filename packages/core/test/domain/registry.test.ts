@@ -28,7 +28,7 @@ function account(overrides: Partial<Parameters<typeof Account.create>[2]> = {}):
     });
 }
 
-describe('nomes de cadastro (database-design §4.1 a §4.9)', () => {
+describe('nomes de cadastro (banco-de-dados §4.1 a §4.9)', () => {
     it('apara o nome e recusa vazio ou acima de 45 caracteres, antes do CHECK do banco', () => {
         const profile = Profile.create({ id: profileId, name: '  Pessoal  ', type: 'personal', currency: BRL });
         expect(profile.name).toBe('Pessoal');
@@ -53,7 +53,7 @@ describe('nomes de cadastro (database-design §4.1 a §4.9)', () => {
     });
 });
 
-describe('conta (database-design §4.4)', () => {
+describe('conta (banco-de-dados §4.4)', () => {
     it('nasce ativa e com o cache igual ao saldo inicial', () => {
         const created = account({ openingBalance: Money.of(250.5, BRL) });
         expect(created.disabled).toBe(false);
@@ -83,7 +83,7 @@ describe('conta (database-design §4.4)', () => {
     });
 });
 
-describe('cartão de crédito (database-design §4.5)', () => {
+describe('cartão de crédito (banco-de-dados §4.5)', () => {
     const content = { accountId, name: 'Roxinho', limit: Money.of(8000, BRL), billingCycle: BillingCycle.of(3, 10) };
 
     it('recusa limite negativo', () => {

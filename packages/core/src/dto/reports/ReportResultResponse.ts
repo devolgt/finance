@@ -40,7 +40,7 @@ export interface ReportResultResponse {
     readonly rows: readonly ReportRowResponse[];
     readonly columnTotals: readonly ReportFigureResponse[];
     readonly total: ReportFigureResponse;
-    /** Com a tag como dimensão, os totais não são a soma das células (reports-design §3). */
+    /** Com a tag como dimensão, os totais não são a soma das células (relatorios §5). */
     readonly overlapping: boolean;
 }
 
@@ -61,7 +61,7 @@ function toAxis(axis: ReportAxis): ReportAxisResponse {
 }
 
 /**
- * Cada número é arredondado uma vez, aqui, a partir da soma sem arredondar (database-design §3.7);
+ * Cada número é arredondado uma vez, aqui, a partir da soma sem arredondar (banco-de-dados §3.7);
  * por isso um total pode diferir em um centavo da soma das células arredondadas.
  *
  * @param figure Número do domínio.

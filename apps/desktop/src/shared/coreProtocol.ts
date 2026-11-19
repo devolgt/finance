@@ -42,7 +42,7 @@ const TRANSPORT_CLOSED: CoreResult<never> = {
 };
 
 /**
- * `CoreClient` do desktop sobre um `MessagePort` (desktop-shell-design §5.2): o renderer fala
+ * `CoreClient` do desktop sobre um `MessagePort` (desktop §3.2): o renderer fala
  * direto com o `utilityProcess`, sem passar pelo processo principal. Cada chamada leva um
  * número de correlação, porque o canal é um só e as respostas não têm ordem garantida.
  *

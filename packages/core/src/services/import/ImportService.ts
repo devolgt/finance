@@ -47,10 +47,10 @@ interface ResolvedRegistries {
 }
 
 /**
- * Importação de transações históricas (import-design; desktop-mvp-plan Fase 13.1). Recebe as
+ * Importação de transações históricas (importacao §1 e §2). Recebe as
  * linhas já lidas pelo client e as decisões da revisão, e grava tudo — cadastros, lançamentos,
  * séries e pagamentos de fatura — numa única unidade de trabalho: ou o arquivo entra inteiro, ou
- * nada muda (import-design §7). Cada lançamento passa pelo `TransactionComposer`, as mesmas
+ * nada muda (importacao §7). Cada lançamento passa pelo `TransactionComposer`, as mesmas
  * regras do lançamento manual; só o recálculo é adiado para o fim, uma vez sobre o impacto
  * acumulado, porque um recálculo por linha tornaria quadrática a importação de milhares delas.
  */
@@ -98,7 +98,7 @@ export class ImportService {
 
     /**
      * Importa um arquivo. Refaz a análise sobre a mesma entrada da revisão, para que o que é
-     * gravado seja exatamente o que o usuário aprovou (import-design §6); as linhas recusadas pela
+     * gravado seja exatamente o que o usuário aprovou (importacao §6); as linhas recusadas pela
      * análise ficam de fora e entram na contagem.
      *
      * @param command Linhas, opções e decisões da revisão.
@@ -155,9 +155,9 @@ export class ImportService {
 
             let invoicesPaid = 0;
             for (const payment of payments.values()) {
-                // Regra de negócio (Importação, import-design §5.4): a fatura com compra paga é paga
+                // Regra de negócio (Importação, importacao §5.4): a fatura com compra paga é paga
                 // na maior data de pagamento entre as compras importadas nela. As compras já
-                // reabriram a fatura que estava paga (database-design §4.7), então ela é paga de novo.
+                // reabriram a fatura que estava paga (banco-de-dados §4.7), então ela é paga de novo.
                 const invoice = this.invoices.findByPeriod(payment.creditCard.id, payment.period);
                 if (invoice !== null && !invoice.isPaid()) {
                     impact = impact.merge(this.invoiceService.markPaid(invoice, payment.creditCard, payment.date));
@@ -180,7 +180,7 @@ export class ImportService {
     }
 
     /**
-     * Cria ou liga cada conta e cada cartão citado pelas linhas aceitas (import-design §5.1).
+     * Cria ou liga cada conta e cada cartão citado pelas linhas aceitas (importacao §5.1).
      *
      * @param command Decisões da revisão.
      * @param accountNames Contas citadas no arquivo.
@@ -227,7 +227,7 @@ export class ImportService {
     }
 
     /**
-     * Regra de negócio (Contas): conta desativada não recebe lançamento novo (desktop-mvp-plan
+     * Regra de negócio (Contas): conta desativada não recebe lançamento novo (contas
      * §5.1), e a conta ligada precisa ser do perfil escolhido para ela — é o perfil que decide
      * onde os lançamentos dela caem.
      *
@@ -263,7 +263,7 @@ export class ImportService {
     }
 
     /**
-     * Regra de negócio (Importação, import-design §5.1): o cartão novo fica no perfil da conta
+     * Regra de negócio (Importação, importacao §5.1): o cartão novo fica no perfil da conta
      * que paga a fatura, uma conta do arquivo; o ligado precisa estar ativo.
      *
      * @param decision Decisão sobre o cartão.
@@ -301,9 +301,9 @@ export class ImportService {
 
     /**
      * Monta o lançamento de uma linha aceita e anota o pagamento da fatura dela.
-     * Regra de negócio (Importação, import-design §5.4): a compra no cartão vai para a fatura que
+     * Regra de negócio (Importação, importacao §5.4): a compra no cartão vai para a fatura que
      * vence no mês do Vencimento da linha, e não para a sugerida pela data da compra.
-     * Regra de negócio (Importação, import-design §5.1): o perfil do lançamento é o da conta de
+     * Regra de negócio (Importação, importacao §5.1): o perfil do lançamento é o da conta de
      * origem; no cartão, o do cartão — o da conta que paga a fatura.
      *
      * @param item Linha planejada pela análise.
@@ -359,7 +359,7 @@ export class ImportService {
 
 /**
  * Categorias, subcategorias e tags de cada perfil, procuradas pelo nome e criadas quando faltam
- * (import-design §5.2). Lê cada perfil uma vez e guarda o que criou, porque milhares de linhas
+ * (importacao §5.2). Lê cada perfil uma vez e guarda o que criou, porque milhares de linhas
  * repetem as mesmas poucas dezenas de nomes. A criação passa pelos Services do cadastro, que
  * aplicam a mesma unicidade por nome — a importação nunca cria um nome que o cadastro recusaria.
  */
@@ -490,7 +490,7 @@ function requireResolved<T>(resolved: ReadonlyMap<string, T>, name: string, fiel
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.5): o parcelamento importado é por parcela — o
+ * Regra de negócio (Importação, importacao §5.5): o parcelamento importado é por parcela — o
  * arquivo traz o valor de cada uma, com o ajuste de arredondamento onde a origem o pôs —, e a fixa
  * termina onde a análise decidiu.
  *

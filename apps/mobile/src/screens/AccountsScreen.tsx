@@ -17,9 +17,9 @@ import { EmptyState, QueryView } from '../ui/states.tsx';
 /**
  * Se a linha da conta aparece esmaecida.
  * Regra de negócio (Contas): a conta fora do total aparece apagada e só com o consolidado, como no
- * mockup e no desktop, porque não soma no total (database-design §4.4); a conta sem saldo no mês
+ * desktop, porque não soma no total (banco-de-dados §4.4); a conta sem saldo no mês
  * — consolidado e previsto zerados — também, para que as contas com dinheiro se destaquem
- * (mobile-mvp-plan, Fase 12).
+ * (contas §6).
  *
  * @param account Conta com os saldos do mês.
  * @return `true` quando a linha fica com a cor `muted`.
@@ -29,9 +29,9 @@ function isDimmed(account: AccountInPeriodResponse): boolean {
 }
 
 /**
- * Linha da conta (mockup `MobileContas`): nome, tipo e o selo "Padrão" à esquerda; consolidado e
+ * Linha da conta: nome, tipo e o selo "Padrão" à esquerda; consolidado e
  * previsto do fim do mês à direita, e o "›" que abre o extrato. O selo diz qual conta o atalho
- * "Débito" do lançamento escolhe (database-design §4.1). O nome acessível junta tudo, porque o
+ * "Débito" do lançamento escolhe (banco-de-dados §4.1). O nome acessível junta tudo, porque o
  * leitor de tela lê a linha como um botão só.
  *
  * @param props.account Conta com os saldos do mês.
@@ -82,15 +82,14 @@ function AccountItem(props: { readonly account: AccountInPeriodResponse; readonl
 }
 
 /**
- * Contas (mockup `MobileContas`; mobile-mvp-plan, Fase 12): as contas ativas com o saldo do fim
+ * Contas (contas §6): as contas ativas com o saldo do fim
  * do mês, o total do perfil e, à parte, as desativadas. Tocar numa conta abre o extrato dela; o
  * "+" cria uma conta e abre o extrato da nova, como o desktop.
  *
  * Regra de negócio (Contas): o total vem do núcleo, que já soma só as contas que entram no total
- * — a tela não refaz a soma (database-design §4.4) —, e é do perfil: a conta desativada continua
- * no saldo (desktop-mvp-plan §5.1), por isso mostrá-la à parte não muda o total. Consolidado e
- * previsto sempre juntos (decisão de interface 6), também no total, que o mockup mostra só com o
- * consolidado.
+ * — a tela não refaz a soma (banco-de-dados §4.4) —, e é do perfil: a conta desativada continua
+ * no saldo (contas §5.1), por isso mostrá-la à parte não muda o total. Consolidado e
+ * previsto sempre juntos (desktop §7.5), também no total.
  *
  * @return A tela.
  */

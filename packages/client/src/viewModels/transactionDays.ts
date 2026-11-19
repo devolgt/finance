@@ -4,7 +4,7 @@ import { formatMoney } from '../format/money.ts';
 import type { TransactionTable, TransactionTableRow } from './transactionTable.ts';
 
 /*
- * A lista de Transações do celular (mockup `MobileTransacoes`): as mesmas linhas da tabela do
+ * A lista de Transações do celular (transacoes §8.3): as mesmas linhas da tabela do
  * desktop (`buildTransactionTable`), agrupadas por dia, com Entradas, Saídas e Resultado no topo.
  * Fica no `client` para que os totais sigam a mesma regra do resultado da tabela do desktop.
  */

@@ -16,11 +16,12 @@ export interface StartupControls {
     /** Exportar e importar a cópia do banco e o log; `null` nos testes que não os usam. */
     readonly copies: DatabaseCopies | null;
     /**
-     * Fecha e reabre o núcleo — depois de importar uma cópia, o banco em uso é outro. O cache de
-     * consultas é esvaziado, porque guardava dados do banco que saiu.
+     * Fecha e reabre o núcleo — depois de importar uma cópia ou de tirar o banco do lugar para
+     * entrar num grupo, o banco em uso é outro. O cache de consultas é esvaziado, porque guardava
+     * dados do banco que saiu.
      *
      * @param notice Frase a mostrar numa folha por cima do app reaberto (o resultado da
-     * importação), ou `null`.
+     * importação ou onde o banco anterior foi guardado), ou `null`.
      */
     readonly restart: (notice: string | null) => void;
 }
@@ -53,9 +54,9 @@ export function useStartupControls(): StartupControls {
  * @param props.children O app, mostrado só com o banco aberto.
  * @return A tela da etapa atual.
  *
- * Reabrir (`restart`, depois de importar a cópia do banco) volta a "Abrindo…" e roda a abertura
- * de novo, com migrations e verificação, como em toda abertura: a cópia pode ser de uma versão
- * anterior e precisar migrar.
+ * Reabrir (`restart`, depois de importar a cópia do banco ou de tirá-lo do lugar para entrar num
+ * grupo) volta a "Abrindo…" e roda a abertura de novo, com migrations e verificação, como em toda
+ * abertura: a cópia pode ser de uma versão anterior e precisar migrar, e o banco novo nasce vazio.
  */
 export function StartupGate(props: { readonly open: () => Promise<MobileStartup>; readonly queryClient?: QueryClient; readonly children: ReactNode }): ReactNode {
     const { open, children } = props;
@@ -63,8 +64,8 @@ export function StartupGate(props: { readonly open: () => Promise<MobileStartup>
     const [queryClient] = useState(() => props.queryClient ?? createQueryClient());
     // Cada reabertura é uma tentativa nova: o efeito da abertura depende dela.
     const [attempt, setAttempt] = useState(0);
-    // O resultado da importação: o app reabre no Início, e não em Ajustes, então a frase vem
-    // numa folha por cima do app, até o usuário dispensar.
+    // O resultado da troca do banco: o app reabre no Início (ou no primeiro uso), e não na tela
+    // que pediu a troca, então a frase vem numa folha por cima do app, até o usuário dispensar.
     const [notice, setNotice] = useState<string | null>(null);
 
     useEffect(() => {
@@ -115,7 +116,7 @@ export function StartupGate(props: { readonly open: () => Promise<MobileStartup>
             </CoreClientProvider>
             <Sheet
                 open={notice !== null}
-                title="Cópia do banco"
+                title="Banco deste aparelho"
                 onClose={() => {
                     setNotice(null);
                 }}

@@ -47,6 +47,15 @@ const RULE_MESSAGES: Readonly<Record<BusinessRule, string>> = {
     'report-dimensions-repeated': 'Escolha uma segunda divisão diferente da primeira.',
     'report-pie-secondary': 'O gráfico de pizza divide só pela primeira divisão.',
     'sub-category-in-use': 'Esta subcategoria tem lançamentos. Escolha para onde movê-los antes de excluir.',
+    'sync-address-not-local': 'Só é possível conectar a um endereço da rede local (por exemplo, 192.168.0.10).',
+    'sync-already-in-group': 'Este aparelho já está num grupo de sincronização.',
+    'sync-device-has-data': 'Para entrar num grupo, este aparelho precisa estar sem dados. Descarte os dados locais antes.',
+    'sync-invite-invalid': 'O convite expirou ou já foi usado. Gere um novo convite no outro aparelho.',
+    'sync-member-removed': 'Este aparelho foi removido do grupo. Para voltar, entre de novo com um convite e o banco vazio.',
+    'sync-not-a-member': 'Esse aparelho não faz parte do grupo.',
+    'sync-not-in-group': 'Este aparelho ainda não está num grupo de sincronização.',
+    'sync-peer-unreachable': 'Não foi possível conectar. Confira o endereço e se a tela de Dispositivos está aberta no outro aparelho.',
+    'sync-unavailable': 'A sincronização não está disponível nesta versão do app.',
     'transaction-move-currency-mismatch': 'Só dá para mover o lançamento para um perfil com a mesma moeda deste.',
     'transaction-type-locked': 'O tipo do lançamento não muda depois de criado. Exclua-o e lance de novo com o outro tipo.',
 };
@@ -77,7 +86,7 @@ const ENTITY_NAMES: Readonly<Record<string, string>> = {
 
 /**
  * Traduz o erro do núcleo para o que a tela mostra. O `switch` é exaustivo sobre o
- * `ErrorCode` fechado (desktop-shell-design §5.3): um código novo quebra a compilação aqui,
+ * `ErrorCode` fechado (desktop §3.3): um código novo quebra a compilação aqui,
  * em vez de cair num `default` silencioso. A mensagem vem do código e dos detalhes, nunca do
  * texto técnico do núcleo, que é para log.
  *

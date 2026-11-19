@@ -111,7 +111,7 @@ type UpdateSubmission = Extract<TransactionSubmission, { route: 'transactions.up
 
 /**
  * Onde o salvar de uma série está: na escolha do escopo ou no diálogo de revisão
- * (database-design §4.12). A revisão guarda de onde veio, para o "Voltar" voltar um
+ * (banco-de-dados §4.12). A revisão guarda de onde veio, para o "Voltar" voltar um
  * passo, e o escopo escolhido — `null` na criação, que não tem escopo.
  */
 type PendingSave =
@@ -119,7 +119,7 @@ type PendingSave =
     | { readonly step: 'review'; readonly submission: TransactionSubmission; readonly scope: EditScope | null; readonly from: 'form' | 'scope' };
 
 /**
- * Formulário de lançamento (desktop-mvp-plan Fase 9; mockup `DesktopTransacoes`). O mesmo
+ * Formulário de lançamento (transacoes §5). O mesmo
  * formulário serve ao diálogo de lançamento (`TransactionDialog`) da tela de Transações e do
  * "+ Lançamento" das outras telas, para que lançar seja igual de qualquer lugar. Espera os cadastros que as escolhas
  * oferecem antes de montar, para que os valores iniciais já caiam em opções existentes.
@@ -155,7 +155,7 @@ export function TransactionForm(props: TransactionFormProps): ReactNode {
 
 /**
  * Origem com que o lançamento novo abre.
- * Regra de negócio (Lançamentos, database-design §4.1): o lançamento novo abre no débito, com a
+ * Regra de negócio (Lançamentos, banco-de-dados §4.1): o lançamento novo abre no débito, com a
  * conta padrão do perfil já escolhida.
  *
  * @param profile Perfil do lançamento, com a conta padrão.
@@ -212,11 +212,11 @@ function useFormRegistries(profileId: string): FormRegistries | null {
 
 /**
  * O formulário com os cadastros carregados.
- * Regra de negócio (Contas e Cartões, desktop-mvp-plan §5.1): conta e cartão desativados não
+ * Regra de negócio (Contas e Cartões, contas §5): conta e cartão desativados não
  * são escolha de lançamento novo; na edição, a origem e o destino atuais continuam.
- * Regra de negócio (Cartão, database-design §4.7): a compra no cartão cai na fatura sugerida pela
+ * Regra de negócio (Cartão, banco-de-dados §4.7): a compra no cartão cai na fatura sugerida pela
  * data, que se pode trocar; escolher uma paga a reabre, e o formulário avisa antes.
- * Regra de negócio (Mover para outro perfil, database-design §4.13): o campo "Perfil" leva o
+ * Regra de negócio (Mover para outro perfil, banco-de-dados §4.13): o campo "Perfil" leva o
  * lançamento para outro perfil da mesma moeda; conta, cartão, categoria, tags e meta passam a ser
  * escolhidas entre as dele.
  *
@@ -283,7 +283,7 @@ function LoadedTransactionForm({ transaction, initialSource, onClose, onSaved, o
     const nameMatches = matchNameSuggestions({ suggestions: nameSuggestions.data ?? [], query: values.name, type: values.type });
     const subCategories = subCategoryOptions(categories, '');
     // As atingidas num grupo à parte; a arquivada só se este lançamento já está vinculado a ela
-    // (desktop-mvp-plan Fase 13.4).
+    // (metas §3.3).
     const goalOptions = goalChoices(goals, transaction?.goalId ?? null).map((choice): ComboboxOption => ({ value: choice.id, label: choice.label, group: choice.group }));
     const card = source?.kind === 'creditCard' ? (creditCards.find((creditCard) => creditCard.id === source.creditCardId) ?? null) : null;
     const invoice = useInvoiceChoice({ card, values, transaction, accounts });
@@ -302,7 +302,7 @@ function LoadedTransactionForm({ transaction, initialSource, onClose, onSaved, o
      * carregam. Sem isso, a despesa nova perde a conta padrão ao trocar de perfil, e a dica do campo
      * manda definir um padrão que o perfil já tem. Não dá para aplicar em `changeProfile`, porque
      * ali as opções ainda são as do perfil anterior.
-     * Regra de negócio (Lançamentos, database-design §4.1; desktop-mvp-plan Fase 15.2): o
+     * Regra de negócio (Lançamentos, banco-de-dados §4.1; transacoes §4.2): o
      * lançamento novo abre no débito com a conta padrão do seu perfil.
      */
     useEffect(() => {
@@ -403,9 +403,9 @@ function LoadedTransactionForm({ transaction, initialSource, onClose, onSaved, o
 
     /**
      * Troca o perfil do lançamento. Conta, cartão, fatura, destino, categoria, tags e meta são do
-     * perfil (database-design §3.8) e não valem no outro, então voltam a ser escolhidos; voltar ao
+     * perfil (banco-de-dados §3.8) e não valem no outro, então voltam a ser escolhidos; voltar ao
      * perfil do lançamento editado devolve as escolhas dele. No lançamento novo, a origem volta ao
-     * débito com a conta padrão do perfil escolhido (Fase 15.2), aplicada quando os cadastros dele
+     * débito com a conta padrão do perfil escolhido (transacoes §4.2), aplicada quando os cadastros dele
      * carregam.
      *
      * @param next Perfil escolhido.
@@ -434,7 +434,7 @@ function LoadedTransactionForm({ transaction, initialSource, onClose, onSaved, o
             return;
         }
         const { submission } = result;
-        // Regra de negócio (Recorrências, database-design §4.12):
+        // Regra de negócio (Recorrências, banco-de-dados §4.12):
         // criar uma série passa pelo diálogo de revisão. Editar uma ocorrência pergunta antes a
         // quais da série a edição se aplica — menos quando a série muda, o que vale sempre para a
         // editada e as futuras, e quando o perfil muda, o que leva a série inteira; os dois casos
@@ -753,7 +753,7 @@ function LoadedTransactionForm({ transaction, initialSource, onClose, onSaved, o
                     pending={update.isPending}
                     onConfirm={(scope) => {
                         // "Somente esta" grava direto: a revisão só repetiria a linha que o usuário
-                        // está editando (desktop-mvp-plan Fase 13.2).
+                        // está editando (recorrencias §7).
                         if (scope === 'single') {
                             void save(pending.submission, scope);
                         } else {
@@ -790,9 +790,9 @@ function LoadedTransactionForm({ transaction, initialSource, onClose, onSaved, o
 }
 
 /**
- * "Guardar" ou "Retirar" da transferência vinculada a uma meta (desktop-mvp-plan Fase 13.3), como
+ * "Guardar" ou "Retirar" da transferência vinculada a uma meta (metas §3.2), como
  * botões de opção, os dois à vista como o seletor de tipo.
- * Regra de negócio (Metas, database-design §4.11): a retirada — tirar da reserva para um
+ * Regra de negócio (Metas, banco-de-dados §4.11): a retirada — tirar da reserva para um
  * imprevisto — desconta do progresso; só a transferência pode retirar.
  *
  * @param props.value `true` quando a transferência retira da meta.
@@ -834,7 +834,7 @@ const PAYMENT_METHOD_LABELS: Readonly<Record<PaymentMethod, string>> = {
  * Atalho "Débito / Crédito" da despesa nova, logo abaixo do tipo: escolhe a conta ou o cartão
  * padrão do perfil sem abrir a lista de origens. Fica só na despesa, a única que se paga no
  * cartão no dia a dia; as outras saem de uma conta.
- * Regra de negócio (Lançamentos, database-design §4.1): débito é pagar com a conta padrão;
+ * Regra de negócio (Lançamentos, banco-de-dados §4.1): débito é pagar com a conta padrão;
  * crédito, com o cartão padrão.
  *
  * @param props.value Forma de pagamento mostrada — a da origem escolhida, quando há uma.
@@ -877,7 +877,7 @@ function missingDefaultHint(method: PaymentMethod): string {
 
 
 /**
- * Rótulo curto de cada tipo no seletor, como no mockup `MobileLancamento` ("Transf.", "Invest."):
+ * Rótulo curto de cada tipo no seletor ("Transf.", "Invest."), o mesmo do celular:
  * os quatro nomes inteiros não cabem lado a lado na largura do diálogo. O nome inteiro continua no
  * nome acessível do botão.
  */
@@ -889,10 +889,10 @@ const SHORT_TYPE_LABELS: Readonly<Record<TransactionResponse['type'], string>> =
 };
 
 /**
- * Tipo do lançamento como botões de opção, como o seletor do mockup `MobileLancamento`: os
+ * Tipo do lançamento como botões de opção, como o seletor do celular: os
  * quatro tipos à vista, sem abrir lista. Na edição o seletor continua visível, para mostrar o
  * tipo, mas os outros tipos ficam desabilitados.
- * Regra de negócio (Transação, database-design §4.13): o tipo é fixo desde a criação; o núcleo
+ * Regra de negócio (Transação, transacoes §1.5): o tipo é fixo desde a criação; o núcleo
  * recusa a troca, e travar aqui evita que o usuário preencha o formulário só para ver o erro.
  *
  * @param props.value Tipo escolhido.

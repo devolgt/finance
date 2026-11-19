@@ -2,7 +2,7 @@ import type { CategoryBranchResponse } from '@finance/core';
 import { z } from 'zod';
 
 /*
- * Categoria aberta na tela Categorias (desktop-mvp-plan Fase 13.12). Fica na URL como *search
+ * Categoria aberta na tela Categorias (categorias-e-tags §5.1). Fica na URL como *search
  * param* `category`, e não num estado do React, pelo mesmo motivo de Contas e Cartões: voltar no
  * histórico devolve a categoria que estava aberta, e a categoria criada abre pela navegação.
  */

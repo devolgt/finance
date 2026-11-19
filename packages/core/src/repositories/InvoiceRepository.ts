@@ -40,7 +40,7 @@ export interface InvoiceRepository {
     listByCard(creditCardId: CreditCardId): readonly Invoice[];
 
     /**
-     * Insere a fatura ou revive a linha com o mesmo id determinístico (sync-design §5.6).
+     * Insere a fatura ou revive a linha com o mesmo id determinístico (sincronizacao §3.7).
      *
      * @param invoice Fatura a garantir.
      * @return void

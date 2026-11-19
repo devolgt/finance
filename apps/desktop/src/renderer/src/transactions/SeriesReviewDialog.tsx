@@ -30,12 +30,12 @@ const CONFIRM_LABELS: Readonly<Record<ReviewAction, readonly [string, string]>> 
 };
 
 /**
- * Diálogo de revisão (database-design §4.12): toda criação, edição ou exclusão de uma
+ * Diálogo de revisão (recorrencias §7): toda criação, edição ou exclusão de uma
  * transação recorrente só é gravada depois que o usuário vê o que será feito com as séries e quais
  * transações serão excluídas, criadas e alteradas — com as pagas e as editadas à mão marcadas.
- * Vem depois da escolha do escopo, quando há escolha. Os mockups não têm esta tela; segue a caixa
- * de aviso do `MobileEscopo` e a especificação aprovada (desktop-mvp-plan Fase 9.2).
- * Regra de negócio (Recorrências, database-design §4.12): ocorrências pagas não são protegidas,
+ * Vem depois da escolha do escopo, quando há escolha, no mesmo formato de caixa de aviso do
+ * diálogo de escopo, para as duas etapas parecerem uma conversa só.
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): ocorrências pagas não são protegidas,
  * então o diálogo diz antes o que está em jogo, em vez de um aviso genérico.
  *
  * @param props.name Nome do lançamento, para o título.
@@ -127,7 +127,7 @@ export function SeriesReviewDialog({
 
 /**
  * Um grupo do diálogo ("11 transações serão excluídas"): as primeiras linhas e "e mais n
- * transações", com a opção de ver todas (desktop-mvp-plan Fase 9.2). Cada linha é só a
+ * transações", com a opção de ver todas (recorrencias §7). Cada linha é só a
  * data e a situação, com a marca de editada à mão.
  *
  * @param props.group Grupo do diálogo.

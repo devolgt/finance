@@ -5,7 +5,7 @@ import type { AppFileSystem } from '../platform/AppFileSystem.ts';
 import type { ThemePreference } from '../theme/ThemeRoot.tsx';
 
 /**
- * Preferências do aparelho (mobile-mvp-plan §2): ficam num JSON no diretório do app, e não no
+ * Preferências do aparelho (mobile §2.2): ficam num JSON no diretório do app, e não no
  * banco, porque são do aparelho e não do perfil — no banco, seriam replicadas pela sincronização
  * e o celular abriria no perfil e no mês que o desktop deixou.
  */

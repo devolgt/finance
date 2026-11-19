@@ -19,7 +19,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/components/ui/input';
 
 /*
- * Alerta da exclusão em cadeia (desktop-mvp-plan §5.1). Regra de negócio (Contas e Cartões):
+ * Alerta da exclusão em cadeia (contas §5). Regra de negócio (Contas e Cartões):
  * a ação padrão é desativar; excluir é a ação explícita, e antes dela o app mostra tudo o que
  * será apagado junto — contado, e com as outras contas cujo saldo muda — e só exclui depois de
  * uma confirmação forte. As contagens vêm do `deletionImpact`, que usa o mesmo escopo que a

@@ -19,7 +19,7 @@ import { EmptyState, ErrorState, LoadingState } from '../ui/states.tsx';
 /** Um item da lista virtualizada: o título de um dia ou uma linha. */
 type ListItem = { readonly kind: 'day'; readonly key: string; readonly label: string } | { readonly kind: 'row'; readonly key: string; readonly row: TransactionTableRow };
 
-/** Cor do valor pelo sentido; o sinal e o ⇄ já vêm no texto (decisão de interface 7). */
+/** Cor do valor pelo sentido; o sinal e o ⇄ já vêm no texto (desktop §7.3). */
 const AMOUNT_TONE: Readonly<Record<TransactionTableRow['direction'], string>> = { in: 'text-in', out: 'text-out', transfer: 'text-ink', none: 'text-ink' };
 
 /**
@@ -33,7 +33,7 @@ function rowHint(row: TransactionTableRow): string {
 }
 
 /**
- * Uma linha de Transações (`.it` do mockup): nome, "conta · categoria", valor com o sinal e a
+ * Uma linha de Transações: nome, "conta · categoria", valor com o sinal e a
  * situação. O estorno leva a etiqueta "estorno", como no desktop.
  *
  * @param props.row Linha já formatada pelo `buildTransactionTable`.
@@ -73,7 +73,7 @@ function TransactionItem(props: { readonly row: TransactionTableRow; readonly fi
 }
 
 /**
- * Transações do mês (mockup `MobileTransacoes`; mobile-mvp-plan, Fase 9): entradas, saídas e
+ * Transações do mês (transacoes §8): entradas, saídas e
  * resultado no topo, a lista por dia numa `FlashList` — um mês tem centenas de linhas, e a
  * reciclagem mantém a rolagem fluida com o núcleo na mesma thread —, a busca e os filtros em
  * folha. A tabela é a do desktop (`buildTransactionTable`): sem filtro, as compras do cartão ficam

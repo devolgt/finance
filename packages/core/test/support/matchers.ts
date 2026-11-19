@@ -4,7 +4,7 @@ import { Currency, Money } from '../../src/index.ts';
 interface MoneyMatchers<R = unknown> {
     /**
      * Compara dinheiro com o epsilon da moeda, usando o mesmo `Money.equals` de produção.
-     * `toBe` em dinheiro compararia doubles por igualdade exata (backend-design §5.8).
+     * `toBe` em dinheiro compararia doubles por igualdade exata (testes §2.5).
      *
      * @param expected Valor esperado como string decimal — o que um humano conferiria no extrato.
      */

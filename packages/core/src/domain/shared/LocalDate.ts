@@ -5,8 +5,8 @@ const PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 /**
  * Data de calendário sem hora nem fuso, como o `TEXT` `YYYY-MM-DD` do schema
- * (database-design §3.9). Não usa `Date` porque um `Date` construído no fuso errado só
- * vira bug perto da meia-noite de um dia 31 (backend-design §5.7) — e vencimento e
+ * (banco-de-dados §3.9). Não usa `Date` porque um `Date` construído no fuso errado só
+ * vira bug perto da meia-noite de um dia 31 (testes §2.4) — e vencimento e
  * pagamento são datas do calendário do usuário, não instantes.
  */
 export class LocalDate {
@@ -50,7 +50,7 @@ export class LocalDate {
      * Data do dia pedido no mês, com o dia inexistente virando o último dia do mês.
      * Regra de negócio (Cartão de crédito): um cartão que fecha no dia 31 fecha em 30/04,
      * em 28/02 e em 29/02 nos bissextos; o dia guardado continua 31 e o ajuste é feito a
-     * cada mês, para que maio volte a fechar no dia 31 (database-design §4.5).
+     * cada mês, para que maio volte a fechar no dia 31 (banco-de-dados §4.5).
      *
      * @param period Mês em que a data deve cair.
      * @param day Dia do mês desejado, 1–31.
@@ -87,7 +87,7 @@ export class LocalDate {
 
     /**
      * Dias desde 1970-01-01 no calendário gregoriano proleptico, sem `Date`: um `Date` montado no
-     * fuso do aparelho muda o dia perto da meia-noite (backend-design §5.7). Algoritmo
+     * fuso do aparelho muda o dia perto da meia-noite (testes §2.4). Algoritmo
      * `days_from_civil` de Howard Hinnant, só aritmética inteira.
      *
      * @return O número do dia.

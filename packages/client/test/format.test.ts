@@ -26,8 +26,8 @@ function brl(amount: number, currency = 'BRL'): { readonly amount: number; reado
 }
 
 /*
- * Testes de ouro: as strings esperadas são as dos mockups aprovados, com o `−` tipográfico
- * (U+2212) e espaço comum. Mudar uma delas é mudar o que o usuário lê — precisa aparecer no diff.
+ * Testes de ouro: as strings esperadas são as que as telas mostram (desktop §7.4), com o `−`
+ * tipográfico (U+2212) e espaço comum. Mudar uma delas é mudar o que o usuário lê — precisa aparecer no diff.
  */
 describe('formatMoney', () => {
     it.each([
@@ -67,7 +67,7 @@ describe('formatMoney', () => {
 });
 
 describe('datas e meses', () => {
-    it('formata dia/mês, data completa e meses nos três tamanhos dos mockups', () => {
+    it('formata dia/mês, data completa e meses nos três tamanhos', () => {
         expect(formatDayMonth('2026-10-01')).toBe('01/10');
         expect(formatDate('2026-10-08')).toBe('08/10/2026');
         expect(formatMonthShort('2026-10')).toBe('out/2026');
@@ -146,7 +146,7 @@ describe('parseMoneyInput', () => {
 });
 
 describe('perfil', () => {
-    it('escreve o tipo como o seletor de perfil do mockup', () => {
+    it('escreve o tipo como o seletor de perfil', () => {
         expect(formatProfileType('personal')).toBe('Pessoal');
         expect(formatProfileType('business')).toBe('Empresarial');
         expect(formatProfileSummary({ type: 'business', currency: 'BRL' })).toBe('Empresarial · BRL');
@@ -154,7 +154,7 @@ describe('perfil', () => {
 });
 
 describe('conta', () => {
-    it('escreve o tipo como o primeiro uso e Cadastros do mockup', () => {
+    it('escreve o tipo como o primeiro uso e Cadastros', () => {
         expect(formatAccountType('checking')).toBe('Corrente');
         expect(formatAccountType('investment')).toBe('Investimentos');
     });
@@ -165,7 +165,7 @@ describe('conta', () => {
     });
 });
 
-describe('anotação na lista (mockups, decisão de interface 9)', () => {
+describe('anotação na lista (anotacoes §1.3)', () => {
     it('a primeira linha é o título e o resto vira a prévia numa linha só', () => {
         expect(summarizeNote('IPTU 2027\nCota única vence em fevereiro.\n\nValor: R$ 1.200,00')).toEqual({
             title: 'IPTU 2027',

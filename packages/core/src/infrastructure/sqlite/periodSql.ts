@@ -15,7 +15,7 @@ export function periodKey(period: YearMonth): number {
 
 /**
  * Primeiro e último dia de um mês como texto ISO, para filtrar `due_date` com `BETWEEN`.
- * Texto ISO-8601 ordena corretamente como string (database-design §3.9), então o filtro
+ * Texto ISO-8601 ordena corretamente como string (banco-de-dados §3.9), então o filtro
  * usa o índice `idx_transactions_due_date` sem função sobre a coluna.
  *
  * @param period Competência.
@@ -43,7 +43,7 @@ export function periodFromKey(key: number): YearMonth {
  * Data de caixa de uma transação em SQL — a mesma regra de `Transaction.cashDate`: a data
  * de pagamento quando paga, o vencimento enquanto em aberto.
  * Regra de negócio (Extrato): é esta data que decide o mês do extrato, na origem e no
- * destino de uma transferência (database-design §4.6). Fica num lugar só porque o
+ * destino de uma transferência (banco-de-dados §4.6). Fica num lugar só porque o
  * recálculo e a listagem do extrato precisam concordar sobre o mês de cada entrada.
  *
  * @param transaction Alias da tabela `transactions`.
@@ -74,9 +74,9 @@ export function invoiceDueKeySql(invoice: string, card: string): string {
 
 /**
  * Fonte única do **mês de pagamento** do relatório fixo por sócio — o único lugar a mudar quando
- * a regra for refinada (desktop-mvp-plan §8). Os relatórios personalizados escolhem a data na
- * definição (reports-design F3) e não passam por aqui.
- * Regra de negócio (Relatórios — reports-design §8, P1): os aportes contam no mês em que o
+ * a regra for refinada (relatorios §2.2). Os relatórios personalizados escolhem a data na
+ * definição (relatorios §4.1, F3) e não passam por aqui.
+ * Regra de negócio (Relatórios — relatorios §7, P1): os aportes contam no mês em que o
  * dinheiro de fato entra na conta (regime de caixa):
  *
  * - transação de conta: mês do **extrato** em que ela está, que é o do `payment_date`
@@ -122,7 +122,7 @@ export const REPORT_SOURCES_CTE = `
 /**
  * Entradas de um perfil empresarial (`:profileId`) que podem ser aporte de sócio, com o mês de
  * pagamento e o efeito no saldo de cada uma.
- * Regra de negócio (Sócios — aportes, reports-design §8): toda despesa é paga com o dinheiro da
+ * Regra de negócio (Sócios — aportes, relatorios §7): toda despesa é paga com o dinheiro da
  * empresa, e o sócio aparece no dinheiro que entra — a **receita** do perfil, pelo que entra na
  * conta (valor menos encargos, o `originEffect`), e a **transferência que chega de outro perfil**,
  * pelo valor (os encargos são da origem). A transferência entre contas do próprio perfil não é

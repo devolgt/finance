@@ -2,7 +2,7 @@ import type { AccountResponse, CategoryBranchResponse, CoreInput, CreditCardResp
 import type { ImportRowInput } from './interpretRows.ts';
 
 /*
- * View-model da etapa Revisar (mockup `DesktopImportRevisar`; import-design §5). Guarda as
+ * View-model da etapa Revisar (importacao §5 e §6). Guarda as
  * decisões do usuário e monta, a partir delas e da análise do núcleo, o que a tela mostra e a
  * entrada da rota `imports.run`.
  */
@@ -49,10 +49,10 @@ export interface ExistingRegistries {
     readonly creditCards: readonly CreditCardResponse[];
 }
 
-/** Opções padrão da revisão, as marcadas no mockup. */
+/** Opções padrão da revisão (importacao §5.2 e §5.5): agrupar séries, manter futuras e ler `#tags`. */
 export const DEFAULT_IMPORT_OPTIONS: ImportOptions = { groupSeries: true, keepFutureOccurrences: true, hashtagsAsTags: true, pastDueAsPaid: false };
 
-/** Categoria das transferências sugerida (import-design §5.2). */
+/** Categoria das transferências sugerida (importacao §5.2). */
 export const DEFAULT_TRANSFER_CATEGORY = { category: 'Transferências', subCategory: 'Entre contas' } as const;
 
 /**
@@ -80,7 +80,7 @@ function foldName(name: string): string {
  * Decisões iniciais: toda conta vai para o perfil padrão e liga à conta ativa de mesmo nome que já
  * existir lá; senão é criada como corrente, no saldo total. O cartão liga ao de mesmo nome no
  * perfil da pagadora; senão é criado, com o fechamento em branco — o arquivo não o traz, e o
- * usuário precisa confirmá-lo (import-design §5.1).
+ * usuário precisa confirmá-lo (importacao §5.1).
  *
  * @param analysis Análise do núcleo.
  * @param defaultProfileId Perfil padrão (o ativo).
@@ -154,7 +154,7 @@ export function withAccountProfile(state: ReviewState, name: string | null, prof
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.1): o cartão fica no perfil da conta que paga a
+ * Regra de negócio (Importação, importacao §5.1): o cartão fica no perfil da conta que paga a
  * fatura; o cartão ligado, no perfil dele.
  *
  * @param state Estado atual.
@@ -171,7 +171,7 @@ export function cardProfileId(state: ReviewState, card: ReviewCard, existing: Ex
 
 /**
  * O que ainda impede a importação — o "Falta:" ao lado do botão, que fica desabilitado enquanto a
- * lista não estiver vazia (mockup `DesktopImportRevisar`).
+ * lista não estiver vazia (importacao §6).
  *
  * @param state Estado atual.
  * @return As pendências, prontas para a frase; vazia quando dá para importar.
@@ -227,7 +227,7 @@ export interface ProfileCategories {
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.2): a categoria é procurada pelo nome no perfil da
+ * Regra de negócio (Importação, importacao §5.2): a categoria é procurada pelo nome no perfil da
  * linha e criada quando falta; a mesma categoria em perfis diferentes é criada em cada um.
  *
  * @param analysis Análise do núcleo.
@@ -310,7 +310,7 @@ function plannedRows(analysis: ImportAnalysis): readonly PlannedRow[] {
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.1): o lançamento vai para o perfil da conta de
+ * Regra de negócio (Importação, importacao §5.1): o lançamento vai para o perfil da conta de
  * origem; a compra no cartão, para o perfil do cartão.
  *
  * @param item Linha aceita.

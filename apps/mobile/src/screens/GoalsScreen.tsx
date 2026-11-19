@@ -22,7 +22,7 @@ const VIEW_OPTIONS = GOAL_LIST_VIEWS.map((view) => ({ value: view, label: format
 const EMPTY_VIEW: Readonly<Record<GoalListView, string>> = { active: 'Nenhuma meta ativa', reached: 'Nenhuma meta atingida', archived: 'Nenhuma meta arquivada' };
 
 /**
- * Cartão da meta (mockup `MobileMetas`): nome e percentual, a barra, "quanto de quanto · prazo" e,
+ * Cartão da meta: nome e percentual, a barra, "quanto de quanto · prazo" e,
  * enquanto falta, o ritmo para chegar lá. A meta vinculada a conta diz de qual conta vem o saldo,
  * porque o progresso dela não soma lançamentos; a arquivada leva a etiqueta, já que a atingida e
  * arquivada aparece também em "Atingidas".
@@ -62,9 +62,8 @@ function GoalCard({ goal, funding, onPress }: { readonly goal: GoalProgressRespo
 }
 
 /**
- * Metas (mockup `MobileMetas`; mobile-mvp-plan, Fase 14, tela aprovada pelo usuário): os cartões
- * das metas com a escolha entre ativas, atingidas e arquivadas — as visualizações do desktop
- * (Fase 13.4), que o mockup não desenha —, e o "+" de nova meta. Tocar abre o detalhe.
+ * Metas (metas §7.2): os cartões das metas com a escolha entre ativas, atingidas e arquivadas —
+ * as visualizações do desktop (metas §5.2) —, e o "+" de nova meta. Tocar abre o detalhe.
  * Regra de negócio (Metas): a meta atingida e arquivada aparece nas duas visualizações
  * (`goalInView`); o mês de referência só move o ritmo, porque o progresso é o que já foi pago até
  * hoje.

@@ -9,7 +9,7 @@ import { Sheet } from '../ui/Sheet.tsx';
 
 /**
  * Excluir categoria ou subcategoria, como o diálogo do desktop. Regra de negócio (Categorias,
- * desktop-mvp-plan Fase 1.4): com lançamentos, a exclusão pede para onde movê-los — toda
+ * categorias-e-tags §2.3): com lançamentos, a exclusão pede para onde movê-los — toda
  * transação aponta para uma subcategoria, e apagar a classificação não pode apagar o lançamento;
  * os destinos já saem sem as subcategorias que somem junto (`moveTargets`). Sem lançamentos, é só
  * a confirmação. Mover não muda saldo nenhum.

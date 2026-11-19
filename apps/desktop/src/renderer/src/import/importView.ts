@@ -4,8 +4,8 @@ import type { ImportIssue, ImportResponse } from '@finance/core';
 import { TEMPLATE_NAME_MAX_LENGTH, type ImportFileResult } from '../../../shared/bridge.ts';
 
 /*
- * Textos e regras de apresentação do assistente de importação (desktop-mvp-plan Fase 13.1;
- * mockups `DesktopImport*`). Funções puras, fora dos componentes, para serem testadas sem montar
+ * Textos e regras de apresentação do assistente de importação (importacao §2 e
+ * §8). Funções puras, fora dos componentes, para serem testadas sem montar
  * a janela.
  */
 
@@ -29,7 +29,7 @@ export interface DecodedFile {
 }
 
 /**
- * Decodifica o arquivo (import-design §3): UTF-8 quando os bytes são UTF-8 válido, senão Latin-1 —
+ * Decodifica o arquivo (importacao §3): UTF-8 quando os bytes são UTF-8 válido, senão Latin-1 —
  * na prática o windows-1252 que o Excel grava, que cobre as aspas e o travessão que o Latin-1
  * puro não tem.
  *
@@ -240,13 +240,13 @@ export interface PreviewRow {
     readonly status: string;
     readonly paid: boolean;
     readonly value: string;
-    /** Direção do valor, para a cor — que nunca é o único sinal (decisão de interface 7). */
+    /** Direção do valor, para a cor — que nunca é o único sinal (desktop §7.3). */
     readonly direction: 'in' | 'out' | 'transfer';
 }
 
 /**
- * Prévia das primeiras linhas lidas, como o mockup `DesktopImportMapear`: o valor leva o sinal
- * (+, − ou ⇄) pelo tipo, e não só a cor (decisão de interface 7).
+ * Prévia das primeiras linhas lidas (importacao §4): o valor leva o sinal
+ * (+, − ou ⇄) pelo tipo, e não só a cor (desktop §7.3).
  *
  * @param rows Linhas lidas.
  * @param currency Moeda do perfil ativo, só para o símbolo.

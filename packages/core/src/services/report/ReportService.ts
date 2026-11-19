@@ -25,7 +25,7 @@ const REFERENCES: readonly { readonly kind: ReportReferenceKind; readonly entity
 ];
 
 /**
- * Relatórios personalizados (reports-design): o cadastro das definições e a execução delas.
+ * Relatórios personalizados (relatorios §3): o cadastro das definições e a execução delas.
  * Concentra as regras que relacionam linhas — o nome único no perfil e a posse de cada cadastro
  * do filtro — e a montagem do resultado, que lê as somas do banco numa unidade de trabalho só,
  * para que células e totais venham do mesmo estado.
@@ -59,7 +59,7 @@ export class ReportService {
     }
 
     /**
-     * Regra de negócio (Relatórios, §2.2 e §4): nome único no perfil, sem diferenciar maiúsculas,
+     * Regra de negócio (Relatórios, relatorios §4.2 e §6.1): nome único no perfil, sem diferenciar maiúsculas,
      * e todo cadastro do filtro vivo e do perfil.
      *
      * @param command Perfil, nome, filtro e formato.
@@ -88,7 +88,7 @@ export class ReportService {
     }
 
     /**
-     * Regra de negócio (Relatórios, §2.2): um cadastro excluído depois de salvo continua na
+     * Regra de negócio (Relatórios, relatorios §4.2): um cadastro excluído depois de salvo continua na
      * definição e não casa com nada; por isso regravar aceita os ids que a definição já tinha,
      * mesmo mortos, e só confere os novos — mudar o nome não pode exigir limpar o filtro antes.
      *
@@ -171,7 +171,7 @@ export class ReportService {
     /**
      * Lê as somas em cada nível de agrupamento — células, total da linha, total da coluna e
      * geral — porque com a tag como dimensão os totais não são a soma das células
-     * (reports-design §3).
+     * (relatorios §5).
      *
      * @param profileId Perfil dono das transações.
      * @param filter Filtro validado.

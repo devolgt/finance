@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { formatDateChoice, monthGrid } from '../src/index.ts';
 
-describe('escolha de data no celular (mobile-mvp-plan, Fase 10)', () => {
+describe('escolha de data no celular (transacoes §5)', () => {
     it('a grade do mês começa no domingo, com as casas vazias antes do dia 1', () => {
         // 01/10/2026 é uma quinta-feira; outubro tem 31 dias.
         const weeks = monthGrid('2026-10');

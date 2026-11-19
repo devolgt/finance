@@ -44,14 +44,14 @@ export interface MovementSources {
 
 /**
  * Movimento mensal de uma conta, consolidado e previsto, montado a partir das somas que o
- * SQL agrega. A agregação pesada fica no SQLite e a regra fica aqui (backend-design §3.2):
+ * SQL agrega. A agregação pesada fica no SQLite e a regra fica aqui (core §1.2):
  * o SQL só soma `value` e `charges` por mês, tipo e pago; quem decide direção, encargos,
  * o que é consolidado e em que mês cai uma fatura em aberto é o domínio.
  *
  * Regra de negócio (Extrato): entram no movimento do mês as transações do extrato, as
  * transferências e investimentos que chegam à conta no mês da data de caixa, as faturas pagas
  * vinculadas ao extrato e — só no previsto — as faturas em aberto no mês do vencimento
- * (database-design §4.6).
+ * (banco-de-dados §4.6).
  */
 export class MonthlyMovement {
     /**
@@ -91,11 +91,11 @@ export class MonthlyMovement {
         for (const totals of sources.incoming) {
             accumulate(totals.period, destinationEffect(totals.value), totals.paid);
         }
-        // Fatura paga entra no consolidado e no previsto do mês do pagamento (§4.7).
+        // Fatura paga entra no consolidado e no previsto do mês do pagamento (cartoes-e-faturas §3.5).
         for (const totals of sources.paidInvoices) {
             accumulate(totals.period, totals.balance, true);
         }
-        // Fatura em aberto entra só no previsto, no mês do vencimento (§4.7).
+        // Fatura em aberto entra só no previsto, no mês do vencimento (cartoes-e-faturas §3.5).
         for (const invoice of sources.openInvoices) {
             accumulate(invoice.billingCycle.dueDateOf(invoice.invoicePeriod).period, invoice.balance, false);
         }
@@ -134,7 +134,7 @@ export interface InvoiceTypeTotals {
  * Regra de negócio (Fatura): o total é a soma dos efeitos de **todas** as transações vivas
  * da fatura, pagas ou não — o pagamento da fatura é o vínculo com o extrato, não o `paid`
  * de cada compra. Negativo quando há valor a pagar; positivo quando estornos superam as
- * compras (database-design §4.7). Pagamentos parciais são transferências de valor negativo
+ * compras (banco-de-dados §4.7). Pagamentos parciais são transferências de valor negativo
  * e, pela regra de sinal, abatem o total.
  *
  * @param currency Moeda do perfil; dá o zero de uma fatura vazia.

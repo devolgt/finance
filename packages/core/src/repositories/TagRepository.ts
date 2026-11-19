@@ -42,7 +42,7 @@ export interface TagRepository {
 
     /**
      * Soft delete da tag e dos vínculos dela com lançamentos. A propagação é explícita porque
-     * o cascade do banco não dispara num `UPDATE` (database-design §3.6); os lançamentos em
+     * o cascade do banco não dispara num `UPDATE` (banco-de-dados §3.6); os lançamentos em
      * si não são tocados.
      *
      * @param id Tag a excluir.

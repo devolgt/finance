@@ -1,7 +1,7 @@
 import type { AccountDeletionImpactResponse, CreditCardDeletionImpactResponse } from '@finance/core';
 
 /**
- * O alerta de exclusão em cadeia como a tela o mostra (desktop-mvp-plan §5.1): cada item que
+ * O alerta de exclusão em cadeia como a tela o mostra (contas §5): cada item que
  * some junto, já contado e escrito em pt-BR, e as outras contas cujo saldo muda.
  */
 export interface DeletionWarning {
@@ -25,7 +25,7 @@ function counted(count: number, singular: string, plural: string): string {
 }
 
 /**
- * Regra de negócio (Recorrências, database-design §4.12): a série que usa a conta ou o cartão
+ * Regra de negócio (Recorrências, banco-de-dados §4.12): a série que usa a conta ou o cartão
  * excluído é excluída junto e para de gerar lançamentos — o alerta diz isso, porque é um efeito
  * no futuro que a contagem de lançamentos de hoje não mostra.
  *
@@ -37,7 +37,7 @@ function recurrencesItem(count: number): string | null {
 }
 
 /**
- * Monta o alerta da exclusão de conta. Regra de negócio (Contas, desktop-mvp-plan §5.1):
+ * Monta o alerta da exclusão de conta. Regra de negócio (Contas, contas §5):
  * nada de aviso genérico — o alerta conta cada item da cadeia e nomeia as outras contas cujo
  * saldo vai mudar, porque uma transferência apagada mexe também na conta do outro lado e um
  * cartão apagado devolve à conta os pagamentos de fatura. Contagem zero não vira frase: "0
@@ -57,14 +57,14 @@ export function describeAccountDeletion(impact: AccountDeletionImpactResponse): 
             ? counted(impact.incomingTransfers, 'transferência ou investimento recebido de outra conta', 'transferências e investimentos recebidos de outras contas')
             : null,
         recurrencesItem(impact.recurrences),
-        // A meta vinculada mede o saldo da conta: sem a conta, não há o que medir (database-design §4.11).
+        // A meta vinculada mede o saldo da conta: sem a conta, não há o que medir (banco-de-dados §4.11).
         impact.goals > 0 ? counted(impact.goals, 'meta vinculada ao saldo dela', 'metas vinculadas ao saldo dela') : null,
     ];
     return { items: items.filter((item) => item !== null), affectedAccounts: impact.affectedAccounts.map((account) => account.name) };
 }
 
 /**
- * Monta o alerta da exclusão de cartão. Regra de negócio (Cartões, desktop-mvp-plan §5.1): os
+ * Monta o alerta da exclusão de cartão. Regra de negócio (Cartões, contas §5): os
  * pagamentos parciais estão entre os lançamentos das faturas, mas são citados à parte porque
  * são eles que devolvem dinheiro à conta que pagou — é o motivo de a conta aparecer como
  * afetada.

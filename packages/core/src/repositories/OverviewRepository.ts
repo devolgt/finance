@@ -10,7 +10,7 @@ import type { YearMonth } from '../domain/shared/YearMonth.ts';
 /**
  * Consultas agregadas da Visão geral, só leitura. Separadas dos relatórios porque respondem
  * perguntas fixas da tela (quanto saiu no mês, para onde foi, o que está em aberto), sem uma
- * definição salva — e a agregação roda no SQL (backend-design §3.2), como nos relatórios fixos.
+ * definição salva — e a agregação roda no SQL (core §1.2), como nos relatórios fixos.
  */
 export interface OverviewRepository {
     /**

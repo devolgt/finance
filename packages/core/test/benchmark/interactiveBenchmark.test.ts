@@ -6,7 +6,7 @@ import { openHistoryCore } from '../support/historyCore.ts';
 /** Um ano basta: o teste confere o roteiro, não os números, que são da Fase 5 no aparelho. */
 const ONE_YEAR: HistoryOptions = { endMonth: '2026-10', years: 1, seed: 11 };
 
-describe('medição das chamadas interativas (mobile-mvp-plan, Fase 5)', () => {
+describe('medição das chamadas interativas (mobile §12.1)', () => {
     it('mede as quatro operações e deixa as transações vivas como encontrou', async () => {
         const { core, clock, database } = openHistoryCore(':memory:');
         try {

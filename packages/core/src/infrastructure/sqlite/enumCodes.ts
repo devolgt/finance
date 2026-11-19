@@ -5,7 +5,7 @@ import type { RecurrenceFrequency } from '../../domain/recurrence/RecurrenceSche
 import { CorruptRowError } from '../../domain/shared/errors.ts';
 import type { TransactionType } from '../../domain/transaction/TransactionType.ts';
 
-/** `recurrences.type` (database-design §4.12). */
+/** `recurrences.type` (banco-de-dados §4.12). */
 export const RECURRENCE_KIND_CODE: Readonly<Record<RecurrenceTerms['kind'], number>> = {
     installments: 1,
     fixed: 2,
@@ -26,7 +26,7 @@ export const INSTALLMENT_VALUE_TYPE_CODE: Readonly<Record<InstallmentValueType, 
 };
 
 /**
- * Códigos inteiros dos enums no schema (database-design §3.9). O domínio usa literais de
+ * Códigos inteiros dos enums no schema (banco-de-dados §3.9). O domínio usa literais de
  * texto e o banco usa os inteiros do diagrama; a tradução fica só aqui, na fronteira do
  * Repository, para que nenhum `type = 3` apareça em regra de negócio.
  */

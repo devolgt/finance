@@ -3,7 +3,7 @@ import { LocalDate } from '../shared/LocalDate.ts';
 import { foldName, REGISTRY_NAME_MAX_LENGTH } from '../shared/names.ts';
 import type { ImportOptions, ImportRow } from './ImportRow.ts';
 
-/** Tamanho máximo do nome de um lançamento, o `CHECK` de `transactions.name` (database-design §4.13). */
+/** Tamanho máximo do nome de um lançamento, o `CHECK` de `transactions.name` (banco-de-dados §4.13). */
 const TRANSACTION_NAME_MAX_LENGTH = 100;
 
 /** Maior quantidade de parcelas que uma série aceita, a mesma do lançamento manual. */
@@ -43,7 +43,7 @@ export interface PlannedRow {
     readonly row: ImportRow;
     /** Nome gravado: sem o sufixo de parcela quando a linha entra num parcelamento. */
     readonly name: string;
-    /** `due_date` gravado: o vencimento na conta, a data da compra no cartão (import-design §5.4). */
+    /** `due_date` gravado: o vencimento na conta, a data da compra no cartão (importacao §5.4). */
     readonly date: LocalDate;
     /** Pagamento gravado, já com o "pagas até hoje" aplicado. */
     readonly paymentDate: LocalDate | null;
@@ -55,7 +55,7 @@ export interface PlannedRow {
     readonly occurrence: number | null;
 }
 
-/** Linhas que viram uma recorrência do app (import-design §5.5). */
+/** Linhas que viram uma recorrência do app (importacao §5.5). */
 export interface PlannedSeries {
     readonly kind: 'fixed' | 'installments';
     readonly frequency: RecurrenceFrequency;
@@ -98,7 +98,7 @@ export interface ImportCategoryUse {
     readonly rows: number;
 }
 
-/** Tudo o que a revisão mostra e o que o `ImportService` grava (import-design §6). */
+/** Tudo o que a revisão mostra e o que o `ImportService` grava (importacao §6). */
 export interface ImportAnalysis {
     readonly standalone: readonly PlannedRow[];
     readonly series: readonly PlannedSeries[];
@@ -126,7 +126,7 @@ interface Accepted {
  * Analisa as linhas de um arquivo: recusa as que não podem ser gravadas, agrupa as séries,
  * numera as ocorrências e calcula o que a revisão pergunta. É pura e é a **mesma** chamada pela
  * tela de revisão e pelo `ImportService`, para que os números que o usuário aprovou sejam os
- * gravados (import-design §2).
+ * gravados (importacao §2).
  *
  * @param rows Linhas lidas pelo client, na ordem do arquivo.
  * @param options Escolhas da revisão.
@@ -244,7 +244,7 @@ function fits(text: string, maxLength: number): boolean {
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.2): as tags vêm da coluna própria e, com a
+ * Regra de negócio (Importação, importacao §5.2): as tags vêm da coluna própria e, com a
  * opção, das `#palavras` da observação; a mesma tag escrita duas vezes conta uma.
  *
  * @param row Linha do arquivo.
@@ -272,7 +272,7 @@ function hashtagsIn(text: string | null): readonly string[] {
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.5): são da mesma série as linhas com o mesmo
+ * Regra de negócio (Importação, importacao §5.5): são da mesma série as linhas com o mesmo
  * tipo, nome, conta ou cartão, destino e frequência; no parcelamento, também o mesmo total e a
  * mesma data da compra — duas compras iguais em datas diferentes são duas séries.
  *
@@ -339,7 +339,7 @@ interface BuiltSeries {
 }
 
 /**
- * Numera as ocorrências e decide o fim da série (import-design §5.5).
+ * Numera as ocorrências e decide o fim da série (importacao §5.5).
  * Regra de negócio (Importação): a linha que repete um número já ocupado vira avulsa — não há
  * como saber qual das duas é a ocorrência. A fixa termina na última ocorrência do arquivo quando
  * ela vence antes do horizonte; senão continua sem fim, e com "manter as futuras" desmarcado as
@@ -402,7 +402,7 @@ function installmentOf(item: Accepted): number {
 
 /**
  * Distância entre duas datas na unidade da frequência, arredondada para baixo: o mês que falta no
- * arquivo vira um número pulado, que o complemento não recria (database-design §4.12).
+ * arquivo vira um número pulado, que o complemento não recria (banco-de-dados §4.12).
  *
  * @param frequency Frequência da série.
  * @param from Vencimento da primeira linha.
@@ -449,7 +449,7 @@ function plannedOccurrence(item: Accepted, occurrence: number, installments: boo
  * Data gravada em `due_date`, a mesma para a linha agrupada numa série e para a que ficou avulsa.
  * Sem uma regra única, a fixa avulsa no cartão levava a data em que a série foi criada e aparecia
  * anos antes na lista do mês, e a parcela avulsa ficava toda na data da primeira compra.
- * Regra de negócio (Importação, import-design §5.4): no cartão, a data da compra é a Data da
+ * Regra de negócio (Importação, importacao §5.4): no cartão, a data da compra é a Data da
  * compra da linha, e na parcela *n*, a data da compra mais *n* − 1 meses; na conta, sem data da
  * compra e nas fixas (cuja "Lançamento" é a criação da série), é o Vencimento.
  *
@@ -523,7 +523,7 @@ function accountUses(planned: readonly PlannedRow[]): readonly ImportAccountUse[
 }
 
 /**
- * Regra de negócio (Importação, import-design §5.1): o vencimento do cartão é o dia mais comum
+ * Regra de negócio (Importação, importacao §5.1): o vencimento do cartão é o dia mais comum
  * nos vencimentos das compras; a pagadora sugerida, a conta mais comum nas linhas dele.
  *
  * @param planned Linhas aceitas.
@@ -561,9 +561,9 @@ function creditCardUses(planned: readonly PlannedRow[]): readonly ImportCreditCa
 /**
  * Sugere o dia de fechamento pelas compras avulsas cuja data veio da Data da compra — a fixa grava
  * o vencimento e não diz nada do fechamento: a compra antes do fechamento cai
- * numa fatura e a do dia do fechamento em diante, na seguinte (database-design §4.5). Escolhe o
+ * numa fatura e a do dia do fechamento em diante, na seguinte (banco-de-dados §4.5). Escolhe o
  * dia que separa as duas faturas com menos exceções, porque o banco às vezes lança uma compra
- * num ciclo diferente. É só a sugestão — o usuário confirma o dia (import-design §5.1).
+ * num ciclo diferente. É só a sugestão — o usuário confirma o dia (importacao §5.1).
  *
  * @param items Linhas de um cartão.
  * @return O dia de fechamento provável, ou `null` com menos de três compras com data.

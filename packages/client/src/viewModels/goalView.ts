@@ -4,14 +4,14 @@ import { formatMoney } from '../format/money.ts';
 import { formatPercent } from '../format/percent.ts';
 
 /*
- * Textos da tela de Metas (mockup `DesktopMetas`; desktop-mvp-plan Fase 9.3). O progresso e o
+ * Textos da tela de Metas (metas §7.1). O progresso e o
  * ritmo vêm prontos do núcleo (`goals.list`); aqui só se decide como lê-los, para que desktop e
  * celular digam o mesmo.
  */
 
 /** Item da lista de metas: nome, percentual, barra e a linha "quanto de quanto · prazo". */
 export interface GoalListItem {
-    /** `35%`, arredondado sem casa decimal, como no mockup. */
+    /** `35%`, arredondado sem casa decimal: na barra da lista, a casa decimal não diz nada. */
     readonly percentText: string;
     /** Preenchimento da barra entre 0 e 1: o estorno não a deixa negativa, e passar do alvo não a estoura. */
     readonly barRatio: number;
@@ -32,7 +32,7 @@ export function describeGoalListItem(goal: GoalProgressResponse): GoalListItem {
     };
 }
 
-/** Um dos três números do detalhe (`.kpi` do mockup). */
+/** Um dos três números do detalhe, com o rótulo em cima e a nota que o explica embaixo. */
 export interface GoalFigure {
     readonly label: string;
     readonly value: string;
@@ -41,7 +41,7 @@ export interface GoalFigure {
 
 /**
  * Os três números do detalhe: quanto falta, a data-alvo e o ritmo necessário.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 9.3): o prazo e o ritmo contam a partir do fim
+ * Regra de negócio (Metas, metas §4.2): o prazo e o ritmo contam a partir do fim
  * do mês de referência; sem data-alvo, com o prazo encerrado ou com a meta atingida não há
  * ritmo a seguir, e a nota diz por quê em vez de mostrar um número sem sentido.
  *
@@ -61,9 +61,9 @@ export function goalFigures(goal: GoalProgressResponse): readonly [GoalFigure, G
 }
 
 /**
- * Frase do destaque abaixo dos números (`.note` do mockup): de quanto o ritmo parte e onde a
+ * Frase do destaque abaixo dos números: de quanto o ritmo parte e onde a
  * média leva a meta na data-alvo.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 9.3): o ritmo parte do guardado no fim do mês
+ * Regra de negócio (Metas, metas §4.3): o ritmo parte do guardado no fim do mês
  * de referência; fora do mês atual esse valor difere do total de hoje, mostrado no progresso
  * logo acima, e a frase o diz para que os dois números não pareçam se contradizer.
  *
@@ -116,7 +116,7 @@ export function describeGoalDeletion(goal: Pick<GoalProgressResponse, 'name' | '
 }
 
 /**
- * De onde vem o progresso, para o subtítulo do detalhe e da lista (desktop-mvp-plan Fase 13.3).
+ * De onde vem o progresso, para o subtítulo do detalhe e da lista (metas §2).
  *
  * @param goal Meta.
  * @param accounts Contas do perfil, para o nome da conta vinculada.
@@ -133,7 +133,7 @@ export function describeGoalFunding(goal: Pick<GoalProgressResponse, 'funding'>,
 
 /**
  * Aviso do formulário ao trocar a meta por lançamentos para a vinculada a conta.
- * Regra de negócio (Metas, desktop-mvp-plan Fase 13.3): a troca desfaz os vínculos, e os
+ * Regra de negócio (Metas, metas §2.3): a troca desfaz os vínculos, e os
  * lançamentos continuam existindo — o aviso diz quantos antes de salvar, como na exclusão.
  *
  * @param goal Meta editada, com quantos lançamentos estão vinculados.

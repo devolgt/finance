@@ -25,7 +25,7 @@ import type { CreditCardListView } from './CreditCardViews.ts';
 /**
  * Cadastro de cartões: listar com a fatura do mês, criar, editar, desativar e reativar. É o
  * ponto de controle das regras que ligam o cartão à conta pagadora, que o banco não garante
- * (database-design §3.10): mesma conta do perfil e conta ativa.
+ * (banco-de-dados §3.10): mesma conta do perfil e conta ativa.
  */
 export class CreditCardService {
     /**
@@ -52,11 +52,11 @@ export class CreditCardService {
     ) {}
 
     /**
-     * Lista os cartões com a fatura do mês e os totais do mês (mockup `DesktopCartoes`:
+     * Lista os cartões com a fatura do mês e os totais do mês (cartoes-e-faturas §7:
      * "Em aberto no mês" e "Total das faturas").
      * Regra de negócio (Cartões): a "fatura do mês" é a fatura da competência pedida — a que
-     * fecha naquele mês (mockup `DesktopCartoes`). O limite usado (`limitUsed`) é o que o banco
-     * já reservou do limite; faturas pagas não usam limite.
+     * fecha naquele mês. O limite usado (`limitUsed`) é o que já está reservado do limite
+     * (cartoes-e-faturas §4); faturas pagas não usam limite.
      *
      * @param profileId Perfil consultado.
      * @param period Mês de referência da tela.
@@ -86,7 +86,7 @@ export class CreditCardService {
     }
 
     /**
-     * Regra de negócio (Cartão de crédito, desktop-mvp-plan Fase 13.5): o limite usado soma o
+     * Regra de negócio (Cartão de crédito, cartoes-e-faturas §4): o limite usado soma o
      * valor a pagar das faturas em aberto até a **fatura aberta hoje** (a que recebe uma compra
      * feita hoje) e, das faturas depois dela, só o já comprometido — compras avulsas lançadas
      * adiante e parcelas. As ocorrências futuras de séries fixas ficam fora: a série é gravada 12
@@ -128,7 +128,7 @@ export class CreditCardService {
     /**
      * Edita o cadastro.
      * Regra de negócio (Cartão de crédito): mudar o fechamento **não** move lançamentos
-     * (database-design §4.7). Mas o ciclo decide o mês do vencimento — em que a fatura em
+     * (banco-de-dados §4.7). Mas o ciclo decide o mês do vencimento — em que a fatura em
      * aberto pesa no previsto — e a conta pagadora decide em que conta ela pesa; mudar
      * qualquer um dos dois recalcula a conta antiga e a nova.
      *
@@ -157,7 +157,7 @@ export class CreditCardService {
 
     /**
      * Regra de negócio (Cartões): desativar não apaga faturas nem muda saldo
-     * (desktop-mvp-plan §5.1).
+     * (contas §5).
      *
      * @param id Cartão a desativar.
      * @return O cartão desativado.
@@ -198,8 +198,8 @@ export class CreditCardService {
     /**
      * Confere a conta pagadora.
      * Regra de negócio (Cartões): a conta que quita o cartão é do **mesmo** perfil
-     * (database-design §4.5) e, quando escolhida agora, está ativa — conta desativada some
-     * das escolhas novas, mas o cartão que já a usa continua editável (desktop-mvp-plan §5.1).
+     * (banco-de-dados §4.5) e, quando escolhida agora, está ativa — conta desativada some
+     * das escolhas novas, mas o cartão que já a usa continua editável (contas §5).
      *
      * @param profileId Perfil dono do cartão.
      * @param accountId Conta escolhida.

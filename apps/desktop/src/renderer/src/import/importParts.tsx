@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 /*
- * Peças visuais comuns às três etapas da importação (mockups `DesktopImport*`).
+ * Peças visuais comuns às três etapas da importação (importacao §8), para que as etapas
+ * pareçam um assistente só.
  */
 
 /**

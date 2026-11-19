@@ -4,10 +4,9 @@ import { formatMoney } from '../format/money.ts';
 import { formatPercent } from '../format/percent.ts';
 
 /*
- * Fatura do cartão pronta para a tela Cartões (mockup `DesktopCartoes`, e os `MobileCartoes`,
- * `MobileFatura` e `MobilePagarFatura` do celular): a situação de cada fatura, as próximas, os
+ * Fatura do cartão pronta para a tela Cartões dos dois apps (cartoes-e-faturas §7): a situação de cada fatura, as próximas, os
  * lançamentos, o limite usado e as frases de pagar e reabrir. Fica no `client`, e não na tela,
- * porque o celular mostra as mesmas frases e a mesma conta (desktop-shell-design §4.2).
+ * porque o celular mostra as mesmas frases e a mesma conta (desktop §4).
  */
 
 /**
@@ -19,8 +18,8 @@ function negate(money: MoneyResponse): MoneyResponse {
 }
 
 /**
- * Situação da fatura do mês, a linha abaixo do nome do cartão na lista (mockup).
- * Regra de negócio (Fatura): a fatura está paga ou em aberto (database-design §4.7). A paga
+ * Situação da fatura do mês, a linha abaixo do nome do cartão na lista (cartoes-e-faturas §7).
+ * Regra de negócio (Fatura): a fatura está paga ou em aberto (banco-de-dados §4.7). A paga
  * mostra o dia do pagamento; sem o dia gravado (faturas pagas antes da migration `0003`), o
  * mês do extrato, porque inventar um dia mostraria uma data que não aconteceu.
  *
@@ -51,7 +50,7 @@ function formatPaidInvoice(invoice: InvoiceResponse): string {
 }
 
 /**
- * Valor da fatura na lista: o que falta pagar, em módulo (database-design §4.7).
+ * Valor da fatura na lista: o que falta pagar, em módulo (banco-de-dados §4.7).
  *
  * @param cycle Competência da fatura.
  * @return O valor a pagar; `—` no mês sem fatura, para não parecer uma fatura zerada.
@@ -61,7 +60,8 @@ export function formatInvoiceAmount(cycle: InvoiceCycleResponse): string {
 }
 
 /**
- * Fase de uma fatura no ciclo do cartão, que o mockup distingue em "Próximas faturas":
+ * Fase de uma fatura no ciclo do cartão, que a tela distingue em "Próximas faturas"
+ * (cartoes-e-faturas §2.4):
  * - `paid`: já paga;
  * - `closed`: fechou e espera o pagamento;
  * - `receiving`: é a que recebe as compras de hoje ("aberta");
@@ -73,7 +73,7 @@ export type InvoiceStage = 'paid' | 'closed' | 'receiving' | 'future';
 /**
  * Regra de negócio (Cartão de crédito): a fatura de um mês reúne as compras feitas a partir do
  * fechamento anterior e antes do seu próprio fechamento — a compra do dia do fechamento cai na
- * seguinte (database-design §4.5). A fatura que recebe as compras de hoje é, então, a que
+ * seguinte (banco-de-dados §4.5). A fatura que recebe as compras de hoje é, então, a que
  * fecha depois de hoje e cujo mês anterior fechou até hoje. O fechamento anterior vem do dia
  * de fechamento do cartão, com o mesmo ajuste para o último dia do mês do núcleo, e não da
  * fatura anterior, que pode nem existir.
@@ -107,7 +107,8 @@ export interface UpcomingInvoiceRow {
 }
 
 /**
- * "Próximas faturas deste cartão" (mockup): as faturas depois da que está aberta na tela.
+ * "Próximas faturas deste cartão" (cartoes-e-faturas §2.4): as faturas depois da que está aberta
+ * na tela.
  * Só as que existem — o núcleo não devolve mês sem lançamento depois do pedido —, porque um
  * mês vazio no futuro não diz nada.
  *
@@ -129,7 +130,7 @@ export function buildUpcomingInvoices(cycles: readonly InvoiceCycleResponse[], c
 /**
  * @param stage Fase da fatura.
  * @param cycle Competência, para o vencimento da fatura fechada.
- * @return O rótulo do mockup em minúsculas, que vem depois do mês.
+ * @return O rótulo da fase em minúsculas, que vem depois do mês.
  */
 function stageLabel(stage: InvoiceStage, cycle: InvoiceCycleResponse): string {
     switch (stage) {
@@ -147,7 +148,7 @@ function stageLabel(stage: InvoiceStage, cycle: InvoiceCycleResponse): string {
 /**
  * Natureza de um lançamento da fatura, para a etiqueta:
  * - `purchase`: compra (ou qualquer lançamento que aumenta a fatura);
- * - `refund`: estorno — despesa de valor negativo (database-design §4.13);
+ * - `refund`: estorno — despesa de valor negativo (banco-de-dados §4.13);
  * - `payment`: pagamento parcial — transferência na fatura vinda de uma conta (§4.7).
  */
 export type InvoiceLineKind = 'purchase' | 'refund' | 'payment';
@@ -186,9 +187,9 @@ export interface InvoiceTableSource {
 }
 
 /**
- * Monta a tabela de lançamentos da fatura (mockup `DesktopCartoes`), na ordem da data da compra.
+ * Monta a tabela de lançamentos da fatura, na ordem da data da compra.
  * Regra de negócio (Fatura): cada linha mostra quanto soma à fatura — o oposto do efeito na
- * conta, que o núcleo calcula com encargos e sinal (database-design §4.7 e §4.13) —, para que a
+ * conta, que o núcleo calcula com encargos e sinal (banco-de-dados §4.7 e §4.13) —, para que a
  * compra apareça positiva, como na fatura do banco, e a soma das linhas feche com o total a
  * pagar. O pagamento parcial entra como linha negativa com `⇄`: é dinheiro que já saiu da
  * conta e abate a fatura.
@@ -232,7 +233,7 @@ function compareText(a: string, b: string): number {
     return a < b ? -1 : a > b ? 1 : 0;
 }
 
-/** Limite usado do cartão, como o mockup o mostra. */
+/** Limite usado do cartão: percentual, barra e o valor usado "de" o limite (cartoes-e-faturas §4). */
 export interface LimitUsage {
     /** `31%`; `—` no cartão sem limite. */
     readonly percentText: string;
@@ -247,7 +248,7 @@ export interface LimitUsage {
 }
 
 /**
- * Regra de negócio (Cartões, desktop-mvp-plan §5 e Fase 13.5): o limite usado é o valor a pagar
+ * Regra de negócio (Cartões, cartoes-e-faturas §4): o limite usado é o valor a pagar
  * das faturas em aberto até a aberta hoje, mais o já comprometido nas seguintes, que o núcleo
  * entrega pronto em `limitUsed`; aqui só vira texto e proporção. O valor vai junto do
  * percentual, porque "31%" sozinho não diz quanto ainda cabe no cartão. Cartão com limite zero
@@ -267,7 +268,7 @@ export function describeLimitUsage(creditCard: Pick<CreditCardResponse, 'limit'>
     return { percentText: formatPercent(ratio, { sign: 'negative', decimals: 0 }), share: Math.min(Math.max(ratio, 0), 1), exceeded: ratio > 1, usedText, limitText };
 }
 
-/** O que a confirmação do pagamento mostra (mockup `MobilePagarFatura`). */
+/** O que a confirmação do pagamento mostra, para o usuário ver o efeito no saldo antes de pagar. */
 export interface InvoicePaymentPreview {
     /** `A fatura vira paga no extrato de out/2026 da conta Nubank.` */
     readonly statement: string;
@@ -278,7 +279,7 @@ export interface InvoicePaymentPreview {
 /**
  * Explica o efeito de pagar antes da confirmação.
  * Regra de negócio (Fatura): pagar vincula a fatura ao extrato do mês do pagamento da conta
- * que quita o cartão; o valor entra no consolidado desse mês (database-design §4.7). O saldo
+ * que quita o cartão; o valor entra no consolidado desse mês (banco-de-dados §4.7). O saldo
  * novo é o consolidado do fim do mês somado ao `balance` da fatura, que já tem o sinal do efeito
  * na conta e já desconta os pagamentos parciais — a conta que o núcleo vai fazer.
  *
@@ -310,7 +311,7 @@ export function describeInvoicePayment(params: {
  * Texto da confirmação de reabrir.
  * Regra de negócio (Fatura): reabrir desfaz o pagamento — o valor sai do extrato onde tinha
  * sido pago e o saldo da conta volta como se o pagamento não tivesse acontecido; em aberto, a
- * fatura volta a pesar só no previsto, no mês do vencimento (database-design §4.7). Os
+ * fatura volta a pesar só no previsto, no mês do vencimento (banco-de-dados §4.7). Os
  * pagamentos parciais não mudam: são lançamentos próprios.
  *
  * @param params.invoice Fatura paga a reabrir.

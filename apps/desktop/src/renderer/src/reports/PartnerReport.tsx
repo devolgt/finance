@@ -29,15 +29,15 @@ import { useActiveProfile } from '@/shell/activeProfile';
 import { useReferenceMonth } from '@/shell/useReferenceMonth';
 
 /**
- * Distribuição por sócio, fixada no topo dos Relatórios do perfil empresarial (reports-design §8;
- * desktop-mvp-plan Fases 13.6 e 13.8): quanto cada sócio aportou contra quanto deveria pela
+ * Distribuição por sócio, fixada no topo dos Relatórios do perfil empresarial (relatorios §7
+ * e socios §2): quanto cada sócio aportou contra quanto deveria pela
  * participação no total de aportes, o acerto ou, com o saldo previsto do mês negativo, quanto cada
  * um aporta para cobri-lo, e as entradas do mês sem sócio, que podem ser atribuídas ali mesmo.
- * Regra de negócio (Sócios — aportes, reports-design §8): toda despesa é paga pela empresa; os
+ * Regra de negócio (Sócios — aportes, relatorios §7.1, P1): toda despesa é paga pela empresa; os
  * aportes são as receitas e as transferências vindas de outro perfil com sócio, de todos os
  * períodos. O mês de referência só recorta os indicadores do mês e a lista de entradas sem sócio.
- * Diverge do mockup `DesktopRelSocio`, desenhado sobre despesas, por decisão do usuário. A tela só
- * arruma o que o núcleo agregou, pelo `partnerReport` do `client`. Só é oferecida no perfil
+ * A divisão é sobre os aportes, e não sobre as despesas, por decisão do usuário (decisoes §78). A
+ * tela só arruma o que o núcleo agregou, pelo `partnerReport` do `client`. Só é oferecida no perfil
  * empresarial (`fixedReportsFor`), e por isso não trata o pessoal, que o núcleo recusaria.
  *
  * @return O relatório por sócio.
@@ -118,7 +118,7 @@ function KpiCard({ kpi }: { readonly kpi: PartnerKpi }): ReactNode {
 
 /**
  * Tabela dos sócios com o total de aportes. As entradas sem sócio não entram: não são aporte. A
- * diferença leva seta, sinal e palavras, para não depender só da cor (decisão de interface 7).
+ * diferença leva seta, sinal e palavras, para não depender só da cor (desktop §7.3).
  *
  * @param props.view Relatório pronto do `client`.
  * @return A tabela.
@@ -161,11 +161,11 @@ function PartnerTable({ view }: { readonly view: PartnerReportView }): ReactNode
     );
 }
 
-/** Como "Aportou × deveria" aparece: as barras do mockup ou a tabela equivalente. */
+/** Como "Aportou × deveria" aparece: as barras ou a tabela equivalente. */
 type ComparisonMode = 'chart' | 'table';
 
 /**
- * "Aportou × deveria": as barras do mockup (aportou cheia, deveria tracejada, na mesma cor — a
+ * "Aportou × deveria": as barras (aportou cheia, deveria tracejada, na mesma cor — a
  * diferença não depende da cor) com a alternância Gráfico/Tabela dos outros relatórios, e embaixo
  * o acerto dos aportes.
  *
@@ -289,9 +289,9 @@ function Settlement({ view }: { readonly view: PartnerReportView }): ReactNode {
 }
 
 /**
- * "Cobrir o saldo negativo" (reports-design §8, P6): o saldo previsto do mês e o aporte de cada
+ * "Cobrir o saldo negativo" (relatorios §7.1, P6): o saldo previsto do mês e o aporte de cada
  * sócio, que leva o dinheiro para a empresa. No tom de aviso, porque é dinheiro que falta; o saldo
- * leva o sinal de menos, para não depender só da cor (decisão de interface 7).
+ * leva o sinal de menos, para não depender só da cor (desktop §7.3).
  *
  * @param props.coverage Quadro pronto do `client`.
  * @return O quadro.
